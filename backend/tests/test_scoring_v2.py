@@ -54,7 +54,8 @@ def test_answer_key_complete():
 
 
 # ── Judge (stub-safe shape + calibration mechanics) ──
-def test_evaluate_v2_stub_shape():
+def test_evaluate_v2_stub_shape(monkeypatch):
+    monkeypatch.setattr("app.rag.judge_v2.is_stub", lambda: True)  # deterministic, no API call
     report = evaluate_v2(_case(), [{"role": "user", "content": "hello"}])
     assert report["mode"] == "anamnesis"  # from case mode_default
     assert set(report["per_dimension"].keys()) == set(RUBRICS["anamnesis"].keys())
@@ -84,7 +85,8 @@ def test_overall_recomputed_and_clamped():
     assert norm["per_item"][0]["status"] == "hit"  # normalised lowercase
 
 
-def test_osce_full_mode_end_to_end():
+def test_osce_full_mode_end_to_end(monkeypatch):
+    monkeypatch.setattr("app.rag.judge_v2.is_stub", lambda: True)  # deterministic, no API call
     case = parse_case_v2(_APPENDIX)
     report = evaluate_v2(case, [{"role": "user", "content": "hello"}])
     assert report["mode"] == "osce_full"  # from case mode_default

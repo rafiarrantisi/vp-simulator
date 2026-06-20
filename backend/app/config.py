@@ -82,6 +82,26 @@ class Settings(BaseSettings):
     # `/opt/ophtha/uploads`; dev override ke `./uploads` lewat .env.
     upload_dir: str = "./uploads"
 
+    # ── Billing / entitlements (pivot-v4 §7; Merchant-of-Record = Lemon Squeezy) ──
+    # Enforcement is OFF by default so the live product is unchanged until cutover.
+    billing_enforced: bool = False
+    free_session_limit: int = 5     # sessions per rolling 30 days for free users
+    free_case_limit: int = 3        # distinct cases a free user may open
+    price_monthly_usd: float = 9.99
+    price_annual_usd: float = 59.0
+    price_exam_pass_usd: float = 14.99
+    # Cost guardrail (margin protection, §7.3): blended est. $/1k tokens + alert ratio.
+    cost_per_1k_tokens_usd: float = 0.001
+    cost_alert_ratio: float = 0.8   # warn if a user's 30-day spend > ratio * plan price
+    # Lemon Squeezy. Keys via env/secret store; empty -> checkout/webhook disabled.
+    lemonsqueezy_api_key: str = ""
+    lemonsqueezy_store_id: str = ""
+    lemonsqueezy_webhook_secret: str = ""
+    lemonsqueezy_checkout_monthly: str = ""
+    lemonsqueezy_checkout_annual: str = ""
+    lemonsqueezy_checkout_exam_pass: str = ""
+    lemonsqueezy_portal_url: str = ""
+
     def stt_base(self) -> str:
         return self.stt_base_url or self.llm_base_url
 

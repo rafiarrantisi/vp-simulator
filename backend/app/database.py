@@ -40,6 +40,7 @@ def init_db() -> None:
     # (users domain pakai model dari auth — tidak punya models.py sendiri)
     from app.domains.admin import models as _admin  # noqa: F401
     from app.domains.auth import models as _auth  # noqa: F401
+    from app.domains.billing import models as _billing  # noqa: F401
     from app.domains.cases import models as _cases  # noqa: F401
     from app.domains.exam import models as _exam  # noqa: F401
     from app.domains.eye_photos import models as _eye_photos  # noqa: F401
