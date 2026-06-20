@@ -43,7 +43,8 @@ class LlmClient(Protocol):
 
     def generate(self, system: str, messages: list[dict],
                  model: str | None = None,
-                 max_tokens: int | None = None) -> str: ...
+                 max_tokens: int | None = None,
+                 temperature: float | None = None) -> str: ...
 
 
 class StubLlmClient:
@@ -54,7 +55,8 @@ class StubLlmClient:
 
     def generate(self, system: str, messages: list[dict],
                  model: str | None = None,
-                 max_tokens: int | None = None) -> str:
+                 max_tokens: int | None = None,
+                 temperature: float | None = None) -> str:
         last_user = ""
         for m in reversed(messages):
             if m.get("role") == "user":
@@ -99,12 +101,12 @@ def _openai_compatible(base_url: str | None):
         return e
 
     class _OAI:
-        def generate(self, system, messages, model=None, max_tokens=None):
+        def generate(self, system, messages, model=None, max_tokens=None, temperature=None):
             def _call():
                 kwargs = {
                     "model": model or s.llm_model,
                     "messages": [{"role": "system", "content": system}, *messages],
-                    "temperature": 0.5,
+                    "temperature": 0.5 if temperature is None else temperature,
                 }
                 if max_tokens is not None:
                     kwargs["max_tokens"] = max_tokens
@@ -159,11 +161,11 @@ def _anthropic():  # pragma: no cover - butuh SDK + key
     client = Anthropic(api_key=s.llm_api_key)
 
     class _Anth:
-        def generate(self, system, messages, model=None, max_tokens=None):
+        def generate(self, system, messages, model=None, max_tokens=None, temperature=None):
             r = client.messages.create(
                 model=model or s.llm_model, system=system,
                 max_tokens=max_tokens or 1024,
-                messages=messages, temperature=0.5,
+                messages=messages, temperature=0.5 if temperature is None else temperature,
             )
             return "".join(b.text for b in r.content if b.type == "text")
 
