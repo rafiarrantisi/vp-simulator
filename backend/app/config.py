@@ -39,6 +39,7 @@ class Settings(BaseSettings):
     llm_base_url: str = "https://openrouter.ai/api/v1"
     llm_model: str = "anthropic/claude-3.5-sonnet"  # persona (kuat) — sesuaikan
     llm_judge_model: str = "openai/gpt-4o-mini"      # judge (murah, rag-plan §9.1)
+    llm_author_model: str = "anthropic/claude-3.5-sonnet"  # case authoring (pivot-v4 §5.3, strong reasoning)
     # OpenRouter opsional (atribusi; aman dikosongkan)
     llm_site_url: str = ""
     llm_app_title: str = "OphthaSim"

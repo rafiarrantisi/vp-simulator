@@ -24,6 +24,20 @@ SPECIALTIES = frozenset({
 STATUSES = frozenset({"draft", "in_review", "published", "retired"})
 MODES = frozenset({"anamnesis", "osce_full"})
 
+# Specialty -> id abbreviation (BUILD_PLAN §5.1 ID convention).
+SPECIALTY_ABBREV: dict[str, str] = {
+    "internal_medicine": "im", "surgery": "surg", "paediatrics": "paed",
+    "obstetrics_gynaecology": "og", "psychiatry": "psych", "neurology": "neuro",
+    "ent": "ent", "dermatology": "derm", "ophthalmology": "oph", "emergency": "em",
+}
+
+
+def make_case_id(specialty: str, slug: str, n: int = 1) -> str:
+    """Build a stable case id like `im_appendicitis_001`."""
+    abbrev = SPECIALTY_ABBREV.get(specialty, specialty[:4])
+    clean = re.sub(r"[^a-z0-9]+", "_", slug.lower()).strip("_")
+    return f"{abbrev}_{clean}_{n:03d}"
+
 REQUIRED_KEYS = (
     "id", "schema_version", "status", "specialty", "presentation",
     "target_condition", "difficulty", "mode_default", "chief_complaint",
@@ -120,14 +134,13 @@ def _split_md_sections(body: str) -> dict[str, str]:
     return sections
 
 
-def parse_case_v2(path: str | Path) -> CaseV2:
-    """Parse a schema-v2 file. Tolerant of missing frontmatter (linter reports
-    it) so the linter can give a clean message instead of crashing."""
-    p = Path(path)
-    text = p.read_text(encoding="utf-8")
+def parse_string(text: str, *, fallback_id: str = "draft", path: str = "<string>") -> CaseV2:
+    """Parse schema-v2 case text (used by the authoring pipeline before a file is
+    written). Tolerant of missing frontmatter so the linter can report it cleanly."""
     m = _FRONTMATTER_RE.match(text)
     frontmatter_ok = True
     data: dict = {}
+    body = text
     if m:
         body = text[m.end():]
         try:
@@ -137,19 +150,23 @@ def parse_case_v2(path: str | Path) -> CaseV2:
                 frontmatter_ok = False
         except yaml.YAMLError:
             frontmatter_ok = False
-            body = text[m.end():]
     else:
         frontmatter_ok = False
-        body = text
-    cid = str(data.get("id") or p.stem)
+    cid = str(data.get("id") or fallback_id)
     return CaseV2(
         id=cid,
         frontmatter=data,
         body=body.strip(),
         body_sections=_split_md_sections(body),
-        path=str(p),
+        path=path,
         frontmatter_ok=frontmatter_ok,
     )
+
+
+def parse_case_v2(path: str | Path) -> CaseV2:
+    """Parse a schema-v2 file. Tolerant of missing frontmatter (linter reports it)."""
+    p = Path(path)
+    return parse_string(p.read_text(encoding="utf-8"), fallback_id=p.stem, path=str(p))
 
 
 @dataclass(frozen=True)

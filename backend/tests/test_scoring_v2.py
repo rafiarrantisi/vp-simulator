@@ -12,6 +12,7 @@ from app.rag.prompt_v2 import build_patient_prompt
 from pipeline.case_v2 import parse_case_v2
 
 _EXEMPLAR = Path(__file__).resolve().parents[2] / "content" / "cases" / "oph_dry_eye_001.md"
+_APPENDIX = Path(__file__).resolve().parents[2] / "content" / "cases" / "im_gi_appendicitis_001.md"
 
 
 def _case():
@@ -81,6 +82,18 @@ def test_overall_recomputed_and_clamped():
     # overall = sum of clamped dimension scores (not the model's 500)
     assert norm["overall"] == 35 + 0 + 10 + 0 + 0
     assert norm["per_item"][0]["status"] == "hit"  # normalised lowercase
+
+
+def test_osce_full_mode_end_to_end():
+    case = parse_case_v2(_APPENDIX)
+    report = evaluate_v2(case, [{"role": "user", "content": "hello"}])
+    assert report["mode"] == "osce_full"  # from case mode_default
+    assert set(report["per_dimension"].keys()) == set(RUBRICS["osce_full"].keys())
+    assert report["per_dimension"]["investigations"]["max"] == 15
+    assert report["per_dimension"]["management"]["max"] == 10
+    ak = report["answer_key"]
+    assert ak["investigations"]["appropriate"]
+    assert ak["expected_ddx"]["working_diagnosis"] == "Acute appendicitis"
 
 
 def test_judge_prompt_is_conservative_and_leak_free():
