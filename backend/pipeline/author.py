@@ -95,7 +95,7 @@ def build_author_prompt(case_id: str, specialty: str, presentation: str,
         f"  target_condition: {target_condition}\n"
         f"  difficulty: {difficulty}\n"
         f"  mode_default: {mode}\n"
-        f"  author model: {get_settings().llm_author_model}\n"
+        f"  author model: {get_settings().llm_author_model or get_settings().llm_model}\n"
         "Use EXACTLY these values in the frontmatter.\n\n"
     )
     user = target + _SCHEMA_SPEC
@@ -143,7 +143,7 @@ def draft_case(case_id: str, specialty: str, presentation: str,
         )
     raw = get_llm_client().generate(
         system, messages,
-        model=get_settings().llm_author_model,
+        model=get_settings().llm_author_model or get_settings().llm_model,
         max_tokens=4000,
         temperature=0.4,
     )
