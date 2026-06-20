@@ -1,5 +1,5 @@
 // ============================================================
-// OphthaSim — Dashboard, CaseLibrary, Debrief, Settings
+// Qora — Dashboard, CaseLibrary, Debrief, Settings
 // ============================================================
 
 // ── App Header ────────────────────────────────────────────
@@ -33,7 +33,7 @@ const AppHeader = ({ onNav, screen, onSettings, profile, badges, auth, onLogout 
            onClick={() => onNav('dashboard')}>
         <EyeOrb size={32} tone="normal" animate={false} />
         <div>
-          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 }}>OphthaSim</div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 }}>Qora</div>
           <div style={{ fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Ophthalmology Edition</div>
         </div>
       </div>

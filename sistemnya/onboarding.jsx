@@ -1,5 +1,5 @@
 // ============================================================
-// OphthaSim — Onboarding, Mode Selection, Tutorial Overlay
+// Qora — Onboarding, Mode Selection, Tutorial Overlay
 // ============================================================
 
 // ── Onboarding Modal (First Visit) ───────────────────────
@@ -8,7 +8,7 @@ const OnboardingModal = ({ onComplete }) => {
   const steps = [
     {
       icon: null,
-      title: 'Selamat datang di OphthaSim',
+      title: 'Selamat datang di Qora',
       subtitle: 'Virtual Patient Simulator — Ophthalmology Edition',
       content: 'Platform latihan anamnesis mata yang dirancang untuk mahasiswa kedokteran, koas, dan dokter muda. Belajar sambil berlatih langsung dengan pasien virtual.',
       cta: 'Mulai Tour →',

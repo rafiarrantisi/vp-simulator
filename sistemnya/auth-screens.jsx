@@ -1,5 +1,5 @@
 // ============================================================
-// OphthaSim — Landing & Login screens
+// Qora — Landing & Login screens
 // Matches main app's visual system (Poppins, primary #5865F2,
 // EyeOrb motifs, dot-grid background, rounded cards).
 // ============================================================
@@ -43,7 +43,7 @@ const BrandLogo = ({ size = 'md', light = false }) => {
     <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
       <EyeOrb size={s.orb} tone="normal" animate={false} />
       <div>
-        <div style={{ fontSize: s.title, fontWeight: 800, color: light ? '#fff' : 'var(--text-1)', lineHeight: 1, letterSpacing: '-0.01em' }}>OphthaSim</div>
+        <div style={{ fontSize: s.title, fontWeight: 800, color: light ? '#fff' : 'var(--text-1)', lineHeight: 1, letterSpacing: '-0.01em' }}>Qora</div>
         <div style={{ fontSize: s.sub, color: light ? 'rgba(255,255,255,0.7)' : 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 2 }}>Ophthalmology Edition</div>
       </div>
     </div>
@@ -397,7 +397,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
               }} />
               <div style={{ fontSize: 64, lineHeight: 1, opacity: 0.3, marginBottom: -20 }}>"</div>
               <p style={{ fontSize: 17, lineHeight: 1.6, fontWeight: 500, marginBottom: 24, position: 'relative' }}>
-                Sebelum OSCE Mata, gua latihan 3 kasus di OphthaSim tiap malam.
+                Sebelum OSCE Mata, gua latihan 3 kasus di Qora tiap malam.
                 Pas hari H, anamnesis pasien beneran berasa familiar. Lulus dengan score 89.
               </p>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, position: 'relative' }}>
@@ -465,7 +465,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
         <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
           <BrandLogo size="md" />
           <div style={{ fontSize: 12, color: 'var(--text-3)' }}>
-            © 2026 OphthaSim · Dibuat dengan ❤️ untuk dokter muda Indonesia
+            © 2026 Qora · Dibuat dengan ❤️ untuk dokter muda Indonesia
           </div>
           <div style={{ display: 'flex', gap: 18 }}>
             {['Tentang','Privasi','Kontak'].map(l => (
@@ -616,7 +616,7 @@ const LoginScreen = ({ onLogin, onBack, onGoSignup, mode = 'login' }) => {
             {isSignup ? '✨ Buat Akun Baru' : '👋 Selamat datang kembali'}
           </div>
           <h1 style={{ fontSize: 32, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
-            {isSignup ? 'Mulai latihan kamu hari ini.' : 'Masuk ke OphthaSim.'}
+            {isSignup ? 'Mulai latihan kamu hari ini.' : 'Masuk ke Qora.'}
           </h1>
           <p style={{ fontSize: 14, color: 'var(--text-2)', marginBottom: 28, lineHeight: 1.6 }}>
             {isSignup
@@ -776,7 +776,7 @@ const LoginScreen = ({ onLogin, onBack, onGoSignup, mode = 'login' }) => {
 
         {/* footer note */}
         <div style={{ marginTop: 'auto', fontSize: 11, color: 'var(--text-3)', textAlign: 'center', paddingTop: 24 }}>
-          Dengan masuk, kamu menyetujui Syarat & Ketentuan dan Kebijakan Privasi OphthaSim.
+          Dengan masuk, kamu menyetujui Syarat & Ketentuan dan Kebijakan Privasi Qora.
         </div>
       </div>
 

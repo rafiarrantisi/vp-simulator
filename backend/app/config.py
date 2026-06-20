@@ -10,7 +10,8 @@ _REPO_ROOT = Path(__file__).resolve().parents[2]
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    app_name: str = "OphthaSim Backend"
+    product_name: str = "Qora"  # rebrand single source (§3); override via PRODUCT_NAME
+    app_name: str = "Qora Backend"
     env: str = "dev"  # dev | staging | prod
 
     # DB: sqlite untuk dev (runnable tanpa Docker); Postgres via env utk prod.
@@ -42,7 +43,7 @@ class Settings(BaseSettings):
     llm_author_model: str = "anthropic/claude-3.5-sonnet"  # case authoring (pivot-v4 §5.3, strong reasoning)
     # OpenRouter opsional (atribusi; aman dikosongkan)
     llm_site_url: str = ""
-    llm_app_title: str = "OphthaSim"
+    llm_app_title: str = "Qora"
     # Tier A v0.13.0: cap balasan utk persona (cegah essay panjang →
     # kurangi tail latency). 220 ≈ 3-4 kalimat ID, cukup utk balasan
     # pasien answer-restrained. Judge butuh lebih utk JSON struktural.

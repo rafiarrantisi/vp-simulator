@@ -1,10 +1,10 @@
-# Privacy Policy — {{PRODUCT_NAME}} (DRAFT)
+# Privacy Policy — Qora (DRAFT)
 
 > Drafting starting point for `BUILD_PLAN_pivot_v4.md` §11/§13. Not legal advice —
 > have it reviewed and fill the `{{...}}` placeholders before publishing.
 > Last updated: {{DATE}} · Contact: {{SUPPORT_EMAIL}}
 
-{{PRODUCT_NAME}} is an educational study aid. We practise **data minimisation** —
+Qora is an educational study aid. We practise **data minimisation** —
 we collect only what is needed to run the service.
 
 ## What we collect

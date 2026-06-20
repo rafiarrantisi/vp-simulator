@@ -1,11 +1,11 @@
-# Terms of Service — {{PRODUCT_NAME}} (DRAFT)
+# Terms of Service — Qora (DRAFT)
 
 > Drafting starting point for `BUILD_PLAN_pivot_v4.md` §11/§13. Not legal advice —
 > have it reviewed and fill the `{{...}}` placeholders before publishing.
 > Last updated: {{DATE}} · Contact: {{SUPPORT_EMAIL}}
 
 ## 1. Acceptance
-By creating an account or using {{PRODUCT_NAME}} ("the Service") you agree to these
+By creating an account or using Qora ("the Service") you agree to these
 Terms and to the [Privacy Policy](PRIVACY.md) and [Disclaimer](DISCLAIMER.md).
 
 ## 2. The Service is an educational study aid
