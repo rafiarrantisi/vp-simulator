@@ -139,6 +139,8 @@ class Settings(BaseSettings):
 
     # Korpus kasus markdown (sumber kebenaran kanonik, kontrak §5.6)
     cases_dir: str = str(_REPO_ROOT / "data-kasus")
+    # Schema-v2 cases (pivot-v4 §5.1) — English, multi-specialty
+    content_cases_dir: str = str(_REPO_ROOT / "content" / "cases")
 
 
 @lru_cache
