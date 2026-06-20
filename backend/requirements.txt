@@ -19,6 +19,9 @@ alembic>=1.13
 # ── RAG retrieval ringan (Fase 3, tanpa infra) ──
 rank-bm25>=0.2
 
+# ── Case schema v2 (pivot-v4): YAML frontmatter parsing + linter ──
+pyyaml>=6.0
+
 # ── LLM provider ──
 # OpenRouter & OpenAI memakai SDK `openai` (OpenRouter = OpenAI-compatible).
 openai>=1.40
