@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.database import SessionLocal, get_db
 from app.domains.auth.models import User
+from app.domains.billing import service as billing
 from app.domains.sessions.models import SessionRow, SessionTurn
 from app.rag.engine import respond as rag_respond
 from app.rag.engine import stream_respond as rag_stream
@@ -45,6 +46,15 @@ def start_session(
     user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
+    # Freemium wall (§7.3) — inert unless BILLING_ENFORCED=true. Server-side only.
+    gate = billing.can_start_session(db, user.id)
+    if not gate["allowed"]:
+        raise HTTPException(
+            status.HTTP_402_PAYMENT_REQUIRED,
+            detail={"reason": gate.get("reason"), "usage": gate.get("usage"),
+                    "limit": gate.get("limit"),
+                    "message": "Free session limit reached — upgrade to continue."},
+        )
     s = SessionRow(
         user_id=user.id,
         institution_id=user.institution_id,
@@ -54,6 +64,11 @@ def start_session(
     db.add(s)
     db.commit()
     db.refresh(s)
+    try:  # best-effort metering — must never block a session
+        billing.record_usage(db, user.id, "session_start", req.case_id)
+        db.commit()
+    except Exception:
+        db.rollback()
     return ok({"sessionId": s.id, "caseId": s.case_id, "mode": s.mode, "status": s.status})
 
 
@@ -114,6 +129,12 @@ def post_turn(
         )
     db.add(SessionTurn(session_id=s.id, turn_number=n + 1, role="patient", content=reply))
     db.commit()
+    try:  # best-effort cost guardrail (§7.3); token counts estimated from text length
+        tokens_in = (sum(len(h["content"]) for h in history) + len(req.text)) // 4
+        billing.record_session_cost(db, s.id, user.id, tokens_in, len(reply) // 4)
+        db.commit()
+    except Exception:
+        db.rollback()
     return ok({"reply": reply, "detectedDomain": None, "audioUrl": None})
 
 

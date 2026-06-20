@@ -149,6 +149,19 @@ def test_me_requires_auth():
     assert client.get("/api/billing/me").status_code == 401
 
 
+def test_session_start_gated_when_over_limit(monkeypatch):
+    email = f"gate_{uuid.uuid4().hex[:8]}@t.co"
+    client.post("/api/auth/signup", json={"email": email, "password": "secret12", "full_name": "G"})
+    tok = client.post("/api/auth/login", json={"email": email, "password": "secret12"}).json()["data"]["token"]
+    monkeypatch.setattr(
+        "app.domains.sessions.router.billing.can_start_session",
+        lambda *a, **k: {"allowed": False, "reason": "free_limit_reached", "usage": {"sessions": 5}, "limit": 5},
+    )
+    r = client.post("/api/sessions", json={"case_id": "kasus-101", "mode": "normal"},
+                    headers={"Authorization": f"Bearer {tok}"})
+    assert r.status_code == 402
+
+
 def test_webhook_rejects_bad_signature():
     r = client.post("/api/billing/webhooks/lemonsqueezy", content=b"{}",
                     headers={"X-Signature": "bad"})
