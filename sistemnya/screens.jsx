@@ -61,6 +61,14 @@ const AppHeader = ({ onNav, screen, onSettings, profile, badges, auth, onLogout 
             cursor: 'pointer', transition: 'all 0.18s ease', fontFamily: 'Poppins',
           }} title="Developer Dashboard">🛠 Dev</button>
         )}
+        {/* Phase 5 (pivot-v4): v2 multi-specialty experience. ADITIF, same pattern, design.css untouched. */}
+        <button onClick={() => onNav('qora-v2')} style={{
+          padding: '6px 14px', borderRadius: 10, border: 'none',
+          background: screen === 'qora-v2' ? 'var(--primary-l)' : 'transparent',
+          color: screen === 'qora-v2' ? 'var(--primary)' : 'var(--text-2)',
+          fontSize: 13, fontWeight: screen === 'qora-v2' ? 700 : 500,
+          cursor: 'pointer', transition: 'all 0.18s ease', fontFamily: 'Poppins',
+        }} title="Multi-specialty (beta)">🩺 Qora</button>
       </nav>
 
       {/* Right side */}

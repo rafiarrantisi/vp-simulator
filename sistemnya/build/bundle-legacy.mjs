@@ -61,6 +61,9 @@ const LOAD_ORDER = [
   // (butuh Btn/Card/Overlay/LoadingDots/SectionHeader/useToast) & terakhir
   // (tak depend file lain).
   'dev-dashboard.jsx',
+  // Phase 5 (pivot-v4): Qora v2 multi-specialty experience (additive; reuses
+  // design tokens only — design.css untouched, CSS hash preserved).
+  'qora-v2.jsx',
 ];
 
 const HTML_FILE = 'Virtual Patient Simulator.html';

@@ -498,6 +498,9 @@
                 />
               )}
 
+              {/* Phase 5 (pivot-v4): Qora v2 multi-specialty experience */}
+              {screen === 'qora-v2' && <QoraV2Screen navigate={navigate} />}
+
               {screen === 'simulator' && currentCase && (
                 <SimulatorScreen
                   key={`sim-${currentCase.id}-${screenKey}`}
