@@ -34,7 +34,7 @@ const AppHeader = ({ onNav, screen, onSettings, profile, badges, auth, onLogout 
         <EyeOrb size={32} tone="normal" animate={false} />
         <div>
           <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 }}>Qora</div>
-          <div style={{ fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Ophthalmology Edition</div>
+          <div style={{ fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Clinical Interview Trainer</div>
         </div>
       </div>
 

@@ -103,6 +103,15 @@ class Settings(BaseSettings):
     lemonsqueezy_checkout_exam_pass: str = ""
     lemonsqueezy_portal_url: str = ""
 
+    # ── Email (transactional; pivot-v4 §7.1). Empty SMTP_HOST -> console mode:
+    # the message (e.g. a verification/reset link) is logged to the server
+    # console so flows work locally. Plug a provider (SMTP/Resend/SES) later. ──
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_user: str = ""
+    smtp_password: str = ""
+    smtp_from: str = "no-reply@qora.app"
+
     def stt_base(self) -> str:
         return self.stt_base_url or self.llm_base_url
 
