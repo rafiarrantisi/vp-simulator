@@ -8,6 +8,8 @@ calibrated v2 judge, and reuses the billing gate/metering/cost guardrail.
   POST /api/v2/sessions/{id}/turns       patient turn (engine_v2)
   POST /api/v2/sessions/{id}/score       evaluate_v2 -> report + answer key (post-session reveal)
 """
+from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
@@ -109,6 +111,35 @@ class V2ScoreReq(BaseModel):
     management: dict | None = None
 
 
+def _record_progress(user: User, case, report: dict) -> None:
+    """Persist the session result to the user's profile (gamification). The JSON
+    `extra` blob is replaced immutably so SQLAlchemy tracks the change."""
+    prof = user.profile
+    if prof is None:
+        return
+    overall = int(report.get("overall", 0) or 0)
+    extra = dict(prof.extra or {})
+    history = list(extra.get("scoreHistory") or [])
+    history.insert(0, {
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "caseId": case.id,
+        "specialty": case.frontmatter.get("specialty", ""),
+        "overall": overall,
+        "dims": {k: v.get("score", 0) for k, v in (report.get("per_dimension") or {}).items()},
+    })
+    extra["scoreHistory"] = history[:200]
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    dates = dict(extra.get("sessionDates") or {})
+    dates[today] = int(dates.get(today, 0)) + 1
+    extra["sessionDates"] = dates
+    done = set(extra.get("completedCaseIds") or [])
+    done.add(case.id)
+    extra["completedCaseIds"] = sorted(done)
+    prof.extra = extra
+    prof.xp = int(prof.xp or 0) + overall
+    prof.total_sessions = int(prof.total_sessions or 0) + 1
+
+
 @router.post("/sessions/{session_id}/score")
 def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_user),
              db: Session = Depends(get_db)):
@@ -122,5 +153,33 @@ def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_
     s.total_score = report.get("overall", 0)
     s.report = report
     s.status = "completed"
+    _record_progress(user, case, report)
     db.commit()
     return ok(report)  # includes answer_key for the post-session reveal
+
+
+@router.get("/progress")
+def v2_progress(user: User = Depends(get_current_user)):
+    """Gamification summary for the Qora flow: XP, sessions, per-dimension skill
+    averages, and specialty coverage — from the user's profile."""
+    prof = user.profile
+    extra = (prof.extra if prof else {}) or {}
+    history = extra.get("scoreHistory") or []
+    sums, counts = {}, {}
+    for h in history:
+        for k, v in (h.get("dims") or {}).items():
+            sums[k] = sums.get(k, 0) + (v or 0)
+            counts[k] = counts.get(k, 0) + 1
+    dim_avg = {k: round(sums[k] / counts[k], 1) for k in sums}
+    spec = {}
+    for h in history:
+        sp = h.get("specialty") or "other"
+        spec[sp] = spec.get(sp, 0) + 1
+    return ok({
+        "xp": int(prof.xp or 0) if prof else 0,
+        "totalSessions": int(prof.total_sessions or 0) if prof else 0,
+        "completedCases": len(extra.get("completedCaseIds") or []),
+        "sessions": history[:50],
+        "dimensionAverages": dim_avg,
+        "specialtyCounts": spec,
+    })

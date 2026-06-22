@@ -66,3 +66,23 @@ def test_v2_turn_and_score_with_stub(monkeypatch):
     assert d["mode"] == "anamnesis" and "answer_key" in d
     assert d["answer_key"]["expected_ddx"]["working_diagnosis"].lower().startswith("dry eye")
     assert d["answer_key"]["red_flags"]  # model answer present for the reveal
+
+
+def test_v2_progress_requires_auth():
+    assert client.get("/api/v2/progress").status_code == 401
+
+
+def test_v2_progress_records_after_score(monkeypatch):
+    from app.rag.llm import StubLlmClient
+    monkeypatch.setattr("app.rag.engine_v2.get_llm_client", lambda: StubLlmClient())
+    monkeypatch.setattr("app.rag.judge_v2.is_stub", lambda: True)
+    H = _auth()
+    p0 = client.get("/api/v2/progress", headers=H).json()["data"]
+    sid = client.post("/api/v2/sessions", json={"case_id": "oph_dry_eye_001"}, headers=H).json()["data"]["sessionId"]
+    client.post(f"/api/v2/sessions/{sid}/turns", json={"text": "Hi"}, headers=H)
+    client.post(f"/api/v2/sessions/{sid}/score", json={}, headers=H)
+    p1 = client.get("/api/v2/progress", headers=H).json()["data"]
+    assert p1["totalSessions"] == p0["totalSessions"] + 1
+    assert p1["completedCases"] >= 1
+    assert p1["specialtyCounts"].get("ophthalmology", 0) >= 1
+    assert "really uncomfortable" not in str(p1)  # no persona leakage into progress

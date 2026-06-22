@@ -8,7 +8,7 @@ presentation: "Painful eyelid lump"
 target_condition: "Hordeolum (stye)"
 difficulty: 1
 estimated_minutes: 10
-mode_default: anamnesis
+mode_default: osce_full
 languages: [en]
 source_refs:
   - "NICE CKS: Styes (hordeola)"

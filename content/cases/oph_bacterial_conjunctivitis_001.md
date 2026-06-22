@@ -8,7 +8,7 @@ presentation: "Red eye with discharge"
 target_condition: "Bacterial conjunctivitis"
 difficulty: 2
 estimated_minutes: 12
-mode_default: anamnesis
+mode_default: osce_full
 languages: [en]
 source_refs:
   - "NICE CKS: Conjunctivitis - infective"

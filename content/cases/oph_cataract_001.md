@@ -8,7 +8,7 @@ presentation: "Gradual painless blurring of vision"
 target_condition: "Senile cataract"
 difficulty: 2
 estimated_minutes: 13
-mode_default: anamnesis
+mode_default: osce_full
 languages: [en]
 source_refs:
   - "NICE CKS: Cataracts"

@@ -8,7 +8,7 @@ presentation: "Acute painful red eye with visual loss"
 target_condition: "Acute angle-closure glaucoma"
 difficulty: 3
 estimated_minutes: 12
-mode_default: anamnesis
+mode_default: osce_full
 languages: [en]
 source_refs:
   - "NICE CKS: Glaucoma; Royal College of Ophthalmologists acute angle closure guidance"
