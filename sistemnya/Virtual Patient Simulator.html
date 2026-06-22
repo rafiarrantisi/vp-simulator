@@ -89,8 +89,9 @@
       const [auth, setAuth] = React.useState(loadAuth);
 
       // ── Core navigation ─────────────────────────────────
-      // Landing if not logged in; otherwise dashboard
-      const [screen, setScreen]             = React.useState(() => loadAuth() ? 'dashboard' : 'landing');
+      // pivot-v4: Qora (multi-specialty) is the primary flow; Classic eye app
+      // stays reachable via 'landing'/'dashboard'.
+      const [screen, setScreen]             = React.useState(() => loadAuth() ? 'qora-v2' : 'qora-landing');
       const [screenKey, setScreenKey]       = React.useState(0);
 
       // ── Case + session ───────────────────────────────────
@@ -361,7 +362,7 @@
       const isDDx       = screen === 'ddx';
       const isPlan      = screen === 'tatalaksana';
       const isBuilder   = screen === 'builder';
-      const hideHeader  = isLanding || isAuth || isSimulator || isExam || isDDx || isPlan || isBuilder;
+      const hideHeader  = isLanding || isAuth || isSimulator || isExam || isDDx || isPlan || isBuilder || screen === 'qora-landing';
 
       // ── Simulator top bar height ─────────────────────────
       const simBarHeight = (isSimulator || isExam || isDDx || isPlan) ? 52 : 0;
@@ -441,6 +442,11 @@
                   onLogin={() => navigate('login')}
                   onSignup={() => navigate('signup')}
                 />
+              )}
+
+              {/* pivot-v4: primary English entry for the Qora multi-specialty prototype */}
+              {screen === 'qora-landing' && (
+                <QoraLanding onClassic={() => navigate('landing')} />
               )}
 
               {(screen === 'login' || screen === 'signup') && (

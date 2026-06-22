@@ -219,26 +219,43 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
   );
 }
 
+// One-time answer-restraint explainer (the product's core idea).
+function QV2Onboarding({ onDone }) {
+  const [step, setStep] = React.useState(0);
+  const slides = [
+    { icon: '🗣️', title: 'The patient only answers what you ask', body: "Like a real lay patient, they won't volunteer the full story. Greet them and they greet back — they won't list symptoms until you ask." },
+    { icon: '🔍', title: "Elicit, don't receive", body: 'Work the history systematically — onset, character, red flags, ideas/concerns/expectations. Every question you ask is what gets scored.' },
+    { icon: '🗝️', title: 'Then see the full answer key', body: 'After you finish you get per-item hit/miss against the hidden checklist, plus the complete model answer — checklist, red flags, differentials and management.' },
+  ];
+  const s = slides[step], last = step === slides.length - 1;
+  return React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 1000, background: 'rgba(26,29,46,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, animation: 'overlayIn 0.2s ease' } },
+    React.createElement('div', { className: 'as', style: { maxWidth: 420, width: '100%', padding: 28, borderRadius: 'var(--r-2xl)', background: 'var(--surface)', boxShadow: 'var(--sh-xl)', textAlign: 'center' } },
+      React.createElement('div', { style: { fontSize: 40, marginBottom: 14 } }, s.icon),
+      React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10 } }, s.title),
+      React.createElement('div', { style: { fontSize: 14, color: 'var(--text-2)', lineHeight: 1.65, marginBottom: 22 } }, s.body),
+      React.createElement('div', { style: { display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 18 } },
+        slides.map((_, i) => React.createElement('div', { key: i, style: { width: i === step ? 20 : 7, height: 7, borderRadius: 999, background: i === step ? 'var(--primary)' : 'var(--border-2)', transition: 'all .2s' } }))),
+      React.createElement('div', { style: { display: 'flex', gap: 10 } },
+        React.createElement('button', { onClick: onDone, style: { padding: '11px 16px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Skip'),
+        React.createElement('button', { onClick: () => last ? onDone() : setStep(step + 1), style: { flex: 1, padding: '11px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, last ? 'Start practising' : 'Next'))));
+}
+
 function QoraV2Screen() {
   const [view, setView] = React.useState('catalogue'); // catalogue | session | result
   const [picked, setPicked] = React.useState(null);
   const [report, setReport] = React.useState(null);
+  const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
+  const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
+  let body;
   if (view === 'session' && picked) {
-    return React.createElement(QV2Session, {
-      caseSummary: picked,
-      onScored: (r) => { setReport(r); setView('result'); },
-      onExit: () => setView('catalogue'),
-    });
+    body = React.createElement(QV2Session, { caseSummary: picked, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
+  } else if (view === 'result' && report && picked) {
+    body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => setView('catalogue'), onLibrary: () => setView('catalogue') });
+  } else {
+    body = React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setView('session'); } });
   }
-  if (view === 'result' && report && picked) {
-    return React.createElement(QV2Result, {
-      report, caseSummary: picked,
-      onAgain: () => setView('catalogue'),
-      onLibrary: () => setView('catalogue'),
-    });
-  }
-  return React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setView('session'); } });
+  return React.createElement(React.Fragment, null, onboard ? React.createElement(QV2Onboarding, { onDone: dismiss }) : null, body);
 }
 
 window.QoraV2Screen = QoraV2Screen;

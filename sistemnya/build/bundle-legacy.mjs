@@ -63,6 +63,7 @@ const LOAD_ORDER = [
   'dev-dashboard.jsx',
   // Phase 5 (pivot-v4): Qora v2 multi-specialty experience (additive; reuses
   // design tokens only — design.css untouched, CSS hash preserved).
+  'qora-landing.jsx',
   'qora-v2.jsx',
 ];
 
