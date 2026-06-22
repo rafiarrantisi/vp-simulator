@@ -103,6 +103,41 @@ function QV2Catalogue({ onPick }) {
   );
 }
 
+// ---- Assessment (DDx + management) ----
+function QV2AssessField({ label, value, set, ph, area }) {
+  return React.createElement('label', { style: { display: 'block', marginBottom: 12 } },
+    React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', marginBottom: 5 } }, label),
+    React.createElement(area ? 'textarea' : 'input', {
+      value, onChange: (e) => set(e.target.value), placeholder: ph, rows: area ? 3 : undefined,
+      style: { width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)', resize: area ? 'vertical' : 'none' },
+    }));
+}
+
+function QV2Assess({ caseSummary, isOsce, busy, onBack, onSubmit }) {
+  const [dx1, setDx1] = React.useState('');
+  const [dx2, setDx2] = React.useState('');
+  const [dx3, setDx3] = React.useState('');
+  const [reasoning, setReasoning] = React.useState('');
+  const [penunjang, setPenunjang] = React.useState('');
+  const [terapi, setTerapi] = React.useState('');
+  const [edukasi, setEdukasi] = React.useState('');
+  const submit = () => onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang, terapi, edukasi });
+  return React.createElement('div', { className: 'au', style: { maxWidth: 680, margin: '0 auto', padding: 20 } },
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back to interview'),
+    React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Your assessment'),
+    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18 } }, 'Commit your reasoning before the answer key is revealed.'),
+    React.createElement(QV2AssessField, { label: 'Working diagnosis', value: dx1, set: setDx1, ph: 'Most likely diagnosis' }),
+    React.createElement(QV2AssessField, { label: 'Differential 2', value: dx2, set: setDx2, ph: 'Alternative' }),
+    React.createElement(QV2AssessField, { label: 'Differential 3', value: dx3, set: setDx3, ph: 'Alternative' }),
+    React.createElement(QV2AssessField, { label: 'Clinical reasoning', value: reasoning, set: setReasoning, ph: 'Key positives, red flags, why this diagnosis…', area: true }),
+    isOsce && React.createElement('div', { style: { marginTop: 8, paddingTop: 14, borderTop: '1px solid var(--border)' } },
+      React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, '🔬 OSCE — investigations & management'),
+      React.createElement(QV2AssessField, { label: 'Investigations to order', value: penunjang, set: setPenunjang, ph: 'e.g. FBC, CRP, imaging…', area: true }),
+      React.createElement(QV2AssessField, { label: 'Management / treatment', value: terapi, set: setTerapi, ph: 'Immediate + definitive management…', area: true }),
+      React.createElement(QV2AssessField, { label: 'Patient education & safety-netting', value: edukasi, set: setEdukasi, ph: 'What you would tell the patient…', area: true })),
+    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', marginTop: 16, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Scoring…' : 'Finish & reveal answer key'));
+}
+
 // ---- Session chat ----
 function QV2Session({ caseSummary, onScored, onExit }) {
   const [sessionId, setSessionId] = React.useState(null);
@@ -110,6 +145,10 @@ function QV2Session({ caseSummary, onScored, onExit }) {
   const [input, setInput] = React.useState('');
   const [busy, setBusy] = React.useState(false);
   const [err, setErr] = React.useState('');
+  const [stage, setStage] = React.useState('chat'); // chat | assess
+  const isOsce = caseSummary.mode === 'osce_full';
+  const [secs, setSecs] = React.useState(15 * 60);
+  const [timerOn, setTimerOn] = React.useState(false);
   const endRef = React.useRef(null);
 
   React.useEffect(() => {
@@ -132,18 +171,29 @@ function QV2Session({ caseSummary, onScored, onExit }) {
     setBusy(false);
   }
 
-  async function finish() {
+  async function score(ddx, mgmt) {
     if (!sessionId) return;
     setBusy(true);
-    try { const report = await qv2Fetch('/api/v2/sessions/' + sessionId + '/score', { method: 'POST', body: {} }); onScored(report); }
+    try { const report = await qv2Fetch('/api/v2/sessions/' + sessionId + '/score', { method: 'POST', body: { ddx, management: mgmt } }); onScored(report); }
     catch (e) { setErr(String(e.message || e)); setBusy(false); }
+  }
+
+  React.useEffect(() => {
+    if (!timerOn || stage !== 'chat') return undefined;
+    const id = setInterval(() => setSecs((s) => (s > 0 ? s - 1 : 0)), 1000);
+    return () => clearInterval(id);
+  }, [timerOn, stage]);
+
+  if (stage === 'assess') {
+    return React.createElement(QV2Assess, { caseSummary, isOsce, busy, onBack: () => setStage('chat'), onSubmit: score });
   }
 
   return React.createElement('div', { style: { maxWidth: 760, margin: '0 auto', padding: '16px 16px 0', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('button', { onClick: onExit, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
       React.createElement(QV2Pill, { tone: 'primary' }, QV2_SPEC_LABEL[caseSummary.specialty] || caseSummary.specialty),
-      React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)' } }, caseSummary.presentation)),
+      React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1 } }, caseSummary.presentation),
+      isOsce && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: '15-minute OSCE timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? ('⏱ ' + String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0')) : '⏱ Timer')),
     err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8 } }, err),
     React.createElement('div', { style: { flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, padding: '8px 2px' } },
       messages.map((m, i) => React.createElement('div', { key: i, className: 'af', style: {
@@ -163,7 +213,7 @@ function QV2Session({ caseSummary, onScored, onExit }) {
         style: { flex: 1, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)' },
       }),
       React.createElement('button', { onClick: send, disabled: busy, style: { padding: '0 18px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Send'),
-      React.createElement('button', { onClick: finish, disabled: busy, style: { padding: '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Finish & score'))
+      React.createElement('button', { onClick: () => setStage('assess'), disabled: busy, style: { padding: '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Assess →'))
   );
 }
 
@@ -212,6 +262,12 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
     React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '12px 0 4px' } }, 'Working diagnosis & differentials'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-1)', fontWeight: 700 } }, (ak.expected_ddx && ak.expected_ddx.working_diagnosis) || '–'),
     React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)' } }, ((ak.expected_ddx && ak.expected_ddx.differentials) || []).join(' · ')),
+    (ak.investigations && (ak.investigations.appropriate || []).length) ? React.createElement('div', { key: 'inv', style: { marginTop: 12 } },
+      React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '4px 0' } }, 'Appropriate investigations'),
+      (ak.investigations.appropriate || []).map((iv, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '2px 0' } }, '• ' + iv.name + (iv.expected ? ' → ' + iv.expected : '')))) : null,
+    (ak.management && ((ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || [])).length) ? React.createElement('div', { key: 'mgmt', style: { marginTop: 12 } },
+      React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '4px 0' } }, 'Management'),
+      (ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || []).map((m, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '2px 0' } }, '• ' + m))) : null,
     // actions
     React.createElement('div', { style: { display: 'flex', gap: 10, marginTop: 22 } },
       React.createElement('button', { onClick: onAgain, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Try another case'),
