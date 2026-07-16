@@ -68,6 +68,32 @@ def test_v2_turn_and_score_with_stub(monkeypatch):
     assert d["answer_key"]["red_flags"]  # model answer present for the reveal
 
 
+def test_v2_case_media_requires_auth():
+    assert client.get("/api/v2/cases/im_gi_appendicitis_001/media").status_code == 401
+
+
+def test_v2_case_media_returns_typed_items():
+    H = _auth()
+    r = client.get("/api/v2/cases/im_gi_appendicitis_001/media", headers=H).json()
+    assert r["success"]
+    media = r["data"]["media"]
+    assert len(media) == 2  # abdominal exam + ultrasound
+    kinds = {m["type"] for m in media}
+    assert "image" in kinds and "ultrasound" in kinds
+    for m in media:
+        assert m["src"] and m["label"] and m["caption"]  # viewer needs these
+    assert "working_diagnosis" not in str(r["data"])  # no Part A leakage
+
+
+def test_v2_case_media_empty_when_none():
+    r = client.get("/api/v2/cases/oph_dry_eye_001/media", headers=_auth()).json()
+    assert r["success"] and r["data"]["media"] == []
+
+
+def test_v2_case_media_404():
+    assert client.get("/api/v2/cases/nope_999/media", headers=_auth()).status_code == 404
+
+
 def test_v2_progress_requires_auth():
     assert client.get("/api/v2/progress").status_code == 401
 

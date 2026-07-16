@@ -52,7 +52,7 @@ function QV2Pill({ children, tone }) {
 }
 
 // ---- Catalogue ----
-function QV2Catalogue({ onPick }) {
+function QV2Catalogue({ onPick, onProgress }) {
   const [cases, setCases] = React.useState(null);
   const [specs, setSpecs] = React.useState([]);
   const [filter, setFilter] = React.useState('');
@@ -70,7 +70,9 @@ function QV2Catalogue({ onPick }) {
 
   const shown = filter ? cases.filter(c => c.specialty === filter) : cases;
   return React.createElement('div', { className: 'au', style: { maxWidth: 1080, margin: '0 auto', padding: '24px 20px' } },
-    React.createElement('div', { style: { marginBottom: 6, fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Case library'),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 6 } },
+      React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Case library'),
+      onProgress && React.createElement('button', { onClick: onProgress, style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, '📊 My progress')),
     React.createElement('div', { style: { marginBottom: 18, fontSize: 13, color: 'var(--text-2)' } },
       shown.length + ' cases across ' + specs.length + ' specialties · the patient only answers what you ask.'),
     // specialty filter chips
@@ -139,6 +141,72 @@ function QV2Assess({ caseSummary, isOsce, busy, onBack, onSubmit }) {
 }
 
 // ---- Session chat ----
+// ---- Examination media viewer (specialty-agnostic) ----
+// Mirrors the legacy eye-photo bar but generic over image/scan/ecg/etc. Fetches
+// /api/v2/cases/{id}/media; auto-hides when a case has no media (zero visual
+// change for text-only cases). Design tokens only — no design.css change.
+const QV2_MEDIA_ICON = { image: '🖼', photo: '🖼', scan: '🩻', xray: '🩻', ultrasound: '🩻', ecg: '📈', fundus: '👁', slitlamp: '👁' };
+
+function _qv2ResolveMedia(src) {
+  if (!src) return '';
+  if (/^https?:\/\//i.test(src)) return src;
+  if (src.charAt(0) === '/') {
+    const base = _qv2Base();
+    return (base && src.indexOf('/api/') === 0) ? base + src : src;
+  }
+  if (src.indexOf('./') === 0) return src;
+  return './' + src; // relative asset served by the frontend (public/exam-media/…)
+}
+
+function QV2MediaModal({ media, onClose }) {
+  const [idx, setIdx] = React.useState(0);
+  const [loaded, setLoaded] = React.useState(false);
+  const count = media.length;
+  const cur = media[idx] || media[0];
+  React.useEffect(() => { setLoaded(false); }, [idx]);
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowRight' && count > 1) setIdx(i => (i + 1) % count);
+      else if (e.key === 'ArrowLeft' && count > 1) setIdx(i => (i - 1 + count) % count);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [count, onClose]);
+  return React.createElement('div', { onClick: onClose, style: { position: 'fixed', inset: 0, zIndex: 1001, background: 'rgba(26,29,46,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24, animation: 'overlayIn 0.2s ease' } },
+    React.createElement('div', { onClick: (e) => e.stopPropagation(), style: { background: 'var(--surface)', borderRadius: 18, padding: 18, maxWidth: 'min(900px, 92vw)', width: '100%', maxHeight: '90vh', display: 'flex', flexDirection: 'column', boxShadow: 'var(--sh-xl)', border: '1px solid var(--border)' } },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 } },
+        React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', flex: 1 } }, (QV2_MEDIA_ICON[cur.type] || '🔬') + ' ' + (cur.label || 'Examination media')),
+        count > 1 && React.createElement('span', { style: { fontSize: 11, color: 'var(--text-3)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' } }, (idx + 1) + ' / ' + count),
+        React.createElement('button', { onClick: onClose, style: { padding: '6px 12px', fontSize: 12, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '✕ Close')),
+      React.createElement('div', { style: { position: 'relative', flex: 1, background: 'var(--surface-2)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', minHeight: 260 } },
+        !loaded && React.createElement('div', { style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-3)', fontSize: 12 } }, 'Loading…'),
+        React.createElement('img', { src: _qv2ResolveMedia(cur.src), alt: cur.caption || cur.label || 'Examination media', onLoad: () => setLoaded(true), onError: () => setLoaded(true), style: { maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', display: 'block', opacity: loaded ? 1 : 0, transition: 'opacity 0.2s ease' } }),
+        count > 1 && React.createElement('button', { onClick: () => setIdx(i => (i - 1 + count) % count), 'aria-label': 'Previous', style: { position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.55)', color: '#fff', border: 'none', fontSize: 18, cursor: 'pointer' } }, '‹'),
+        count > 1 && React.createElement('button', { onClick: () => setIdx(i => (i + 1) % count), 'aria-label': 'Next', style: { position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', width: 36, height: 36, borderRadius: '50%', background: 'rgba(0,0,0,0.55)', color: '#fff', border: 'none', fontSize: 18, cursor: 'pointer' } }, '›')),
+      cur.caption && React.createElement('div', { style: { marginTop: 12, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.5 } }, cur.caption),
+      count > 1 && React.createElement('div', { style: { marginTop: 8, fontSize: 10, color: 'var(--text-3)', textAlign: 'center' } }, '← → to navigate · Esc to close')));
+}
+
+function QV2MediaBar({ caseId }) {
+  const [media, setMedia] = React.useState([]);
+  const [open, setOpen] = React.useState(false);
+  React.useEffect(() => {
+    let alive = true;
+    qv2Fetch('/api/v2/cases/' + encodeURIComponent(caseId) + '/media')
+      .then(d => { if (alive) setMedia((d && d.media) || []); })
+      .catch(() => { if (alive) setMedia([]); });
+    return () => { alive = false; };
+  }, [caseId]);
+  if (!media.length) return null;
+  return React.createElement(React.Fragment, null,
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', marginBottom: 10, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12 } },
+      React.createElement('span', { style: { fontSize: 11, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' } }, 'Examination'),
+      React.createElement('div', { style: { flex: 1 } }),
+      React.createElement('button', { onClick: () => setOpen(true), style: { padding: '6px 12px', fontSize: 12, fontWeight: 600, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-1)', fontFamily: 'Poppins', cursor: 'pointer' } }, '🔬 View examination media' + (media.length > 1 ? ' (' + media.length + ')' : ''))),
+    open && React.createElement(QV2MediaModal, { media, onClose: () => setOpen(false) }));
+}
+
 function QV2Session({ caseSummary, onScored, onExit }) {
   const [sessionId, setSessionId] = React.useState(null);
   const [messages, setMessages] = React.useState([]); // {role, text}
@@ -194,6 +262,7 @@ function QV2Session({ caseSummary, onScored, onExit }) {
       React.createElement(QV2Pill, { tone: 'primary' }, QV2_SPEC_LABEL[caseSummary.specialty] || caseSummary.specialty),
       React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1 } }, caseSummary.presentation),
       isOsce && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: '15-minute OSCE timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? ('⏱ ' + String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0')) : '⏱ Timer')),
+    React.createElement(QV2MediaBar, { caseId: caseSummary.id }),
     err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8 } }, err),
     React.createElement('div', { style: { flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, padding: '8px 2px' } },
       messages.map((m, i) => React.createElement('div', { key: i, className: 'af', style: {
@@ -275,6 +344,51 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
   );
 }
 
+// ---- Progress / skill view (gamification, pivot-v4 §8.6) ----
+function QV2SkillBar({ label, pct }) {
+  return React.createElement('div', { style: { marginBottom: 8 } },
+    React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-2)', fontWeight: 600, marginBottom: 3 } },
+      React.createElement('span', null, label),
+      React.createElement('span', null, pct + '%')),
+    React.createElement('div', { style: { height: 7, borderRadius: 999, background: 'var(--surface-3)' } },
+      React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)' } })));
+}
+
+function QV2Stat({ label, val }) {
+  return React.createElement('div', { style: { flex: 1, padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', textAlign: 'center' } },
+    React.createElement('div', { style: { fontSize: 26, fontWeight: 800, color: 'var(--primary)' } }, val),
+    React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', fontWeight: 600 } }, label));
+}
+
+function QV2Progress({ onBack }) {
+  const [p, setP] = React.useState(null);
+  const [err, setErr] = React.useState('');
+  React.useEffect(() => { qv2Fetch('/api/v2/progress').then(setP).catch((e) => setErr(String(e.message || e))); }, []);
+  if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load progress: ' + err);
+  if (!p) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading progress…');
+  const dimLabel = { history_coverage: 'History coverage', red_flags: 'Red-flag screening', ice_fife: 'ICE / FIFE', communication: 'Communication', diagnostic_reasoning: 'Diagnostic reasoning', investigations: 'Investigation selection', management: 'Management' };
+  const dims = p.dimensionAverages || {};
+  const specs = p.specialtyCounts || {};
+  const dimKeys = Object.keys(dims);
+  const specKeys = Object.keys(specs);
+  return React.createElement('div', { className: 'au', style: { maxWidth: 820, margin: '0 auto', padding: '24px 20px' } },
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
+    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 16 } }, 'Your progress'),
+    React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 22 } },
+      React.createElement(QV2Stat, { label: 'XP', val: p.xp || 0 }),
+      React.createElement(QV2Stat, { label: 'Sessions', val: p.totalSessions || 0 }),
+      React.createElement(QV2Stat, { label: 'Cases practised', val: p.completedCases || 0 })),
+    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Skill by dimension'),
+    dimKeys.length
+      ? dimKeys.map((k) => React.createElement(QV2SkillBar, { key: k, label: dimLabel[k] || k, pct: dims[k] }))
+      : React.createElement('div', { style: { fontSize: 13, color: 'var(--text-3)' } }, 'Complete a case to see your skill breakdown.'),
+    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', margin: '20px 0 10px' } }, 'Specialty coverage'),
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
+      specKeys.length
+        ? specKeys.map((s) => React.createElement('span', { key: s, style: { fontSize: 12, fontWeight: 600, padding: '5px 12px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } }, (QV2_SPEC_LABEL[s] || s) + ' · ' + specs[s]))
+        : React.createElement('span', { style: { fontSize: 13, color: 'var(--text-3)' } }, 'No specialties practised yet.')));
+}
+
 // One-time answer-restraint explainer (the product's core idea).
 function QV2Onboarding({ onDone }) {
   const [step, setStep] = React.useState(0);
@@ -308,8 +422,10 @@ function QoraV2Screen() {
     body = React.createElement(QV2Session, { caseSummary: picked, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
   } else if (view === 'result' && report && picked) {
     body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => setView('catalogue'), onLibrary: () => setView('catalogue') });
+  } else if (view === 'progress') {
+    body = React.createElement(QV2Progress, { onBack: () => setView('catalogue') });
   } else {
-    body = React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setView('session'); } });
+    body = React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setView('session'); }, onProgress: () => setView('progress') });
   }
   return React.createElement(React.Fragment, null, onboard ? React.createElement(QV2Onboarding, { onDone: dismiss }) : null, body);
 }

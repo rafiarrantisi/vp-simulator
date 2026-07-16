@@ -4,10 +4,24 @@
 
 // ── App Header ────────────────────────────────────────────
 const AppHeader = ({ onNav, screen, onSettings, profile, badges, auth, onLogout }) => {
-  const levelInfo = getLevelInfo(profile.xp);
   const earnedCount = badges.filter(b => b.earned).length;
   const [menuOpen, setMenuOpen] = React.useState(false);
   const menuRef = React.useRef(null);
+  // pivot-v4 §8.6: real Qora progress (XP/sessions) for API-backed users; falls
+  // back to the legacy profile offline. Refetches on screen change.
+  const [qp, setQp] = React.useState(null);
+  React.useEffect(() => {
+    if (!window.OPHTHA_API_BASE) return;
+    try {
+      const raw = localStorage.getItem('ophtha_api_auth');
+      const a = raw ? JSON.parse(raw) : null;
+      if (!a || !a.token) return;
+      fetch(window.OPHTHA_API_BASE + '/api/v2/progress', { headers: { Authorization: 'Bearer ' + a.token } })
+        .then((r) => r.json()).then((j) => { if (j && j.data) setQp(j.data); }).catch(() => {});
+    } catch (e) {}
+  }, [screen]);
+  const realXp = qp ? qp.xp : profile.xp;
+  const levelInfo = getLevelInfo(realXp);
 
   React.useEffect(() => {
     if (!menuOpen) return;
@@ -79,7 +93,7 @@ const AppHeader = ({ onNav, screen, onSettings, profile, badges, auth, onLogout 
           border: '1px solid var(--amber)25',
         }}>
           <span style={{ fontSize: 13 }}>🔥</span>
-          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--amber-d)' }}>{profile.streak} day streak</span>
+          <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--amber-d)' }}>{qp ? (qp.totalSessions + ' session' + (qp.totalSessions === 1 ? '' : 's')) : (profile.streak + ' day streak')}</span>
         </div>
         <div style={{
           display: 'flex', alignItems: 'center', gap: 7,
@@ -88,7 +102,7 @@ const AppHeader = ({ onNav, screen, onSettings, profile, badges, auth, onLogout 
         }}>
           <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--primary)' }}>Lv {levelInfo.level}</span>
           <span style={{ fontSize: 11, color: 'var(--text-3)' }}>·</span>
-          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-2)' }}>{profile.xp} XP</span>
+          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-2)' }}>{realXp} XP</span>
         </div>
         <button onClick={onSettings} style={{
           width: 36, height: 36, borderRadius: 10, border: '1px solid var(--border)',

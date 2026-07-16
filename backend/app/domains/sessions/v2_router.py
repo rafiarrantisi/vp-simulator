@@ -49,6 +49,39 @@ def v2_case_detail(case_id: str, user: User = Depends(get_current_user)):
     return ok(summary(c))
 
 
+# Whitelisted media kinds so the viewer can pick an icon; anything else -> "image".
+_MEDIA_TYPES = frozenset({"image", "photo", "scan", "xray", "ecg", "ultrasound", "fundus", "slitlamp"})
+
+
+@router.get("/cases/{case_id}/media")
+def v2_case_media(case_id: str, user: User = Depends(get_current_user)):
+    """Examination media for the viewer (specialty-agnostic): images, scans,
+    ECGs, etc. sourced from `physical_exam_findings.media` in the case. This is
+    examination *findings* the candidate is entitled to see — never Part A
+    scoring ground truth. Empty list when a case has no media (viewer hides)."""
+    try:
+        c = load_v2_case(case_id)
+    except FileNotFoundError:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Case not found")
+    pef = c.frontmatter.get("physical_exam_findings") or {}
+    raw = pef.get("media") if isinstance(pef, dict) else None
+    media = []
+    for m in raw or []:
+        if not isinstance(m, dict):
+            continue
+        src = str(m.get("src") or "").strip()
+        if not src:
+            continue
+        kind = str(m.get("type") or "image").strip().lower()
+        media.append({
+            "type": kind if kind in _MEDIA_TYPES else "image",
+            "src": src,
+            "label": str(m.get("label") or "").strip(),
+            "caption": str(m.get("caption") or "").strip(),
+        })
+    return ok({"caseId": case_id, "media": media})
+
+
 class V2StartReq(BaseModel):
     case_id: str
 
@@ -125,7 +158,8 @@ def _record_progress(user: User, case, report: dict) -> None:
         "caseId": case.id,
         "specialty": case.frontmatter.get("specialty", ""),
         "overall": overall,
-        "dims": {k: v.get("score", 0) for k, v in (report.get("per_dimension") or {}).items()},
+        "dims": {k: round((v.get("score", 0) / max(v.get("max", 1), 1)) * 100)
+                 for k, v in (report.get("per_dimension") or {}).items()},
     })
     extra["scoreHistory"] = history[:200]
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")

@@ -79,7 +79,11 @@ physical_exam_findings:
   general: "Well, afebrile"
   eyes: "Visual acuity 6/6 both eyes; diffuse conjunctival injection with chemosis; mucopurulent yellow discharge; matted lashes; cornea clear; pupils normal and reactive"
   vitals: {}
-  media: []
+  media:
+    - type: image
+      label: "External eye photograph"
+      src: "exam-media/conjunctivitis-eye.svg"
+      caption: "Diffuse conjunctival injection with chemosis and mucopurulent yellow discharge; matted lashes; cornea clear."
 
 management:
   pharmacological:

@@ -74,7 +74,15 @@ physical_exam_findings:
   general: "Lying still, looks unwell, low-grade fever"
   abdomen: "Right iliac fossa tenderness, Rovsing's sign positive, guarding"
   vitals: { hr: 98, bp: "120/76", temp: 37.9, rr: 18, spo2: 99 }
-  media: []
+  media:
+    - type: image
+      label: "Abdominal examination"
+      src: "exam-media/appendix-abdomen.svg"
+      caption: "Point tenderness at McBurney's point with guarding; Rovsing's sign positive."
+    - type: ultrasound
+      label: "RIF ultrasound"
+      src: "exam-media/appendix-ultrasound.svg"
+      caption: "Non-compressible blind-ending tubular structure, diameter 8.4 mm (target sign)."
 
 management:
   pharmacological:
