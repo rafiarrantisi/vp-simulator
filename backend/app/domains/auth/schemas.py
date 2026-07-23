@@ -18,6 +18,10 @@ class RefreshRequest(BaseModel):
     refresh_token: str
 
 
+class GoogleAuthRequest(BaseModel):
+    credential: str  # Google Identity Services ID token (JWT)
+
+
 class AuthSession(BaseModel):
     token: str
     refresh_token: str

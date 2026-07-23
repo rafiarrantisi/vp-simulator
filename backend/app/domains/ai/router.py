@@ -12,11 +12,14 @@ from fastapi import APIRouter, Depends, File, Form, UploadFile, status
 from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel
 
+from app.config import get_settings
 from app.domains.auth.models import User
 from app.shared.dependencies import get_current_user
 from app.shared.envelope import err, ok
 from app.shared.ratelimit import rate_limit
-from app.voice.stt import SttUnavailable, transcribe
+from app.voice.stt import SttUnavailable
+from app.voice.stt import is_configured as stt_configured
+from app.voice.stt import transcribe
 from app.voice.tts import TtsFailed, TtsNotConfigured, synthesize
 
 router = APIRouter(
@@ -37,6 +40,18 @@ def _is_dup(h: str) -> bool:
     last = _recent.get(h)
     _recent[h] = now
     return last is not None and (now - last) < _DEDUP_WINDOW
+
+
+@router.get("/voice-status")
+def voice_status(user: User = Depends(get_current_user)):
+    """Readiness for the session-prep screen (instruksi §4.5): whether the
+    speech-to-text and text-to-speech services are configured. Never reveals keys."""
+    s = get_settings()
+    return ok({
+        "stt": stt_configured(),
+        "tts": bool(s.tts_api_key),
+        "language": s.stt_language,
+    })
 
 
 @router.post("/transcribe")

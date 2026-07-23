@@ -4,7 +4,12 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.domains.auth import service
-from app.domains.auth.schemas import LoginRequest, RefreshRequest, SignupRequest
+from app.domains.auth.schemas import (
+    GoogleAuthRequest,
+    LoginRequest,
+    RefreshRequest,
+    SignupRequest,
+)
 from app.shared.envelope import ok
 from app.shared.ratelimit import rate_limit
 from app.shared.security import decode_token
@@ -28,6 +33,14 @@ def signup(req: SignupRequest, db: Session = Depends(get_db)):
 def login(req: LoginRequest, db: Session = Depends(get_db)):
     try:
         return ok(service.login(db, req.email, req.password).model_dump())
+    except ValueError as e:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, str(e))
+
+
+@router.post("/google")
+def google(req: GoogleAuthRequest, db: Session = Depends(get_db)):
+    try:
+        return ok(service.google_login(db, req.credential).model_dump())
     except ValueError as e:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, str(e))
 

@@ -18,7 +18,7 @@ from app.config import get_settings
 from app.database import get_db
 from app.domains.auth.models import User
 from app.domains.billing import lemonsqueezy as ls
-from app.domains.billing import plans, service
+from app.domains.billing import plans, service, xendit
 from app.shared.dependencies import get_current_user
 from app.shared.envelope import ok
 
@@ -28,7 +28,46 @@ _log = logging.getLogger("ophtha.billing")
 
 @router.get("/plans")
 def list_plans():
-    return ok({"plans": plans.plan_catalog(get_settings())})
+    s = get_settings()
+    provider = "xendit" if xendit.is_configured(s) else ("lemonsqueezy" if s.lemonsqueezy_api_key else None)
+    return ok({"plans": plans.plan_catalog(s), "provider": provider,
+               "billing_enforced": s.billing_enforced})
+
+
+@router.post("/xendit/checkout/{plan}")
+def xendit_checkout(plan: str, user: User = Depends(get_current_user)):
+    """Create a Xendit hosted invoice for the plan and return its checkout URL."""
+    s = get_settings()
+    if plan not in plans.PAID_PLANS:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Unknown plan")
+    if not xendit.is_configured(s):
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Xendit not configured")
+    try:
+        inv = xendit.create_invoice(s, plan, plans.plan_price(s, plan), user.id, user.email)
+    except Exception as e:  # noqa: BLE001 — surface a clean 502, log the detail
+        _log.error("[billing] xendit invoice failed: %s", e)
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Could not create invoice")
+    return ok({"checkout_url": inv["invoice_url"], "plan": plan, "invoice_id": inv["invoice_id"]})
+
+
+@router.post("/webhooks/xendit")
+async def xendit_webhook(request: Request, db: Session = Depends(get_db)):
+    """Xendit invoice callback (x-callback-token verified). PAID -> entitlement."""
+    if not xendit.verify_webhook(get_settings(), request.headers.get("x-callback-token")):
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid callback token")
+    try:
+        body = json.loads(await request.body())
+    except json.JSONDecodeError:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Malformed body")
+    parsed = xendit.parse_event(body)
+    ent = service.apply_xendit_event(db, parsed)
+    if ent is None:
+        _log.info("[billing] xendit %s not applied (status=%s)",
+                  parsed.get("external_id"), parsed.get("status"))
+        return ok({"handled": False, "status": parsed.get("status")})
+    db.commit()
+    _log.info("[billing] xendit PAID -> user %s plan=%s", ent.user_id, ent.plan)
+    return ok({"handled": True, "plan": ent.plan, "status": ent.status})
 
 
 @router.get("/me")

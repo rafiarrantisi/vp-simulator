@@ -26,6 +26,10 @@ class Settings(BaseSettings):
 
     cors_origins: list[str] = ["http://localhost:5173", "http://127.0.0.1:5173"]
 
+    # Google Sign-In (pivot-v4 §7.1). Empty -> Google auth disabled (the UI
+    # keeps the button hidden/off). Set to the Google OAuth Web Client ID.
+    google_client_id: str = ""
+
     # Multi-tenant (kontrak §9 K3 — institution_id sejak hari 1)
     default_institution_id: str = "default"
 
@@ -102,6 +106,14 @@ class Settings(BaseSettings):
     lemonsqueezy_checkout_annual: str = ""
     lemonsqueezy_checkout_exam_pass: str = ""
     lemonsqueezy_portal_url: str = ""
+
+    # ── Xendit payment gateway (instruksi §8) — env-driven; empty key -> disabled.
+    # Xendit hosts the checkout (an invoice URL) so we never touch card data.
+    xendit_api_key: str = ""          # secret key (server-side only)
+    xendit_webhook_token: str = ""    # x-callback-token verification value
+    xendit_currency: str = "USD"      # invoice currency (e.g. USD or IDR)
+    xendit_success_url: str = ""      # redirect after a successful payment
+    xendit_failure_url: str = ""      # redirect after a failed/expired payment
 
     # ── Email (transactional; pivot-v4 §7.1). Empty SMTP_HOST -> console mode:
     # the message (e.g. a verification/reset link) is logged to the server

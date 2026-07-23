@@ -8,16 +8,32 @@ from __future__ import annotations
 
 from app.config import get_settings
 
-# Bocorkan kosakata medis ID → akurasi istilah khusus naik (voice-plan §6).
-_MEDICAL_PROMPT = (
+# Seed the transcriber with medical vocabulary → better accuracy on specialist
+# terms (voice-plan §6). Language-aware: the product pivoted to English, so the
+# prompt tracks STT_LANGUAGE (app-level localization, not model/provider config).
+_MEDICAL_PROMPT_ID = (
     "Percakapan dokter dan pasien dalam bahasa Indonesia. Istilah medis: "
     "anamnesis, konjungtivitis, glaukoma, blefaritis, keratitis, uveitis, "
     "visus, tonometri, slit lamp, funduskopi, preaurikular, fotofobia."
 )
+_MEDICAL_PROMPT_EN = (
+    "A doctor-and-patient clinical interview in English. Medical terms may include: "
+    "history taking, palpitations, dyspnoea, haemoptysis, syncope, paraesthesia, "
+    "photophobia, auscultation, differential diagnosis, safety-netting."
+)
+
+
+def _medical_prompt(language: str) -> str:
+    return _MEDICAL_PROMPT_EN if (language or "").lower().startswith("en") else _MEDICAL_PROMPT_ID
 
 
 class SttUnavailable(RuntimeError):
     pass
+
+
+def is_configured() -> bool:
+    """True when STT can be attempted (a key is present)."""
+    return bool(get_settings().stt_key())
 
 
 def transcribe(audio_bytes: bytes, filename: str = "speech.webm") -> str:
@@ -35,7 +51,7 @@ def transcribe(audio_bytes: bytes, filename: str = "speech.webm") -> str:
             model=s.stt_model,
             file=(filename, audio_bytes, "application/octet-stream"),
             language=s.stt_language,
-            prompt=_MEDICAL_PROMPT,
+            prompt=_medical_prompt(s.stt_language),
             temperature=0.0,
         )
         return (getattr(r, "text", None) or "").strip()

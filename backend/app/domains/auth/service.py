@@ -54,3 +54,48 @@ def refresh(db: Session, user_id: str) -> AuthSession:
     if user is None:
         raise ValueError("User not found")
     return _session_for(user)
+
+
+def google_login(db: Session, credential: str) -> AuthSession:
+    """Verify a Google Identity Services ID token and log the user in, creating
+    the account on first sign-in (pivot-v4 §7.1). The token is verified by Google
+    (tokeninfo), then the audience is checked against our own client id."""
+    import secrets as _secrets
+
+    import httpx
+
+    s = get_settings()
+    if not s.google_client_id:
+        raise ValueError("Google sign-in is not configured")
+    try:
+        r = httpx.get(
+            "https://oauth2.googleapis.com/tokeninfo",
+            params={"id_token": credential},
+            timeout=10.0,
+        )
+    except httpx.HTTPError as e:
+        raise ValueError("Could not verify Google token") from e
+    if r.status_code != 200:
+        raise ValueError("Invalid Google token")
+    data = r.json()
+    if data.get("aud") != s.google_client_id:
+        raise ValueError("Google token audience mismatch")
+    email = str(data.get("email") or "").strip().lower()
+    verified = str(data.get("email_verified", "")).lower() in ("true", "1")
+    if not email or not verified:
+        raise ValueError("Google account email is not verified")
+    user = db.scalar(select(User).where(User.email == email))
+    if user is None:
+        user = User(
+            email=email,
+            # Random unusable password — this account signs in via Google.
+            hashed_password=hash_password(_secrets.token_urlsafe(32)),
+            full_name=str(data.get("name") or ""),
+            institution_id=s.default_institution_id,
+            role="student",
+        )
+        user.profile = UserProfile()
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+    return _session_for(user)

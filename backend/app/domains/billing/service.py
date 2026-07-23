@@ -155,3 +155,26 @@ def apply_mor_event(db: Session, parsed: dict) -> Entitlement | None:
     ent.updated_at = _now()
     db.add(ent)
     return ent
+
+
+_XENDIT_PLAN_DAYS = {"monthly": 30, "annual": 365, "exam_pass": 30}
+
+
+def apply_xendit_event(db: Session, parsed: dict) -> Entitlement | None:
+    """Map a verified Xendit invoice callback to entitlement state. Only a PAID
+    invoice grants access; an expired/failed invoice makes no change. Returns the
+    Entitlement (added to the session) or None if nothing was applied."""
+    user_id = str(parsed.get("user_id") or "").strip()
+    plan = parsed.get("plan")
+    if not user_id or plan not in plans.PAID_PLANS:
+        return None
+    if parsed.get("status") != "PAID":
+        return None
+    ent = db.get(Entitlement, user_id) or Entitlement(user_id=user_id)
+    ent.plan = plan
+    ent.status = "active"
+    ent.current_period_end = _now() + timedelta(days=_XENDIT_PLAN_DAYS.get(plan, 30))
+    ent.mor_subscription_id = str(parsed.get("xendit_id") or ent.mor_subscription_id)
+    ent.updated_at = _now()
+    db.add(ent)
+    return ent

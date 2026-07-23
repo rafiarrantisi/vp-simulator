@@ -18,6 +18,53 @@ function QLFeature({ icon, title, body }) {
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, body));
 }
 
+// Load Google Identity Services once (external script).
+function _loadGis() {
+  return new Promise(function (resolve, reject) {
+    if (window.google && window.google.accounts && window.google.accounts.id) return resolve();
+    var existing = document.getElementById('gis-script');
+    if (existing) {
+      var iv = setInterval(function () {
+        if (window.google && window.google.accounts && window.google.accounts.id) { clearInterval(iv); resolve(); }
+      }, 100);
+      setTimeout(function () { clearInterval(iv); reject(new Error('GIS load timeout')); }, 8000);
+      return;
+    }
+    var sc = document.createElement('script');
+    sc.src = 'https://accounts.google.com/gsi/client';
+    sc.async = true; sc.defer = true; sc.id = 'gis-script';
+    sc.onload = function () { resolve(); };
+    sc.onerror = function () { reject(new Error('Failed to load Google script')); };
+    document.head.appendChild(sc);
+  });
+}
+
+// Renders the official Google button when VITE_GOOGLE_CLIENT_ID is configured;
+// otherwise a disabled placeholder (feature stays off until the owner sets it up).
+function QLGoogleButton({ onCredential }) {
+  const ref = React.useRef(null);
+  const clientId = (typeof window !== 'undefined' && window.QORA_GOOGLE_CLIENT_ID) || '';
+  React.useEffect(function () {
+    if (!clientId) return undefined;
+    let alive = true;
+    _loadGis().then(function () {
+      if (!alive || !window.google || !window.google.accounts) return;
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: function (resp) { if (resp && resp.credential) onCredential(resp.credential); },
+      });
+      if (ref.current) {
+        window.google.accounts.id.renderButton(ref.current, { theme: 'outline', size: 'large', width: 320, text: 'continue_with', shape: 'pill' });
+      }
+    }).catch(function () {});
+    return function () { alive = false; };
+  }, [clientId]);
+  if (!clientId) {
+    return React.createElement('button', { disabled: true, title: 'Set VITE_GOOGLE_CLIENT_ID to enable', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'not-allowed' } }, 'Continue with Google · coming soon');
+  }
+  return React.createElement('div', { style: { marginTop: 12, display: 'flex', justifyContent: 'center' } }, React.createElement('div', { ref: ref }));
+}
+
 function QLAuth({ mode, setMode, onLogin }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -62,7 +109,15 @@ function QLAuth({ mode, setMode, onLogin }) {
     field('Password', password, setPassword, 'password', '••••••••'),
     err && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err),
     React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', padding: '12px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Please wait…' : (isSignup ? 'Create account' : 'Log in')),
-    React.createElement('button', { disabled: true, title: 'Coming soon', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'not-allowed' } }, 'Continue with Google · coming soon'),
+    React.createElement(QLGoogleButton, { onCredential: async function (cred) {
+      if (busy) return;
+      setBusy(true); setErr('');
+      try {
+        const sess = await window.ApiDataStore.googleLogin(cred);
+        try { localStorage.setItem('ophtha_auth', JSON.stringify(sess)); } catch (e) {}
+        if (onLogin) onLogin(sess);
+      } catch (e) { setErr('Google sign-in failed — ' + ((e && e.message) || e)); setBusy(false); }
+    } }),
     React.createElement('div', { style: { textAlign: 'center', marginTop: 16, fontSize: 13, color: 'var(--text-2)' } },
       isSignup ? 'Already have an account? ' : "Don't have an account? ",
       React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
