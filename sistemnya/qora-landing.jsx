@@ -18,7 +18,7 @@ function QLFeature({ icon, title, body }) {
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, body));
 }
 
-function QLAuth({ mode, setMode, onClassic }) {
+function QLAuth({ mode, setMode, onLogin }) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [name, setName] = React.useState('');
@@ -34,10 +34,9 @@ function QLAuth({ mode, setMode, onClassic }) {
       const s = isSignup
         ? await window.ApiDataStore.signup({ email, password, full_name: name })
         : await window.ApiDataStore.login(email, password);
-      // ApiDataStore saved 'ophtha_api_auth' (used by API fetches); the App's
-      // loadAuth() reads 'ophtha_auth' — set it too so the reload lands authed.
+      // ApiDataStore sudah save ke 'ophtha_api_auth'
       try { localStorage.setItem('ophtha_auth', JSON.stringify(s)); } catch (e) {}
-      window.location.reload();  // App re-inits authed -> Qora catalogue
+      if (onLogin) onLogin(s);
     } catch (e) {
       const m = String((e && e.message) || e);
       setErr(/40[13]|invalid|password|terdaftar|exist/i.test(m)
@@ -66,12 +65,10 @@ function QLAuth({ mode, setMode, onClassic }) {
     React.createElement('button', { disabled: true, title: 'Coming soon', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'not-allowed' } }, 'Continue with Google · coming soon'),
     React.createElement('div', { style: { textAlign: 'center', marginTop: 16, fontSize: 13, color: 'var(--text-2)' } },
       isSignup ? 'Already have an account? ' : "Don't have an account? ",
-      React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')),
-    onClassic && React.createElement('div', { style: { textAlign: 'center', marginTop: 14 } },
-      React.createElement('button', { onClick: onClassic, style: { border: 'none', background: 'none', color: 'var(--text-3)', fontFamily: 'Poppins', cursor: 'pointer', fontSize: 12 } }, '← Classic (ophthalmology) edition')));
+      React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
 }
 
-function QoraLanding({ onClassic }) {
+function QoraLanding({ onLogin }) {
   const [view, setView] = React.useState('landing'); // landing | auth
   const [mode, setMode] = React.useState('login');
   const go = (m) => { setMode(m); setView('auth'); };
@@ -86,7 +83,7 @@ function QoraLanding({ onClassic }) {
 
   if (view === 'auth') {
     return React.createElement('div', { style: { minHeight: '100vh' } }, header,
-      React.createElement(QLAuth, { mode, setMode, onClassic }));
+      React.createElement(QLAuth, { mode, setMode, onLogin }));
   }
 
   return React.createElement('div', { style: { minHeight: '100vh' } }, header,
@@ -105,8 +102,7 @@ function QoraLanding({ onClassic }) {
         React.createElement(QLFeature, { icon: '🎯', title: 'Transparent, calibrated scoring', body: 'Per-item hit/miss against a hidden checklist, red-flag screening, and reasoning — graded conservatively, never inflated.' }),
         React.createElement(QLFeature, { icon: '🗝️', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered — the checklist, red flags, differentials and management.' })),
       React.createElement('div', { style: { marginTop: 40, fontSize: 12, color: 'var(--text-3)' } },
-        'A study aid, not a medical device. ',
-        onClassic && React.createElement('button', { onClick: onClassic, style: { border: 'none', background: 'none', color: 'var(--text-3)', textDecoration: 'underline', fontFamily: 'Poppins', cursor: 'pointer', fontSize: 12 } }, 'Open the Classic ophthalmology edition'))));
+        'A study aid, not a medical device. ')));
 }
 
 window.QoraLanding = QoraLanding;

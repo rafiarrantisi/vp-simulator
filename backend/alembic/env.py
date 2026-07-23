@@ -17,7 +17,10 @@ from app.domains.cases import models as _cases  # noqa: F401,E402
 from app.domains.sessions import models as _sessions  # noqa: F401,E402
 
 config = context.config
-config.set_main_option("sqlalchemy.url", get_settings().database_url)
+_db_url = get_settings().database_url
+# Escape % chars for Alembic's configparser (otherwise URL-encoded special
+# chars like %40 in passwords get treated as interpolation markers).
+config.set_main_option("sqlalchemy.url", _db_url.replace("%", "%%"))
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

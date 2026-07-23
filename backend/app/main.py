@@ -5,6 +5,7 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
@@ -119,3 +120,24 @@ app.mount(
 @app.get("/health")
 def health():
     return ok({"status": "up", "env": _settings.env})
+
+
+# ── v0.16.0: serve built frontend (SPA) ──
+_FRONTEND_DIST = Path(__file__).resolve().parent.parent.parent / "sistemnya" / "dist"
+if _FRONTEND_DIST.is_dir():
+    app.mount(
+        "/assets",
+        StaticFiles(directory=str(_FRONTEND_DIST / "assets"), check_dir=False),
+        name="frontend_assets",
+    )
+
+    @app.get("/{full_path:path}")
+    async def serve_frontend(full_path: str):
+        # API routes handled by routers above; everything else → SPA
+        if full_path.startswith("api/"):
+            return JSONResponse({"error": "Not found"}, status_code=404)
+        index = _FRONTEND_DIST / "index.html"
+        if not index.exists():
+            return JSONResponse({"error": "Frontend not built"}, status_code=503)
+        return FileResponse(str(index))
+    _log.info("[frontend] Serving SPA from %s", _FRONTEND_DIST)

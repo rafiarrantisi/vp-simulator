@@ -62,12 +62,12 @@ FRONTMATTER (Part A — hidden scoring ground truth, NEVER shown to the patient)
   scoring_weights_override: null
 
 PERSONA BODY (Part B — markdown, this is ALL the patient model sees). Required H2 sections:
-  ## Identity
-  ## Opening line          (one verbatim first line, lay words)
-  ## How I present
-  ## What I know           (the facts to disclose ONLY when asked)
-  ## Communication profile
-  ## Disclosure rules      (answer restraint: answer only what is asked, then stop)
+  ## Identity                 (THOROUGH: full name, age, occupation, family, personality traits, fears, quirks — make them feel like a real person, not a template)
+  ## Opening line             (one verbatim first line, lay words)
+  ## How I present            (physical demeanour: posture, voice, eye contact, emotional state visible on their face)
+  ## What I know              (the facts to disclose ONLY when asked, structured as bullet points)
+  ## Communication profile    (education level, vocabulary, tendency to ramble/be terse, emotional tone)
+  ## Disclosure rules         (answer restraint: answer only what is asked, then stop)
 
 HARD RULES:
 - Lay language only in the body. The patient does NOT know medical terms or their diagnosis.

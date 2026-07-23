@@ -410,6 +410,120 @@ function QV2Onboarding({ onDone }) {
         React.createElement('button', { onClick: () => last ? onDone() : setStep(step + 1), style: { flex: 1, padding: '11px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, last ? 'Start practising' : 'Next'))));
 }
 
+// ---- Dashboard (Qora style, inspired by OphthaSim) ----
+function QoraDashboard({ onNav, onStartCase }) {
+  const [p, setP] = React.useState(null);
+  const [err, setErr] = React.useState('');
+  const [recent, setRecent] = React.useState([]);
+  React.useEffect(() => {
+    qv2Fetch('/api/v2/progress').then(setP).catch(e => setErr(String(e.message || e)));
+    qv2Fetch('/api/v2/sessions?limit=5').then(d => setRecent((d && d.sessions) || [])).catch(() => {});
+  }, []);
+  if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)', textAlign: 'center' } },
+    'Could not load dashboard: ' + err);
+  if (!p) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)', textAlign: 'center' } }, 'Loading dashboard…');
+
+  const level = p.level || Math.floor((p.xp || 0) / 200) + 1;
+  const levelProgress = ((p.xp || 0) % 200) / 200 * 100;
+  const levelNames = ['Student','Intern','Resident','Senior Resident','Consultant','Specialist','Senior Specialist','Professor'];
+  const levelName = levelNames[Math.min(level - 1, levelNames.length - 1)] || 'Student';
+  const totalSessions = p.totalSessions || 0;
+  const completedCases = p.completedCases || 0;
+  const dims = p.dimensionAverages || {};
+  const hasDims = Object.keys(dims).length > 0;
+  const specs = p.specialtyCounts || {};
+  const specKeys = Object.keys(specs);
+  const avgScore = hasDims ? Math.round(Object.values(dims).reduce((a, b) => a + b, 0) / Object.keys(dims).length) : 0;
+
+  // Recent sessions helper
+  const specLabel = { internal_medicine: 'Internal medicine', surgery: 'Surgery', paediatrics: 'Paediatrics', obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology', ent: 'ENT', dermatology: 'Dermatology', ophthalmology: 'Ophthalmology', emergency: 'Emergency' };
+
+  return React.createElement('div', { style: { maxWidth: 1100, margin: '0 auto', padding: '32px 24px 60px' } },
+    // Hero
+    React.createElement('div', { className: 'au', style: {
+      background: 'linear-gradient(135deg, var(--primary) 0%, #7C3AED 100%)',
+      borderRadius: 28, padding: '36px 40px', marginBottom: 28,
+      position: 'relative', overflow: 'hidden', color: '#fff',
+    }},
+      React.createElement('div', { style: { position: 'absolute', right: -60, top: -60, width: 320, height: 320, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)' } }),
+      React.createElement('div', { style: { position: 'absolute', right: -20, top: -20, width: 220, height: 220, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.12)' } }),
+      React.createElement('div', { style: { position: 'absolute', right: 40, top: 20, width: 140, height: 140, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.15)' } }),
+      React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative' } },
+        React.createElement('div', { style: { maxWidth: 520 } },
+          React.createElement('div', { style: { display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 16, backdropFilter: 'blur(8px)' } },
+            React.createElement('span', { style: { fontSize: 13 } }, '👨‍⚕️'), ' Clinical Interview Trainer'),
+          React.createElement('h1', { style: { fontSize: 30, fontWeight: 800, lineHeight: 1.2, marginBottom: 10 } },
+            'Welcome back! 👋'),
+          React.createElement('p', { style: { fontSize: 14, opacity: 0.82, marginBottom: 28, lineHeight: 1.6 } },
+            'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.'),
+          React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap' } },
+            React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--primary)', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' } }, '▶ Start new case'),
+            completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Continue practising'))),
+        // XP card
+        React.createElement('div', { style: { background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', borderRadius: 20, padding: '18px 22px', minWidth: 200, border: '1px solid rgba(255,255,255,0.2)' } },
+          React.createElement('div', { style: { fontSize: 11, opacity: 0.7, fontWeight: 600, marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.07em' } }, 'Your Progress'),
+          React.createElement('div', { style: { fontSize: 28, fontWeight: 800, lineHeight: 1 } }, 'Lv ' + level),
+          React.createElement('div', { style: { fontSize: 12, opacity: 0.75, marginBottom: 14 } }, levelName),
+          React.createElement('div', { style: { background: 'rgba(255,255,255,0.2)', borderRadius: 999, height: 6, marginBottom: 6 } },
+            React.createElement('div', { style: { height: '100%', borderRadius: 999, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease-panel)' } })),
+          React.createElement('div', { style: { fontSize: 11, opacity: 0.65, textAlign: 'right' } }, (p.xp || 0) + ' XP')))),
+
+    // Stats Row
+    React.createElement('div', { className: 'au', style: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 28 } },
+      React.createElement(QDStat, { label: 'Cases completed', value: completedCases, icon: '📋', color: 'var(--primary)', sub: 'across ' + specKeys.length + ' specialties' }),
+      React.createElement(QDStat, { label: 'Total sessions', value: totalSessions, icon: '🔥', color: 'var(--amber)', sub: 'practice encounters' }),
+      React.createElement(QDStat, { label: 'Avg score', value: avgScore + '%', icon: '📈', color: 'var(--teal)', sub: hasDims ? 'across all dimensions' : 'complete a case to see' }),
+      React.createElement(QDStat, { label: 'Streak', value: p.streak ? p.streak + 'd' : '0d', icon: '🏅', color: 'var(--gold)', sub: p.streak ? 'days in a row' : 'start your streak' })),
+
+    // Two-column: Recent + Specialties
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 } },
+      // Recent Activity
+      React.createElement('div', null,
+        React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+          React.createElement('span', null, '📋 Recent sessions'),
+          recent.length > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600 } }, 'View all')),
+        recent.length === 0 && React.createElement('div', { style: { padding: '28px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 16, border: '1px dashed var(--border)' } },
+          'Complete your first case to see activity here.'),
+        React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
+          recent.slice(0, 5).map((s, i) => React.createElement('div', { key: s.sessionId || i, className: 'as', style: { display: 'flex', alignItems: 'center', gap: 14, padding: 14, borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-xs)' } },
+            React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: 'var(--primary-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 } },
+              s.specialty === 'emergency' ? '🚑' : s.specialty === 'surgery' ? '🔪' : s.specialty === 'paediatrics' ? '👶' : s.specialty === 'psychiatry' ? '🧠' : s.specialty === 'ophthalmology' ? '👁' : '🩺'),
+            React.createElement('div', { style: { flex: 1, minWidth: 0 } },
+              React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2 } }, s.presentation || 'Case'),
+              React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress'))))))),
+
+      // Right column: specialties + dimensions
+      React.createElement('div', null,
+        // Specialty coverage
+        React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 16 } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🎯 Specialty coverage'),
+          specKeys.length === 0 && React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)' } }, 'No specialties practised yet.'),
+          React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
+            specKeys.map(s => React.createElement('span', { key: s, style: { fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } },
+              (specLabel[s] || s) + ' · ' + specs[s])))),
+        // Skill dimensions
+        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 Skill breakdown'),
+          Object.keys(dims).map(k => {
+            const dimLabel = { history_coverage: 'History', red_flags: 'Red flags', ice_fife: 'ICE/FIFE', communication: 'Communication', diagnostic_reasoning: 'Reasoning', investigations: 'Investigations', management: 'Management' };
+            const pct = dims[k];
+            return React.createElement('div', { key: k, style: { marginBottom: 8 } },
+              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
+                React.createElement('span', null, dimLabel[k] || k),
+                React.createElement('span', null, Math.round(pct) + '%')),
+              React.createElement('div', { style: { height: 5, borderRadius: 999, background: 'var(--surface-3)' } },
+                React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)', transition: 'width 0.6s ease' } })));
+          })))));
+}
+
+function QDStat({ label, value, icon, color, sub }) {
+  return React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
+    React.createElement('div', { style: { fontSize: 22, marginBottom: 6 } }, icon),
+    React.createElement('div', { style: { fontSize: 24, fontWeight: 800, color } }, value),
+    React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-1)', marginTop: 1 } }, label),
+    React.createElement('div', { style: { fontSize: 10, color: 'var(--text-3)', marginTop: 2 } }, sub));
+}
+
 function QoraV2Screen() {
   const [view, setView] = React.useState('catalogue'); // catalogue | session | result
   const [picked, setPicked] = React.useState(null);
@@ -431,3 +545,4 @@ function QoraV2Screen() {
 }
 
 window.QoraV2Screen = QoraV2Screen;
+window.QoraDashboard = QoraDashboard;
