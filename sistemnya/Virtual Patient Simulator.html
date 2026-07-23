@@ -147,7 +147,8 @@
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
-          screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate })),
+          screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
+          screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
 
         // Settings drawer
         showSettings && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 1000, animation: 'overlayIn 0.2s ease' } },
@@ -160,7 +161,8 @@
               React.createElement('p', null, 'Logged in as: ', React.createElement('strong', null, (auth && auth.email) || '–')),
               React.createElement('p', null, 'Role: ', (auth && auth.role) || '–'),
               React.createElement('p', { style: { marginTop: 20, fontSize: 11, color: 'var(--text-3)' } }, 'Qora \u2014 Clinical Interview Trainer v0.16.0')),
-            React.createElement('div', { style: { marginTop: 'auto' } },
+            React.createElement('div', { style: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 } },
+              React.createElement('button', { onClick: function() { closeSettings(); navigate('pricing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, '✨ Upgrade plan'),
               React.createElement('button', { onClick: handleLogout, style: { width: '100%', padding: 11, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Log out')))));
     }
 

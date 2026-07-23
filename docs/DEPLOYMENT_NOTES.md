@@ -87,20 +87,25 @@ VITE_GOOGLE_CLIENT_ID=<same Google OAuth Web client id>   # enables the Google b
 
 ## 5. Database / infra review (Supabase + Vercel free tier)
 
-- **Migrations:** use Alembic in prod — `alembic upgrade head`. Do **not** rely on
-  `Base.metadata.create_all()`; note that `app/main.py` `lifespan()` calls
-  `init_db()` (which runs `create_all`) on startup — it is idempotent, but for a
-  managed Postgres the source of truth should be Alembic. *Recommendation:* gate
-  `init_db()`'s `create_all` to dev only (skip when `ENV` is prod) and run Alembic
-  in the deploy step. (Left unchanged here to avoid touching live startup — flag
-  for a deliberate migration.)
-- **Indexes:** already present on hot columns — `users.email` (unique), `*.user_id`,
-  `usage_events.created_at`/`kind`, `session_costs.created_at`. Adequate for the
-  freemium metering queries.
-- **RLS:** the backend connects with a single service role and enforces access in
-  FastAPI (JWT + `_owned` ownership checks), so RLS is not the enforcement layer.
-  *Recommendation:* enable RLS on the app tables as defense-in-depth (deny-all +
-  service-role bypass) so a leaked anon key can't read rows directly.
+**Verified live against Supabase this iteration** (PostgreSQL 17.6): 12 tables present,
+Alembic at HEAD (`f1a2b3c4d5e6`), real data (19 users / 11 sessions), hot columns indexed.
+
+- **RLS — FIXED (applied this iteration).** All app tables had **RLS disabled** while
+  the `anon`/`authenticated`/`service_role` PostgREST roles exist — meaning the public
+  anon key could read every row (emails, hashed passwords, sessions) via `/rest/v1/...`.
+  **Enabled RLS** (deny-all, no policies) on: `users, user_profiles, sessions,
+  session_turns, entitlements, usage_events, session_costs, cases, exam_records,
+  eye_photos, admin_audit_log`. Safe because the backend's `postgres` role has
+  **BYPASSRLS** (verified: reads still return 19 users post-change). The app is
+  unaffected; the public REST API can no longer read app tables.
+  *Rollback if ever needed:* `ALTER TABLE public.<table> DISABLE ROW LEVEL SECURITY;`
+- **Migrations:** at HEAD — nothing to run. Keep using Alembic (`alembic upgrade head`).
+  Note `app/main.py` `lifespan()` calls `init_db()` (`create_all`) on startup — idempotent,
+  but for managed Postgres the source of truth should be Alembic. *Recommendation:* gate
+  `create_all` to dev only. (Left unchanged to avoid touching live startup — flag for a
+  deliberate migration.)
+- **Indexes:** present on hot columns — `users.email` (unique), `*.user_id`,
+  `usage_events.created_at`/`kind`, `session_costs.created_at`. Adequate.
 - **Free-tier care:** keep the LLM `max_tokens` caps (persona 220 / judge 1200);
   the per-session cost guardrail (`SessionCost`) is already logged.
 
