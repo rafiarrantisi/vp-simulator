@@ -134,21 +134,19 @@
               background: 'var(--surface)', cursor: 'pointer', fontSize: 14,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }, title: 'Settings' }, '⚙️'),
-            React.createElement('button', { onClick: function() { navigate('profile'); }, style: {
+            React.createElement('button', { onClick: handleLogout, style: {
               width: 32, height: 32, borderRadius: '50%',
-              background: screen === 'profile' ? 'var(--primary-d, var(--primary))' : 'var(--primary)', color: '#fff',
-              border: screen === 'profile' ? '2px solid var(--text-1)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              background: 'var(--primary)', color: '#fff',
+              border: 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
               fontFamily: 'Poppins',
-            }, title: 'View profile' },
+            }, title: 'Log out' },
               auth && auth.email ? auth.email[0].toUpperCase() : '?'))),
 
         // Main content
         React.createElement('main', { key: screenKey, style: { flex: 1 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
-          screen === 'cases' && React.createElement(QoraV2Screen, null),
-          screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
-          screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
+          screen === 'cases' && React.createElement(QoraV2Screen, null)),
 
         // Settings drawer
         showSettings && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 1000, animation: 'overlayIn 0.2s ease' } },
@@ -161,14 +159,12 @@
               React.createElement('p', null, 'Logged in as: ', React.createElement('strong', null, (auth && auth.email) || '–')),
               React.createElement('p', null, 'Role: ', (auth && auth.role) || '–'),
               React.createElement('p', { style: { marginTop: 20, fontSize: 11, color: 'var(--text-3)' } }, 'Qora \u2014 Clinical Interview Trainer v0.16.0')),
-            React.createElement('div', { style: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 } },
-              React.createElement('button', { onClick: function() { closeSettings(); navigate('pricing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, '✨ Upgrade plan'),
+            React.createElement('div', { style: { marginTop: 'auto' } },
               React.createElement('button', { onClick: handleLogout, style: { width: '100%', padding: 11, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Log out')))));
     }
 
-    // Reuse a single root across dev hot-reloads (avoids the duplicate-createRoot warning).
-    if (!window.__qoraRoot) window.__qoraRoot = ReactDOM.createRoot(document.getElementById('root'));
-    window.__qoraRoot.render(React.createElement(App));
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(React.createElement(App));
 
 </script>
 </body>
