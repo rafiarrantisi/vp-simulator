@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="External photograph of a red eye with mucopurulent discharge">
+  <defs>
+    <radialGradient id="skin" cx="50%" cy="45%" r="75%">
+      <stop offset="0%" stop-color="#f4d3bd"/>
+      <stop offset="100%" stop-color="#e2b294"/>
+    </radialGradient>
+    <radialGradient id="iris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#6b4a2b"/>
+      <stop offset="60%" stop-color="#4a3018"/>
+      <stop offset="100%" stop-color="#2c1c0e"/>
+    </radialGradient>
+    <clipPath id="eyeclip">
+      <path d="M120 240 Q320 120 520 240 Q320 360 120 240 Z"/>
+    </clipPath>
+  </defs>
+  <rect width="640" height="480" fill="url(#skin)"/>
+  <!-- upper/lower lid shadow -->
+  <path d="M120 240 Q320 118 520 240" fill="none" stroke="#b8876a" stroke-width="10" stroke-linecap="round" opacity="0.5"/>
+  <path d="M120 240 Q320 362 520 240" fill="none" stroke="#c99a7c" stroke-width="12" stroke-linecap="round" opacity="0.6"/>
+  <!-- sclera (injected/pink) -->
+  <g clip-path="url(#eyeclip)">
+    <rect x="110" y="120" width="420" height="240" fill="#f7e9e4"/>
+    <!-- conjunctival injection: radial red vessels -->
+    <g stroke="#d4443a" stroke-width="2.2" opacity="0.75" fill="none" stroke-linecap="round">
+      <path d="M150 232 Q210 224 250 236"/>
+      <path d="M150 252 Q214 262 252 250"/>
+      <path d="M175 210 Q220 220 258 224"/>
+      <path d="M172 274 Q222 266 258 260"/>
+      <path d="M520 232 Q460 222 420 236"/>
+      <path d="M520 252 Q456 264 418 250"/>
+      <path d="M498 208 Q452 220 414 224"/>
+      <path d="M500 276 Q450 266 414 260"/>
+    </g>
+    <!-- chemosis wash -->
+    <ellipse cx="320" cy="240" rx="200" ry="70" fill="#e77" opacity="0.14"/>
+    <!-- iris + pupil -->
+    <circle cx="320" cy="240" r="70" fill="url(#iris)"/>
+    <circle cx="320" cy="240" r="70" fill="none" stroke="#1c120a" stroke-width="2" opacity="0.5"/>
+    <circle cx="320" cy="240" r="30" fill="#120a05"/>
+    <circle cx="300" cy="222" r="12" fill="#fff" opacity="0.85"/>
+  </g>
+  <!-- eyelid margins -->
+  <path d="M120 240 Q320 120 520 240" fill="none" stroke="#7a4f38" stroke-width="4"/>
+  <path d="M120 240 Q320 360 520 240" fill="none" stroke="#7a4f38" stroke-width="4"/>
+  <!-- mucopurulent yellow discharge + matted lashes at medial canthus -->
+  <g>
+    <ellipse cx="140" cy="240" rx="26" ry="15" fill="#e9d27a" opacity="0.92"/>
+    <ellipse cx="158" cy="250" rx="14" ry="9" fill="#dcc45f" opacity="0.9"/>
+    <path d="M120 232 q-14 -4 -22 -10 M124 246 q-15 3 -24 10 M128 240 q-16 -1 -26 0" stroke="#3a2a1a" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- lower lid discharge sheen -->
+  <path d="M215 300 Q320 330 430 300" fill="none" stroke="#e9d27a" stroke-width="7" opacity="0.55" stroke-linecap="round"/>
+</svg>
