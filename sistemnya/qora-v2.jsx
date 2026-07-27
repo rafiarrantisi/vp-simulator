@@ -327,6 +327,7 @@ function QV2PrepRow({ icon, title, body, status, tone }) {
 
 function QV2SessionSetup({ caseSummary, onStart, onBack }) {
   const [mode, setMode] = React.useState(caseSummary.mode === 'osce_full' ? 'osce' : 'practice');
+  const [lang, setLang] = React.useState('en');
   const [micState, setMicState] = React.useState('idle'); // idle | requesting | granted | denied
   const [stt, setStt] = React.useState(null); // null=checking | 'browser' | 'server' | false
   React.useEffect(() => {
@@ -349,6 +350,17 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
     React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
       React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning. A task guide and history hints help you along. The timer is optional.' }),
       React.createElement(QV2ModeCard, { active: mode === 'osce', onClick: () => setMode('osce'), tone: 'violet', badge: 'OSCE', title: 'OSCE exam', body: 'Exam conditions — no hints. A countdown runs; when it ends you finish or continue for a penalty.' })),
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose session language'),
+    React.createElement('div', { className: 'as d2', style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 } },
+      [['en','English'],['id','Bahasa Indonesia'],['ms','Bahasa Melayu'],['tl','Tagalog'],['vi','Tiếng Việt'],['th','ภาษาไทย']].map(function(p) {
+        var code = p[0], label = p[1];
+        return React.createElement('button', { key: code, onClick: function() { setLang(code); }, style: {
+          padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: lang === code ? 700 : 500,
+          border: '1px solid ' + (lang === code ? 'var(--primary)' : 'var(--border)'),
+          background: lang === code ? 'var(--primary-l)' : 'var(--surface)',
+          color: lang === code ? 'var(--primary)' : 'var(--text-2)',
+        } }, (lang === code ? '✓ ' : '') + label);
+      })),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Session preparation'),
     React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 18 } },
       React.createElement('div', { style: { display: 'flex', gap: 12, alignItems: 'center', padding: 12, borderRadius: 'var(--r-md)', background: 'var(--surface-2)', border: '1px solid var(--border)' } },
@@ -363,7 +375,7 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
       React.createElement(QV2PrepRow, { icon: '🔒', title: 'Privacy & security', body: 'Your audio is processed securely and is not stored without your explicit consent.' }),
       React.createElement(QV2PrepRow, { icon: '🎧', title: 'Audio quality', body: 'For best results, use a quiet room and check your microphone works.' })),
     React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 16 } }, micState === 'granted' ? '✓ All set — you can start now.' : 'You can start now and enable the mic later.'),
-    React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
+    React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
 }
 
 // ---- In-session task panel (instruksi §4.6) ----
@@ -487,7 +499,7 @@ function QV2MicButton({ onTranscript, disabled, lang }) {
   } }, state === 'listening' ? '⏹' : state === 'busy' ? '…' : '🎙️');
 }
 
-function QV2Session({ caseSummary, mode, onScored, onExit }) {
+function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
   const [sessionId, setSessionId] = React.useState(null);
   const [messages, setMessages] = React.useState([]); // {role, text}
   const [input, setInput] = React.useState('');
@@ -503,7 +515,7 @@ function QV2Session({ caseSummary, mode, onScored, onExit }) {
   const wide = useIsWide(900);
 
   React.useEffect(() => {
-    qv2Fetch('/api/v2/sessions', { method: 'POST', body: { case_id: caseSummary.id } })
+    qv2Fetch('/api/v2/sessions', { method: 'POST', body: { case_id: caseSummary.id, language: language || 'en' } })
       .then(d => { setSessionId(d.sessionId); setMessages([{ role: 'patient', text: d.openingLine || '…' }]); })
       .catch(e => setErr(String(e.message || e)));
   }, [caseSummary.id]);
@@ -907,15 +919,16 @@ function QoraV2Screen() {
   const [view, setView] = React.useState('catalogue'); // catalogue | setup | session | result | progress
   const [picked, setPicked] = React.useState(null);
   const [sessionMode, setSessionMode] = React.useState('practice');
+  const [sessionLanguage, setSessionLanguage] = React.useState('en');
   const [report, setReport] = React.useState(null);
   const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
   const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
   let body;
   if (view === 'setup' && picked) {
-    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setView('session'); }, onBack: () => setView('catalogue') });
+    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setView('session'); }, onBack: () => setView('catalogue') });
   } else if (view === 'session' && picked) {
-    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
+    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
   } else if (view === 'result' && report && picked) {
     body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => setView('catalogue'), onLibrary: () => setView('catalogue') });
   } else if (view === 'progress') {

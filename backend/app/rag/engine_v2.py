@@ -4,6 +4,9 @@ Patient context = Part B persona body + answer-restraint scaffold ONLY (via
 prompt_v2.build_patient_prompt). Part A frontmatter NEVER enters the patient
 context — the structural P1 guarantee. Reuses the legacy sliding-window message
 builder for conversation memory.
+
+Supports multilingual responses: the patient answers in the session's selected
+language via the `language` parameter (defaults to English).
 """
 from __future__ import annotations
 
@@ -16,22 +19,26 @@ from app.rag.prompt import build_messages, is_first_turn
 from app.rag.prompt_v2 import build_patient_prompt
 
 
-def _prepare(case_id: str, history: list[dict], user_message: str):
+def _prepare(case_id: str, history: list[dict], user_message: str,
+             language: str = "en"):
     case = load_v2_case(case_id)  # raises FileNotFoundError if absent
-    system = build_patient_prompt(case, is_first_turn=is_first_turn(history))
+    system = build_patient_prompt(case, is_first_turn=is_first_turn(history),
+                                  language=language)
     messages = build_messages(history, user_message)
     return system, messages
 
 
-def respond(case_id: str, history: list[dict], user_message: str) -> str:
-    system, messages = _prepare(case_id, history, user_message)
+def respond(case_id: str, history: list[dict], user_message: str,
+            language: str = "en") -> str:
+    system, messages = _prepare(case_id, history, user_message, language=language)
     return get_llm_client().generate(
         system, messages, max_tokens=get_settings().llm_persona_max_tokens
     ).strip()
 
 
-def stream_respond(case_id: str, history: list[dict], user_message: str) -> Iterator[str]:
-    system, messages = _prepare(case_id, history, user_message)
+def stream_respond(case_id: str, history: list[dict], user_message: str,
+                   language: str = "en") -> Iterator[str]:
+    system, messages = _prepare(case_id, history, user_message, language=language)
     yield from get_llm_client().stream(
         system, messages, max_tokens=get_settings().llm_persona_max_tokens
     )

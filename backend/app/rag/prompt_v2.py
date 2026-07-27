@@ -6,6 +6,9 @@ Two strictly separated builders enforce leakage prevention structurally:
 
 The patient builder NEVER reads `case.frontmatter`; the judge builder NEVER reads
 `case.body`. `tests/test_leakage_p1.py` asserts this holds.
+
+Multilingual support: the patient prompt includes a language instruction so the
+AI patient responds in the session's selected language (en, id, ms, tl, vi, th, ...).
 """
 from __future__ import annotations
 
@@ -55,14 +58,38 @@ to what the doctor said:
 - Doctor asked your complaint -> only then state ONE chief complaint.
 Do NOT state any medical complaint if the doctor has not asked about it."""
 
+# Language instruction — appended to the system prompt so the patient knows
+# which language to answer in.
+LANGUAGE_INSTRUCTION = """===== LANGUAGE INSTRUCTION =====
+The doctor is conducting this interview in {language}. You MUST answer ALL
+questions in {language} only — never switch to another language even if the
+doctor asks in a different language. Use everyday {language} words appropriate
+for a lay patient. If you don't know how to say something in {language}, use
+simple words rather than switching to English."""
 
-def build_patient_prompt(case: CaseV2, *, is_first_turn: bool = False) -> str:
+
+def build_patient_prompt(case: CaseV2, *, is_first_turn: bool = False,
+                         language: str = "en") -> str:
     """System prompt for the patient model. Part B (body) + restraint ONLY.
 
     Reads `case.body` and nothing from `case.frontmatter` — the structural P1
     guarantee. The persona body already contains the disclosure rules section.
+
+    When `language` is not "en", a multilingual instruction is appended so the
+    patient responds in the target language.
     """
+    # Map short codes to full language names for the prompt
+    _LANG_NAMES = {
+        "en": "English", "id": "Bahasa Indonesia", "ms": "Bahasa Melayu",
+        "tl": "Tagalog", "vi": "Tiếng Việt", "th": "ภาษาไทย",
+        "zh": "中文", "ja": "日本語", "ko": "한국어", "es": "Español",
+        "fr": "Français", "ar": "العربية", "pt": "Português",
+        "hi": "हिन्दी", "bn": "বাংলা",
+    }
+    lang_name = _LANG_NAMES.get(language, "English")
     parts = [case.body.strip(), ANSWER_RESTRAINT, GUARDRAIL]
+    if language != "en":
+        parts.append(LANGUAGE_INSTRUCTION.format(language=lang_name))
     if is_first_turn:
         parts.append(FIRST_TURN)
     return "\n\n".join(p for p in parts if p)

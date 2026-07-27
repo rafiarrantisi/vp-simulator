@@ -89,6 +89,7 @@ def v2_case_media(case_id: str, user: User = Depends(get_current_user)):
 
 class V2StartReq(BaseModel):
     case_id: str
+    language: str = "en"  # en | id | ms | tl | vi | th | ...
 
 
 @router.post("/sessions")
@@ -105,7 +106,8 @@ def v2_start_session(req: V2StartReq, user: User = Depends(get_current_user),
                                     "limit": gate.get("limit"),
                                     "message": "Free session limit reached — upgrade to continue."})
     s = SessionRow(user_id=user.id, institution_id=user.institution_id,
-                   case_id=req.case_id, mode=case.frontmatter.get("mode_default", "anamnesis"))
+                   case_id=req.case_id, mode=case.frontmatter.get("mode_default", "anamnesis"),
+                   language=req.language)
     db.add(s)
     db.commit()
     db.refresh(s)
@@ -115,6 +117,7 @@ def v2_start_session(req: V2StartReq, user: User = Depends(get_current_user),
     except Exception:
         db.rollback()
     return ok({"sessionId": s.id, "caseId": s.case_id, "mode": s.mode,
+               "language": s.language,
                "openingLine": case.find_section("opening line")})
 
 
@@ -130,7 +133,7 @@ def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_current_us
     n = _next_turn_no(db, session_id)
     db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text))
     try:
-        reply = engine_v2.respond(s.case_id, history, req.text)
+        reply = engine_v2.respond(s.case_id, history, req.text, language=s.language)
     except FileNotFoundError:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
     db.add(SessionTurn(session_id=s.id, turn_number=n + 1, role="patient", content=reply))
@@ -165,7 +168,7 @@ def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(get_cur
     def gen():
         parts: list[str] = []
         try:
-            for chunk in engine_v2.stream_respond(case_id, history, req.text):
+            for chunk in engine_v2.stream_respond(case_id, history, req.text, language=s.language):
                 if chunk:
                     parts.append(chunk)
                     yield chunk

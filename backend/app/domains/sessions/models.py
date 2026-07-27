@@ -28,6 +28,7 @@ class SessionRow(Base):
     ended_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), default=None)
     total_score: Mapped[int | None] = mapped_column(Integer, default=None)
     report: Mapped[dict | None] = mapped_column(JSON, default=None)  # EvaluationReport §3A
+    language: Mapped[str] = mapped_column(String, default="en")  # en | id | ms | tl | vi | th | ...
 
 
 class SessionTurn(Base):
