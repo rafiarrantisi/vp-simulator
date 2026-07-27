@@ -52,7 +52,7 @@ class Settings(BaseSettings):
     # kurangi tail latency). 220 ≈ 3-4 kalimat ID, cukup utk balasan
     # pasien answer-restrained. Judge butuh lebih utk JSON struktural.
     llm_persona_max_tokens: int = 220
-    llm_judge_max_tokens: int = 1200
+    llm_judge_max_tokens: int = 2400
 
     # ── Voice (Fase 4) ──
     # STT: OpenAI-compatible /audio/transcriptions. Default reuse OpenRouter

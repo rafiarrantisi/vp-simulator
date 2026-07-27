@@ -81,5 +81,6 @@ def build_judge_ground_truth(case: CaseV2) -> dict:
         "expected_ddx": fm.get("expected_ddx", {}),
         "investigations": fm.get("investigations", {}),
         "management": fm.get("management", {}),
+        "physical_exam_findings": fm.get("physical_exam_findings", {}),
         "scoring_weights_override": fm.get("scoring_weights_override"),
     }

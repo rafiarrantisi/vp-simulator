@@ -725,7 +725,7 @@ function QV2Progress({ onBack }) {
   React.useEffect(() => { qv2Fetch('/api/v2/progress').then(setP).catch((e) => setErr(String(e.message || e))); }, []);
   if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load progress: ' + err);
   if (!p) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading progress…');
-  const dimLabel = { history_coverage: 'History coverage', red_flags: 'Red-flag screening', ice_fife: 'ICE / FIFE', communication: 'Communication', diagnostic_reasoning: 'Diagnostic reasoning', investigations: 'Investigation selection', management: 'Management' };
+  const dimLabel = { history_coverage: 'History coverage', red_flags: 'Red-flag screening', ice_fife: 'ICE / FIFE', questioning_technique: 'Questioning technique', communication: 'Communication', diagnostic_reasoning: 'Diagnostic reasoning', investigations: 'Investigation selection', management: 'Management', clinical_safety: 'Clinical safety' };
   const dims = p.dimensionAverages || {};
   const specs = p.specialtyCounts || {};
   const dimKeys = Object.keys(dims);
@@ -884,7 +884,7 @@ function QoraDashboard({ onNav, onStartCase }) {
         hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
           React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 Skill breakdown'),
           Object.keys(dims).map(k => {
-            const dimLabel = { history_coverage: 'History', red_flags: 'Red flags', ice_fife: 'ICE/FIFE', communication: 'Communication', diagnostic_reasoning: 'Reasoning', investigations: 'Investigations', management: 'Management' };
+            const dimLabel = { history_coverage: 'History', red_flags: 'Red flags', ice_fife: 'ICE/FIFE', questioning_technique: 'Questioning', communication: 'Communication', diagnostic_reasoning: 'Reasoning', investigations: 'Investigations', management: 'Management', clinical_safety: 'Safety' };
             const pct = dims[k];
             return React.createElement('div', { key: k, style: { marginBottom: 8 } },
               React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },

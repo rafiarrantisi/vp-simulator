@@ -6,35 +6,41 @@ preserved as the named `classic_anamnesis` preset. No single rubric is hardcoded
 into the judge.
 
 Each dimension maps to a source of ground truth in schema v2 (Part A):
-  history_coverage    -> anamnesis_checklist (hpi/associated/pmh/meds/family_social)
-  red_flags           -> red_flags
-  ice_fife            -> anamnesis_checklist.ice_fife
-  communication       -> judged from transcript (intro/consent/empathy/structure)
-  diagnostic_reasoning-> expected_ddx (vs student DDx)
-  investigations      -> investigations (osce_full only)
-  management          -> management (osce_full only)
+  history_coverage     -> anamnesis_checklist (hpi/associated/pmh/meds/family_social)
+  red_flags            -> red_flags
+  ice_fife             -> anamnesis_checklist.ice_fife
+  questioning_technique-> judged from transcript pattern (open/closed/leading/signposting)
+  communication        -> judged from transcript (intro/consent/empathy/structure)
+  diagnostic_reasoning -> expected_ddx (vs student DDx)
+  investigations       -> investigations (osce_full only)
+  management           -> management (osce_full only)
+  clinical_safety      -> critical red-flag recognition + safety-netting
 """
 from __future__ import annotations
 
 # Canonical mode rubrics. Each must sum to 100.
 RUBRICS: dict[str, dict[str, int]] = {
-    # MVP default — pure history-taking.
+    # Pure history-taking — anamnesis mode.
     "anamnesis": {
-        "history_coverage": 35,
-        "red_flags": 20,
-        "ice_fife": 15,
-        "communication": 15,
+        "history_coverage": 25,
+        "red_flags": 15,
+        "ice_fife": 8,
+        "questioning_technique": 15,
+        "communication": 10,
         "diagnostic_reasoning": 15,
+        "clinical_safety": 12,
     },
     # Full OSCE arc.
     "osce_full": {
-        "history_coverage": 25,
-        "red_flags": 15,
-        "ice_fife": 10,
+        "history_coverage": 20,
+        "red_flags": 10,
+        "ice_fife": 5,
+        "questioning_technique": 10,
         "communication": 10,
         "investigations": 15,
         "diagnostic_reasoning": 15,
         "management": 10,
+        "clinical_safety": 5,
     },
     # Legacy OphthaSim rubric, preserved as a named preset for eye-style cases.
     "classic_anamnesis": {
@@ -52,10 +58,12 @@ DIMENSION_LABELS: dict[str, str] = {
     "history_coverage": "History coverage",
     "red_flags": "Red-flag screening",
     "ice_fife": "ICE / FIFE",
+    "questioning_technique": "Questioning technique",
     "communication": "Communication & professionalism",
     "diagnostic_reasoning": "Diagnostic reasoning (DDx)",
     "investigations": "Investigation selection",
     "management": "Management",
+    "clinical_safety": "Clinical safety & red-flag action",
     "coverage": "Coverage (anamnesis)",
     "fife": "FIFE",
 }
