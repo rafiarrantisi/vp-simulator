@@ -423,17 +423,32 @@ function QV2TimeUpModal({ onFinish, onContinue }) {
 // Primary: the browser's built-in Web Speech API (free, real-time, no key,
 // no TTS needed since replies are text). Fallback for browsers without it
 // (e.g. Firefox): record audio and transcribe via the backend /api/ai/transcribe.
-const QV2_SR = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
+const QV2_SR = (typeof window !== 'undefined') ? (window.SpeechRecognition || window.webkitSpeechRecognition || null) : null;
 
-function QV2MicButton({ onTranscript, disabled, lang }) {
+// Map short language codes to SpeechRecognition locale codes
+const QV2_LANG_MAP = {
+  en: 'en-US', id: 'id-ID', ms: 'ms-MY', tl: 'tl-PH',
+  vi: 'vi-VN', th: 'th-TH', zh: 'zh-CN', ja: 'ja-JP',
+  ko: 'ko-KR', es: 'es-ES', fr: 'fr-FR', ar: 'ar-SA',
+  pt: 'pt-BR', hi: 'hi-IN', bn: 'bn-BD',
+};
+
+function QV2MicButton({ onTranscript, disabled, sessionLang }) {
   const [state, setState] = React.useState('idle'); // idle | listening | busy | error
   const ref = React.useRef(null);
   const chunksRef = React.useRef([]);
 
   function startNative() {
     try {
-      const rec = new QV2_SR();
-      rec.lang = lang || 'en-US';
+      // Request mic permission first (required by some browsers for SpeechRecognition)
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(function(s) { s.getTracks().forEach(function(t) { t.stop(); }); }).catch(function() {});
+      }
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) { setState('error'); setTimeout(function() { setState('idle'); }, 2500); return; }
+      const rec = new SR();
+      var locale = QV2_LANG_MAP[(sessionLang || 'en')] || 'en-US';
+      rec.lang = locale;
       rec.interimResults = true;
       rec.continuous = false;
       rec.maxAlternatives = 1;
@@ -622,7 +637,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
         : (m.streaming ? m.text + ' ▋' : m.text))),
       React.createElement('div', { ref: endRef })),
     React.createElement('div', { style: { display: 'flex', gap: 8, padding: '12px 0 16px' } },
-      React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), disabled: busy }),
+      React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), disabled: busy, sessionLang: language }),
       React.createElement('input', {
         value: input, onChange: e => setInput(e.target.value),
         onKeyDown: e => { if (e.key === 'Enter') send(); },
