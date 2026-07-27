@@ -69,21 +69,22 @@ function QV2Catalogue({ onPick, onProgress }) {
       .catch(e => setErr(String(e.message || e)));
   }, []);
 
+  var _t = window.__t || function(k) { return k; };
   if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } },
-    'Could not load cases: ' + err + '. (Sign in and ensure the backend is configured.)');
-  if (!cases) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading cases…');
+    _t('common.error') + ': ' + err);
+  if (!cases) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, _t('common.loading'));
 
   const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)));
-  const DIFF_LABEL = { '1': 'Difficulty 1 · Preclinical', '2': 'Difficulty 2 · Clerkship', '3': 'Difficulty 3 · Advanced' };
+  const DIFF_LABEL = { '1': _t('cases.difficulty_1'), '2': _t('cases.difficulty_2'), '3': _t('cases.difficulty_3') };
   return React.createElement('div', { className: 'au', style: { maxWidth: 1080, margin: '0 auto', padding: '24px 20px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 6 } },
-      React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Case library'),
-      onProgress && React.createElement('button', { onClick: onProgress, style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, '📊 My progress')),
+      React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, _t('cases.title')),
+      onProgress && React.createElement('button', { onClick: onProgress, style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, '\uD83D\uDCCA ' + _t('dashboard.your_progress'))),
     React.createElement('div', { style: { marginBottom: 16, fontSize: 13, color: 'var(--text-2)' } },
       shown.length + (shown.length === cases.length ? '' : ' of ' + cases.length) + ' cases across ' + specs.length + ' specialties'),
     // specialty filter chips
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
-      [['', 'All']].concat(specs.map(s => [s, QV2_SPEC_LABEL[s] || s])).map(([val, lab]) =>
+      [['', _t('cases.filter_all')]].concat(specs.map(s => [s, QV2_SPEC_LABEL[s] || s])).map(([val, lab]) =>
         React.createElement('button', { key: val || 'all', onClick: () => setFilter(val), style: {
           padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: filter === val ? 700 : 500,
           fontFamily: 'Poppins', cursor: 'pointer',
@@ -93,7 +94,7 @@ function QV2Catalogue({ onPick, onProgress }) {
         } }, lab))),
     // difficulty filter chips
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 } },
-      [['', 'All levels'], ['1', 'Difficulty 1'], ['2', 'Difficulty 2'], ['3', 'Difficulty 3']].map(([val, lab]) =>
+      [['', _t('cases.filter_all') + ' ' + _t('cases.title')], ['1', _t('cases.difficulty_1')], ['2', _t('cases.difficulty_2')], ['3', _t('cases.difficulty_3')]].map(([val, lab]) =>
         React.createElement('button', { key: 'd' + (val || 'all'), onClick: () => setDiff(val), title: DIFF_LABEL[val] || 'All difficulty levels', style: {
           padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: diff === val ? 700 : 500,
           fontFamily: 'Poppins', cursor: 'pointer',
@@ -102,7 +103,7 @@ function QV2Catalogue({ onPick, onProgress }) {
           color: diff === val ? 'var(--violet, var(--primary))' : 'var(--text-2)',
         } }, lab))),
     // empty state
-    shown.length === 0 && React.createElement('div', { style: { padding: '32px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 'var(--r-lg)', border: '1px dashed var(--border)' } }, 'No cases match these filters — try a different specialty or difficulty level.'),
+    shown.length === 0 && React.createElement('div', { style: { padding: '32px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 'var(--r-lg)', border: '1px dashed var(--border)' } }, _t('cases.no_results')),
     // cards grid
     React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 } },
       shown.map((c, i) => React.createElement('button', {
@@ -179,8 +180,8 @@ function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) 
   const submit = () => onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang: inv.join(', '), terapi: tx.join(', '), edukasi });
 
   const tabs = isOsce
-    ? [['conversation', 'Conversation'], ['investigations', 'Investigations'], ['diagnosis', 'Diagnosis'], ['therapy', 'Therapy']]
-    : [['conversation', 'Conversation'], ['diagnosis', 'Diagnosis']];
+    ? [['conversation', _t('session.assess_tab_conversation')], ['investigations', _t('session.assess_tab_investigations')], ['diagnosis', _t('session.assess_tab_diagnosis')], ['therapy', _t('session.assess_tab_therapy')]]
+    : [['conversation', _t('session.assess_tab_conversation')], ['diagnosis', _t('session.assess_tab_diagnosis')]];
 
   const conversationTab = React.createElement('div', { style: { maxHeight: 380, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8 } },
     (transcript || []).filter((m) => m.role === 'user' || m.role === 'patient').map((m, i) => React.createElement('div', { key: i, style: {
@@ -191,26 +192,25 @@ function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) 
     (!transcript || !transcript.length) && React.createElement('div', { style: { fontSize: 13, color: 'var(--text-3)' } }, 'No conversation recorded.'));
 
   const diagnosisTab = React.createElement('div', null,
-    React.createElement(QV2AssessField, { label: 'Working diagnosis', value: dx1, set: setDx1, ph: 'Most likely diagnosis' }),
-    React.createElement(QV2AssessField, { label: 'Differential 2', value: dx2, set: setDx2, ph: 'Alternative' }),
-    React.createElement(QV2AssessField, { label: 'Differential 3', value: dx3, set: setDx3, ph: 'Alternative' }),
-    React.createElement(QV2AssessField, { label: 'Clinical reasoning', value: reasoning, set: setReasoning, ph: 'Key positives, red flags, why this diagnosis…', area: true }));
+    React.createElement(QV2AssessField, { label: _t('session.working_diagnosis'), value: dx1, set: setDx1, ph: _t('session.working_diagnosis') }),
+    React.createElement(QV2AssessField, { label: _t('session.differential_2'), value: dx2, set: setDx2, ph: _t('session.differential_2') }),
+    React.createElement(QV2AssessField, { label: _t('session.differential_3'), value: dx3, set: setDx3, ph: _t('session.differential_3') }),
+    React.createElement(QV2AssessField, { label: _t('session.clinical_reasoning'), value: reasoning, set: setReasoning, ph: _t('session.clinical_reasoning'), area: true }));
 
   const investigationsTab = React.createElement('div', null,
     React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Select the investigations you would order (up to ' + QV2_MAX_INVESTIGATIONS + '). Choose deliberately — over-ordering is not rewarded.'),
     React.createElement(QV2Picker, { catalog: window.QORA_INVESTIGATIONS || {}, selected: inv, onToggle: toggle(setInv, QV2_MAX_INVESTIGATIONS), max: QV2_MAX_INVESTIGATIONS, search: invSearch, setSearch: setInvSearch, unit: 'investigations' }));
 
   const therapyTab = React.createElement('div', null,
-    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Select your management plan.'),
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, _t('session.select_therapy')),
     React.createElement(QV2Picker, { catalog: window.QORA_THERAPIES || {}, selected: tx, onToggle: toggle(setTx, 0), search: txSearch, setSearch: setTxSearch, unit: 'treatments' }),
-    React.createElement('div', { style: { marginTop: 8 } },
-      React.createElement(QV2AssessField, { label: 'Patient education & safety-netting (notes)', value: edukasi, set: setEdukasi, ph: 'What you would tell the patient…', area: true })));
+      React.createElement(QV2AssessField, { label: _t('session.patient_education'), value: edukasi, set: setEdukasi, ph: 'What you would tell the patient...', area: true }));
 
   const panel = tab === 'conversation' ? conversationTab : tab === 'investigations' ? investigationsTab : tab === 'therapy' ? therapyTab : diagnosisTab;
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: 20 } },
     React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back to interview'),
-    React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Your assessment'),
+    React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, _t('session.your_assessment')),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 16 } }, 'Commit your workup before the answer key is revealed.'),
     React.createElement('div', { style: { display: 'flex', gap: 4, marginBottom: 18, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' } },
       tabs.map(([val, lab]) => React.createElement('button', { key: val, onClick: () => setTab(val), style: {
@@ -653,6 +653,14 @@ function QV2ItemRow({ item, status }) {
 function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
+  var _t = window.__t || function(k) { return k; };
+  // Confetti on mount
+  React.useEffect(function () {
+    if (typeof window.confetti === 'function') {
+      var score = report.overall || 0;
+      window.confetti({ particleCount: score >= 80 ? 120 : score >= 60 ? 60 : 20, spread: score >= 80 ? 100 : 70, origin: { y: 0.6 } });
+    }
+  }, []);
   // map item text -> status from per_item (loose lowercase contains match)
   const statusFor = (text) => {
     const t = String(text || '').toLowerCase();
@@ -967,6 +975,7 @@ function QoraProfile({ onNav }) {
   const [err, setErr] = React.useState('');
   const [saving, setSaving] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
+  var _t = window.__t || function(k) { return k; };
   const [form, setForm] = React.useState({ full_name: '', school: '', year: '', avatar_emoji: '👤', avatar_color: '#5865F2' });
   React.useEffect(() => {
     qv2Fetch('/api/users/me')
@@ -980,11 +989,11 @@ function QoraProfile({ onNav }) {
     catch (e) { setErr(String(e.message || e)); }
     setSaving(false);
   }
-  if (err && !me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load profile: ' + err);
-  if (!me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading profile…');
+  if (err && !me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, _t('common.error') + ': ' + err);
+  if (!me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, _t('common.loading'));
   const level = Math.floor((me.xp || 0) / 200) + 1;
   return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 18 } }, 'Your profile'),
+    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 18 } }, _t('profile.title')),
     React.createElement('div', { className: 'as', style: { display: 'flex', alignItems: 'center', gap: 16, padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 18 } },
       React.createElement('div', { style: { width: 64, height: 64, borderRadius: '50%', background: form.avatar_color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 30, flexShrink: 0 } }, form.avatar_emoji),
       React.createElement('div', { style: { flex: 1, minWidth: 0 } },
@@ -994,10 +1003,10 @@ function QoraProfile({ onNav }) {
     React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 } },
       [['XP', me.xp || 0], ['Level', level], ['Streak', (me.streak || 0) + 'd'], ['Sessions', me.total_sessions || 0]].map(([lab, val]) =>
         React.createElement(QV2Stat, { key: lab, label: lab, val: val }))),
-    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, 'Edit details'),
-    React.createElement(QP_Field, { label: 'Full name', value: form.full_name, set: set('full_name'), ph: 'Your name' }),
-    React.createElement(QP_Field, { label: 'Medical school', value: form.school, set: set('school'), ph: 'e.g. University of ...' }),
-    React.createElement(QP_Field, { label: 'Year / stage', value: form.year, set: set('year'), ph: 'e.g. Year 4 / Clerkship' }),
+    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, _t('profile.edit')),
+    React.createElement(QP_Field, { label: _t('profile.name'), value: form.full_name, set: set('full_name'), ph: 'Your name' }),
+    React.createElement(QP_Field, { label: _t('profile.school'), value: form.school, set: set('school'), ph: 'e.g. University of ...' }),
+    React.createElement(QP_Field, { label: _t('profile.year'), value: form.year, set: set('year'), ph: 'e.g. Year 4 / Clerkship' }),
     React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', margin: '4px 0 6px' } }, 'Avatar'),
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 } },
       QP_AVATARS.map((em) => React.createElement('button', { key: em, onClick: () => set('avatar_emoji')(em), style: { width: 40, height: 40, borderRadius: 10, fontSize: 20, cursor: 'pointer', background: form.avatar_emoji === em ? 'var(--primary-l)' : 'var(--surface)', border: '1px solid ' + (form.avatar_emoji === em ? 'var(--primary)' : 'var(--border)') } }, em))),
@@ -1005,9 +1014,9 @@ function QoraProfile({ onNav }) {
       QP_COLORS.map((col) => React.createElement('button', { key: col, onClick: () => set('avatar_color')(col), 'aria-label': 'Avatar colour ' + col, style: { width: 30, height: 30, borderRadius: '50%', background: col, cursor: 'pointer', border: form.avatar_color === col ? '3px solid var(--text-1)' : '2px solid var(--surface)', boxShadow: '0 0 0 1px var(--border)' } }))),
     err && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err),
     React.createElement('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } },
-      React.createElement('button', { onClick: save, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving…' : 'Save changes'),
-      React.createElement('button', { onClick: () => onNav && onNav('dashboard'), style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Back'),
-      saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '✓ Saved')));
+      React.createElement('button', { onClick: save, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
+      React.createElement('button', { onClick: () => onNav && onNav('dashboard'), style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, _t('common.back')),
+      saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '\u2713 ' + _t('common.save') + 'd')));
 }
 
 // ---- Pricing / upgrade (Xendit paywall; prices are config-driven, §7.3) ----
