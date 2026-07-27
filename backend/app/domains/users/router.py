@@ -19,7 +19,7 @@ def _to_profile(u: User) -> ProfileResponse:
         role=u.role, institution_id=u.institution_id,
         xp=p.xp, streak=p.streak, total_sessions=p.total_sessions,
         avatar_emoji=p.avatar_emoji, avatar_color=p.avatar_color,
-        school=p.school, year=p.year,
+        school=p.school, year=p.year, region=p.region or "row",
     )
 
 

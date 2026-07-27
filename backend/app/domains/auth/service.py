@@ -35,7 +35,7 @@ def signup(db: Session, req: SignupRequest) -> AuthSession:
         institution_id=req.institution_id or get_settings().default_institution_id,
         role="student",
     )
-    user.profile = UserProfile()
+    user.profile = UserProfile(region=req.region)
     db.add(user)
     db.commit()
     db.refresh(user)

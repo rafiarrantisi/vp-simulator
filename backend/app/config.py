@@ -115,6 +115,19 @@ class Settings(BaseSettings):
     xendit_success_url: str = ""      # redirect after a successful payment
     xendit_failure_url: str = ""      # redirect after a failed/expired payment
 
+    # ── Region-aware pricing (Phase 1 — international rollout) ──
+    # Indonesia — IDR
+    price_monthly_idr: float = 119000
+    price_annual_idr: float = 999000
+    # ASEAN (MY, TH, VN, PH, SG) — USD
+    price_monthly_asean: float = 9.99
+    price_annual_asean: float = 84.0
+    # Rest of World — USD
+    price_monthly_row: float = 14.99
+    price_annual_row: float = 119.0
+    # Exam pass (one region for now)
+    price_exam_pass_usd: float = 14.99
+
     # ── Email (transactional; pivot-v4 §7.1). Empty SMTP_HOST -> console mode:
     # the message (e.g. a verification/reset link) is logged to the server
     # console so flows work locally. Plug a provider (SMTP/Resend/SES) later. ──

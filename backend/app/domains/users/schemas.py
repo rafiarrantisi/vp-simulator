@@ -23,3 +23,4 @@ class ProfileResponse(BaseModel):
     avatar_color: str
     school: str
     year: str
+    region: str  # indo | asean | row

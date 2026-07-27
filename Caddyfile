@@ -1,0 +1,19 @@
+43.156.79.53:443 {
+    tls internal
+    
+    # Qora API — proxy to :8000 (strip /qora prefix)
+    handle_path /qora/* {
+        reverse_proxy localhost:8000
+        header Access-Control-Allow-Origin *
+    }
+    
+    # Hermes Chat — proxy to :8642
+    handle /api/* {
+        reverse_proxy localhost:8642
+        header Access-Control-Allow-Origin *
+    }
+    handle {
+        reverse_proxy localhost:8642
+        header Access-Control-Allow-Origin *
+    }
+}

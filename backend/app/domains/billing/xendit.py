@@ -42,13 +42,19 @@ def parse_external_id(external_id: str) -> tuple[str, str]:
     return "", ""
 
 
-def create_invoice(s: Settings, plan: str, amount: float, user_id: str, email: str) -> dict:
+def create_invoice(s: Settings, plan: str, amount: float, user_id: str, email: str,
+                   currency_override: str | None = None) -> dict:
     """Create a hosted Xendit invoice and return its checkout URL. Raises on
-    transport/HTTP error (the caller maps that to a 502)."""
+    transport/HTTP error (the caller maps that to a 502).
+
+    When currency_override is provided (e.g. "IDR" for indo region), it takes
+    precedence over s.xendit_currency.
+    """
+    currency = currency_override or s.xendit_currency or "USD"
     payload = {
         "external_id": make_external_id(user_id, plan),
         "amount": amount,
-        "currency": s.xendit_currency or "USD",
+        "currency": currency,
         "payer_email": email or None,
         "description": f"Qora — {plan} plan",
         "success_redirect_url": s.xendit_success_url or None,

@@ -1,0 +1,59 @@
+specialty,slug,presentation,target_condition,difficulty,mode
+# ── Internal Medicine (add 6) ──
+internal_medicine,uta,Unilateral leg swelling and pain,Deep vein thrombosis,2,osce_full
+internal_medicine,pye,Cramping flank pain and dysuria,Acute pyelonephritis,2,osce_full
+internal_medicine,ana_macrocytic,Feeling tired and short of breath on exertion,Pernicious anaemia,1,anamnesis
+internal_medicine,hyperthyroid,Tremor weight loss and palpitations,Hyperthyroidism,2,osce_full
+internal_medicine,tuberculosis,Productive cough weight loss and night sweats,Pulmonary tuberculosis,3,osce_full
+internal_medicine,ckd,Swollen ankles and foamy urine,Chronic kidney disease stage 4,3,osce_full
+internal_medicine,pancreatitis,Severe epigastric pain radiating to the back,Acute pancreatitis,3,osce_full
+# ── Surgery (add 5) ──
+surgery,breast_lump,Painless lump in the right breast,Breast cancer,3,osce_full
+surgery,diverticulitis,Lower left abdominal pain and fever,Acute diverticulitis,2,osce_full
+surgery,testicular_torsion,Sudden severe testicular pain,Testicular torsion,2,osce_full
+surgery,varicose_veins,Painful bulging veins in both legs,Chronic venous insufficiency,1,anamnesis
+surgery,thyroid_nodule,Anterior neck lump,Solitary thyroid nodule,2,anamnesis
+# ── Paediatrics (add 6) ──
+paediatrics,asthma,Recurrent wheeze and cough in a 6-year-old,Paediatric asthma,1,anamnesis
+paediatrics,uti,Feverish 4-year-old with smelly urine,Urinary tract infection in a child,1,anamnesis
+paediatrics,measles,Fever and rash in an unvaccinated child,Measles,2,osce_full
+paediatrics,coeliac,Failing to thrive and loose stools,Coeliac disease,2,anamnesis
+paediatrics,kawasaki,Prolonged fever and red eyes in a toddler,Kawasaki disease,3,osce_full
+paediatrics,hpylori,Recurrent stomach pain in an adolescent,Helicobacter pylori gastritis,1,anamnesis
+# ── OBGYN (add 5) ──
+obstetrics_gynaecology,menorrhagia,Heavy painful periods,Menorrhagia,1,anamnesis
+obstetrics_gynaecology,pre_eclampsia,Swelling and headache in late pregnancy,Pre-eclampsia,3,osce_full
+obstetrics_gynaecology,endometriosis,Cyclical pelvic pain and subfertility,Endometriosis,2,anamnesis
+obstetrics_gynaecology,menopause,Hot flushes and mood swings,Menopause,1,anamnesis
+obstetrics_gynaecology,ectopic,Sudden lower abdominal pain in early pregnancy,Ectopic pregnancy,3,osce_full
+# ── Psychiatry (add 4) ──
+psychiatry,bipolar,Episodes of high mood and reckless behaviour,Bipolar I disorder,2,anamnesis
+psychiatry,panic,Sudden attacks of overwhelming fear,Panic disorder,1,anamnesis
+psychiatry,adhd,Difficulty concentrating and fidgety,Adult attention deficit hyperactivity disorder,2,anamnesis
+psychiatry,ocd,Intrusive thoughts and repetitive rituals,Obsessive-compulsive disorder,2,anamnesis
+# ── Neurology (add 5) ──
+neurology,multiple_sclerosis,Weakness and numbness on one side of the body,Multiple sclerosis,3,osce_full
+neurology,parkinsons,Trembling hands and slow movement,Parkinson disease,2,anamnesis
+neurology,gb_syndrome,Progressive weakness after a stomach bug,Guillain-Barre syndrome,3,osce_full
+neurology,cluster_headache,Excruciating one-sided eye pain,Cluster headache,2,osce_full
+neurology,meningitis,Fever severe headache and stiff neck,Meningitis,3,osce_full
+# ── ENT (add 4) ──
+ent,sinusitis,Facial pain and nasal congestion,Acute sinusitis,1,anamnesis
+ent,tonsillitis,Sore throat and difficulty swallowing,Acute tonsillitis,1,osce_full
+ent,hoarseness,Horse voice for 4 weeks,Laryngeal carcinoma,3,osce_full
+ent,hearing_loss,Gradual hearing loss in both ears,Presbycusis,1,anamnesis
+# ── Dermatology (add 4) ──
+dermatology,psoriasis,Red scaly patches on elbows and knees,Plaque psoriasis,2,anamnesis
+dermatology,tinea,Round itchy patches on the torso,Tinea corporis,1,anamnesis
+dermatology,rosacea,Facial redness and flushing,Rosacea,1,anamnesis
+dermatology,urticaria,Recurrent raised itchy welts,Chronic urticaria,2,osce_full
+# ── Emergency (add 4) ──
+emergency,status_asthmaticus,Worsening shortness of breath unresponsive to inhalers,Acute severe asthma,2,osce_full
+emergency,diabetic_ketoacidosis,Confusion fruity breath and deep breathing,Diabetic ketoacidosis,2,osce_full
+emergency,pulmonary_embolism,Sudden chest pain and shortness of breath after long flight,Pulmonary embolism,3,osce_full
+emergency,heat_stroke,Collapse during a marathon — hot red and confused,Exertional heat stroke,1,anamnesis
+# ── Ophthalmology (add 4) ──
+ophthalmology,optic_neuritis,Sudden vision loss with pain on eye movement,Optic neuritis,3,osce_full
+ophthalmology,trichiasis,Eye pain and foreign body sensation,Trichiasis,1,anamnesis
+ophthalmology,strabismus,Crossed eye since childhood,Strabismus,2,anamnesis
+ophthalmology,posterior_vitreous,Flash of light and floaters in one eye,Posterior vitreous detachment,2,anamnesis

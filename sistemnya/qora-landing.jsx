@@ -141,18 +141,58 @@ function QLSpecialties() {
     }));
 }
 
+/* ── Region detection ── */
+function _detectRegion() {
+  // Cached?
+  try {
+    var cached = localStorage.getItem('qora_region');
+    if (cached) return cached;
+  } catch (e) {}
+  // Try timezone → country → region
+  var tz = '';
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
+  var indoTZ = /^Asia\/(Jakarta|Pontianak|Makassar|Jayapura)$/;
+  var aseanTZ = /^Asia\/(Bangkok|Singapore|Kuala_Lumpur|Ho_Chi_Minh|Manila|Phnom_Penh|Vientiane|Yangon)$/;
+  if (indoTZ.test(tz)) return 'indo';
+  if (aseanTZ.test(tz)) return 'asean';
+  // Fallback: navigator.language
+  var lang = (navigator.language || 'en-US').toLowerCase();
+  if (lang === 'id' || lang === 'id-id') return 'indo';
+  // Default: ROW
+  return 'row';
+}
+
 /* ── Pricing ── */
-function QLPricing() {
-  var plans = [
-    { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-    { name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-    { name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
-  ];
+function QLPricing(props) {
+  var region = (props && props.region) || 'row';
+  var prices, accentIdx;
+  if (region === 'indo') {
+    prices = [
+      { name: 'Free Trial', price: 'Rp0', period: '', sessions: '3', features: ['3 sesi gratis', 'Semua spesialisasi', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
+      { name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres'], cta: 'Langganan', accent: true },
+      { name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres', 'Hemat 30%'], cta: 'Langganan', accent: false },
+    ];
+    accentIdx = 1;
+  } else if (region === 'asean') {
+    prices = [
+      { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
+      { name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
+    ];
+    accentIdx = 1;
+  } else {
+    prices = [
+      { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
+      { name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
+    ];
+    accentIdx = 1;
+  }
   return React.createElement('div', { style: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
     gap: 16, alignItems: 'start',
   } },
-    plans.map(function(p, i) {
+    prices.map(function(p, i) {
       var isAccent = p.accent;
       return React.createElement('div', { key: p.name, className: 'as d' + i, style: {
         padding: 24, borderRadius: 'var(--r-xl)',
@@ -172,7 +212,7 @@ function QLPricing() {
         React.createElement('div', { style: { marginBottom: 16 } },
           React.createElement('span', { style: { fontSize: 28, fontWeight: 800 } }, p.price),
           React.createElement('span', { style: { fontSize: 13, fontWeight: 500, opacity: 0.7 } }, p.period)),
-        React.createElement('div', { style: { fontSize: 12, color: isAccent ? 'rgba(255,255,255,0.75)' : 'var(--text-3)', marginBottom: 16 } }, p.sessions + ' sessions'),
+        React.createElement('div', { style: { fontSize: 12, color: isAccent ? 'rgba(255,255,255,0.75)' : 'var(--text-3)', marginBottom: 16 } }, '' + p.sessions + (region === 'indo' ? ' sesi' : ' sessions')),
         React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 } },
           p.features.map(function(f) {
             return React.createElement('div', { key: f, style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: isAccent ? 'rgba(255,255,255,0.85)' : 'var(--text-2)' } },
@@ -338,7 +378,7 @@ function QLAuth({ mode, setMode, onLogin }) {
     try {
       if (!window.ApiDataStore) throw new Error('Backend not configured (set VITE_API_BASE).');
       const s = isSignup
-        ? await window.ApiDataStore.signup({ email, password, full_name: name })
+        ? await window.ApiDataStore.signup({ email, password, full_name: name, region: _detectRegion() })
         : await window.ApiDataStore.login(email, password);
       // ApiDataStore already saves to 'ophtha_api_auth'
       try { localStorage.setItem('ophtha_auth', JSON.stringify(s)); } catch (e) {}
@@ -385,6 +425,10 @@ function QLAuth({ mode, setMode, onLogin }) {
 function QoraLanding({ onLogin }) {
   const [view, setView] = React.useState('landing'); // landing | auth
   const [mode, setMode] = React.useState('login');
+  const [region, setRegion] = React.useState('');
+  React.useEffect(function () {
+    setRegion(_detectRegion());
+  }, []);
   const go = (m) => { setMode(m); setView('auth'); };
 
   const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: 1080, margin: '0 auto' } },
@@ -436,8 +480,8 @@ function QoraLanding({ onLogin }) {
         React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.' }))),
 
     // ── Pricing ──
-    React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you\u2019re ready to practise without limits.' },
-      React.createElement(QLPricing, null)),
+    React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you\\u2019re ready to practise without limits.' },
+      React.createElement(QLPricing, { region: region })),
 
     // ── Testimonial ──
     React.createElement(QLSection, { dark: true, subtitle: 'What early users say' },

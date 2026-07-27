@@ -2,7 +2,8 @@
 
   POST /api/billing/webhooks/lemonsqueezy  — MoR webhook (signature-verified)
   GET  /api/billing/me                     — current entitlement + usage
-  GET  /api/billing/plans                  — public plan catalogue
+  GET  /api/billing/plans                  — public plan catalogue (region-aware)
+  POST /api/billing/xendit/checkout/{plan} — Xendit hosted invoice (region-aware)
   GET  /api/billing/checkout/{plan}        — hosted checkout URL (+ user_id custom data)
   GET  /api/billing/portal                 — MoR-hosted customer portal link
 
@@ -27,27 +28,46 @@ _log = logging.getLogger("ophtha.billing")
 
 
 @router.get("/plans")
-def list_plans():
+def list_plans(region: str = "row"):
+    """Public plan catalogue. Accept optional `region` query (indo|asean|row)
+    to show localised prices. Unauthenticated callers should pass region
+    detected client-side."""
     s = get_settings()
     provider = "xendit" if xendit.is_configured(s) else ("lemonsqueezy" if s.lemonsqueezy_api_key else None)
-    return ok({"plans": plans.plan_catalog(s), "provider": provider,
-               "billing_enforced": s.billing_enforced})
+    return ok({
+        "plans": plans.plan_catalog(s, region),
+        "provider": provider,
+        "billing_enforced": s.billing_enforced,
+        "region": region,
+    })
 
 
 @router.post("/xendit/checkout/{plan}")
-def xendit_checkout(plan: str, user: User = Depends(get_current_user)):
-    """Create a Xendit hosted invoice for the plan and return its checkout URL."""
+def xendit_checkout(
+    plan: str,
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Create a Xendit hosted invoice for the plan, using the user's
+    stored region for pricing and currency."""
     s = get_settings()
     if plan not in plans.PAID_PLANS:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, "Unknown plan")
     if not xendit.is_configured(s):
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Xendit not configured")
+
+    # Use the user's stored region for pricing
+    region = (user.profile.region or "row") if user.profile else "row"
+    amount = plans.region_price(s, region, plan)
+    currency = plans.region_currency(region)
+
     try:
-        inv = xendit.create_invoice(s, plan, plans.plan_price(s, plan), user.id, user.email)
+        inv = xendit.create_invoice(s, plan, amount, user.id, user.email, currency_override=currency)
     except Exception as e:  # noqa: BLE001 — surface a clean 502, log the detail
         _log.error("[billing] xendit invoice failed: %s", e)
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Could not create invoice")
-    return ok({"checkout_url": inv["invoice_url"], "plan": plan, "invoice_id": inv["invoice_id"]})
+    return ok({"checkout_url": inv["invoice_url"], "plan": plan, "invoice_id": inv["invoice_id"],
+               "currency": currency, "amount": amount})
 
 
 @router.post("/webhooks/xendit")
@@ -73,6 +93,7 @@ async def xendit_webhook(request: Request, db: Session = Depends(get_db)):
 @router.get("/me")
 def my_entitlement(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
     ent = service.get_entitlement(db, user.id)
+    region = (user.profile.region or "row") if user.profile else "row"
     return ok({
         "plan": ent.plan,
         "status": ent.status,
@@ -80,6 +101,7 @@ def my_entitlement(user: User = Depends(get_current_user), db: Session = Depends
         "current_period_end": ent.current_period_end.isoformat() if ent.current_period_end else None,
         "usage": service.usage_this_period(db, user.id),
         "free_session_limit": get_settings().free_session_limit,
+        "region": region,
     })
 
 

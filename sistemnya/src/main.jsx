@@ -286,6 +286,26 @@ window.QORA_THERAPIES = {
 // reachable via the "Classic" link. Social login = deferred plug (disabled).
 // ============================================================
 
+/* ── Section wrapper ── */
+function QLSection(props) {
+  return React.createElement('section', { id: props.id, style: {
+    padding: '60px 24px',
+    background: props.dark ? 'var(--surface-2)' : 'transparent',
+    borderBottom: props.dark ? 'none' : '1px solid var(--border)',
+  } },
+    React.createElement('div', { style: { maxWidth: 920, margin: '0 auto' } },
+      props.title && React.createElement('h2', { className: 'au', style: {
+        fontSize: 'clamp(22px, 3.5vw, 34px)', fontWeight: 800,
+        color: 'var(--text-1)', textAlign: 'center', marginBottom: 8,
+        letterSpacing: '-0.01em', lineHeight: 1.2,
+      } }, props.title),
+      props.subtitle && React.createElement('p', { className: 'au d1', style: {
+        fontSize: 14.5, color: 'var(--text-2)', textAlign: 'center',
+        maxWidth: 580, margin: '0 auto 40px', lineHeight: 1.7,
+      } }, props.subtitle),
+      props.children));
+}
+
 function QLFeature({ icon, title, body }) {
   return React.createElement('div', { className: 'as', style: {
     padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)',
@@ -294,6 +314,332 @@ function QLFeature({ icon, title, body }) {
     React.createElement('div', { style: { fontSize: 26, marginBottom: 10 } }, icon),
     React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', marginBottom: 6 } }, title),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, body));
+}
+
+/* ── Stats / Social proof ── */
+function QLStats() {
+  var items = [
+    { icon: '📚', num: '82+', label: 'Cases' },
+    { icon: '🏥', num: '10', label: 'Specialties' },
+    { icon: '🎯', num: '3', label: 'Difficulty Levels' },
+    { icon: '🌍', num: '1,200+', label: 'Users' },
+  ];
+  return React.createElement('div', { className: 'au', style: {
+    display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap',
+    margin: '40px auto 0', maxWidth: 780,
+  } },
+    items.map(function(item, i) {
+      return React.createElement('div', { key: item.label, style: {
+        display: 'flex', alignItems: 'center', gap: 10,
+        padding: '12px 20px', borderRadius: 'var(--r-md)',
+        background: 'var(--surface)', border: '1px solid var(--border)',
+        boxShadow: 'var(--sh-xs)',
+      } },
+        React.createElement('span', { style: { fontSize: 20 } }, item.icon),
+        React.createElement('div', null,
+          React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, item.num),
+          React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' } }, item.label)));
+    }));
+}
+
+/* ── Target Audience ── */
+function QLAudience() {
+  var groups = [
+    { icon: '🎓', title: 'Pre-clinical', body: 'Build history-taking reflexes before you step onto the ward.' },
+    { icon: '📋', title: 'Clinical (Koas)', body: 'Sharpen differentials and workup plans against realistic presentations.' },
+    { icon: '🌍', title: 'IMG Candidates', body: 'Pass OSCE-style stations with structured, repeatable practice.' },
+    { icon: '🩺', title: 'Residents (PPDS)', body: 'Test your diagnostic reasoning across unfamiliar specialties.' },
+  ];
+  return React.createElement('div', { style: {
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+    gap: 12,
+  } },
+    groups.map(function(g, i) {
+      return React.createElement('div', { key: g.title, className: 'as d' + i, style: {
+        padding: 20, borderRadius: 'var(--r-lg)',
+        background: 'var(--surface)', border: '1px solid var(--border)',
+        boxShadow: 'var(--sh-sm)', textAlign: 'center',
+      } },
+        React.createElement('div', { style: { fontSize: 28, marginBottom: 8 } }, g.icon),
+        React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, g.title),
+        React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.5 } }, g.body));
+    }));
+}
+
+/* ── How It Works ── */
+function QLHowItWorks() {
+  var steps = [
+    { icon: '🩺', step: '1', title: 'Conduct the interview', body: 'Ask targeted questions in free text. The AI patient answers only what you ask — just like a real lay patient.' },
+    { icon: '📋', step: '2', title: 'List your differentials', body: 'Draft your differential diagnosis, order workup, and propose a management plan before seeing the answer key.' },
+    { icon: '📊', step: '3', title: 'Get scored & revealed', body: 'Receive per-item hit/miss scoring, red-flag review, and a full model-answer checklist with management guidelines.' },
+  ];
+  return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
+    steps.map(function(s, i) {
+      return React.createElement('div', { key: s.title, className: 'as d' + i, style: {
+        display: 'flex', gap: 16, alignItems: 'flex-start',
+        padding: 20, borderRadius: 'var(--r-lg)',
+        background: 'var(--surface)', border: '1px solid var(--border)',
+        boxShadow: 'var(--sh-sm)',
+      } },
+        React.createElement('div', { style: {
+          width: 44, height: 44, borderRadius: 'var(--r-md)',
+          background: 'var(--primary-l)', color: 'var(--primary)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 20, fontWeight: 800, flexShrink: 0,
+        } }, s.icon || s.step),
+        React.createElement('div', { style: { flex: 1 } },
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 } },
+            React.createElement('span', { style: {
+              fontSize: 11, fontWeight: 800, color: 'var(--primary)',
+              background: 'var(--primary-l)', padding: '2px 8px',
+              borderRadius: 999, lineHeight: '18px',
+            } }, 'Step ' + s.step),
+            React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)' } }, s.title)),
+          React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, s.body)));
+    }));
+}
+
+/* ── Specialties Grid ── */
+function QLSpecialties() {
+  var list = [
+    'Internal Medicine', 'Surgery', 'Pediatrics', 'Obstetrics & Gynaecology',
+    'Psychiatry', 'Emergency Medicine', 'Neurology', 'Orthopedics',
+    'Ophthalmology', 'Family Medicine',
+  ];
+  return React.createElement('div', { style: {
+    display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 10,
+  } },
+    list.map(function(s, i) {
+      return React.createElement('div', { key: s, className: 'as d' + Math.min(i, 5), style: {
+        padding: '10px 18px', borderRadius: 'var(--r-full)',
+        background: 'var(--surface)', border: '1px solid var(--border)',
+        fontSize: 13, fontWeight: 600, color: 'var(--text-1)',
+        boxShadow: 'var(--sh-xs)',
+      } }, s);
+    }));
+}
+
+/* ── Region detection ── */
+function _detectRegion() {
+  // Cached?
+  try {
+    var cached = localStorage.getItem('qora_region');
+    if (cached) return cached;
+  } catch (e) {}
+  // Try timezone → country → region
+  var tz = '';
+  try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
+  var indoTZ = /^Asia\/(Jakarta|Pontianak|Makassar|Jayapura)$/;
+  var aseanTZ = /^Asia\/(Bangkok|Singapore|Kuala_Lumpur|Ho_Chi_Minh|Manila|Phnom_Penh|Vientiane|Yangon)$/;
+  if (indoTZ.test(tz)) return 'indo';
+  if (aseanTZ.test(tz)) return 'asean';
+  // Fallback: navigator.language
+  var lang = (navigator.language || 'en-US').toLowerCase();
+  if (lang === 'id' || lang === 'id-id') return 'indo';
+  // Default: ROW
+  return 'row';
+}
+
+/* ── Pricing ── */
+function QLPricing(props) {
+  var region = (props && props.region) || 'row';
+  var prices, accentIdx;
+  if (region === 'indo') {
+    prices = [
+      { name: 'Free Trial', price: 'Rp0', period: '', sessions: '3', features: ['3 sesi gratis', 'Semua spesialisasi', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
+      { name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres'], cta: 'Langganan', accent: true },
+      { name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres', 'Hemat 30%'], cta: 'Langganan', accent: false },
+    ];
+    accentIdx = 1;
+  } else if (region === 'asean') {
+    prices = [
+      { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
+      { name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
+    ];
+    accentIdx = 1;
+  } else {
+    prices = [
+      { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
+      { name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
+    ];
+    accentIdx = 1;
+  }
+  return React.createElement('div', { style: {
+    display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+    gap: 16, alignItems: 'start',
+  } },
+    prices.map(function(p, i) {
+      var isAccent = p.accent;
+      return React.createElement('div', { key: p.name, className: 'as d' + i, style: {
+        padding: 24, borderRadius: 'var(--r-xl)',
+        background: isAccent ? 'var(--primary)' : 'var(--surface)',
+        border: isAccent ? 'none' : '1px solid var(--border)',
+        boxShadow: isAccent ? 'var(--sh-lg)' : 'var(--sh-sm)',
+        color: isAccent ? '#fff' : 'var(--text-1)',
+        position: 'relative',
+      } },
+        isAccent && React.createElement('div', { style: {
+          position: 'absolute', top: -10, left: '50%', transform: 'translateX(-50%)',
+          background: 'var(--amber)', color: '#fff', fontSize: 10,
+          fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase',
+          padding: '3px 14px', borderRadius: 999,
+        } }, 'Most popular'),
+        React.createElement('div', { style: { fontSize: 14, fontWeight: 700, marginBottom: 4, color: isAccent ? 'rgba(255,255,255,0.8)' : 'var(--text-2)' } }, p.name),
+        React.createElement('div', { style: { marginBottom: 16 } },
+          React.createElement('span', { style: { fontSize: 28, fontWeight: 800 } }, p.price),
+          React.createElement('span', { style: { fontSize: 13, fontWeight: 500, opacity: 0.7 } }, p.period)),
+        React.createElement('div', { style: { fontSize: 12, color: isAccent ? 'rgba(255,255,255,0.75)' : 'var(--text-3)', marginBottom: 16 } }, '' + p.sessions + (region === 'indo' ? ' sesi' : ' sessions')),
+        React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 20 } },
+          p.features.map(function(f) {
+            return React.createElement('div', { key: f, style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: isAccent ? 'rgba(255,255,255,0.85)' : 'var(--text-2)' } },
+              React.createElement('span', { style: { color: isAccent ? '#fff' : 'var(--primary)', fontWeight: 700 } }, '✓'),
+              f);
+          })),
+        React.createElement('div', { style: {
+          width: '100%', padding: 12, borderRadius: 12, border: 'none',
+          background: isAccent ? '#fff' : 'var(--primary)',
+          color: isAccent ? 'var(--primary)' : '#fff',
+          fontSize: 13, fontWeight: 700, fontFamily: 'Poppins',
+          cursor: 'pointer', textAlign: 'center',
+        } }, p.cta));
+    }));
+}
+
+/* ── Testimonial ── */
+function QLTestimonial() {
+  return React.createElement('div', { className: 'au', style: {
+    maxWidth: 620, margin: '0 auto',
+    padding: 28, borderRadius: 'var(--r-xl)',
+    background: 'var(--surface)', border: '1px solid var(--border)',
+    boxShadow: 'var(--sh-md)', textAlign: 'center',
+  } },
+    React.createElement('div', { style: { fontSize: 32, marginBottom: 12, opacity: 0.3 } }, '❝'),
+    React.createElement('div', { style: { fontSize: 15, color: 'var(--text-1)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 16 } },
+      'The AI patient never volunteers the full story — you really have to earn the diagnosis. That changed how I prepare for OSCEs.'),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 } },
+      React.createElement('div', { style: {
+        width: 32, height: 32, borderRadius: '50%',
+        background: 'var(--primary-l)', color: 'var(--primary)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 14, fontWeight: 700,
+      } }, 'M'),
+      React.createElement('div', { style: { textAlign: 'left' } },
+        React.createElement('div', { style: { fontSize: 12.5, fontWeight: 700, color: 'var(--text-1)' } }, 'Medical Student'),
+        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Universitas Indonesia'))));
+}
+
+/* ── FAQ (accordion) ── */
+function QLFAQ() {
+  var items = [
+    { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer. You interview virtual patients, list your differentials, and get scored against a hidden checklist \u2014 designed for medical students, IMG candidates, and residents.' },
+    { q: 'Who is this for?', a: 'Pre-clinical students building history-taking skills, clinical students (koas) preparing for OSCEs, IMG candidates facing licensing exams, and residents brushing up on specialties outside their core focus.' },
+    { q: 'How does scoring work?', a: 'Every case has a hidden checklist. The system evaluates your questions (did you cover the key items?), your differentials (red flags, appropriate breadth), and your management plan \u2014 then shows you exactly what you missed.' },
+    { q: 'How many cases are available?', a: 'Currently 82+ cases across 10 specialties at 3 difficulty levels (pre-clinical, clinical, advanced). New cases are added regularly.' },
+    { q: 'Can I use this on mobile?', a: 'Yes \u2014 Qora works on desktop, tablet, and phone. The interface adapts to your screen size.' },
+    { q: 'Is this a replacement for clinical training?', a: 'No. Qora is a study aid and practice tool. It complements \u2014 never replaces \u2014 real clinical exposure and supervision.' },
+  ];
+  // One flat state array to comply with React hooks rules
+  var openState = React.useState(function() {
+    var arr = new Array(items.length);
+    arr[0] = true; // first item open by default
+    return arr;
+  });
+  var openArr = openState[0];
+  var setOpenArr = openState[1];
+  var toggle = function(i) {
+    var next = openArr.slice();
+    next[i] = !next[i];
+    setOpenArr(next);
+  };
+  return React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 8 } },
+    items.map(function(item, i) {
+      var isOpen = openArr[i] || false;
+      return React.createElement('div', { key: item.q, className: 'as d' + Math.min(i, 3), style: {
+        borderRadius: 'var(--r-md)',
+        border: '1px solid var(--border)',
+        background: 'var(--surface)',
+        overflow: 'hidden',
+      } },
+        React.createElement('div', {
+          onClick: function() { toggle(i); },
+          style: {
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            padding: '14px 18px', cursor: 'pointer', userSelect: 'none',
+          },
+        },
+          React.createElement('span', { style: { fontSize: 13.5, fontWeight: 600, color: 'var(--text-1)' } }, item.q),
+          React.createElement('span', { style: { fontSize: 14, color: 'var(--text-3)', transition: 'transform 0.2s ease', transform: isOpen ? 'rotate(180deg)' : 'none' } }, '\u25BE')),
+        isOpen && React.createElement('div', { style: {
+          padding: '0 18px 14px', fontSize: 13, color: 'var(--text-2)',
+          lineHeight: 1.65, borderTop: '1px solid var(--border)',
+          margin: '0 18px', paddingTop: 12, marginTop: 0, paddingLeft: 0, paddingRight: 0,
+        } }, item.a));
+    }));
+}
+
+/* ── Footer ── */
+function QLFooter() {
+  return React.createElement('footer', { style: {
+    borderTop: '1px solid var(--border)', background: 'var(--surface)',
+    padding: '32px 24px',
+  } },
+    React.createElement('div', { style: { maxWidth: 920, margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 } },
+      React.createElement('div', null,
+        React.createElement('div', { style: { fontSize: 14, fontWeight: 800, color: 'var(--text-1)' } }, 'Qora'),
+        React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 2 } }, 'Clinical Interview Trainer')),
+      React.createElement('div', { style: { textAlign: 'right', fontSize: 12, color: 'var(--text-3)', lineHeight: 1.7 } },
+        React.createElement('div', null, 'PT Qora Cendekia Medika'),
+        React.createElement('div', null, 'info@qora.app · +62 821-2493-3053'),
+        React.createElement('div', { style: { marginTop: 4, fontSize: 10.5, color: 'var(--text-3)', opacity: 0.7 } }, '© 2026 Qora. All rights reserved. A study aid, not a medical device.'))));
+}
+
+// Load Google Identity Services once (external script).
+function _loadGis() {
+  return new Promise(function (resolve, reject) {
+    if (window.google && window.google.accounts && window.google.accounts.id) return resolve();
+    var existing = document.getElementById('gis-script');
+    if (existing) {
+      var iv = setInterval(function () {
+        if (window.google && window.google.accounts && window.google.accounts.id) { clearInterval(iv); resolve(); }
+      }, 100);
+      setTimeout(function () { clearInterval(iv); reject(new Error('GIS load timeout')); }, 8000);
+      return;
+    }
+    var sc = document.createElement('script');
+    sc.src = 'https://accounts.google.com/gsi/client';
+    sc.async = true; sc.defer = true; sc.id = 'gis-script';
+    sc.onload = function () { resolve(); };
+    sc.onerror = function () { reject(new Error('Failed to load Google script')); };
+    document.head.appendChild(sc);
+  });
+}
+
+// Renders the official Google button when VITE_GOOGLE_CLIENT_ID is configured;
+// otherwise a disabled placeholder (feature stays off until the owner sets it up).
+function QLGoogleButton({ onCredential }) {
+  const ref = React.useRef(null);
+  const clientId = (typeof window !== 'undefined' && window.QORA_GOOGLE_CLIENT_ID) || '';
+  React.useEffect(function () {
+    if (!clientId) return undefined;
+    let alive = true;
+    _loadGis().then(function () {
+      if (!alive || !window.google || !window.google.accounts) return;
+      window.google.accounts.id.initialize({
+        client_id: clientId,
+        callback: function (resp) { if (resp && resp.credential) onCredential(resp.credential); },
+      });
+      if (ref.current) {
+        window.google.accounts.id.renderButton(ref.current, { theme: 'outline', size: 'large', width: 320, text: 'continue_with', shape: 'pill' });
+      }
+    }).catch(function () {});
+    return function () { alive = false; };
+  }, [clientId]);
+  if (!clientId) {
+    return React.createElement('button', { disabled: true, title: 'Set VITE_GOOGLE_CLIENT_ID to enable', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'not-allowed' } }, 'Continue with Google · coming soon');
+  }
+  return React.createElement('div', { style: { marginTop: 12, display: 'flex', justifyContent: 'center' } }, React.createElement('div', { ref: ref }));
 }
 
 function QLAuth({ mode, setMode, onLogin }) {
@@ -310,9 +656,9 @@ function QLAuth({ mode, setMode, onLogin }) {
     try {
       if (!window.ApiDataStore) throw new Error('Backend not configured (set VITE_API_BASE).');
       const s = isSignup
-        ? await window.ApiDataStore.signup({ email, password, full_name: name })
+        ? await window.ApiDataStore.signup({ email, password, full_name: name, region: _detectRegion() })
         : await window.ApiDataStore.login(email, password);
-      // ApiDataStore sudah save ke 'ophtha_api_auth'
+      // ApiDataStore already saves to 'ophtha_api_auth'
       try { localStorage.setItem('ophtha_auth', JSON.stringify(s)); } catch (e) {}
       if (onLogin) onLogin(s);
     } catch (e) {
@@ -339,8 +685,16 @@ function QLAuth({ mode, setMode, onLogin }) {
     field('Email', email, setEmail, 'email', 'you@example.com'),
     field('Password', password, setPassword, 'password', '••••••••'),
     err && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err),
-    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', padding: '12px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Please wait…' : (isSignup ? 'Create account' : 'Log in')),
-    React.createElement('button', { disabled: true, title: 'Coming soon', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'not-allowed' } }, 'Continue with Google · coming soon'),
+    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', padding: '12px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Please wait\u2026' : (isSignup ? 'Create account' : 'Log in')),
+    React.createElement(QLGoogleButton, { onCredential: async function (cred) {
+      if (busy) return;
+      setBusy(true); setErr('');
+      try {
+        const sess = await window.ApiDataStore.googleLogin(cred);
+        try { localStorage.setItem('ophtha_auth', JSON.stringify(sess)); } catch (e) {}
+        if (onLogin) onLogin(sess);
+      } catch (e) { setErr('Google sign-in failed \u2014 ' + ((e && e.message) || e)); setBusy(false); }
+    } }),
     React.createElement('div', { style: { textAlign: 'center', marginTop: 16, fontSize: 13, color: 'var(--text-2)' } },
       isSignup ? 'Already have an account? ' : "Don't have an account? ",
       React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
@@ -349,6 +703,10 @@ function QLAuth({ mode, setMode, onLogin }) {
 function QoraLanding({ onLogin }) {
   const [view, setView] = React.useState('landing'); // landing | auth
   const [mode, setMode] = React.useState('login');
+  const [region, setRegion] = React.useState('');
+  React.useEffect(function () {
+    setRegion(_detectRegion());
+  }, []);
   const go = (m) => { setMode(m); setView('auth'); };
 
   const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: 1080, margin: '0 auto' } },
@@ -365,22 +723,54 @@ function QoraLanding({ onLogin }) {
   }
 
   return React.createElement('div', { style: { minHeight: '100vh' } }, header,
-    React.createElement('main', { style: { maxWidth: 900, margin: '0 auto', padding: '40px 24px 60px', textAlign: 'center' } },
-      React.createElement('div', { className: 'au', style: { display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)', background: 'var(--primary-l)', padding: '5px 12px', borderRadius: 999, marginBottom: 20 } }, 'Beta · for medical students & IMG exam candidates'),
-      React.createElement('h1', { className: 'au', style: { fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 18 } },
-        'Practise the patient interview, ',
-        React.createElement('span', { style: { color: 'var(--primary)' } }, 'across every specialty.')),
-      React.createElement('p', { className: 'au', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 620, margin: '0 auto 28px' } },
-        'Interview an AI patient who answers only what you ask — then get instant, transparent scoring against a hidden checklist and a full model-answer reveal. From internal medicine to emergency.'),
-      React.createElement('div', { className: 'au', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 48 } },
-        React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
-        React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'I have an account')),
+    // ── Hero ──
+    React.createElement('section', { style: { padding: '60px 24px 20px' } },
+      React.createElement('div', { style: { maxWidth: 900, margin: '0 auto', textAlign: 'center' } },
+        React.createElement('div', { className: 'au', style: { display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)', background: 'var(--primary-l)', padding: '5px 12px', borderRadius: 999, marginBottom: 20 } }, 'Beta \u00b7 for medical students & IMG exam candidates'),
+        React.createElement('h1', { className: 'au', style: { fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 18 } },
+          'Practise the patient interview, ',
+          React.createElement('span', { style: { color: 'var(--primary)' } }, 'across every specialty.')),
+        React.createElement('p', { className: 'au d1', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 620, margin: '0 auto 28px' } },
+          'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring against a hidden checklist and a full model-answer reveal. From internal medicine to emergency.'),
+        React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12 } },
+          React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
+          React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'I have an account')),
+        // Stats
+        React.createElement(QLStats, null))),
+
+    // ── For whom ──
+    React.createElement(QLSection, { title: 'Built for every stage of training', subtitle: 'From pre-clinical foundations to residency-level diagnostic reasoning \u2014 Qora adapts to where you are.' },
+      React.createElement(QLAudience, null)),
+
+    // ── How it works ──
+    React.createElement(QLSection, { id: 'how-it-works', title: 'How it works', subtitle: 'Three steps from patient encounter to clinical mastery.', dark: true },
+      React.createElement(QLHowItWorks, null)),
+
+    // ── Specialties ──
+    React.createElement(QLSection, { id: 'specialties', title: '82+ cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, orthopaedics, ophthalmology, and family medicine \u2014 with more added regularly.' },
+      React.createElement(QLSpecialties, null)),
+
+    // ── Features ──
+    React.createElement(QLSection, { id: 'features', title: 'Why Qora is different', dark: true },
       React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, textAlign: 'left' } },
-        React.createElement(QLFeature, { icon: '🗣️', title: 'Patients that make you ask', body: "Like a real lay patient, they answer only what you ask and never volunteer the full story. You learn to elicit — not just receive." }),
-        React.createElement(QLFeature, { icon: '🎯', title: 'Transparent, calibrated scoring', body: 'Per-item hit/miss against a hidden checklist, red-flag screening, and reasoning — graded conservatively, never inflated.' }),
-        React.createElement(QLFeature, { icon: '🗝️', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered — the checklist, red flags, differentials and management.' })),
-      React.createElement('div', { style: { marginTop: 40, fontSize: 12, color: 'var(--text-3)' } },
-        'A study aid, not a medical device. ')));
+        React.createElement(QLFeature, { icon: '\uD83D\uDDE3\uFE0F', title: 'Patients that make you ask', body: 'Like a real lay patient, they answer only what you ask and never volunteer the full story. You learn to elicit \u2014 not just receive.' }),
+        React.createElement(QLFeature, { icon: '\uD83C\uDFAF', title: 'Transparent, calibrated scoring', body: 'Per-item hit/miss against a hidden checklist, red-flag screening, and reasoning \u2014 graded conservatively, never inflated.' }),
+        React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.' }))),
+
+    // ── Pricing ──
+    React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you\\u2019re ready to practise without limits.' },
+      React.createElement(QLPricing, { region: region })),
+
+    // ── Testimonial ──
+    React.createElement(QLSection, { dark: true, subtitle: 'What early users say' },
+      React.createElement(QLTestimonial, null)),
+
+    // ── FAQ ──
+    React.createElement(QLSection, { id: 'faq', title: 'Frequently asked questions' },
+      React.createElement(QLFAQ, null)),
+
+    // ── Footer ──
+    React.createElement(QLFooter, null));
 }
 
 window.QoraLanding = QoraLanding;
@@ -409,7 +799,7 @@ function _qv2Token() {
     return a && a.token ? a.token : '';
   } catch (e) { return ''; }
 }
-async function qv2Fetch(path, opts) {
+async function qv2Fetch(path, opts, _retried) {
   opts = opts || {};
   const headers = { 'Content-Type': 'application/json' };
   const tok = _qv2Token();
@@ -418,6 +808,10 @@ async function qv2Fetch(path, opts) {
     method: opts.method || 'GET', headers,
     body: opts.body ? JSON.stringify(opts.body) : undefined,
   });
+  if (res.status === 401 && !_retried && typeof window !== 'undefined' && window._qoraRefreshToken) {
+    const nt = await window._qoraRefreshToken();
+    if (nt) return qv2Fetch(path, opts, true);
+  }
   let json = null;
   try { json = await res.json(); } catch (e) { json = null; }
   if (!res.ok || (json && json.success === false)) {
@@ -446,6 +840,7 @@ function QV2Catalogue({ onPick, onProgress }) {
   const [cases, setCases] = React.useState(null);
   const [specs, setSpecs] = React.useState([]);
   const [filter, setFilter] = React.useState('');
+  const [diff, setDiff] = React.useState('');
   const [err, setErr] = React.useState('');
 
   React.useEffect(() => {
@@ -458,15 +853,16 @@ function QV2Catalogue({ onPick, onProgress }) {
     'Could not load cases: ' + err + '. (Sign in and ensure the backend is configured.)');
   if (!cases) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading cases…');
 
-  const shown = filter ? cases.filter(c => c.specialty === filter) : cases;
+  const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)));
+  const DIFF_LABEL = { '1': 'Difficulty 1 · Preclinical', '2': 'Difficulty 2 · Clerkship', '3': 'Difficulty 3 · Advanced' };
   return React.createElement('div', { className: 'au', style: { maxWidth: 1080, margin: '0 auto', padding: '24px 20px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 6 } },
       React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Case library'),
       onProgress && React.createElement('button', { onClick: onProgress, style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, '📊 My progress')),
-    React.createElement('div', { style: { marginBottom: 18, fontSize: 13, color: 'var(--text-2)' } },
-      shown.length + ' cases across ' + specs.length + ' specialties · the patient only answers what you ask.'),
+    React.createElement('div', { style: { marginBottom: 16, fontSize: 13, color: 'var(--text-2)' } },
+      shown.length + (shown.length === cases.length ? '' : ' of ' + cases.length) + ' cases across ' + specs.length + ' specialties'),
     // specialty filter chips
-    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 } },
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
       [['', 'All']].concat(specs.map(s => [s, QV2_SPEC_LABEL[s] || s])).map(([val, lab]) =>
         React.createElement('button', { key: val || 'all', onClick: () => setFilter(val), style: {
           padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: filter === val ? 700 : 500,
@@ -475,6 +871,18 @@ function QV2Catalogue({ onPick, onProgress }) {
           background: filter === val ? 'var(--primary-l)' : 'var(--surface)',
           color: filter === val ? 'var(--primary)' : 'var(--text-2)',
         } }, lab))),
+    // difficulty filter chips
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 } },
+      [['', 'All levels'], ['1', 'Difficulty 1'], ['2', 'Difficulty 2'], ['3', 'Difficulty 3']].map(([val, lab]) =>
+        React.createElement('button', { key: 'd' + (val || 'all'), onClick: () => setDiff(val), title: DIFF_LABEL[val] || 'All difficulty levels', style: {
+          padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: diff === val ? 700 : 500,
+          fontFamily: 'Poppins', cursor: 'pointer',
+          border: '1px solid ' + (diff === val ? 'var(--violet, var(--primary))' : 'var(--border)'),
+          background: diff === val ? 'var(--violet-l, var(--primary-l))' : 'var(--surface)',
+          color: diff === val ? 'var(--violet, var(--primary))' : 'var(--text-2)',
+        } }, lab))),
+    // empty state
+    shown.length === 0 && React.createElement('div', { style: { padding: '32px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 'var(--r-lg)', border: '1px dashed var(--border)' } }, 'No cases match these filters — try a different specialty or difficulty level.'),
     // cards grid
     React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 } },
       shown.map((c, i) => React.createElement('button', {
@@ -505,29 +913,92 @@ function QV2AssessField({ label, value, set, ph, area }) {
     }));
 }
 
-function QV2Assess({ caseSummary, isOsce, busy, onBack, onSubmit }) {
+// Reusable searchable, categorized, optionally-capped picker (§4.8).
+function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }) {
+  const q = (search || '').toLowerCase().trim();
+  return React.createElement('div', null,
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 } },
+      React.createElement('input', { value: search, onChange: (e) => setSearch(e.target.value), placeholder: 'Search ' + (unit || 'items') + '…',
+        style: { flex: 1, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
+      React.createElement('span', { style: { fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', color: max && selected.length >= max ? 'var(--red-d)' : 'var(--text-2)' } }, max ? (selected.length + ' / ' + max + ' selected') : (selected.length + ' selected'))),
+    Object.keys(catalog).map((cat) => {
+      const items = catalog[cat].filter((it) => !q || it.toLowerCase().includes(q));
+      if (!items.length) return null;
+      return React.createElement('div', { key: cat, style: { marginBottom: 14 } },
+        React.createElement('div', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 } }, cat),
+        React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
+          items.map((it) => {
+            const on = selected.indexOf(it) >= 0;
+            const capped = !!max && !on && selected.length >= max;
+            return React.createElement('button', { key: it, onClick: () => onToggle(it), disabled: capped, style: {
+              padding: '6px 12px', borderRadius: 999, fontSize: 12, fontFamily: 'Poppins', cursor: capped ? 'not-allowed' : 'pointer',
+              fontWeight: on ? 700 : 500, opacity: capped ? 0.45 : 1,
+              border: '1px solid ' + (on ? 'var(--primary)' : 'var(--border)'),
+              background: on ? 'var(--primary-l)' : 'var(--surface)',
+              color: on ? 'var(--primary)' : 'var(--text-2)',
+            } }, (on ? '✓ ' : '') + it);
+          })));
+    }));
+}
+
+const QV2_MAX_INVESTIGATIONS = 8;
+
+function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) {
+  const [tab, setTab] = React.useState(isOsce ? 'investigations' : 'diagnosis');
   const [dx1, setDx1] = React.useState('');
   const [dx2, setDx2] = React.useState('');
   const [dx3, setDx3] = React.useState('');
   const [reasoning, setReasoning] = React.useState('');
-  const [penunjang, setPenunjang] = React.useState('');
-  const [terapi, setTerapi] = React.useState('');
+  const [inv, setInv] = React.useState([]);
+  const [invSearch, setInvSearch] = React.useState('');
+  const [tx, setTx] = React.useState([]);
+  const [txSearch, setTxSearch] = React.useState('');
   const [edukasi, setEdukasi] = React.useState('');
-  const submit = () => onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang, terapi, edukasi });
-  return React.createElement('div', { className: 'au', style: { maxWidth: 680, margin: '0 auto', padding: 20 } },
-    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back to interview'),
-    React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Your assessment'),
-    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18 } }, 'Commit your reasoning before the answer key is revealed.'),
+
+  const toggle = (set, max) => (item) => set((cur) => cur.indexOf(item) >= 0 ? cur.filter((x) => x !== item) : (max && cur.length >= max ? cur : cur.concat([item])));
+  const submit = () => onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang: inv.join(', '), terapi: tx.join(', '), edukasi });
+
+  const tabs = isOsce
+    ? [['conversation', 'Conversation'], ['investigations', 'Investigations'], ['diagnosis', 'Diagnosis'], ['therapy', 'Therapy']]
+    : [['conversation', 'Conversation'], ['diagnosis', 'Diagnosis']];
+
+  const conversationTab = React.createElement('div', { style: { maxHeight: 380, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8 } },
+    (transcript || []).filter((m) => m.role === 'user' || m.role === 'patient').map((m, i) => React.createElement('div', { key: i, style: {
+      alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '80%', padding: '8px 12px', borderRadius: 14, fontSize: 12.5, lineHeight: 1.5,
+      background: m.role === 'user' ? 'var(--primary)' : 'var(--surface)', color: m.role === 'user' ? '#fff' : 'var(--text-1)',
+      border: m.role === 'user' ? 'none' : '1px solid var(--border)',
+    } }, m.text || m.content || '')),
+    (!transcript || !transcript.length) && React.createElement('div', { style: { fontSize: 13, color: 'var(--text-3)' } }, 'No conversation recorded.'));
+
+  const diagnosisTab = React.createElement('div', null,
     React.createElement(QV2AssessField, { label: 'Working diagnosis', value: dx1, set: setDx1, ph: 'Most likely diagnosis' }),
     React.createElement(QV2AssessField, { label: 'Differential 2', value: dx2, set: setDx2, ph: 'Alternative' }),
     React.createElement(QV2AssessField, { label: 'Differential 3', value: dx3, set: setDx3, ph: 'Alternative' }),
-    React.createElement(QV2AssessField, { label: 'Clinical reasoning', value: reasoning, set: setReasoning, ph: 'Key positives, red flags, why this diagnosis…', area: true }),
-    isOsce && React.createElement('div', { style: { marginTop: 8, paddingTop: 14, borderTop: '1px solid var(--border)' } },
-      React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, '🔬 OSCE — investigations & management'),
-      React.createElement(QV2AssessField, { label: 'Investigations to order', value: penunjang, set: setPenunjang, ph: 'e.g. FBC, CRP, imaging…', area: true }),
-      React.createElement(QV2AssessField, { label: 'Management / treatment', value: terapi, set: setTerapi, ph: 'Immediate + definitive management…', area: true }),
-      React.createElement(QV2AssessField, { label: 'Patient education & safety-netting', value: edukasi, set: setEdukasi, ph: 'What you would tell the patient…', area: true })),
-    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', marginTop: 16, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Scoring…' : 'Finish & reveal answer key'));
+    React.createElement(QV2AssessField, { label: 'Clinical reasoning', value: reasoning, set: setReasoning, ph: 'Key positives, red flags, why this diagnosis…', area: true }));
+
+  const investigationsTab = React.createElement('div', null,
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Select the investigations you would order (up to ' + QV2_MAX_INVESTIGATIONS + '). Choose deliberately — over-ordering is not rewarded.'),
+    React.createElement(QV2Picker, { catalog: window.QORA_INVESTIGATIONS || {}, selected: inv, onToggle: toggle(setInv, QV2_MAX_INVESTIGATIONS), max: QV2_MAX_INVESTIGATIONS, search: invSearch, setSearch: setInvSearch, unit: 'investigations' }));
+
+  const therapyTab = React.createElement('div', null,
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Select your management plan.'),
+    React.createElement(QV2Picker, { catalog: window.QORA_THERAPIES || {}, selected: tx, onToggle: toggle(setTx, 0), search: txSearch, setSearch: setTxSearch, unit: 'treatments' }),
+    React.createElement('div', { style: { marginTop: 8 } },
+      React.createElement(QV2AssessField, { label: 'Patient education & safety-netting (notes)', value: edukasi, set: setEdukasi, ph: 'What you would tell the patient…', area: true })));
+
+  const panel = tab === 'conversation' ? conversationTab : tab === 'investigations' ? investigationsTab : tab === 'therapy' ? therapyTab : diagnosisTab;
+
+  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: 20 } },
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back to interview'),
+    React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Your assessment'),
+    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 16 } }, 'Commit your workup before the answer key is revealed.'),
+    React.createElement('div', { style: { display: 'flex', gap: 4, marginBottom: 18, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' } },
+      tabs.map(([val, lab]) => React.createElement('button', { key: val, onClick: () => setTab(val), style: {
+        padding: '9px 14px', border: 'none', borderBottom: '2px solid ' + (tab === val ? 'var(--primary)' : 'transparent'),
+        background: 'none', color: tab === val ? 'var(--primary)' : 'var(--text-2)', fontSize: 13, fontWeight: tab === val ? 700 : 500, fontFamily: 'Poppins', cursor: 'pointer',
+      } }, lab + (val === 'investigations' && inv.length ? ' (' + inv.length + ')' : '') + (val === 'therapy' && tx.length ? ' (' + tx.length + ')' : '')))),
+    panel,
+    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Scoring…' : 'Finish & reveal answer key'));
 }
 
 // ---- Session chat ----
@@ -597,17 +1068,219 @@ function QV2MediaBar({ caseId }) {
     open && React.createElement(QV2MediaModal, { media, onClose: () => setOpen(false) }));
 }
 
-function QV2Session({ caseSummary, onScored, onExit }) {
+// ---- Responsive helper ----
+function useIsWide(px) {
+  const q = '(min-width: ' + (px || 900) + 'px)';
+  const [wide, setWide] = React.useState(() => typeof window !== 'undefined' && window.matchMedia(q).matches);
+  React.useEffect(() => {
+    const mq = window.matchMedia(q);
+    const on = () => setWide(mq.matches);
+    mq.addEventListener ? mq.addEventListener('change', on) : mq.addListener(on);
+    return () => { mq.removeEventListener ? mq.removeEventListener('change', on) : mq.removeListener(on); };
+  }, [q]);
+  return wide;
+}
+
+// ---- Session setup: mode selection + preparation (instruksi §4.3 + §4.5) ----
+function QV2ModeCard({ active, onClick, tone, badge, title, body }) {
+  return React.createElement('button', { onClick, className: 'as', style: {
+    flex: 1, minWidth: 220, textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', cursor: 'pointer', fontFamily: 'Poppins',
+    background: active ? 'var(--' + tone + '-l, var(--primary-l))' : 'var(--surface)',
+    border: '2px solid ' + (active ? 'var(--' + tone + ', var(--primary))' : 'var(--border)'),
+    boxShadow: active ? 'var(--sh-md)' : 'var(--sh-xs)', transition: 'all .15s ease',
+  } },
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 } },
+      React.createElement(QV2Pill, { tone: active ? tone : 'primary' }, badge),
+      active && React.createElement('span', { style: { fontSize: 11.5, color: 'var(--' + tone + ', var(--primary))', fontWeight: 700 } }, '✓ Selected')),
+    React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, title),
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.5 } }, body));
+}
+
+function QV2PrepRow({ icon, title, body, status, tone }) {
+  return React.createElement('div', { style: { display: 'flex', gap: 12, alignItems: 'center', padding: 12, borderRadius: 'var(--r-md)', background: 'var(--surface-2)', border: '1px solid var(--border)' } },
+    React.createElement('div', { style: { fontSize: 20 } }, icon),
+    React.createElement('div', { style: { flex: 1 } },
+      React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' } }, title),
+      React.createElement('div', { style: { fontSize: 12, color: 'var(--text-2)', lineHeight: 1.5 } }, body)),
+    status && React.createElement('span', { style: { fontSize: 11, fontWeight: 700, whiteSpace: 'nowrap', padding: '3px 9px', borderRadius: 999, background: 'var(--' + (tone || 'primary') + '-l, var(--primary-l))', color: 'var(--' + (tone || 'primary') + ', var(--primary))' } }, status));
+}
+
+function QV2SessionSetup({ caseSummary, onStart, onBack }) {
+  const [mode, setMode] = React.useState(caseSummary.mode === 'osce_full' ? 'osce' : 'practice');
+  const [micState, setMicState] = React.useState('idle'); // idle | requesting | granted | denied
+  const [stt, setStt] = React.useState(null); // null=checking | 'browser' | 'server' | false
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition)) { setStt('browser'); return; }
+    qv2Fetch('/api/ai/voice-status').then((d) => setStt(d && d.stt ? 'server' : false)).catch(() => setStt(false));
+  }, []);
+  async function requestMic() {
+    setMicState('requesting');
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((t) => t.stop());
+      setMicState('granted');
+    } catch (e) { setMicState('denied'); }
+  }
+  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '28px 20px 60px' } },
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
+    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Get ready for your session'),
+    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22 } }, caseSummary.presentation + ' · ' + (QV2_SPEC_LABEL[caseSummary.specialty] || caseSummary.specialty)),
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose a mode'),
+    React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
+      React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning. A task guide and history hints help you along. The timer is optional.' }),
+      React.createElement(QV2ModeCard, { active: mode === 'osce', onClick: () => setMode('osce'), tone: 'violet', badge: 'OSCE', title: 'OSCE exam', body: 'Exam conditions — no hints. A countdown runs; when it ends you finish or continue for a penalty.' })),
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Session preparation'),
+    React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 18 } },
+      React.createElement('div', { style: { display: 'flex', gap: 12, alignItems: 'center', padding: 12, borderRadius: 'var(--r-md)', background: 'var(--surface-2)', border: '1px solid var(--border)' } },
+        React.createElement('div', { style: { fontSize: 20 } }, '🎙️'),
+        React.createElement('div', { style: { flex: 1 } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' } }, 'Microphone access'),
+          React.createElement('div', { style: { fontSize: 12, color: 'var(--text-2)', lineHeight: 1.5 } }, 'Optional — talk to the patient by voice. You can always type instead.')),
+        micState === 'granted'
+          ? React.createElement('span', { style: { fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 999, background: 'var(--teal-l, var(--primary-l))', color: 'var(--teal, var(--primary))' } }, '✓ Allowed')
+          : React.createElement('button', { onClick: requestMic, disabled: micState === 'requesting', style: { fontSize: 12, fontWeight: 700, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer' } }, micState === 'denied' ? 'Blocked — retry' : micState === 'requesting' ? 'Requesting…' : 'Allow')),
+      React.createElement(QV2PrepRow, { icon: '🔊', title: 'Speech-to-text', body: stt === null ? 'Checking…' : (stt === 'browser' ? 'Ready — using your browser’s built-in speech recognition (no upload).' : stt === 'server' ? 'Ready — speech is transcribed on the server.' : 'Unavailable in this browser — you can still type your questions.'), status: stt === null ? 'Checking…' : (stt ? 'Ready' : 'Text only'), tone: stt ? 'teal' : 'primary' }),
+      React.createElement(QV2PrepRow, { icon: '🔒', title: 'Privacy & security', body: 'Your audio is processed securely and is not stored without your explicit consent.' }),
+      React.createElement(QV2PrepRow, { icon: '🎧', title: 'Audio quality', body: 'For best results, use a quiet room and check your microphone works.' })),
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 16 } }, micState === 'granted' ? '✓ All set — you can start now.' : 'You can start now and enable the mic later.'),
+    React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
+}
+
+// ---- In-session task panel (instruksi §4.6) ----
+function QV2TaskPanel({ mode, secs, timerOn, onToggleTimer }) {
+  const mm = String(Math.floor(secs / 60)).padStart(2, '0');
+  const ss = String(secs % 60).padStart(2, '0');
+  const low = timerOn && secs < 60;
+  const tasks = mode === 'osce'
+    ? ['Take a focused history (anamnesis)', 'State the local/physical examination findings', 'Request appropriate investigations', 'Give a working diagnosis + 2 differentials', 'Propose management & safety-netting']
+    : ['Introduce yourself & build rapport', 'Take a focused history (anamnesis)', 'Screen for red-flag symptoms', 'Explore Ideas, Concerns & Expectations', 'Reach a working diagnosis'];
+  return React.createElement('div', { style: { width: 250, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 14 } },
+    React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', textAlign: 'center', background: low ? 'var(--red-l)' : 'var(--surface)', border: '1px solid ' + (low ? 'var(--red)' : 'var(--border)') } },
+      React.createElement('div', { style: { fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 6 } }, 'Time remaining'),
+      React.createElement('div', { style: { fontSize: 30, fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: low ? 'var(--red-d)' : 'var(--text-1)' } }, timerOn ? mm + ':' + ss : '—:—'),
+      React.createElement('button', { onClick: onToggleTimer, style: { marginTop: 8, fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? 'Pause timer' : 'Start timer')),
+    React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
+      React.createElement('div', { style: { fontSize: 12, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10 } }, '📋 Your tasks'),
+      tasks.map((t, i) => React.createElement('div', { key: i, style: { display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 12, color: 'var(--text-2)', padding: '4px 0', lineHeight: 1.4 } },
+        React.createElement('span', { style: { color: 'var(--text-3)', fontWeight: 700 } }, (i + 1) + '.'),
+        React.createElement('span', null, t)))),
+    mode === 'practice' && React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--primary-ll, var(--surface-2))', border: '1px dashed var(--primary)' } },
+      React.createElement('div', { style: { fontSize: 12, fontWeight: 800, color: 'var(--primary)', marginBottom: 8 } }, '💡 History hints'),
+      React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-2)', lineHeight: 1.7 } }, 'Onset · Site · Character · Radiation · Severity · Timing · Aggravating / relieving · Associated symptoms · Past medical history · Medications & allergies · Family & social · Ideas, Concerns, Expectations')));
+}
+
+// ---- Time-up choice (instruksi §4.3) ----
+function QV2TimeUpModal({ onFinish, onContinue }) {
+  return React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 1002, background: 'rgba(26,29,46,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, animation: 'overlayIn 0.2s ease' } },
+    React.createElement('div', { className: 'as', style: { maxWidth: 400, width: '100%', padding: 26, borderRadius: 'var(--r-2xl)', background: 'var(--surface)', boxShadow: 'var(--sh-xl)', textAlign: 'center' } },
+      React.createElement('div', { style: { fontSize: 38, marginBottom: 10 } }, '⏰'),
+      React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } }, "Time's up"),
+      React.createElement('div', { style: { fontSize: 13.5, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 22 } }, 'Your OSCE time has ended. Finish now and go to your assessment, or keep going — continuing past time applies a small score penalty.'),
+      React.createElement('div', { style: { display: 'flex', gap: 10 } },
+        React.createElement('button', { onClick: onContinue, style: { flex: 1, padding: 12, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Continue (−penalty)'),
+        React.createElement('button', { onClick: onFinish, style: { flex: 1, padding: 12, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Finish now'))));
+}
+
+// ---- Voice input button (instruksi §4.7) ----
+// Primary: the browser's built-in Web Speech API (free, real-time, no key,
+// no TTS needed since replies are text). Fallback for browsers without it
+// (e.g. Firefox): record audio and transcribe via the backend /api/ai/transcribe.
+const QV2_SR = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
+
+function QV2MicButton({ onTranscript, disabled, lang }) {
+  const [state, setState] = React.useState('idle'); // idle | listening | busy | error
+  const ref = React.useRef(null);
+  const chunksRef = React.useRef([]);
+
+  function startNative() {
+    try {
+      const rec = new QV2_SR();
+      rec.lang = lang || 'en-US';
+      rec.interimResults = true;
+      rec.continuous = false;
+      rec.maxAlternatives = 1;
+      let finalText = '';
+      rec.onresult = (e) => {
+        let interim = '';
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          const t = e.results[i][0].transcript;
+          if (e.results[i].isFinal) finalText += t + ' '; else interim += t;
+        }
+        onTranscript((finalText + interim).replace(/\s+/g, ' ').trim());
+      };
+      rec.onerror = (ev) => {
+        if (ev && ev.error === 'no-speech') { setState('idle'); return; }
+        setState('error'); setTimeout(() => setState('idle'), 2500);
+      };
+      rec.onend = () => setState((s) => (s === 'error' ? s : 'idle'));
+      ref.current = rec;
+      rec.start();
+      setState('listening');
+    } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+  }
+
+  async function startBackend() {
+    if (!navigator.mediaDevices || !window.MediaRecorder) { setState('error'); setTimeout(() => setState('idle'), 2500); return; }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const rec = new MediaRecorder(stream);
+      chunksRef.current = [];
+      rec.ondataavailable = (e) => { if (e.data && e.data.size) chunksRef.current.push(e.data); };
+      rec.onstop = async () => {
+        stream.getTracks().forEach((t) => t.stop());
+        setState('busy');
+        try {
+          const blob = new Blob(chunksRef.current, { type: rec.mimeType || 'audio/webm' });
+          const fd = new FormData();
+          fd.append('audio', blob, 'speech.webm');
+          const tok = _qv2Token();
+          const res = await fetch(_qv2Base() + '/api/ai/transcribe', { method: 'POST', headers: tok ? { Authorization: 'Bearer ' + tok } : {}, body: fd });
+          const json = await res.json().catch(() => null);
+          const text = json && json.data && json.data.transcript;
+          if (res.ok && text) { onTranscript(text); setState('idle'); }
+          else { setState('error'); setTimeout(() => setState('idle'), 2500); }
+        } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+      };
+      rec.start();
+      ref.current = rec;
+      setState('listening');
+    } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+  }
+
+  function stopListening() {
+    const r = ref.current;
+    if (!r) return;
+    try { r.stop(); } catch (e) {}
+  }
+
+  const onClick = () => {
+    if (state === 'listening') { stopListening(); return; }
+    if (state !== 'idle') return;
+    if (QV2_SR) startNative(); else startBackend();
+  };
+  const title = state === 'listening' ? 'Stop' : state === 'busy' ? 'Transcribing…' : state === 'error' ? 'Voice input unavailable' : (QV2_SR ? 'Speak your question (in-browser)' : 'Speak your question');
+  return React.createElement('button', { onClick, disabled: disabled || state === 'busy', title, style: {
+    width: 46, flexShrink: 0, borderRadius: 12, cursor: state === 'busy' ? 'default' : 'pointer', fontSize: 16, fontFamily: 'Poppins',
+    border: '1px solid ' + (state === 'listening' ? 'var(--red)' : 'var(--border)'),
+    background: state === 'listening' || state === 'error' ? 'var(--red-l)' : 'var(--surface)',
+    color: state === 'listening' ? 'var(--red-d)' : 'var(--text-2)',
+  } }, state === 'listening' ? '⏹' : state === 'busy' ? '…' : '🎙️');
+}
+
+function QV2Session({ caseSummary, mode, onScored, onExit }) {
   const [sessionId, setSessionId] = React.useState(null);
   const [messages, setMessages] = React.useState([]); // {role, text}
   const [input, setInput] = React.useState('');
   const [busy, setBusy] = React.useState(false);
   const [err, setErr] = React.useState('');
   const [stage, setStage] = React.useState('chat'); // chat | assess
-  const isOsce = caseSummary.mode === 'osce_full';
-  const [secs, setSecs] = React.useState(15 * 60);
-  const [timerOn, setTimerOn] = React.useState(false);
+  const isOsce = mode === 'osce';
+  const [secs, setSecs] = React.useState((caseSummary.estimated_minutes || 15) * 60);
+  const [timerOn, setTimerOn] = React.useState(isOsce); // OSCE auto-starts the countdown
+  const [timeUp, setTimeUp] = React.useState(false);
+  const [overtime, setOvertime] = React.useState(false);
   const endRef = React.useRef(null);
+  const wide = useIsWide(900);
 
   React.useEffect(() => {
     qv2Fetch('/api/v2/sessions', { method: 'POST', body: { case_id: caseSummary.id } })
@@ -617,41 +1290,86 @@ function QV2Session({ caseSummary, onScored, onExit }) {
 
   React.useEffect(() => { if (endRef.current) endRef.current.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-  async function send() {
-    const text = input.trim();
+  // Update the trailing (streaming) patient bubble in place.
+  const patchPatient = (t, streaming) => setMessages(m => {
+    const c = m.slice();
+    for (let i = c.length - 1; i >= 0; i--) {
+      if (c[i].role === 'patient') { c[i] = { role: 'patient', text: t, streaming }; break; }
+    }
+    return c;
+  });
+
+  async function send(textArg) {
+    const text = (typeof textArg === 'string' ? textArg : input).trim();
     if (!text || busy || !sessionId) return;
     setInput(''); setBusy(true);
-    setMessages(m => m.concat([{ role: 'user', text }]));
+    setMessages(m => m.concat([{ role: 'user', text }, { role: 'patient', text: '', streaming: true }]));
     try {
-      const d = await qv2Fetch('/api/v2/sessions/' + sessionId + '/turns', { method: 'POST', body: { text } });
-      setMessages(m => m.concat([{ role: 'patient', text: d.reply }]));
-    } catch (e) { setMessages(m => m.concat([{ role: 'patient', text: '(error: ' + (e.message || e) + ')' }])); }
+      const doStream = async (retried) => {
+        const tok = _qv2Token();
+        const r = await fetch(_qv2Base() + '/api/v2/sessions/' + sessionId + '/turns/stream', {
+          method: 'POST',
+          headers: Object.assign({ 'Content-Type': 'application/json' }, tok ? { Authorization: 'Bearer ' + tok } : {}),
+          body: JSON.stringify({ text }),
+        });
+        if (r.status === 401 && !retried && typeof window !== 'undefined' && window._qoraRefreshToken) {
+          const nt = await window._qoraRefreshToken();
+          if (nt) return doStream(true);
+        }
+        return r;
+      };
+      const res = await doStream(false);
+      if (!res.ok || !res.body) throw new Error('HTTP ' + res.status);
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let acc = '';
+      while (true) {
+        const chunk = await reader.read();
+        if (chunk.done) break;
+        acc += dec.decode(chunk.value, { stream: true });
+        patchPatient(acc, true);
+      }
+      patchPatient(acc.trim() || '…', false);
+    } catch (e) {
+      // Fallback to the non-streaming endpoint if streaming is unavailable.
+      try {
+        const d = await qv2Fetch('/api/v2/sessions/' + sessionId + '/turns', { method: 'POST', body: { text } });
+        patchPatient((d && d.reply) || '…', false);
+      } catch (e2) {
+        patchPatient('(error: ' + (e2.message || e2) + ')', false);
+      }
+    }
     setBusy(false);
   }
 
   async function score(ddx, mgmt) {
     if (!sessionId) return;
     setBusy(true);
-    try { const report = await qv2Fetch('/api/v2/sessions/' + sessionId + '/score', { method: 'POST', body: { ddx, management: mgmt } }); onScored(report); }
+    try { const report = await qv2Fetch('/api/v2/sessions/' + sessionId + '/score', { method: 'POST', body: { ddx, management: mgmt, mode: mode, overtime: overtime } }); onScored(report); }
     catch (e) { setErr(String(e.message || e)); setBusy(false); }
   }
 
   React.useEffect(() => {
     if (!timerOn || stage !== 'chat') return undefined;
-    const id = setInterval(() => setSecs((s) => (s > 0 ? s - 1 : 0)), 1000);
+    const id = setInterval(() => setSecs((s) => {
+      if (s <= 1) { if (isOsce && !overtime) setTimeUp(true); return 0; }
+      return s - 1;
+    }), 1000);
     return () => clearInterval(id);
-  }, [timerOn, stage]);
+  }, [timerOn, stage, isOsce, overtime]);
 
   if (stage === 'assess') {
-    return React.createElement(QV2Assess, { caseSummary, isOsce, busy, onBack: () => setStage('chat'), onSubmit: score });
+    return React.createElement(QV2Assess, { caseSummary, isOsce, busy, transcript: messages, onBack: () => setStage('chat'), onSubmit: score });
   }
 
-  return React.createElement('div', { style: { maxWidth: 760, margin: '0 auto', padding: '16px 16px 0', display: 'flex', flexDirection: 'column', height: 'calc(100vh - 120px)' } },
+  const mmss = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
+
+  const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: 'calc(100vh - 130px)' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('button', { onClick: onExit, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
-      React.createElement(QV2Pill, { tone: 'primary' }, QV2_SPEC_LABEL[caseSummary.specialty] || caseSummary.specialty),
+      React.createElement(QV2Pill, { tone: isOsce ? 'violet' : 'teal' }, isOsce ? 'OSCE' : 'Practice'),
       React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1 } }, caseSummary.presentation),
-      isOsce && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: '15-minute OSCE timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? ('⏱ ' + String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0')) : '⏱ Timer')),
+      !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
     React.createElement(QV2MediaBar, { caseId: caseSummary.id }),
     err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8 } }, err),
     React.createElement('div', { style: { flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, padding: '8px 2px' } },
@@ -661,19 +1379,28 @@ function QV2Session({ caseSummary, onScored, onExit }) {
         background: m.role === 'user' ? 'var(--primary)' : 'var(--surface)',
         color: m.role === 'user' ? '#fff' : 'var(--text-1)',
         border: m.role === 'user' ? 'none' : '1px solid var(--border)', boxShadow: 'var(--sh-xs)',
-      } }, m.text)),
-      busy && React.createElement('div', { style: { alignSelf: 'flex-start', fontSize: 12, color: 'var(--text-3)' } }, '…'),
+      } }, m.streaming && !m.text
+        ? React.createElement('span', { className: 'qv2-typing', style: { color: 'var(--text-3)' } }, '● ● ●')
+        : (m.streaming ? m.text + ' ▋' : m.text))),
       React.createElement('div', { ref: endRef })),
     React.createElement('div', { style: { display: 'flex', gap: 8, padding: '12px 0 16px' } },
+      React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), disabled: busy }),
       React.createElement('input', {
         value: input, onChange: e => setInput(e.target.value),
         onKeyDown: e => { if (e.key === 'Enter') send(); },
         placeholder: 'Ask the patient a question…', disabled: busy,
         style: { flex: 1, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)' },
       }),
-      React.createElement('button', { onClick: send, disabled: busy, style: { padding: '0 18px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Send'),
-      React.createElement('button', { onClick: () => setStage('assess'), disabled: busy, style: { padding: '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Assess →'))
-  );
+      React.createElement('button', { onClick: () => send(), disabled: busy, style: { padding: '0 18px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Send'),
+      React.createElement('button', { onClick: () => setStage('assess'), disabled: busy, style: { padding: '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Assess →')));
+
+  return React.createElement('div', { style: { maxWidth: wide ? 1060 : 760, margin: '0 auto', padding: '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
+    wide && React.createElement(QV2TaskPanel, { mode: mode, secs: secs, timerOn: timerOn, onToggleTimer: () => setTimerOn((v) => !v) }),
+    chatColumn,
+    timeUp && React.createElement(QV2TimeUpModal, {
+      onFinish: () => { setTimeUp(false); setStage('assess'); },
+      onContinue: () => { setTimeUp(false); setOvertime(true); },
+    }));
 }
 
 // ---- Result + answer-key reveal ----
@@ -750,6 +1477,28 @@ function QV2Stat({ label, val }) {
     React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', fontWeight: 600 } }, label));
 }
 
+// Achievements + progress-to-next (§14).
+function QV2Badges({ badges }) {
+  if (!badges || !badges.length) return null;
+  const earned = badges.filter((b) => b.earned);
+  const next = badges.filter((b) => !b.earned).sort((a, b) => b.progress - a.progress).slice(0, 3);
+  return React.createElement('div', null,
+    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', margin: '4px 0 10px' } }, '🏅 Achievements (' + earned.length + '/' + badges.length + ')'),
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: next.length ? 16 : 0 } },
+      earned.length ? earned.map((b) => React.createElement('div', { key: b.id, title: b.name, style: { display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 12, fontWeight: 700 } },
+        React.createElement('span', { style: { fontSize: 15 } }, b.icon), b.name))
+        : React.createElement('div', { style: { fontSize: 13, color: 'var(--text-3)' } }, 'Complete a case to earn your first badge.')),
+    next.length ? React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } },
+      next.map((b) => React.createElement('div', { key: b.id, style: { display: 'flex', alignItems: 'center', gap: 10 } },
+        React.createElement('span', { style: { fontSize: 16, opacity: 0.5 } }, b.icon),
+        React.createElement('div', { style: { flex: 1 } },
+          React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11.5, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
+            React.createElement('span', null, b.name),
+            React.createElement('span', null, Math.round(b.value) + ' / ' + b.goal)),
+          React.createElement('div', { style: { height: 5, borderRadius: 999, background: 'var(--surface-3)' } },
+            React.createElement('div', { style: { width: (b.progress * 100) + '%', height: '100%', borderRadius: 999, background: 'var(--primary)' } })))))) : null);
+}
+
 function QV2Progress({ onBack }) {
   const [p, setP] = React.useState(null);
   const [err, setErr] = React.useState('');
@@ -761,13 +1510,25 @@ function QV2Progress({ onBack }) {
   const specs = p.specialtyCounts || {};
   const dimKeys = Object.keys(dims);
   const specKeys = Object.keys(specs);
+  const goal = p.dailyGoal || { done: 0, target: 1 };
+  const goalMet = goal.done >= goal.target;
   return React.createElement('div', { className: 'au', style: { maxWidth: 820, margin: '0 auto', padding: '24px 20px' } },
     React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 16 } }, 'Your progress'),
-    React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 22 } },
+    // daily goal banner
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 'var(--r-lg)', marginBottom: 18, background: goalMet ? 'var(--teal-l, var(--primary-l))' : 'var(--primary-ll, var(--surface-2))', border: '1px solid ' + (goalMet ? 'var(--teal, var(--primary))' : 'var(--border)') } },
+      React.createElement('span', { style: { fontSize: 22 } }, goalMet ? '✅' : '🎯'),
+      React.createElement('div', { style: { flex: 1 } },
+        React.createElement('div', { style: { fontSize: 13.5, fontWeight: 700, color: 'var(--text-1)' } }, goalMet ? "Daily goal complete — nice work!" : 'Daily goal'),
+        React.createElement('div', { style: { fontSize: 12, color: 'var(--text-2)' } }, goalMet ? 'Come back tomorrow to keep your streak alive.' : 'Complete ' + goal.target + ' case today to keep your streak going.')),
+      React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: goalMet ? 'var(--teal, var(--primary))' : 'var(--primary)' } }, goal.done + ' / ' + goal.target)),
+    React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 22, flexWrap: 'wrap' } },
       React.createElement(QV2Stat, { label: 'XP', val: p.xp || 0 }),
+      React.createElement(QV2Stat, { label: 'Streak', val: (p.streak || 0) + 'd' }),
       React.createElement(QV2Stat, { label: 'Sessions', val: p.totalSessions || 0 }),
-      React.createElement(QV2Stat, { label: 'Cases practised', val: p.completedCases || 0 })),
+      React.createElement(QV2Stat, { label: 'Cases', val: p.completedCases || 0 })),
+    React.createElement('div', { style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 22 } },
+      React.createElement(QV2Badges, { badges: p.badges })),
     React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Skill by dimension'),
     dimKeys.length
       ? dimKeys.map((k) => React.createElement(QV2SkillBar, { key: k, label: dimLabel[k] || k, pct: dims[k] }))
@@ -805,10 +1566,13 @@ function QoraDashboard({ onNav, onStartCase }) {
   const [p, setP] = React.useState(null);
   const [err, setErr] = React.useState('');
   const [recent, setRecent] = React.useState([]);
+  const [me, setMe] = React.useState(null);
   React.useEffect(() => {
     qv2Fetch('/api/v2/progress').then(setP).catch(e => setErr(String(e.message || e)));
     qv2Fetch('/api/v2/sessions?limit=5').then(d => setRecent((d && d.sessions) || [])).catch(() => {});
+    qv2Fetch('/api/users/me').then(setMe).catch(() => {});
   }, []);
+  const firstName = me && me.full_name ? String(me.full_name).trim().split(/\s+/)[0] : '';
   if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)', textAlign: 'center' } },
     'Could not load dashboard: ' + err);
   if (!p) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)', textAlign: 'center' } }, 'Loading dashboard…');
@@ -843,7 +1607,7 @@ function QoraDashboard({ onNav, onStartCase }) {
           React.createElement('div', { style: { display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 16, backdropFilter: 'blur(8px)' } },
             React.createElement('span', { style: { fontSize: 13 } }, '👨‍⚕️'), ' Clinical Interview Trainer'),
           React.createElement('h1', { style: { fontSize: 30, fontWeight: 800, lineHeight: 1.2, marginBottom: 10 } },
-            'Welcome back! 👋'),
+            'Welcome back' + (firstName ? ', ' + firstName : '') + '! 👋'),
           React.createElement('p', { style: { fontSize: 14, opacity: 0.82, marginBottom: 28, lineHeight: 1.6 } },
             'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.'),
           React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap' } },
@@ -884,6 +1648,11 @@ function QoraDashboard({ onNav, onStartCase }) {
 
       // Right column: specialties + dimensions
       React.createElement('div', null,
+        // Achievements
+        (p.badges && p.badges.some((b) => b.earned)) ? React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 16 } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🏅 Achievements'),
+          React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
+            p.badges.filter((b) => b.earned).slice(0, 10).map((b) => React.createElement('span', { key: b.id, title: b.name, style: { fontSize: 20 } }, b.icon)))) : null,
         // Specialty coverage
         React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 16 } },
           React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🎯 Specialty coverage'),
@@ -915,27 +1684,163 @@ function QDStat({ label, value, icon, color, sub }) {
 }
 
 function QoraV2Screen() {
-  const [view, setView] = React.useState('catalogue'); // catalogue | session | result
+  const [view, setView] = React.useState('catalogue'); // catalogue | setup | session | result | progress
   const [picked, setPicked] = React.useState(null);
+  const [sessionMode, setSessionMode] = React.useState('practice');
   const [report, setReport] = React.useState(null);
   const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
   const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
   let body;
-  if (view === 'session' && picked) {
-    body = React.createElement(QV2Session, { caseSummary: picked, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
+  if (view === 'setup' && picked) {
+    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setView('session'); }, onBack: () => setView('catalogue') });
+  } else if (view === 'session' && picked) {
+    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
   } else if (view === 'result' && report && picked) {
     body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => setView('catalogue'), onLibrary: () => setView('catalogue') });
   } else if (view === 'progress') {
     body = React.createElement(QV2Progress, { onBack: () => setView('catalogue') });
   } else {
-    body = React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setView('session'); }, onProgress: () => setView('progress') });
+    body = React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setView('setup'); }, onProgress: () => setView('progress') });
   }
   return React.createElement(React.Fragment, null, onboard ? React.createElement(QV2Onboarding, { onDone: dismiss }) : null, body);
 }
 
+// ---- User profile (view + edit) ----
+const QP_AVATARS = ['👤', '🧑‍⚕️', '👩‍⚕️', '👨‍⚕️', '🩺', '🧠', '👁️', '🫀', '🦴', '🧬', '⚕️', '🎓'];
+const QP_COLORS = ['#5865F2', '#7C3AED', '#0EA5E9', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#14B8A6'];
+
+function QP_Field({ label, value, set, ph }) {
+  return React.createElement('label', { style: { display: 'block', marginBottom: 14 } },
+    React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', marginBottom: 5 } }, label),
+    React.createElement('input', {
+      value: value || '', onChange: (e) => set(e.target.value), placeholder: ph,
+      style: { width: '100%', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Poppins', color: 'var(--text-1)' },
+    }));
+}
+
+function QoraProfile({ onNav }) {
+  const [me, setMe] = React.useState(null);
+  const [err, setErr] = React.useState('');
+  const [saving, setSaving] = React.useState(false);
+  const [saved, setSaved] = React.useState(false);
+  const [form, setForm] = React.useState({ full_name: '', school: '', year: '', avatar_emoji: '👤', avatar_color: '#5865F2' });
+  React.useEffect(() => {
+    qv2Fetch('/api/users/me')
+      .then((d) => { setMe(d); setForm({ full_name: d.full_name || '', school: d.school || '', year: d.year || '', avatar_emoji: d.avatar_emoji || '👤', avatar_color: d.avatar_color || '#5865F2' }); })
+      .catch((e) => setErr(String(e.message || e)));
+  }, []);
+  const set = (k) => (v) => { setForm((f) => Object.assign({}, f, { [k]: v })); setSaved(false); };
+  async function save() {
+    setSaving(true); setErr('');
+    try { const d = await qv2Fetch('/api/users/me', { method: 'PATCH', body: form }); setMe(d); setSaved(true); }
+    catch (e) { setErr(String(e.message || e)); }
+    setSaving(false);
+  }
+  if (err && !me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load profile: ' + err);
+  if (!me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading profile…');
+  const level = Math.floor((me.xp || 0) / 200) + 1;
+  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '28px 20px 60px' } },
+    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 18 } }, 'Your profile'),
+    React.createElement('div', { className: 'as', style: { display: 'flex', alignItems: 'center', gap: 16, padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 18 } },
+      React.createElement('div', { style: { width: 64, height: 64, borderRadius: '50%', background: form.avatar_color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 30, flexShrink: 0 } }, form.avatar_emoji),
+      React.createElement('div', { style: { flex: 1, minWidth: 0 } },
+        React.createElement('div', { style: { fontSize: 17, fontWeight: 800, color: 'var(--text-1)' } }, form.full_name || 'Unnamed'),
+        React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)' } }, me.email),
+        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginTop: 2, textTransform: 'capitalize' } }, me.role))),
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 } },
+      [['XP', me.xp || 0], ['Level', level], ['Streak', (me.streak || 0) + 'd'], ['Sessions', me.total_sessions || 0]].map(([lab, val]) =>
+        React.createElement(QV2Stat, { key: lab, label: lab, val: val }))),
+    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, 'Edit details'),
+    React.createElement(QP_Field, { label: 'Full name', value: form.full_name, set: set('full_name'), ph: 'Your name' }),
+    React.createElement(QP_Field, { label: 'Medical school', value: form.school, set: set('school'), ph: 'e.g. University of ...' }),
+    React.createElement(QP_Field, { label: 'Year / stage', value: form.year, set: set('year'), ph: 'e.g. Year 4 / Clerkship' }),
+    React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', margin: '4px 0 6px' } }, 'Avatar'),
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 } },
+      QP_AVATARS.map((em) => React.createElement('button', { key: em, onClick: () => set('avatar_emoji')(em), style: { width: 40, height: 40, borderRadius: 10, fontSize: 20, cursor: 'pointer', background: form.avatar_emoji === em ? 'var(--primary-l)' : 'var(--surface)', border: '1px solid ' + (form.avatar_emoji === em ? 'var(--primary)' : 'var(--border)') } }, em))),
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 } },
+      QP_COLORS.map((col) => React.createElement('button', { key: col, onClick: () => set('avatar_color')(col), 'aria-label': 'Avatar colour ' + col, style: { width: 30, height: 30, borderRadius: '50%', background: col, cursor: 'pointer', border: form.avatar_color === col ? '3px solid var(--text-1)' : '2px solid var(--surface)', boxShadow: '0 0 0 1px var(--border)' } }))),
+    err && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err),
+    React.createElement('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } },
+      React.createElement('button', { onClick: save, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving…' : 'Save changes'),
+      React.createElement('button', { onClick: () => onNav && onNav('dashboard'), style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Back'),
+      saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '✓ Saved')));
+}
+
+// ---- Pricing / upgrade (Xendit paywall; prices are config-driven, §7.3) ----
+const QORA_PLAN_FEATURES = {
+  free: ['A few free cases each month', 'Preview every specialty', 'Instant scoring + answer key'],
+  monthly: ['Unlimited practice (fair use)', 'Full case library, all specialties', 'OSCE mode, timer & task panel', 'Full model-answer reveal', 'Progress, streaks & badges'],
+  annual: ['Everything in Monthly', 'Best value vs paying monthly', 'Priority access to new cases'],
+  exam_pass: ['Unlimited practice for one month', 'Built for exam season', 'Full OSCE arc + answer keys'],
+};
+const QORA_PLAN_BADGE = { annual: 'Best value', exam_pass: 'Exam season' };
+
+function QoraPricing({ onNav }) {
+  const [data, setData] = React.useState(null); // {plans, provider, billing_enforced}
+  const [me, setMe] = React.useState(null);
+  const [err, setErr] = React.useState('');
+  const [busy, setBusy] = React.useState('');
+  React.useEffect(() => {
+    qv2Fetch('/api/billing/plans').then(setData).catch((e) => setErr(String(e.message || e)));
+    qv2Fetch('/api/billing/me').then(setMe).catch(() => {});
+  }, []);
+  async function upgrade(planId) {
+    setBusy(planId); setErr('');
+    try {
+      const r = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
+      if (r && r.checkout_url) { window.location.href = r.checkout_url; return; }
+      setErr('Checkout is not available yet.');
+    } catch (e) {
+      setErr(/not configured|503/i.test(String(e.message || e)) ? 'Payments are not enabled yet — check back soon.' : String(e.message || e));
+    }
+    setBusy('');
+  }
+  if (err && !data) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load plans: ' + err);
+  if (!data) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading plans…');
+  const plans = data.plans || [];
+  const paymentsLive = !!data.provider;
+  const currentPlan = (me && me.plan) || 'free';
+  return React.createElement('div', { className: 'au', style: { maxWidth: 980, margin: '0 auto', padding: '28px 20px 60px' } },
+    onNav && React.createElement('button', { onClick: () => onNav('dashboard'), style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back'),
+    React.createElement('div', { style: { textAlign: 'center', marginBottom: 6 } },
+      React.createElement('div', { style: { fontSize: 26, fontWeight: 800, color: 'var(--text-1)' } }, 'Practise without limits'),
+      React.createElement('div', { style: { fontSize: 14, color: 'var(--text-2)', marginTop: 6 } }, 'Upgrade for unlimited cases across every specialty.')),
+    !data.billing_enforced && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginBottom: 18 } }, 'Everything is currently unlocked while Qora is in beta.'),
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 16, marginTop: 22 } },
+      plans.map((p) => {
+        const isCurrent = p.id === currentPlan;
+        const isFree = p.id === 'free';
+        const badge = QORA_PLAN_BADGE[p.id];
+        const feats = QORA_PLAN_FEATURES[p.id] || [];
+        const featured = p.id === 'annual';
+        return React.createElement('div', { key: p.id, className: 'as', style: {
+          position: 'relative', display: 'flex', flexDirection: 'column', padding: 22, borderRadius: 'var(--r-xl)',
+          background: 'var(--surface)', boxShadow: featured ? 'var(--sh-lg)' : 'var(--sh-sm)',
+          border: '2px solid ' + (featured ? 'var(--primary)' : 'var(--border)'),
+        } },
+          badge && React.createElement('div', { style: { position: 'absolute', top: -11, left: 22, fontSize: 10, fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', color: '#fff', background: 'var(--primary)', padding: '3px 10px', borderRadius: 999 } }, badge),
+          React.createElement('div', { style: { fontSize: 15, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } }, p.label),
+          React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 } },
+            React.createElement('span', { style: { fontSize: 30, fontWeight: 800, color: 'var(--text-1)' } }, isFree ? 'Free' : ('$' + p.price_usd)),
+            !isFree && React.createElement('span', { style: { fontSize: 12, color: 'var(--text-3)' } }, p.interval === 'year' ? '/ year' : p.interval === 'one_time' ? 'one-off' : '/ month')),
+          React.createElement('div', { style: { flex: 1, margin: '12px 0' } },
+            feats.map((f, i) => React.createElement('div', { key: i, style: { display: 'flex', gap: 8, fontSize: 12.5, color: 'var(--text-2)', padding: '3px 0', lineHeight: 1.4 } },
+              React.createElement('span', { style: { color: 'var(--primary)', fontWeight: 700 } }, '✓'), f))),
+          isCurrent
+            ? React.createElement('button', { disabled: true, style: { padding: 11, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'default' } }, 'Current plan')
+            : isFree
+              ? React.createElement('button', { disabled: true, style: { padding: 11, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'default' } }, 'Included')
+              : React.createElement('button', { onClick: () => upgrade(p.id), disabled: busy === p.id || !paymentsLive, title: paymentsLive ? '' : 'Payments coming soon', style: { padding: 11, borderRadius: 12, border: 'none', background: paymentsLive ? 'var(--primary)' : 'var(--surface-2)', color: paymentsLive ? '#fff' : 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: paymentsLive ? 'pointer' : 'default' } }, busy === p.id ? 'Redirecting…' : paymentsLive ? 'Upgrade' : 'Coming soon'));
+      })),
+    err && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--red-d)', marginTop: 16 } }, err),
+    React.createElement('div', { style: { textAlign: 'center', fontSize: 11, color: 'var(--text-3)', marginTop: 24 } }, 'Secure checkout via Xendit. A study aid, not a medical device.'));
+}
+
 window.QoraV2Screen = QoraV2Screen;
 window.QoraDashboard = QoraDashboard;
+window.QoraProfile = QoraProfile;
+window.QoraPricing = QoraPricing;
 
 // ===== END qora-v2.jsx =====
 
@@ -1029,19 +1934,21 @@ window.QoraDashboard = QoraDashboard;
               background: 'var(--surface)', cursor: 'pointer', fontSize: 14,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }, title: 'Settings' }, '⚙️'),
-            React.createElement('button', { onClick: handleLogout, style: {
+            React.createElement('button', { onClick: function() { navigate('profile'); }, style: {
               width: 32, height: 32, borderRadius: '50%',
-              background: 'var(--primary)', color: '#fff',
-              border: 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              background: screen === 'profile' ? 'var(--primary-d, var(--primary))' : 'var(--primary)', color: '#fff',
+              border: screen === 'profile' ? '2px solid var(--text-1)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
               fontFamily: 'Poppins',
-            }, title: 'Log out' },
+            }, title: 'View profile' },
               auth && auth.email ? auth.email[0].toUpperCase() : '?'))),
 
         // Main content
         React.createElement('main', { key: screenKey, style: { flex: 1 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
-          screen === 'cases' && React.createElement(QoraV2Screen, null)),
+          screen === 'cases' && React.createElement(QoraV2Screen, null),
+          screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
+          screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
 
         // Settings drawer
         showSettings && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 1000, animation: 'overlayIn 0.2s ease' } },
@@ -1054,12 +1961,14 @@ window.QoraDashboard = QoraDashboard;
               React.createElement('p', null, 'Logged in as: ', React.createElement('strong', null, (auth && auth.email) || '–')),
               React.createElement('p', null, 'Role: ', (auth && auth.role) || '–'),
               React.createElement('p', { style: { marginTop: 20, fontSize: 11, color: 'var(--text-3)' } }, 'Qora \u2014 Clinical Interview Trainer v0.16.0')),
-            React.createElement('div', { style: { marginTop: 'auto' } },
+            React.createElement('div', { style: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 } },
+              React.createElement('button', { onClick: function() { closeSettings(); navigate('pricing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, '✨ Upgrade plan'),
               React.createElement('button', { onClick: handleLogout, style: { width: '100%', padding: 11, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Log out')))));
     }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(React.createElement(App));
+    // Reuse a single root across dev hot-reloads (avoids the duplicate-createRoot warning).
+    if (!window.__qoraRoot) window.__qoraRoot = ReactDOM.createRoot(document.getElementById('root'));
+    window.__qoraRoot.render(React.createElement(App));
 
 
 // ===== END inline App =====

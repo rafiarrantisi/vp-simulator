@@ -1,0 +1,28 @@
+specialty,slug,presentation,target_condition,difficulty,mode
+internal_medicine,community_acquired_pneumonia,Cough and breathlessness,Community-acquired pneumonia,2,osce_full
+internal_medicine,new_t2dm,Polyuria and thirst,Type 2 diabetes mellitus,2,anamnesis
+internal_medicine,gord,Heartburn,Gastro-oesophageal reflux disease,1,anamnesis
+surgery,acute_cholecystitis,Right upper quadrant pain,Acute cholecystitis,2,osce_full
+surgery,inguinal_hernia,Groin lump,Inguinal hernia,1,anamnesis
+surgery,renal_colic,Loin pain,Ureteric (renal) colic,2,osce_full
+paediatrics,bronchiolitis,Wheeze in an infant,Bronchiolitis,2,anamnesis
+paediatrics,febrile_child,Fever in a child,Febrile illness in a child,2,osce_full
+obstetrics_gynaecology,early_pregnancy_bleeding,Bleeding in early pregnancy,Threatened miscarriage,2,osce_full
+obstetrics_gynaecology,pelvic_inflammatory_disease,Pelvic pain and discharge,Pelvic inflammatory disease,2,anamnesis
+psychiatry,depression,Low mood,Depression,2,anamnesis
+psychiatry,generalised_anxiety,Worry and restlessness,Generalised anxiety disorder,2,anamnesis
+psychiatry,alcohol_misuse,Wanting to cut down drinking,Alcohol dependence,2,anamnesis
+neurology,migraine,Recurrent headache,Migraine,1,anamnesis
+neurology,tia,Transient weakness or speech disturbance,Transient ischaemic attack,3,osce_full
+neurology,first_seizure,First seizure,First unprovoked seizure,3,osce_full
+ent,otitis_media,Ear pain in a child,Acute otitis media,1,anamnesis
+ent,epistaxis,Nosebleed,Epistaxis,1,anamnesis
+ent,bppv,Dizziness,Benign paroxysmal positional vertigo,2,anamnesis
+dermatology,eczema,Itchy rash,Atopic eczema,1,anamnesis
+dermatology,cellulitis,Hot red swollen leg,Cellulitis,2,osce_full
+dermatology,suspected_melanoma,Changing mole,Suspected melanoma,2,anamnesis
+emergency,acs,Chest pain,Acute coronary syndrome,3,osce_full
+emergency,anaphylaxis,Sudden rash and breathing difficulty,Anaphylaxis,3,osce_full
+emergency,paracetamol_overdose,Overdose,Paracetamol overdose,3,osce_full
+ophthalmology,crao,Sudden painless loss of vision,Central retinal artery occlusion,3,osce_full
+ophthalmology,anterior_uveitis,Painful red eye with photophobia,Anterior uveitis,2,anamnesis

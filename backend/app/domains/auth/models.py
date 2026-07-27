@@ -46,6 +46,7 @@ class UserProfile(Base):
     avatar_color: Mapped[str] = mapped_column(String, default="#5865F2")
     school: Mapped[str] = mapped_column(String, default="")
     year: Mapped[str] = mapped_column(String, default="")
+    region: Mapped[str] = mapped_column(String, default="row")  # indo | asean | row
     # Blob fleksibel utk field gamifikasi yg belum dinormalisasi (kontrak §5.4)
     extra: Mapped[dict] = mapped_column(JSON, default=dict)
 

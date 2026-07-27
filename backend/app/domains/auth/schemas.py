@@ -7,6 +7,7 @@ class SignupRequest(BaseModel):
     full_name: str = ""
     nim: str = ""
     institution_id: str | None = None
+    region: str = "row"  # indo | asean | row — detected client-side, stored at signup
 
 
 class LoginRequest(BaseModel):
