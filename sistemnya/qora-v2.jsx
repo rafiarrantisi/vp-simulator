@@ -872,8 +872,8 @@ function QoraDashboard({ onNav, onStartCase }) {
       // Recent Activity
       React.createElement('div', null,
         React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-          React.createElement('span', null, '📋 Recent sessions'),
-          recent.length > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600 } }, 'View all')),
+          React.createElement('span', null, '\uD83D\uDCCB ' + _t('dashboard.recent_sessions')),
+          recent.length > 0 && React.createElement('button', { onClick: () => onNav('sessions'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600 } }, _t('dashboard.browse_cases'))),
         recent.length === 0 && React.createElement('div', { style: { padding: '28px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 16, border: '1px dashed var(--border)' } },
           'Complete your first case to see activity here.'),
         React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
@@ -884,8 +884,12 @@ function QoraDashboard({ onNav, onStartCase }) {
               React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2 } }, s.presentation || 'Case'),
               React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress'))))))),
 
-      // Right column: specialties + dimensions
+      // Right column: specialties + dimensions + radar
       React.createElement('div', null,
+        // Skill radar chart
+        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, textAlign: 'center' } }, '\uD83D\uDCCA ' + _t('dashboard.skill_breakdown')),
+          React.createElement(QSkillRadar, { dims: dims, size: 200 })),
         // Achievements
         (p.badges && p.badges.some((b) => b.earned)) ? React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 16 } },
           React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🏅 Achievements'),

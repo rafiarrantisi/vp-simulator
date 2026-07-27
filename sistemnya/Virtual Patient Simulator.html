@@ -116,7 +116,7 @@
               React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
           // Nav
           React.createElement('nav', { style: { display: 'flex', gap: 4 } },
-            [['dashboard','Dashboard'],['cases','Cases']].map(function(pair) {
+            [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
                 padding: '6px 14px', borderRadius: 10, border: 'none',
@@ -148,6 +148,8 @@
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
+          screen === 'sessions' && React.createElement(QoraSessions, { onNav: navigate }),
+          screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
           screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
 
         // Settings drawer
