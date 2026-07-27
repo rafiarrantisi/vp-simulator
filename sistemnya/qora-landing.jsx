@@ -427,7 +427,9 @@ function QoraLanding({ onLogin }) {
   const [mode, setMode] = React.useState('login');
   const [region, setRegion] = React.useState('');
   React.useEffect(function () {
-    setRegion(_detectRegion());
+    var r = _detectRegion();
+    setRegion(r);
+    if (typeof window.__setLocale === 'function') window.__setLocale(r);
   }, []);
   const go = (m) => { setMode(m); setView('auth'); };
 

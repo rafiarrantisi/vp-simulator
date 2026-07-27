@@ -47,6 +47,7 @@ class UserProfile(Base):
     school: Mapped[str] = mapped_column(String, default="")
     year: Mapped[str] = mapped_column(String, default="")
     region: Mapped[str] = mapped_column(String, default="row")  # indo | asean | row
+    preferred_language: Mapped[str] = mapped_column(String, default="en")  # en | id | ms | tl | vi | th
     # Blob fleksibel utk field gamifikasi yg belum dinormalisasi (kontrak §5.4)
     extra: Mapped[dict] = mapped_column(JSON, default=dict)
 

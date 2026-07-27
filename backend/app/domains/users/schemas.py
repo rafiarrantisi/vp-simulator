@@ -7,6 +7,7 @@ class ProfileUpdate(BaseModel):
     year: str | None = None
     avatar_emoji: str | None = None
     avatar_color: str | None = None
+    preferred_language: str | None = None  # en | id | ms | tl | vi | th
 
 
 class ProfileResponse(BaseModel):
@@ -24,3 +25,4 @@ class ProfileResponse(BaseModel):
     school: str
     year: str
     region: str  # indo | asean | row
+    preferred_language: str  # en | id | ms | tl | vi | th

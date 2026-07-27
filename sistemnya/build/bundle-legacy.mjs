@@ -27,6 +27,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const LOAD_ORDER = [
   'engine/data-store.js',
   'qora-catalog.js',
+  'translations.js',
   'qora-landing.jsx',
   'qora-v2.jsx',
 ];

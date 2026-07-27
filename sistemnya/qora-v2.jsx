@@ -334,6 +334,12 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
     if (typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition)) { setStt('browser'); return; }
     qv2Fetch('/api/ai/voice-status').then((d) => setStt(d && d.stt ? 'server' : false)).catch(() => setStt(false));
   }, []);
+  // Load preferred language from profile
+  React.useEffect(function () {
+    qv2Fetch('/api/users/me').then(function (d) {
+      if (d && d.preferred_language) setLang(d.preferred_language);
+    }).catch(function () {});
+  }, []);
   async function requestMic() {
     setMicState('requesting');
     try {
