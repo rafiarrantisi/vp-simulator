@@ -1816,7 +1816,7 @@ function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }
 const QV2_MAX_INVESTIGATIONS = 8;
 
 function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) {
-  const [tab, setTab] = React.useState(isOsce ? 'investigations' : 'diagnosis');
+  const [tab, setTab] = React.useState('diagnosis');
   const [dx1, setDx1] = React.useState('');
   const [dx2, setDx2] = React.useState('');
   const [dx3, setDx3] = React.useState('');
@@ -1830,9 +1830,7 @@ function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) 
   const toggle = (set, max) => (item) => set((cur) => cur.indexOf(item) >= 0 ? cur.filter((x) => x !== item) : (max && cur.length >= max ? cur : cur.concat([item])));
   const submit = () => onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang: inv.join(', '), terapi: tx.join(', '), edukasi });
 
-  const tabs = isOsce
-    ? [['conversation', _t('session.assess_tab_conversation')], ['investigations', _t('session.assess_tab_investigations')], ['diagnosis', _t('session.assess_tab_diagnosis')], ['therapy', _t('session.assess_tab_therapy')]]
-    : [['conversation', _t('session.assess_tab_conversation')], ['diagnosis', _t('session.assess_tab_diagnosis')]];
+  const tabs = [['conversation', _t('session.assess_tab_conversation')], ['investigations', _t('session.assess_tab_investigations')], ['diagnosis', _t('session.assess_tab_diagnosis')], ['therapy', _t('session.assess_tab_therapy')]];
 
   const conversationTab = React.createElement('div', { style: { maxHeight: 380, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8 } },
     (transcript || []).filter((m) => m.role === 'user' || m.role === 'patient').map((m, i) => React.createElement('div', { key: i, style: {
@@ -2088,6 +2086,8 @@ function QV2MicButton({ onTranscript, disabled, sessionLang }) {
   const [state, setState] = React.useState('idle'); // idle | listening | busy | error
   const [errMsg, setErrMsg] = React.useState('');
   const ref = React.useRef(null);
+  const listeningRef = React.useRef(false);  // Track listening state outside React closure
+  const finalTextRef = React.useRef('');     // Accumulate final results across renders
   const chunksRef = React.useRef([]);
 
   function startNative() {
@@ -2100,30 +2100,57 @@ function QV2MicButton({ onTranscript, disabled, sessionLang }) {
       rec.interimResults = true;
       rec.continuous = true;
       rec.maxAlternatives = 1;
-      let finalText = '';
+      finalTextRef.current = '';  // Reset accumulated text for new session
+      listeningRef.current = true;
       rec.onresult = (e) => {
         let interim = '';
+        let newFinals = '';
         for (let i = e.resultIndex; i < e.results.length; i++) {
           const t = e.results[i][0].transcript;
-          if (e.results[i].isFinal) finalText += t + ' '; else interim += t;
+          if (e.results[i].isFinal) { newFinals += t + ' '; } else { interim += t; }
         }
-        onTranscript((finalText + interim).replace(/\s+/g, ' ').trim());
+        // Append new final results (only once, from resultIndex onward)
+        if (newFinals) { finalTextRef.current += newFinals; }
+        // Show accumulated finals + current interim as live preview
+        onTranscript((finalTextRef.current + interim).replace(/\s+/g, ' ').trim());
       };
       rec.onerror = (ev) => {
         var msg = (ev && ev.error) || 'unknown';
-        if (msg === 'no-speech') { setErrMsg('No speech detected — try again'); setTimeout(function() { setErrMsg(''); }, 3000); setState('idle'); return; }
-        if (msg === 'not-allowed' || msg === 'service-not-allowed') { setErrMsg('Mic blocked — allow mic access in browser settings'); setTimeout(function() { setErrMsg(''); }, 5000); setState('error'); return; }
-        if (msg === 'network') { setErrMsg('Network error — check connection'); setTimeout(function() { setErrMsg(''); }, 4000); setState('idle'); return; }
+        if (msg === 'no-speech') { /* silent, just keep listening */ return; }
+        if (msg === 'aborted') { return; /* user or system abort, handled elsewhere */ }
+        if (msg === 'not-allowed' || msg === 'service-not-allowed') {
+          // Fallback to backend transcription if available
+          if (navigator.mediaDevices && window.MediaRecorder) {
+            setErrMsg('Browser speech recognition blocked — switching to server transcription');
+            setTimeout(function() { setErrMsg(''); }, 4000);
+            listeningRef.current = false; ref.current = null; setState('idle');
+            startBackend();
+            return;
+          }
+          setErrMsg('Mic blocked — allow mic access in browser settings'); setTimeout(function() { setErrMsg(''); }, 5000); listeningRef.current = false; ref.current = null; setState('error'); return;
+        }
+        if (msg === 'network') {
+          // Fallback to backend transcription if available
+          if (navigator.mediaDevices && window.MediaRecorder) {
+            setErrMsg('Speech service offline — switching to server transcription');
+            setTimeout(function() { setErrMsg(''); }, 4000);
+            listeningRef.current = false; ref.current = null; setState('idle');
+            startBackend();
+            return;
+          }
+          setErrMsg('Network error — check connection'); setTimeout(function() { setErrMsg(''); }, 4000); listeningRef.current = false; ref.current = null; setState('idle'); return;
+        }
         setErrMsg('Mic error: ' + msg); setTimeout(function() { setErrMsg(''); }, 4000);
+        listeningRef.current = false; ref.current = null;
         setState('idle');
       };
       rec.onend = () => {
-        // Keep listening if user hasn't manually stopped — continuous mode restarts
-        if (ref.current === rec && state !== 'idle' && state !== 'error') {
-          try { rec.start(); } catch(e) { setState('idle'); }
+        // Auto-restart for continuous listening (user hasn't manually stopped)
+        if (listeningRef.current) {
+          try { rec.start(); } catch(e) { /* already started or error */ listeningRef.current = false; setState('idle'); }
           return;
         }
-        setState((s) => (s === 'error' ? s : 'idle'));
+        setState('idle');
       };
       ref.current = rec;
       try {
@@ -2131,6 +2158,7 @@ function QV2MicButton({ onTranscript, disabled, sessionLang }) {
       } catch(e) {
         setErrMsg('Failed to start mic: ' + (e.message || e));
         setTimeout(function() { setErrMsg(''); }, 4000);
+        listeningRef.current = false;
         setState('idle');
         return;
       }
@@ -2172,6 +2200,7 @@ function QV2MicButton({ onTranscript, disabled, sessionLang }) {
   }
 
   function stopListening() {
+    listeningRef.current = false;  // Signal to onend not to restart
     const r = ref.current;
     ref.current = null;  // Clear ref BEFORE stopping so onend doesn't auto-restart
     if (!r) return;
