@@ -5,6 +5,8 @@ status: in_review
 specialty: surgery
 system: gastrointestinal
 presentation: "Lower left abdominal pain and fever"
+first_impression: "Patient appears in pain."
+first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Acute diverticulitis"
 difficulty: 2
 estimated_minutes: 15

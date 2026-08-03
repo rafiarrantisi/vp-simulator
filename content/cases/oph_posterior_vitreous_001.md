@@ -5,6 +5,8 @@ status: in_review
 specialty: ophthalmology
 system: eye
 presentation: "Flash of light and floaters in one eye"
+first_impression: "Patient appears to have eye discomfort."
+first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Posterior vitreous detachment"
 difficulty: 2
 estimated_minutes: 10

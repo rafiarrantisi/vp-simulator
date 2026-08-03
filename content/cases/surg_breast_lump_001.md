@@ -5,6 +5,8 @@ status: in_review
 specialty: surgery
 system: breast
 presentation: "Painless lump in the right breast"
+first_impression: "Patient appears in pain."
+first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Invasive ductal carcinoma"
 difficulty: 3
 estimated_minutes: 15

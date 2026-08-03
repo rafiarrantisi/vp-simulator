@@ -5,6 +5,8 @@ status: in_review
 specialty: emergency
 system: cardiovascular
 presentation: "Chest pain"
+first_impression: "Patient appears anxious, clutching chest, pale and diaphoretic."
+first_impression_id: "Pasien tampak cemas, memegangi dada, pucat dan berkeringat dingin."
 target_condition: "Acute coronary syndrome"
 difficulty: 3
 estimated_minutes: 15

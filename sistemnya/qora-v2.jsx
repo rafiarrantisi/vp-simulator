@@ -1145,7 +1145,7 @@ function QoraProfile({ onNav }) {
       saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '\u2713 ' + _t('common.save') + 'd')));
 }
 
-// ---- Pricing / upgrade (Xendit paywall; prices are config-driven, §7.3) ----
+// ---- Pricing / upgrade (Midtrans Snap primary, Xendit fallback; §7.3) ----
 const QORA_PLAN_FEATURES = {
   free: ['A few free cases each month', 'Preview every specialty', 'Instant scoring + answer key'],
   monthly: ['Unlimited practice (fair use)', 'Full case library, all specialties', 'OSCE mode, timer & task panel', 'Full model-answer reveal', 'Progress, streaks & badges'],
@@ -1153,6 +1153,27 @@ const QORA_PLAN_FEATURES = {
   exam_pass: ['Unlimited practice for one month', 'Built for exam season', 'Full OSCE arc + answer keys'],
 };
 const QORA_PLAN_BADGE = { annual: 'Best value', exam_pass: 'Exam season' };
+
+// Load Midtrans Snap.js once (sandbox or production depends on the client key origin).
+function _loadSnap() {
+  return new Promise(function (resolve, reject) {
+    if (window.snap && window.snap.pay) return resolve();
+    var existing = document.getElementById('midtrans-snap-script');
+    if (existing) {
+      var iv = setInterval(function () {
+        if (window.snap && window.snap.pay) { clearInterval(iv); resolve(); }
+      }, 100);
+      setTimeout(function () { clearInterval(iv); reject(new Error('Snap load timeout')); }, 8000);
+      return;
+    }
+    var sc = document.createElement('script');
+    sc.src = 'https://app.midtrans.com/snap/snap.js';
+    sc.async = true; sc.defer = true; sc.id = 'midtrans-snap-script';
+    sc.onload = function () { resolve(); };
+    sc.onerror = function () { reject(new Error('Failed to load Snap')); };
+    document.head.appendChild(sc);
+  });
+}
 
 function QoraPricing({ onNav }) {
   const [data, setData] = React.useState(null); // {plans, provider, billing_enforced}
@@ -1166,8 +1187,30 @@ function QoraPricing({ onNav }) {
   async function upgrade(planId) {
     setBusy(planId); setErr('');
     try {
-      const r = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
-      if (r && r.checkout_url) { window.location.href = r.checkout_url; return; }
+      // Primary: Midtrans Snap popup (Indonesia).
+      try {
+        const r = await qv2Fetch('/api/billing/midtrans/checkout/' + planId, { method: 'POST' });
+        if (r && r.snap_token) {
+          await _loadSnap();
+          if (window.snap && window.snap.pay) {
+            window.snap.pay(r.snap_token, {
+              onSuccess: function () { window.location.href = '/billing/success'; },
+              onPending: function () { setErr('Payment pending — complete it to activate your plan.'); setBusy(''); },
+              onError: function () { setErr('Payment failed — please try again.'); setBusy(''); },
+              onClose: function () { setBusy(''); },
+            });
+            return;
+          }
+          // No Snap (blocked?) -> fall through to redirect_url
+          if (r.redirect_url) { window.location.href = r.redirect_url; return; }
+        }
+      } catch (e) {
+        if (!/not configured|503/i.test(String((e && e.message) || e))) throw e;
+        // Midtrans not configured -> fall back to Xendit below.
+      }
+      // Fallback: Xendit hosted invoice.
+      const r2 = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
+      if (r2 && r2.checkout_url) { window.location.href = r2.checkout_url; return; }
       setErr('Checkout is not available yet.');
     } catch (e) {
       setErr(/not configured|503/i.test(String(e.message || e)) ? 'Payments are not enabled yet — check back soon.' : String(e.message || e));
@@ -1200,7 +1243,7 @@ function QoraPricing({ onNav }) {
           badge && React.createElement('div', { style: { position: 'absolute', top: -11, left: 22, fontSize: 10, fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', color: '#fff', background: 'var(--primary)', padding: '3px 10px', borderRadius: 999 } }, badge),
           React.createElement('div', { style: { fontSize: 15, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } }, p.label),
           React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 } },
-            React.createElement('span', { style: { fontSize: 30, fontWeight: 800, color: 'var(--text-1)' } }, isFree ? 'Free' : ('$' + p.price_usd)),
+            React.createElement('span', { style: { fontSize: 30, fontWeight: 800, color: 'var(--text-1)' } }, isFree ? 'Free' : (p.display_price || ('$' + p.price))),
             !isFree && React.createElement('span', { style: { fontSize: 12, color: 'var(--text-3)' } }, p.interval === 'year' ? '/ year' : p.interval === 'one_time' ? 'one-off' : '/ month')),
           React.createElement('div', { style: { flex: 1, margin: '12px 0' } },
             feats.map((f, i) => React.createElement('div', { key: i, style: { display: 'flex', gap: 8, fontSize: 12.5, color: 'var(--text-2)', padding: '3px 0', lineHeight: 1.4 } },

@@ -5,6 +5,8 @@ status: in_review
 specialty: internal_medicine
 system: digestive
 presentation: "Heartburn"
+first_impression: "Patient appears uncomfortable."
+first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Gastro-oesophageal reflux disease"
 difficulty: 1
 estimated_minutes: 15

@@ -5,6 +5,8 @@ status: in_review
 specialty: internal_medicine
 system: gastrointestinal
 presentation: "Severe epigastric pain radiating to the back"
+first_impression: "Patient appears uncomfortable."
+first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Acute pancreatitis"
 difficulty: 3
 estimated_minutes: 15

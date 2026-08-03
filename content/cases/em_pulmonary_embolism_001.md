@@ -5,6 +5,8 @@ status: in_review
 specialty: emergency
 system: respiratory
 presentation: "Sudden chest pain and shortness of breath after long flight"
+first_impression: "A person appears breathless, anxious, pale with blue lips."
+first_impression_id: "Seseorang tampak sesak, cemas, pucat dengan bibir kebiruan."
 target_condition: "Pulmonary embolism"
 difficulty: 3
 estimated_minutes: 15

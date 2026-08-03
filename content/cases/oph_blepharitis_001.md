@@ -5,6 +5,8 @@ status: in_review
 specialty: ophthalmology
 system: adnexa
 presentation: "Itchy, crusty eyelid margins"
+first_impression: "Patient appears to have eye discomfort."
+first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Chronic blepharitis"
 difficulty: 1
 estimated_minutes: 11

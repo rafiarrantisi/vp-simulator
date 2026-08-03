@@ -5,6 +5,8 @@ status: in_review
 specialty: paediatrics
 system: gastrointestinal
 presentation: "Recurrent stomach pain in an adolescent"
+first_impression: "A child appears unwell."
+first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Helicobacter pylori gastritis"
 difficulty: 1
 estimated_minutes: 10

@@ -5,6 +5,8 @@ status: in_review
 specialty: psychiatry
 system: nervous
 presentation: "Difficulty concentrating and fidgety"
+first_impression: "Patient appears anxious or sad."
+first_impression_id: "Pasien tampak cemas atau sedih."
 target_condition: "Adult attention deficit hyperactivity disorder"
 difficulty: 2
 estimated_minutes: 15

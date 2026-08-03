@@ -5,6 +5,8 @@ status: in_review
 specialty: paediatrics
 system: respiratory
 presentation: "Wheeze in an infant"
+first_impression: "A child appears unwell."
+first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Bronchiolitis"
 difficulty: 2
 estimated_minutes: 10

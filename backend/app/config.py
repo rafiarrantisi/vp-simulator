@@ -115,6 +115,15 @@ class Settings(BaseSettings):
     xendit_success_url: str = ""      # redirect after a successful payment
     xendit_failure_url: str = ""      # redirect after a failed/expired payment
 
+    # ── Midtrans payment gateway (Indonesia primary) — Snap API.
+    # Snap hosts the payment page (QRIS/VA/e-wallet/card) via a popup token.
+    # Entitlement granted ONLY from the verified webhook (SHA512 signature).
+    midtrans_server_key: str = ""     # server key (server-side only)
+    midtrans_client_key: str = ""     # client key (safe for frontend Snap.js)
+    midtrans_is_production: bool = False  # False -> sandbox endpoint
+    midtrans_success_url: str = ""    # optional redirect after payment
+    midtrans_failure_url: str = ""    # optional redirect after failure
+
     # ── Region-aware pricing (Phase 1 — international rollout) ──
     # Indonesia — IDR
     price_monthly_idr: float = 119000

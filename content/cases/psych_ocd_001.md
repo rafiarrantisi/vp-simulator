@@ -5,6 +5,8 @@ status: in_review
 specialty: psychiatry
 system: nervous
 presentation: "Intrusive thoughts and repetitive rituals"
+first_impression: "Patient appears anxious or sad."
+first_impression_id: "Pasien tampak cemas atau sedih."
 target_condition: "Obsessive-compulsive disorder"
 difficulty: 2
 estimated_minutes: 20

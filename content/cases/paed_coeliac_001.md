@@ -5,6 +5,8 @@ status: in_review
 specialty: paediatrics
 system: gastrointestinal
 presentation: "Failing to thrive and loose stools"
+first_impression: "A child appears unwell."
+first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Coeliac disease"
 difficulty: 2
 estimated_minutes: 15

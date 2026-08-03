@@ -5,6 +5,8 @@ status: in_review
 specialty: psychiatry
 system: nervous
 presentation: "Low mood"
+first_impression: "Patient appears anxious or sad."
+first_impression_id: "Pasien tampak cemas atau sedih."
 target_condition: "Depression"
 difficulty: 2
 estimated_minutes: 20

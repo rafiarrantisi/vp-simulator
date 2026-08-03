@@ -5,6 +5,8 @@ status: in_review
 specialty: surgery
 system: gastrointestinal
 presentation: "Groin lump"
+first_impression: "Patient appears in pain."
+first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Inguinal hernia"
 difficulty: 1
 estimated_minutes: 10

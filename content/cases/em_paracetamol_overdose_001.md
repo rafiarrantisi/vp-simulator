@@ -5,6 +5,8 @@ status: in_review
 specialty: emergency
 system: gastrointestinal
 presentation: "Overdose"
+first_impression: "A person appears pale, nauseous, holding stomach."
+first_impression_id: "Seseorang tampak pucat, mual, memegangi perut."
 target_condition: "Paracetamol overdose"
 difficulty: 3
 estimated_minutes: 15

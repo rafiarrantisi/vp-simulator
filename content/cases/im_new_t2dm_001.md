@@ -5,6 +5,8 @@ status: in_review
 specialty: internal_medicine
 system: endocrine
 presentation: "Polyuria and thirst"
+first_impression: "Patient appears uncomfortable."
+first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Type 2 diabetes mellitus"
 difficulty: 2
 estimated_minutes: 15

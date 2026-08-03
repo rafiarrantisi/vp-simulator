@@ -5,6 +5,8 @@ status: in_review
 specialty: internal_medicine
 system: respiratory
 presentation: "Cough and breathlessness"
+first_impression: "Patient appears uncomfortable."
+first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Community-acquired pneumonia"
 difficulty: 2
 estimated_minutes: 15

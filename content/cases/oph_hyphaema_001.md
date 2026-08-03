@@ -5,6 +5,8 @@ status: in_review
 specialty: ophthalmology
 system: trauma
 presentation: "Blood in the front of the eye after blunt trauma"
+first_impression: "Patient appears to have eye discomfort."
+first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Traumatic hyphaema"
 difficulty: 3
 estimated_minutes: 12

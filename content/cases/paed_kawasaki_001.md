@@ -5,6 +5,8 @@ status: in_review
 specialty: paediatrics
 system: cardiovascular
 presentation: "Prolonged fever and red eyes in a toddler"
+first_impression: "A child appears unwell."
+first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Kawasaki disease"
 difficulty: 3
 estimated_minutes: 20

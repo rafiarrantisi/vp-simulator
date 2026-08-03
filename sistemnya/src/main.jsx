@@ -1096,6 +1096,12 @@ window.QORA_TRANSLATIONS = {
   'profile.settings': { en: 'Settings', id: 'Pengaturan' },
   'profile.language': { en: 'Preferred language', id: 'Bahasa preferensi' },
   'profile.region': { en: 'Region', id: 'Region' },
+  'profile.billing': { en: 'Billing & plan', id: 'Tagihan & paket' },
+  'profile.plan': { en: 'Current plan', id: 'Paket saat ini' },
+
+  // ── Billing ──
+  'billing.success': { en: 'Payment successful!', id: 'Pembayaran berhasil!' },
+  'billing.failed': { en: 'Payment not completed', id: 'Pembayaran belum selesai' },
 
   // ── Result / Debrief ──
   'result.title': { en: 'Session complete!', id: 'Sesi selesai!' },
@@ -1768,7 +1774,7 @@ function QV2Catalogue({ onPick, onProgress }) {
           React.createElement(QV2Pill, { tone: 'primary' }, QV2_SPEC_LABEL[c.specialty] || c.specialty),
           c.mode === 'osce_full' ? React.createElement(QV2Pill, { tone: 'violet' }, 'OSCE') : React.createElement(QV2Pill, { tone: 'teal' }, 'Anamnesis')),
         React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.3 } }, c.presentation),
-        React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)' } }, c.chief_complaint),
+        React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', fontStyle: 'italic' } }, c.first_impression_id || c.first_impression || c.chief_complaint),
         React.createElement('div', { style: { marginTop: 'auto', display: 'flex', gap: 12, fontSize: 11, color: 'var(--text-3)', fontWeight: 600 } },
           React.createElement('span', null, '◆ Difficulty ' + (c.difficulty || '–')),
           React.createElement('span', null, '⏱ ~' + (c.estimated_minutes || '–') + ' min')))))
@@ -1989,6 +1995,18 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
       if (d && d.preferred_language) setLang(d.preferred_language);
     }).catch(function () {});
   }, []);
+  // Check billing status — if free limit reached, show upsell instead of starting
+  var billState = React.useState(null);
+  var billing = billState[0];
+  var setBilling = billState[1];
+  React.useEffect(function () {
+    qv2Fetch('/api/billing/me').then(function (d) {
+      setBilling(d);
+      if (d && d.usage && d.usage.sessions >= (d.free_session_limit || 3) && !d.unlimited) {
+        setBilling(Object.assign({}, d, { limitReached: true }));
+      }
+    }).catch(function () {});
+  }, []);
   async function requestMic() {
     setMicState('requesting');
     try {
@@ -1998,9 +2016,9 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
     } catch (e) { setMicState('denied'); }
   }
   return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('button', { onClick: onBack, style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 Library'),
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Get ready for your session'),
-    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22 } }, caseSummary.presentation + ' · ' + (QV2_SPEC_LABEL[caseSummary.specialty] || caseSummary.specialty)),
+    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22, fontStyle: 'italic' } }, caseSummary.first_impression_id || caseSummary.first_impression || caseSummary.presentation),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose a mode'),
     React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
       React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning. A task guide and history hints help you along. The timer is optional.' }),
@@ -2030,7 +2048,14 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
       React.createElement(QV2PrepRow, { icon: '🔒', title: 'Privacy & security', body: 'Your audio is processed securely and is not stored without your explicit consent.' }),
       React.createElement(QV2PrepRow, { icon: '🎧', title: 'Audio quality', body: 'For best results, use a quiet room and check your microphone works.' })),
     React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 16 } }, micState === 'granted' ? '✓ All set — you can start now.' : 'You can start now and enable the mic later.'),
-    React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
+    billing && billing.limitReached
+      ? React.createElement('div', { style: { padding: 16, borderRadius: 12, border: '1px solid var(--amber)', background: 'var(--amber-l)', marginBottom: 12 } },
+          React.createElement('div', { style: { fontSize: 13.5, fontWeight: 700, color: 'var(--amber-d)', marginBottom: 4 } }, '⚡ Free session limit reached'),
+          React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'You have used all ' + (billing.free_session_limit || 3) + ' free sessions this period. Upgrade to keep practising without limits.'),
+          React.createElement('div', { style: { display: 'flex', gap: 8 } },
+            React.createElement('button', { onClick: function () { if (window.__goBilling) window.__goBilling(); }, style: { padding: '10px 18px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Upgrade plan'),
+            React.createElement('button', { onClick: onBack, style: { padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Back to library')))
+      : React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
 }
 
 // ---- In-session task panel (instruksi §4.6) ----
@@ -2074,197 +2099,23 @@ function QV2TimeUpModal({ onFinish, onContinue }) {
 const QV2_SILENCE_THRESHOLD = 30;  // dB level below which we consider silence
 const QV2_SILENCE_DURATION = 2500;  // ms of silence before auto-send
 
-function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
-  const [state, setState] = React.useState('idle'); // idle | listening | processing | error
-  const [errMsg, setErrMsg] = React.useState('');
-  const [audioLevel, setAudioLevel] = React.useState(0);
-  const streamRef = React.useRef(null);
-  const mediaRecorderRef = React.useRef(null);
-  const chunksRef = React.useRef([]);
-  const audioContextRef = React.useRef(null);
-  const analyserRef = React.useRef(null);
-  const silenceTimerRef = React.useRef(null);
-  const lastSoundRef = React.useRef(Date.now());
-
-  async function startListening() {
-    try {
-      setErrMsg('');
-      setState('listening');
-      setAudioLevel(0);
-      lastSoundRef.current = Date.now();
-
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
-      streamRef.current = stream;
-
-      // Setup audio analysis for silence detection
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      audioContextRef.current = audioContext;
-      const analyser = audioContext.createAnalyser();
-      analyserRef.current = analyser;
-      analyser.fftSize = 512;
-      const source = audioContext.createMediaStreamSource(stream);
-      source.connect(analyser);
-
-      // Monitor audio level for silence detection
-      const dataArray = new Uint8Array(analyser.frequencyBinCount);
-      function checkSilence() {
-        if (state !== 'listening') return;
-        analyser.getByteFrequencyData(dataArray);
-        let sum = 0;
-        for (let i = 0; i < dataArray.length; i++) {
-          sum += dataArray[i];
-        }
-        const avg = sum / dataArray.length;
-        setAudioLevel(avg);
-
-        if (avg > QV2_SILENCE_THRESHOLD) {
-          lastSoundRef.current = Date.now();
-          if (silenceTimerRef.current) {
-            clearTimeout(silenceTimerRef.current);
-            silenceTimerRef.current = null;
-          }
-        } else if (chunksRef.current.length > 0 && Date.now() - lastSoundRef.current > QV2_SILENCE_DURATION) {
-          // Silence detected, auto-send
-          stopAndSend();
-          return;
-        }
-
-        if (state === 'listening') {
-          requestAnimationFrame(checkSilence);
-        }
-      }
-      requestAnimationFrame(checkSilence);
-
-      // Setup MediaRecorder
-      chunksRef.current = [];
-      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm';
-      const mediaRecorder = new MediaRecorder(stream, { mimeType });
-      mediaRecorderRef.current = mediaRecorder;
-
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          chunksRef.current.push(e.data);
-        }
-      };
-
-      mediaRecorder.start(100); // Collect data every 100ms
-    } catch (e) {
-      setErrMsg('Mic access denied. Please allow microphone permission.');
-      setState('error');
-    }
-  }
-
-  async function stopAndSend() {
-    if (state !== 'listening') return;
-    setState('processing');
-
-    // Stop recording
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop();
-    }
-
-    // Wait for onstop to fire
-    mediaRecorderRef.current.onstop = async () => {
-      // Stop audio stream
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
-        streamRef.current = null;
-      }
-
-      // Close audio context
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-        audioContextRef.current = null;
-      }
-
-      if (chunksRef.current.length === 0) {
-        setState('idle');
-        return;
-      }
-
-      // Upload to backend for transcription
-      try {
-        const blob = new Blob(chunksRef.current, { type: mediaRecorderRef.current.mimeType });
-        const formData = new FormData();
-        formData.append('audio', blob, 'audio.webm');
-
-        const res = await fetch('/api/ai/transcribe', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const json = await res.json();
-        if (res.ok && json.transcript) {
-          onTranscript(json.transcript);
-          // Auto-send after transcription
-          if (onAutoSend && json.transcript.trim()) {
-            onAutoSend(json.transcript);
-          }
-        } else {
-          setErrMsg('Transcription failed');
-          setState('error');
-        }
-      } catch (e) {
-        setErrMsg('Upload failed');
-        setState('error');
-      } finally {
-        setState('idle');
-        setAudioLevel(0);
-      }
-    };
-
-    // Clear silence timer
-    if (silenceTimerRef.current) {
-      clearTimeout(silenceTimerRef.current);
-      silenceTimerRef.current = null;
-    }
-  }
-
-  function stopListening() {
-    if (state !== 'listening') return;
-
-    // Stop recording
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop();
-    }
-
-    // Stop audio stream
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-
-    // Close audio context
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-      audioContextRef.current = null;
-    }
-
-    setState('idle');
-    setAudioLevel(0);
-
-    if (silenceTimerRef.current) {
-      clearTimeout(silenceTimerRef.current);
-      silenceTimerRef.current = null;
-    }
-  }
+function QV2MicButton({ micState, onStart, onStop, errMsg }) {
+  // Pure visual component - all logic in parent
+  const isListening = micState === 'listening';
+  const isProcessing = micState === 'processing';
 
   const onClick = () => {
-    if (state === 'listening') {
-      stopListening();
-    } else if (state === 'idle' || state === 'error') {
-      startListening();
+    if (isListening) {
+      onStop();
+    } else if (!isProcessing) {
+      onStart();
     }
   };
-
-  const isListening = state === 'listening';
-  const isProcessing = state === 'processing';
-  const pulseScale = isListening ? 1 + (audioLevel / 100) * 0.15 : 1;
 
   return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, padding: '12px 0' } },
     React.createElement('button', {
       onClick,
-      disabled: disabled || isProcessing,
+      disabled: isProcessing,
       title: isListening ? 'Stop recording' : 'Start recording',
       style: {
         width: 80,
@@ -2274,10 +2125,8 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
         background: isListening ? 'var(--red-l)' : isProcessing ? 'var(--primary-l)' : 'var(--surface)',
         color: isListening ? 'var(--red)' : isProcessing ? 'var(--primary)' : 'var(--text-2)',
         fontSize: 32,
-        cursor: disabled || isProcessing ? 'not-allowed' : 'pointer',
+        cursor: isProcessing ? 'not-allowed' : 'pointer',
         transition: 'all 0.2s ease',
-        transform: `scale(${pulseScale})`,
-        boxShadow: isListening ? '0 0 20px rgba(239, 68, 68, 0.3)' : 'none',
         position: 'relative',
         overflow: 'visible',
       }
@@ -2292,7 +2141,6 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
           bottom: -6,
           borderRadius: '50%',
           border: '2px solid var(--red)',
-          opacity: audioLevel / 100,
           animation: 'pulse 1.5s ease-in-out infinite',
           pointerEvents: 'none',
         }
@@ -2323,6 +2171,135 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
   const [overtime, setOvertime] = React.useState(false);
   const endRef = React.useRef(null);
   const wide = useIsWide(900);
+
+  // Mic control state
+  const [micState, setMicState] = React.useState('idle'); // idle | listening | processing | error
+  const [micErrMsg, setMicErrMsg] = React.useState('');
+  const mediaRecorderRef = React.useRef(null);
+  const audioChunksRef = React.useRef([]);
+  const silenceTimerRef = React.useRef(null);
+  const lastSoundTimeRef = React.useRef(Date.now());
+  const shouldAutoReactivateRef = React.useRef(false);
+
+  async function handleMicStart() {
+    try {
+      setMicErrMsg('');
+      setMicState('listening');
+      lastSoundTimeRef.current = Date.now();
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      // Setup audio analysis for silence detection
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
+      analyser.fftSize = 512;
+
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      let audioContextRef = audioContext;
+
+      function checkSilence() {
+        if (micState !== 'listening') {
+          audioContextRef.close();
+          return;
+        }
+        analyser.getByteFrequencyData(dataArray);
+        const avg = dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
+
+        if (avg > QV2_SILENCE_THRESHOLD) {
+          lastSoundTimeRef.current = Date.now();
+          if (silenceTimerRef.current) {
+            clearTimeout(silenceTimerRef.current);
+            silenceTimerRef.current = null;
+          }
+        } else if (audioChunksRef.current.length > 0 && Date.now() - lastSoundTimeRef.current > QV2_SILENCE_DURATION) {
+          // Silence detected, stop and process
+          if (silenceTimerRef.current) {
+            clearTimeout(silenceTimerRef.current);
+            silenceTimerRef.current = null;
+          }
+          handleMicStop();
+          return;
+        }
+
+        if (micState === 'listening') {
+          silenceTimerRef.current = setTimeout(checkSilence, 200);
+        }
+      }
+
+      silenceTimerRef.current = setTimeout(checkSilence, 500);
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          audioChunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        if (audioChunksRef.current.length === 0) {
+          setMicState('idle');
+          return;
+        }
+
+        setMicState('processing');
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const formData = new FormData();
+        formData.append('audio', audioBlob);
+
+        try {
+          const tok = _qv2Token();
+          const res = await fetch(_qv2Base() + '/api/ai/transcribe', {
+            method: 'POST',
+            headers: tok ? { Authorization: 'Bearer ' + tok } : {},
+            body: formData,
+          });
+
+          const json = await res.json();
+          if (res.ok && json.data && json.data.transcript) {
+            const transcript = json.data.transcript.trim();
+            setInput(transcript);
+            // Auto-send
+            if (transcript) {
+              await send(transcript);
+              // Auto-reactivate mic after patient responds
+              shouldAutoReactivateRef.current = true;
+            }
+          } else {
+            setMicErrMsg('Transcription failed');
+            setMicState('error');
+          }
+        } catch (e) {
+          setMicErrMsg('Upload failed');
+          setMicState('error');
+        } finally {
+          if (!shouldAutoReactivateRef.current) {
+            setMicState('idle');
+          }
+        }
+      };
+
+      mediaRecorder.start(100);
+    } catch (e) {
+      setMicErrMsg('Mic access denied');
+      setMicState('error');
+    }
+  }
+
+  function handleMicStop() {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    }
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+    setMicState('idle');
+  }
 
   React.useEffect(() => {
     qv2Fetch('/api/v2/sessions', { method: 'POST', body: { case_id: caseSummary.id, language: language || 'en' } })
@@ -2825,7 +2802,7 @@ function QoraProfile({ onNav }) {
       saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '\u2713 ' + _t('common.save') + 'd')));
 }
 
-// ---- Pricing / upgrade (Xendit paywall; prices are config-driven, §7.3) ----
+// ---- Pricing / upgrade (Midtrans Snap primary, Xendit fallback; §7.3) ----
 const QORA_PLAN_FEATURES = {
   free: ['A few free cases each month', 'Preview every specialty', 'Instant scoring + answer key'],
   monthly: ['Unlimited practice (fair use)', 'Full case library, all specialties', 'OSCE mode, timer & task panel', 'Full model-answer reveal', 'Progress, streaks & badges'],
@@ -2833,6 +2810,27 @@ const QORA_PLAN_FEATURES = {
   exam_pass: ['Unlimited practice for one month', 'Built for exam season', 'Full OSCE arc + answer keys'],
 };
 const QORA_PLAN_BADGE = { annual: 'Best value', exam_pass: 'Exam season' };
+
+// Load Midtrans Snap.js once (sandbox or production depends on the client key origin).
+function _loadSnap() {
+  return new Promise(function (resolve, reject) {
+    if (window.snap && window.snap.pay) return resolve();
+    var existing = document.getElementById('midtrans-snap-script');
+    if (existing) {
+      var iv = setInterval(function () {
+        if (window.snap && window.snap.pay) { clearInterval(iv); resolve(); }
+      }, 100);
+      setTimeout(function () { clearInterval(iv); reject(new Error('Snap load timeout')); }, 8000);
+      return;
+    }
+    var sc = document.createElement('script');
+    sc.src = 'https://app.midtrans.com/snap/snap.js';
+    sc.async = true; sc.defer = true; sc.id = 'midtrans-snap-script';
+    sc.onload = function () { resolve(); };
+    sc.onerror = function () { reject(new Error('Failed to load Snap')); };
+    document.head.appendChild(sc);
+  });
+}
 
 function QoraPricing({ onNav }) {
   const [data, setData] = React.useState(null); // {plans, provider, billing_enforced}
@@ -2846,8 +2844,30 @@ function QoraPricing({ onNav }) {
   async function upgrade(planId) {
     setBusy(planId); setErr('');
     try {
-      const r = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
-      if (r && r.checkout_url) { window.location.href = r.checkout_url; return; }
+      // Primary: Midtrans Snap popup (Indonesia).
+      try {
+        const r = await qv2Fetch('/api/billing/midtrans/checkout/' + planId, { method: 'POST' });
+        if (r && r.snap_token) {
+          await _loadSnap();
+          if (window.snap && window.snap.pay) {
+            window.snap.pay(r.snap_token, {
+              onSuccess: function () { window.location.href = '/billing/success'; },
+              onPending: function () { setErr('Payment pending — complete it to activate your plan.'); setBusy(''); },
+              onError: function () { setErr('Payment failed — please try again.'); setBusy(''); },
+              onClose: function () { setBusy(''); },
+            });
+            return;
+          }
+          // No Snap (blocked?) -> fall through to redirect_url
+          if (r.redirect_url) { window.location.href = r.redirect_url; return; }
+        }
+      } catch (e) {
+        if (!/not configured|503/i.test(String((e && e.message) || e))) throw e;
+        // Midtrans not configured -> fall back to Xendit below.
+      }
+      // Fallback: Xendit hosted invoice.
+      const r2 = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
+      if (r2 && r2.checkout_url) { window.location.href = r2.checkout_url; return; }
       setErr('Checkout is not available yet.');
     } catch (e) {
       setErr(/not configured|503/i.test(String(e.message || e)) ? 'Payments are not enabled yet — check back soon.' : String(e.message || e));
@@ -2880,7 +2900,7 @@ function QoraPricing({ onNav }) {
           badge && React.createElement('div', { style: { position: 'absolute', top: -11, left: 22, fontSize: 10, fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', color: '#fff', background: 'var(--primary)', padding: '3px 10px', borderRadius: 999 } }, badge),
           React.createElement('div', { style: { fontSize: 15, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } }, p.label),
           React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 } },
-            React.createElement('span', { style: { fontSize: 30, fontWeight: 800, color: 'var(--text-1)' } }, isFree ? 'Free' : ('$' + p.price_usd)),
+            React.createElement('span', { style: { fontSize: 30, fontWeight: 800, color: 'var(--text-1)' } }, isFree ? 'Free' : (p.display_price || ('$' + p.price))),
             !isFree && React.createElement('span', { style: { fontSize: 12, color: 'var(--text-3)' } }, p.interval === 'year' ? '/ year' : p.interval === 'one_time' ? 'one-off' : '/ month')),
           React.createElement('div', { style: { flex: 1, margin: '12px 0' } },
             feats.map((f, i) => React.createElement('div', { key: i, style: { display: 'flex', gap: 8, fontSize: 12.5, color: 'var(--text-2)', padding: '3px 0', lineHeight: 1.4 } },
@@ -3009,7 +3029,116 @@ function QoraSessions(props) {
     content);
 }
 
-// ── Settings Panel (full page) ──
+// ── Billing / Payment History Page ──
+function QoraBilling(props) {
+  var onNav = props.onNav;
+  var _t = window.__t || function (k) { return k; };
+  var dataState = React.useState(null);
+  var data = dataState[0];
+  var setData = dataState[1];
+  var errState = React.useState('');
+  var err = errState[0];
+  var setErr = errState[1];
+  var busyState = React.useState('');
+  var busy = busyState[0];
+  var setBusy = busyState[1];
+  var region = 'row';
+  try { region = (localStorage.getItem('qora_region') || 'row'); } catch (e) {}
+  var REGION_LABEL = { indo: 'Indonesia', asean: 'ASEAN', row: 'Rest of World' };
+  var PRICE_LABEL = {
+    indo: { monthly: 'Rp119.000/bln', annual: 'Rp999.000/thn' },
+    asean: { monthly: '$9.99/mo', annual: '$84/yr' },
+    row: { monthly: '$14.99/mo', annual: '$119/yr' },
+  };
+
+  React.useEffect(function () {
+    qv2Fetch('/api/billing/history').then(setData).catch(function (e) { setErr(String(e.message || e)); });
+  }, []);
+
+  async function upgrade(planId) {
+    setBusy(planId); setErr('');
+    try {
+      var r = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
+      if (r && r.checkout_url) { window.location.href = r.checkout_url; return; }
+      setErr('Checkout is not available yet.');
+    } catch (e) {
+      setErr(/not configured|503/i.test(String(e.message || e)) ? 'Payments are not enabled yet — check back soon.' : String(e.message || e));
+    }
+    setBusy('');
+  }
+
+  if (err && !data) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)', textAlign: 'center' } }, _t('common.error') + ': ' + err);
+  if (!data) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)', textAlign: 'center' } }, _t('common.loading'));
+
+  var isPaid = data.unlimited === undefined ? (data.plan && data.plan !== 'free') : data.unlimited;
+  var prices = PRICE_LABEL[region] || PRICE_LABEL.row;
+  var usage = data.usage || {};
+  var usedSessions = usage.sessions || 0;
+  var limit = data.free_session_limit || 3;
+  var pct = Math.min(Math.round(usedSessions / limit * 100), 100);
+
+  return React.createElement('div', { className: 'au', style: { maxWidth: 760, margin: '0 auto', padding: '28px 20px 60px' } },
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
+      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
+      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\uD83D\uDCB3 ' + (window.__t ? window.__t('profile.billing', {}) || 'Billing & plan' : 'Billing & plan'))),
+    // Current plan card
+    React.createElement('div', { className: 'as', style: { padding: 24, borderRadius: 'var(--r-xl)', background: isPaid ? 'var(--primary)' : 'var(--surface)', border: isPaid ? 'none' : '1px solid var(--border)', boxShadow: 'var(--sh-md)', color: isPaid ? '#fff' : 'var(--text-1)', marginBottom: 20 } },
+      React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 } },
+        React.createElement('div', null,
+          React.createElement('div', { style: { fontSize: 12, fontWeight: 600, opacity: 0.75, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 } }, _t('profile.plan', {}) || 'Current plan'),
+          React.createElement('div', { style: { fontSize: 22, fontWeight: 800, textTransform: 'capitalize' } }, data.plan || 'free')),
+        React.createElement('span', { style: { fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 999, background: isPaid ? 'rgba(255,255,255,0.2)' : 'var(--surface-2)', color: isPaid ? '#fff' : 'var(--text-2)' } }, isPaid ? '\u2713 Active' : 'Free')),
+      isPaid
+        ? React.createElement('div', { style: { fontSize: 13, opacity: 0.85 } },
+            data.current_period_end ? ('Renews: ' + String(data.current_period_end).slice(0, 10)) : 'Unlimited sessions active')
+        : React.createElement('div', null,
+            React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 8 } }, usedSessions + ' of ' + limit + ' free sessions used this period'),
+            React.createElement('div', { style: { height: 8, borderRadius: 999, background: 'var(--surface-3)', marginBottom: 16 } },
+              React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: pct >= 80 ? 'var(--red)' : 'var(--primary)', transition: 'width 0.6s ease' } })),
+            React.createElement('button', { onClick: function () { upgrade('monthly'); }, disabled: !!busy, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
+              busy === 'monthly' ? 'Redirecting\u2026' : ('Upgrade to ' + (prices.monthly || '$14.99/mo')))),
+      err && React.createElement('div', { style: { fontSize: 12.5, color: isPaid ? 'rgba(255,255,255,0.9)' : 'var(--red-d)', marginTop: 10 } }, err)),
+    // Plan options
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginBottom: 20 } },
+      React.createElement('button', { onClick: function () { upgrade('monthly'); }, disabled: !!busy, style: { textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'Poppins' } },
+        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, 'Monthly'),
+        React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--primary)', marginBottom: 2 } }, prices.monthly || '$14.99/mo'),
+        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Cancel anytime')),
+      React.createElement('button', { onClick: function () { upgrade('annual'); }, disabled: !!busy, style: { textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', border: '2px solid var(--primary)', background: 'var(--primary-l)', cursor: 'pointer', fontFamily: 'Poppins', position: 'relative' } },
+        React.createElement('span', { style: { position: 'absolute', top: -10, right: 12, background: 'var(--amber)', color: '#fff', fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', padding: '2px 10px', borderRadius: 999 } }, 'Best value'),
+        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, 'Annual'),
+        React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--primary)', marginBottom: 2 } }, prices.annual || '$119/yr'),
+        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Save ~34%'))),
+    // Recent sessions
+    React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
+      React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '\uD83D\uDCCB ' + (_t('dashboard.recent_sessions'))),
+      (!data.history || !data.history.length) && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', padding: '12px 0', textAlign: 'center' } }, _t('dashboard.no_sessions')),
+      (data.history || []).slice(0, 6).map(function (s, i) {
+        return React.createElement('div', { key: s.id || i, style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderTop: '1px solid var(--border)' } },
+          React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)' } }, s.caseId || 'Case'),
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 700, color: s.totalScore != null ? 'var(--teal-d)' : 'var(--text-3)' } }, s.totalScore != null ? s.totalScore + '%' : (s.status || '—')));
+      })));
+}
+
+// ── Billing Success / Failed redirect pages ──
+function QoraBillingResult(props) {
+  var okResult = !!props.ok;
+  var onNav = props.onNav;
+  var _t = window.__t || function (k) { return k; };
+  return React.createElement('div', { className: 'au', style: { maxWidth: 480, margin: '0 auto', padding: '60px 20px', textAlign: 'center' } },
+    React.createElement('div', { style: { fontSize: 56, marginBottom: 16 } }, okResult ? '\uD83C\uDF89' : '\uD83D\uDEA8'),
+    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } },
+      okResult ? (window.__t ? window.__t('billing.success', {}) || 'Payment successful!' : 'Payment successful!') : (window.__t ? window.__t('billing.failed', {}) || 'Payment not completed' : 'Payment not completed')),
+    React.createElement('div', { style: { fontSize: 13.5, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 28 } },
+      okResult
+        ? 'Your plan has been activated. You can now practise without limits.'
+        : 'No charge was made. You can retry, or contact support if you think this is a mistake.'),
+    React.createElement('div', { style: { display: 'flex', gap: 10, justifyContent: 'center' } },
+      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, _t('common.back') + ' \u2192 Dashboard'),
+      !okResult && React.createElement('button', { onClick: function () { onNav('billing'); }, style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Retry payment')));
+}
+
+
 function QoraSettings(props) {
   var onNav = props.onNav;
   var dataState = React.useState(null);
@@ -3114,6 +3243,12 @@ function QoraSettings(props) {
         navigate('qora-landing');
       }, [navigate]);
 
+      // Global hook: lets any nested screen (e.g. session setup upsell) jump to billing.
+      React.useEffect(() => {
+        window.__goBilling = () => navigate('billing');
+        return () => { delete window.__goBilling; };
+      }, [navigate]);
+
       React.useEffect(() => {
         const t = setTimeout(() => {
           document.querySelectorAll('.au,.af,.as,.ab,.ar,.al').forEach(el => {
@@ -3143,7 +3278,7 @@ function QoraSettings(props) {
               React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
           // Nav
           React.createElement('nav', { style: { display: 'flex', gap: 4 } },
-            [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile']].map(function(pair) {
+            [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
                 padding: '6px 14px', borderRadius: 10, border: 'none',
@@ -3177,6 +3312,8 @@ function QoraSettings(props) {
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
           screen === 'sessions' && React.createElement(QoraSessions, { onNav: navigate }),
           screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
+          screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
+          (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
           screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
 
         // Settings drawer

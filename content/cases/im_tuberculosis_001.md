@@ -5,6 +5,8 @@ status: in_review
 specialty: internal_medicine
 system: respiratory
 presentation: "Productive cough weight loss and night sweats"
+first_impression: "Patient appears uncomfortable."
+first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Pulmonary tuberculosis"
 difficulty: 3
 estimated_minutes: 20

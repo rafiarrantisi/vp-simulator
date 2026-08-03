@@ -5,6 +5,8 @@ status: in_review
 specialty: neurology
 system: nervous system
 presentation: "Progressive weakness after a stomach bug"
+first_impression: "Patient appears to have neurological concerns."
+first_impression_id: "Pasien tampak mengalami masalah neurologis."
 target_condition: "Guillain-Barre syndrome"
 difficulty: 3
 estimated_minutes: 20

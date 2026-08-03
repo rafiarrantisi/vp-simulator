@@ -45,6 +45,8 @@ def summary(c: CaseV2) -> dict:
         "specialty": fm.get("specialty"),
         "system": fm.get("system"),
         "presentation": fm.get("presentation"),
+        "first_impression": fm.get("first_impression"),
+        "first_impression_id": fm.get("first_impression_id"),
         "target_condition": fm.get("target_condition"),
         "difficulty": fm.get("difficulty"),
         "mode": fm.get("mode_default"),

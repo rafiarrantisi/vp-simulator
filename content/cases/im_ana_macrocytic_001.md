@@ -5,6 +5,8 @@ status: in_review
 specialty: internal_medicine
 system: hematologic
 presentation: "Feeling tired and short of breath on exertion"
+first_impression: "Patient appears uncomfortable."
+first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Pernicious anaemia"
 difficulty: 1
 estimated_minutes: 15

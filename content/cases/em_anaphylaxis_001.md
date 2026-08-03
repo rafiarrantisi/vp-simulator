@@ -5,6 +5,8 @@ status: in_review
 specialty: emergency
 system: immune
 presentation: "Sudden rash and breathing difficulty"
+first_impression: "A woman appears breathless, with visible swelling on face and neck, hives on arms."
+first_impression_id: "Seorang wanita tampak sesak, bengkak terlihat di wajah dan leher, bentol-bentol di lengan."
 target_condition: Anaphylaxis
 difficulty: 3
 estimated_minutes: 15

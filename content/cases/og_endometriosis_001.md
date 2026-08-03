@@ -5,6 +5,8 @@ status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
 presentation: "Cyclical pelvic pain and subfertility"
+first_impression: "Patient appears to have gynecological concerns."
+first_impression_id: "Pasien tampak mengalami masalah ginekologi."
 target_condition: "Endometriosis"
 difficulty: 2
 estimated_minutes: 15

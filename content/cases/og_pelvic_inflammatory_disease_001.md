@@ -5,6 +5,8 @@ status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
 presentation: "Pelvic pain and discharge"
+first_impression: "Patient appears to have gynecological concerns."
+first_impression_id: "Pasien tampak mengalami masalah ginekologi."
 target_condition: "Pelvic inflammatory disease"
 difficulty: 2
 estimated_minutes: 20

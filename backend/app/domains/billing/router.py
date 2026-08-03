@@ -19,6 +19,7 @@ from app.config import get_settings
 from app.database import get_db
 from app.domains.auth.models import User
 from app.domains.billing import lemonsqueezy as ls
+from app.domains.billing import midtrans
 from app.domains.billing import plans, service, xendit
 from app.shared.dependencies import get_current_user
 from app.shared.envelope import ok
@@ -33,7 +34,13 @@ def list_plans(region: str = "row"):
     to show localised prices. Unauthenticated callers should pass region
     detected client-side."""
     s = get_settings()
-    provider = "xendit" if xendit.is_configured(s) else ("lemonsqueezy" if s.lemonsqueezy_api_key else None)
+    provider = None
+    if midtrans.is_configured(s):
+        provider = "midtrans"
+    elif xendit.is_configured(s):
+        provider = "xendit"
+    elif s.lemonsqueezy_api_key:
+        provider = "lemonsqueezy"
     return ok({
         "plans": plans.plan_catalog(s, region),
         "provider": provider,
@@ -68,6 +75,79 @@ def xendit_checkout(
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Could not create invoice")
     return ok({"checkout_url": inv["invoice_url"], "plan": plan, "invoice_id": inv["invoice_id"],
                "currency": currency, "amount": amount})
+
+
+@router.post("/midtrans/checkout/{plan}")
+def midtrans_checkout(
+    plan: str,
+    user: User = Depends(get_current_user),
+):
+    """Create a Midtrans Snap transaction for the plan (IDR, Indonesia).
+
+    Returns {snap_token, redirect_url, order_id} so the frontend can open
+    the Snap popup. Entitlement is granted ONLY by the webhook, never here.
+    """
+    s = get_settings()
+    if plan not in plans.PAID_PLANS:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Unknown plan")
+    if not midtrans.is_configured(s):
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Midtrans not configured")
+
+    # Indonesia price in IDR; Midtrans Snap accepts integer IDR amounts.
+    amount = plans.region_price(s, "indo", plan)
+    full_name = user.full_name or ""
+
+    try:
+        tx = midtrans.create_snap_transaction(
+            s, plan, amount, user.id, user.email, full_name=full_name,
+        )
+    except Exception as e:  # noqa: BLE001 — surface a clean 502, log the detail
+        _log.error("[billing] midtrans snap failed: %s", e)
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY, "Could not create transaction")
+    return ok({
+        "snap_token": tx["snap_token"],
+        "redirect_url": tx["redirect_url"],
+        "order_id": tx["order_id"],
+        "plan": plan,
+        "currency": "IDR",
+        "amount": int(amount),
+    })
+
+
+@router.post("/midtrans/notifications")
+async def midtrans_webhook(request: Request, db: Session = Depends(get_db)):
+    """Midtrans payment notification (signature-verified).
+
+    settlement/capture -> grant entitlement; refund/deny/cancel/expire ->
+    revoke. Always acknowledge with 200 so Midtrans doesn't retry forever.
+    """
+    s = get_settings()
+    try:
+        body = json.loads(await request.body())
+    except json.JSONDecodeError:
+        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Malformed body")
+
+    if not midtrans.is_configured(s):
+        # Nothing we can do without a key; acknowledge to stop retries.
+        _log.warning("[billing] midtrans webhook received but gateway not configured")
+        return ok({"handled": False, "reason": "not_configured"})
+
+    if not midtrans.verify_signature(s, body):
+        _log.warning("[billing] midtrans webhook signature invalid for order %s",
+                     body.get("order_id"))
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid signature")
+
+    parsed = midtrans.parse_event(body)
+    ent = service.apply_midtrans_event(db, parsed)
+    if ent is None:
+        _log.info("[billing] midtrans %s not applied (status=%s)",
+                  parsed.get("order_id"), parsed.get("transaction_status"))
+        db.commit()
+        return ok({"handled": False, "status": parsed.get("transaction_status")})
+    db.commit()
+    _log.info("[billing] midtrans %s -> user %s plan=%s status=%s",
+              parsed.get("transaction_status"), ent.user_id, ent.plan, ent.status)
+    return ok({"handled": True, "plan": ent.plan, "status": ent.status})
 
 
 @router.post("/webhooks/xendit")

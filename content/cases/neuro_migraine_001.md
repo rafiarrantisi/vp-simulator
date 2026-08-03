@@ -5,6 +5,8 @@ status: in_review
 specialty: neurology
 system: nervous
 presentation: "Recurrent headache"
+first_impression: "Patient appears to have neurological concerns."
+first_impression_id: "Pasien tampak mengalami masalah neurologis."
 target_condition: "Migraine"
 difficulty: 1
 estimated_minutes: 15

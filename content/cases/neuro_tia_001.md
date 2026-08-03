@@ -5,6 +5,8 @@ status: in_review
 specialty: neurology
 system: nervous
 presentation: "Transient weakness or speech disturbance"
+first_impression: "Patient appears to have neurological concerns."
+first_impression_id: "Pasien tampak mengalami masalah neurologis."
 target_condition: "Transient ischaemic attack"
 difficulty: 3
 estimated_minutes: 20

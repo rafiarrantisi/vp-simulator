@@ -5,6 +5,8 @@ status: in_review
 specialty: ent
 system: ent
 presentation: "Nosebleed"
+first_impression: "Patient appears to have ear, nose, or throat discomfort."
+first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
 target_condition: "Epistaxis"
 difficulty: 1
 estimated_minutes: 10

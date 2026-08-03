@@ -182,3 +182,77 @@ def test_webhook_applies_valid_event(monkeypatch):
     r = client.post("/api/billing/webhooks/lemonsqueezy", content=json.dumps(body).encode(),
                     headers={"X-Signature": "x"})
     assert r.status_code == 200 and r.json()["data"]["plan"] == "monthly"
+
+
+# ── Midtrans (Indonesia primary gateway) ──
+from app.domains.billing import midtrans
+
+
+def test_midtrans_order_id_roundtrip():
+    oid = midtrans.make_order_id("user-abc-123", "annual")
+    assert oid.startswith("qora-")
+    uid, plan = midtrans.parse_order_id(oid)
+    assert uid == "user-abc-123" and plan == "annual"
+    assert midtrans.parse_order_id("not-a-qora-order") == ("", "")
+    assert midtrans.parse_order_id("qora-only-two") == ("", "")
+
+
+def test_midtrans_signature():
+    s = Settings(midtrans_server_key="SB-Mid-server-test", midtrans_is_production=False)
+    body = {"order_id": "qora-u-mo-abc123", "status_code": "200", "gross_amount": "119000"}
+    raw = f"{body['order_id']}{body['status_code']}{body['gross_amount']}{s.midtrans_server_key}"
+    body["signature_key"] = hashlib.sha512(raw.encode()).hexdigest()
+    assert midtrans.verify_signature(s, body)
+    assert not midtrans.verify_signature(s, {**body, "signature_key": "deadbeef"})
+    assert not midtrans.verify_signature(Settings(), body)  # no key -> reject
+
+
+def test_midtrans_parse_event_statuses():
+    oid = midtrans.make_order_id("u1", "monthly")
+    assert midtrans.parse_event({"order_id": oid, "transaction_status": "settlement"})["grants"]
+    assert midtrans.parse_event({"order_id": oid, "transaction_status": "capture"})["grants"]
+    assert not midtrans.parse_event({"order_id": oid, "transaction_status": "pending"})["grants"]
+    assert midtrans.parse_event({"order_id": oid, "transaction_status": "refund"})["revokes"]
+
+
+def test_midtrans_webhook_grants_entitlement(monkeypatch):
+    email = f"mt_{uuid.uuid4().hex[:8]}@t.co"
+    client.post("/api/auth/signup", json={"email": email, "password": "secret12", "full_name": "M"})
+    db = SessionLocal()
+    uid = db.scalar(select(User.id).where(User.email == email))
+    db.close()
+    assert uid, "user should exist"
+    # Signature is unit-tested; exercise endpoint wiring.
+    monkeypatch.setattr("app.domains.billing.router.midtrans.is_configured", lambda *a, **k: True)
+    monkeypatch.setattr("app.domains.billing.router.midtrans.verify_signature", lambda *a, **k: True)
+    order_id = midtrans.make_order_id(uid, "monthly")
+    body = {"order_id": order_id, "status_code": "200", "gross_amount": "119000",
+            "transaction_status": "settlement", "signature_key": "x", "transaction_id": "tx1"}
+    r = client.post("/api/billing/midtrans/notifications", content=json.dumps(body).encode())
+    assert r.status_code == 200 and r.json()["data"]["plan"] == "monthly"
+    db = SessionLocal()
+    try:
+        ent = db.get(Entitlement, uid)
+        assert ent is not None
+        assert ent.plan == "monthly" and ent.status == "active"
+        assert ent.mor_subscription_id == "tx1"
+    finally:
+        db.close()
+
+
+def test_midtrans_webhook_rejects_bad_signature(monkeypatch):
+    # Gateway is configured (patched) so the request reaches the signature check.
+    monkeypatch.setattr("app.domains.billing.router.midtrans.is_configured", lambda *a, **k: True)
+    body = {"order_id": "qora-x-mo-abc", "status_code": "200", "gross_amount": "119000",
+            "transaction_status": "settlement", "signature_key": "bad"}
+    r = client.post("/api/billing/midtrans/notifications", content=json.dumps(body).encode())
+    assert r.status_code == 401
+
+
+def test_midtrans_checkout_requires_config():
+    # No MIDTRANS_SERVER_KEY in test env -> 503.
+    client.post("/api/auth/signup", json={"email": "mtc@t.co", "password": "secret12", "full_name": "M"})
+    tok = client.post("/api/auth/login", json={"email": "mtc@t.co", "password": "secret12"}).json()["data"]["token"]
+    r = client.post("/api/billing/midtrans/checkout/monthly",
+                    headers={"Authorization": f"Bearer {tok}"})
+    assert r.status_code == 503

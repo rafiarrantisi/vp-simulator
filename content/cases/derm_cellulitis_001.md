@@ -5,6 +5,8 @@ status: in_review
 specialty: dermatology
 system: integumentary
 presentation: "Hot red swollen leg"
+first_impression: "Patient appears to have skin concerns."
+first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Lower limb cellulitis"
 difficulty: 2
 estimated_minutes: 15

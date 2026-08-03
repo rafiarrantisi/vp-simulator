@@ -5,6 +5,8 @@ status: in_review
 specialty: paediatrics
 system: general
 presentation: "Fever in a child"
+first_impression: "A child appears unwell."
+first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Febrile illness in a child"
 difficulty: 2
 estimated_minutes: 15

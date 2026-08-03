@@ -5,6 +5,8 @@ status: in_review
 specialty: ophthalmology
 system: adnexa
 presentation: "Painful eyelid lump"
+first_impression: "Patient appears to have eye discomfort."
+first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Hordeolum (stye)"
 difficulty: 1
 estimated_minutes: 10

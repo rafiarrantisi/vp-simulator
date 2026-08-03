@@ -5,6 +5,8 @@ status: in_review
 specialty: ophthalmology
 system: ocular_surface
 presentation: "Red eye with discharge"
+first_impression: "Patient appears to have eye discomfort."
+first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Bacterial conjunctivitis"
 difficulty: 2
 estimated_minutes: 12

@@ -5,6 +5,8 @@ status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
 presentation: "Swelling and headache in late pregnancy"
+first_impression: "Patient appears to have gynecological concerns."
+first_impression_id: "Pasien tampak mengalami masalah ginekologi."
 target_condition: Pre-eclampsia
 difficulty: 3
 estimated_minutes: 15

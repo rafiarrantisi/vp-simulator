@@ -5,6 +5,8 @@ status: in_review
 specialty: dermatology
 system: integumentary
 presentation: "Round itchy patches on the torso"
+first_impression: "Patient appears to have skin concerns."
+first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Tinea corporis"
 difficulty: 1
 estimated_minutes: 10

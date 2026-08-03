@@ -5,6 +5,8 @@ status: in_review
 specialty: surgery
 system: urinary
 presentation: "Loin pain"
+first_impression: "Patient appears in pain."
+first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Ureteric (renal) colic"
 difficulty: 2
 estimated_minutes: 15

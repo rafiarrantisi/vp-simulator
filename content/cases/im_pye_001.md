@@ -5,6 +5,8 @@ status: in_review
 specialty: internal_medicine
 system: urinary
 presentation: "Cramping flank pain and dysuria"
+first_impression: "Patient appears uncomfortable."
+first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Acute pyelonephritis"
 difficulty: 2
 estimated_minutes: 20

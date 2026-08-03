@@ -5,6 +5,8 @@ status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
 presentation: "Bleeding in early pregnancy"
+first_impression: "Patient appears to have gynecological concerns."
+first_impression_id: "Pasien tampak mengalami masalah ginekologi."
 target_condition: "Threatened miscarriage"
 difficulty: 2
 estimated_minutes: 15

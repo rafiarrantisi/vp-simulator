@@ -158,6 +158,7 @@ def apply_mor_event(db: Session, parsed: dict) -> Entitlement | None:
 
 
 _XENDIT_PLAN_DAYS = {"monthly": 30, "annual": 365, "exam_pass": 30}
+_MIDTRANS_PLAN_DAYS = {"monthly": 30, "annual": 365, "exam_pass": 30}
 
 
 def apply_xendit_event(db: Session, parsed: dict) -> Entitlement | None:
@@ -178,3 +179,40 @@ def apply_xendit_event(db: Session, parsed: dict) -> Entitlement | None:
     ent.updated_at = _now()
     db.add(ent)
     return ent
+
+
+def apply_midtrans_event(db: Session, parsed: dict) -> Entitlement | None:
+    """Map a verified Midtrans notification to entitlement state.
+
+    Only settlement/capture grants access (extending the current period);
+    refund/deny/cancel/expire revokes. Returns the Entitlement (added to the
+    session) or None if nothing was applied.
+    """
+    user_id = str(parsed.get("user_id") or "").strip()
+    plan = parsed.get("plan")
+    if not user_id or plan not in plans.PAID_PLANS:
+        return None
+    status = str(parsed.get("transaction_status") or "").lower()
+    ent = db.get(Entitlement, user_id) or Entitlement(user_id=user_id)
+
+    if status in ("settlement", "capture"):
+        ent.plan = plan
+        ent.status = "active"
+        ent.current_period_end = _now() + timedelta(days=_MIDTRANS_PLAN_DAYS.get(plan, 30))
+        ent.mor_subscription_id = str(parsed.get("transaction_id") or ent.mor_subscription_id)
+        ent.updated_at = _now()
+        db.add(ent)
+        return ent
+
+    if status in ("refund", "deny", "cancel", "expire"):
+        # Only revoke when this payment was the user's current plan source.
+        if ent.mor_subscription_id == str(parsed.get("transaction_id") or ""):
+            ent.plan = "free"
+            ent.status = "canceled"
+            ent.updated_at = _now()
+            db.add(ent)
+            return ent
+        return None
+
+    # pending / other statuses: no entitlement change
+    return None

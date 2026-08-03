@@ -5,6 +5,8 @@ status: in_review
 specialty: ophthalmology
 system: eye
 presentation: "Painful red eye with photophobia"
+first_impression: "Patient appears to have eye discomfort."
+first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Anterior uveitis"
 difficulty: 2
 estimated_minutes: 12

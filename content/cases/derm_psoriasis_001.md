@@ -5,6 +5,8 @@ status: in_review
 specialty: dermatology
 system: integumentary
 presentation: "Red scaly patches on elbows and knees"
+first_impression: "Patient appears to have skin concerns."
+first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Plaque psoriasis"
 difficulty: 2
 estimated_minutes: 15

@@ -5,6 +5,8 @@ status: in_review
 specialty: emergency
 system: thermoregulatory
 presentation: "Collapse during a marathon — hot red and confused"
+first_impression: "A person appears confused, flushed skin, hot to touch."
+first_impression_id: "Seseorang tampak bingung, kulit memerah, panas saat disentuh."
 target_condition: "Exertional heat stroke"
 difficulty: 1
 estimated_minutes: 10

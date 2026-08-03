@@ -5,6 +5,8 @@ status: in_review
 specialty: emergency
 system: respiratory
 presentation: "Worsening shortness of breath unresponsive to inhalers"
+first_impression: "A person appears severely breathless, unable to speak in full sentences, wheezing."
+first_impression_id: "Seseorang tampak sesak berat, tidak bisa bicara kalimat utuh, napas berbunyi."
 target_condition: "Acute severe asthma"
 difficulty: 2
 estimated_minutes: 15

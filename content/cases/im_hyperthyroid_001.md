@@ -5,6 +5,8 @@ status: in_review
 specialty: internal_medicine
 system: endocrine
 presentation: "Tremor weight loss and palpitations"
+first_impression: "Patient appears uncomfortable."
+first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Hyperthyroidism"
 difficulty: 2
 estimated_minutes: 15
