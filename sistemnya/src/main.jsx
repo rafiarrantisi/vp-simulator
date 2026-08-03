@@ -1007,6 +1007,143 @@ window.QORA_THERAPIES = {
 
 // ===== END qora-catalog.js =====
 
+// ===== BEGIN translations.js =====
+// ============================================================
+// Qora — i18n translations helper (EN + ID)
+// ------------------------------------------------------------
+// Simple key-value translation map. Loaded after region detection.
+// Exposes window.__t(key) -> localized string; falls back to English.
+// Add languages by extending the TRANSLATIONS map.
+// ============================================================
+
+window.QORA_LOCALE = 'en'; // set by region detection
+
+window.QORA_TRANSLATIONS = {
+  // ── Dashboard ──
+  'dashboard.title': { en: 'Dashboard', id: 'Beranda' },
+  'dashboard.welcome': { en: 'Welcome back', id: 'Selamat datang kembali' },
+  'dashboard.your_progress': { en: 'Your progress', id: 'Progres Anda' },
+  'dashboard.cases_completed': { en: 'Cases completed', id: 'Kasus selesai' },
+  'dashboard.sessions': { en: 'Sessions', id: 'Sesi' },
+  'dashboard.streak': { en: 'Day streak', id: 'Streak hari' },
+  'dashboard.xp': { en: 'XP earned', id: 'XP diperoleh' },
+  'dashboard.avg_score': { en: 'Average score', id: 'Rata-rata skor' },
+  'dashboard.continue_practising': { en: 'Continue practising', id: 'Lanjutkan latihan' },
+  'dashboard.browse_cases': { en: 'Browse cases', id: 'Lihat kasus' },
+  'dashboard.skill_breakdown': { en: 'Skill breakdown', id: 'Rincian kemampuan' },
+  'dashboard.recent_sessions': { en: 'Recent sessions', id: 'Sesi terbaru' },
+  'dashboard.no_sessions': { en: 'No sessions yet — start your first case!', id: 'Belum ada sesi — mulai kasus pertama Anda!' },
+  'dashboard.dim_history_coverage': { en: 'History', id: 'Anamnesis' },
+  'dashboard.dim_red_flags': { en: 'Red flags', id: 'Red flag' },
+  'dashboard.dim_ice_fife': { en: 'ICE/FIFE', id: 'ICE/FIFE' },
+  'dashboard.dim_questioning_technique': { en: 'Questioning', id: 'Teknik bertanya' },
+  'dashboard.dim_communication': { en: 'Communication', id: 'Komunikasi' },
+  'dashboard.dim_diagnostic_reasoning': { en: 'Reasoning', id: 'Penalaran' },
+  'dashboard.dim_investigations': { en: 'Investigations', id: 'Pemeriksaan' },
+  'dashboard.dim_management': { en: 'Management', id: 'Tatalaksana' },
+  'dashboard.dim_clinical_safety': { en: 'Safety', id: 'Keamanan' },
+
+  // ── Catalogue / Cases ──
+  'cases.title': { en: 'Case library', id: 'Pustaka kasus' },
+  'cases.filter_all': { en: 'All', id: 'Semua' },
+  'cases.search': { en: 'Search cases…', id: 'Cari kasus…' },
+  'cases.no_results': { en: 'No cases match your filter.', id: 'Tidak ada kasus yang sesuai.' },
+  'cases.start': { en: 'Start case', id: 'Mulai kasus' },
+  'cases.difficulty_1': { en: 'Pre-clinical', id: 'Preklinik' },
+  'cases.difficulty_2': { en: 'Clinical', id: 'Koas' },
+  'cases.difficulty_3': { en: 'Advanced', id: 'PPDS' },
+
+  // ── Session ──
+  'session.ask_question': { en: 'Ask the patient a question…', id: 'Tanyakan pada pasien…' },
+  'session.send': { en: 'Send', id: 'Kirim' },
+  'session.assess': { en: 'Assess →', id: 'Nilai →' },
+  'session.assess_tab_conversation': { en: 'Conversation', id: 'Percakapan' },
+  'session.assess_tab_investigations': { en: 'Investigations', id: 'Pemeriksaan' },
+  'session.assess_tab_diagnosis': { en: 'Diagnosis', id: 'Diagnosis' },
+  'session.assess_tab_therapy': { en: 'Therapy', id: 'Terapi' },
+  'session.select_investigations': { en: 'Select the investigations you would order (up to {max}). Choose deliberately — over-ordering is not rewarded.', id: 'Pilih pemeriksaan penunjang (maks. {max}). Pilih secara selektif.' },
+  'session.select_therapy': { en: 'Select your management plan.', id: 'Pilih rencana tatalaksana.' },
+  'session.working_diagnosis': { en: 'Working diagnosis', id: 'Diagnosis kerja' },
+  'session.differential_2': { en: 'Differential 2', id: 'Diagnosis banding 2' },
+  'session.differential_3': { en: 'Differential 3', id: 'Diagnosis banding 3' },
+  'session.clinical_reasoning': { en: 'Clinical reasoning', id: 'Penalaran klinis' },
+  'session.patient_education': { en: 'Patient education & safety-netting', id: 'Edukasi pasien & safety-netting' },
+  'session.your_assessment': { en: 'Your assessment', id: 'Penilaian Anda' },
+
+  // ── Setup / Prep ──
+  'setup.get_ready': { en: 'Get ready for your session', id: 'Siapkan sesi Anda' },
+  'setup.choose_mode': { en: 'Choose a mode', id: 'Pilih mode' },
+  'setup.choose_language': { en: 'Choose session language', id: 'Pilih bahasa sesi' },
+  'setup.practice': { en: 'Practice', id: 'Latihan' },
+  'setup.practice_title': { en: 'Anamnesis practice', id: 'Latihan anamnesis' },
+  'setup.practice_desc': { en: 'Relaxed learning. A task guide and history hints help you along. The timer is optional.', id: 'Belajar santai. Panduan tugas dan petunjuk membantu Anda. Timer opsional.' },
+  'setup.osce': { en: 'OSCE', id: 'OSCE' },
+  'setup.osce_title': { en: 'OSCE exam', id: 'Ujian OSCE' },
+  'setup.osce_desc': { en: 'Exam conditions — no hints. A countdown runs; when it ends you finish or continue for a penalty.', id: 'Kondisi ujian — tanpa petunjuk. Hitung mundur berjalan; setelah habis selesai atau lanjut dengan penalti.' },
+  'setup.mic_title': { en: 'Microphone access', id: 'Akses mikrofon' },
+  'setup.mic_desc': { en: 'Optional — talk to the patient by voice. You can always type instead.', id: 'Opsional — bicara dengan pasien via suara. Bisa juga mengetik.' },
+  'setup.start_session': { en: 'Start session →', id: 'Mulai sesi →' },
+
+  // ── Profile ──
+  'profile.title': { en: 'Profile', id: 'Profil' },
+  'profile.edit': { en: 'Edit profile', id: 'Edit profil' },
+  'profile.save': { en: 'Save', id: 'Simpan' },
+  'profile.name': { en: 'Full name', id: 'Nama lengkap' },
+  'profile.email': { en: 'Email', id: 'Email' },
+  'profile.school': { en: 'School / Institution', id: 'Sekolah / Institusi' },
+  'profile.year': { en: 'Year / Stage', id: 'Tahun / Tahap' },
+  'profile.badges': { en: 'Badges', id: 'Lencana' },
+  'profile.settings': { en: 'Settings', id: 'Pengaturan' },
+  'profile.language': { en: 'Preferred language', id: 'Bahasa preferensi' },
+  'profile.region': { en: 'Region', id: 'Region' },
+
+  // ── Result / Debrief ──
+  'result.title': { en: 'Session complete!', id: 'Sesi selesai!' },
+  'result.overall_score': { en: 'Overall score', id: 'Skor total' },
+  'result.per_item': { en: 'Per-item breakdown', id: 'Rincian per-item' },
+  'result.answer_key': { en: 'Answer key', id: 'Kunci jawaban' },
+  'result.try_again': { en: 'Try another case', id: 'Coba kasus lain' },
+  'result.back_to_library': { en: 'Back to library', id: 'Kembali ke pustaka' },
+
+  // ── General / Common ──
+  'common.log_in': { en: 'Log in', id: 'Masuk' },
+  'common.sign_up': { en: 'Sign up', id: 'Daftar' },
+  'common.log_out': { en: 'Log out', id: 'Keluar' },
+  'common.loading': { en: 'Loading…', id: 'Memuat…' },
+  'common.error': { en: 'Error', id: 'Error' },
+  'common.back': { en: 'Back', id: 'Kembali' },
+  'common.save': { en: 'Save', id: 'Simpan' },
+  'common.cancel': { en: 'Cancel', id: 'Batal' },
+};
+
+// Simple translation function. Usage: window.__t('dashboard.title')
+// Returns the string in the current locale, falls back to English, then returns the key.
+window.__t = function (key, vars) {
+  var entry = window.QORA_TRANSLATIONS[key];
+  if (!entry) return key;
+  var text = entry[window.QORA_LOCALE] || entry['en'] || key;
+  // Simple variable substitution: replace {var} with provided values
+  if (vars) {
+    for (var k in vars) {
+      text = text.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
+    }
+  }
+  return text;
+};
+
+// Set locale based on detected region
+window.__setLocale = function (region) {
+  window.QORA_LOCALE = (region === 'indo') ? 'id' : 'en';
+};
+
+// If region was already detected, apply it
+try {
+  var cached = localStorage.getItem('qora_region');
+  if (cached) window.__setLocale(cached);
+} catch (e) {}
+
+// ===== END translations.js =====
+
 // ===== BEGIN qora-landing.jsx =====
 // ============================================================
 // Qora — English landing + auth (pivot-v4 Phase 5, Stage 2)
@@ -1437,7 +1574,9 @@ function QoraLanding({ onLogin }) {
   const [mode, setMode] = React.useState('login');
   const [region, setRegion] = React.useState('');
   React.useEffect(function () {
-    setRegion(_detectRegion());
+    var r = _detectRegion();
+    setRegion(r);
+    if (typeof window.__setLocale === 'function') window.__setLocale(r);
   }, []);
   const go = (m) => { setMode(m); setView('auth'); };
 
@@ -1581,21 +1720,22 @@ function QV2Catalogue({ onPick, onProgress }) {
       .catch(e => setErr(String(e.message || e)));
   }, []);
 
+  var _t = window.__t || function(k) { return k; };
   if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } },
-    'Could not load cases: ' + err + '. (Sign in and ensure the backend is configured.)');
-  if (!cases) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading cases…');
+    _t('common.error') + ': ' + err);
+  if (!cases) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, _t('common.loading'));
 
   const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)));
-  const DIFF_LABEL = { '1': 'Difficulty 1 · Preclinical', '2': 'Difficulty 2 · Clerkship', '3': 'Difficulty 3 · Advanced' };
+  const DIFF_LABEL = { '1': _t('cases.difficulty_1'), '2': _t('cases.difficulty_2'), '3': _t('cases.difficulty_3') };
   return React.createElement('div', { className: 'au', style: { maxWidth: 1080, margin: '0 auto', padding: '24px 20px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 6 } },
-      React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Case library'),
-      onProgress && React.createElement('button', { onClick: onProgress, style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, '📊 My progress')),
+      React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, _t('cases.title')),
+      onProgress && React.createElement('button', { onClick: onProgress, style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, '\uD83D\uDCCA ' + _t('dashboard.your_progress'))),
     React.createElement('div', { style: { marginBottom: 16, fontSize: 13, color: 'var(--text-2)' } },
       shown.length + (shown.length === cases.length ? '' : ' of ' + cases.length) + ' cases across ' + specs.length + ' specialties'),
     // specialty filter chips
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
-      [['', 'All']].concat(specs.map(s => [s, QV2_SPEC_LABEL[s] || s])).map(([val, lab]) =>
+      [['', _t('cases.filter_all')]].concat(specs.map(s => [s, QV2_SPEC_LABEL[s] || s])).map(([val, lab]) =>
         React.createElement('button', { key: val || 'all', onClick: () => setFilter(val), style: {
           padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: filter === val ? 700 : 500,
           fontFamily: 'Poppins', cursor: 'pointer',
@@ -1605,7 +1745,7 @@ function QV2Catalogue({ onPick, onProgress }) {
         } }, lab))),
     // difficulty filter chips
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 } },
-      [['', 'All levels'], ['1', 'Difficulty 1'], ['2', 'Difficulty 2'], ['3', 'Difficulty 3']].map(([val, lab]) =>
+      [['', _t('cases.filter_all') + ' ' + _t('cases.title')], ['1', _t('cases.difficulty_1')], ['2', _t('cases.difficulty_2')], ['3', _t('cases.difficulty_3')]].map(([val, lab]) =>
         React.createElement('button', { key: 'd' + (val || 'all'), onClick: () => setDiff(val), title: DIFF_LABEL[val] || 'All difficulty levels', style: {
           padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: diff === val ? 700 : 500,
           fontFamily: 'Poppins', cursor: 'pointer',
@@ -1614,7 +1754,7 @@ function QV2Catalogue({ onPick, onProgress }) {
           color: diff === val ? 'var(--violet, var(--primary))' : 'var(--text-2)',
         } }, lab))),
     // empty state
-    shown.length === 0 && React.createElement('div', { style: { padding: '32px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 'var(--r-lg)', border: '1px dashed var(--border)' } }, 'No cases match these filters — try a different specialty or difficulty level.'),
+    shown.length === 0 && React.createElement('div', { style: { padding: '32px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 'var(--r-lg)', border: '1px dashed var(--border)' } }, _t('cases.no_results')),
     // cards grid
     React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 } },
       shown.map((c, i) => React.createElement('button', {
@@ -1691,8 +1831,8 @@ function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) 
   const submit = () => onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang: inv.join(', '), terapi: tx.join(', '), edukasi });
 
   const tabs = isOsce
-    ? [['conversation', 'Conversation'], ['investigations', 'Investigations'], ['diagnosis', 'Diagnosis'], ['therapy', 'Therapy']]
-    : [['conversation', 'Conversation'], ['diagnosis', 'Diagnosis']];
+    ? [['conversation', _t('session.assess_tab_conversation')], ['investigations', _t('session.assess_tab_investigations')], ['diagnosis', _t('session.assess_tab_diagnosis')], ['therapy', _t('session.assess_tab_therapy')]]
+    : [['conversation', _t('session.assess_tab_conversation')], ['diagnosis', _t('session.assess_tab_diagnosis')]];
 
   const conversationTab = React.createElement('div', { style: { maxHeight: 380, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8 } },
     (transcript || []).filter((m) => m.role === 'user' || m.role === 'patient').map((m, i) => React.createElement('div', { key: i, style: {
@@ -1703,26 +1843,25 @@ function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) 
     (!transcript || !transcript.length) && React.createElement('div', { style: { fontSize: 13, color: 'var(--text-3)' } }, 'No conversation recorded.'));
 
   const diagnosisTab = React.createElement('div', null,
-    React.createElement(QV2AssessField, { label: 'Working diagnosis', value: dx1, set: setDx1, ph: 'Most likely diagnosis' }),
-    React.createElement(QV2AssessField, { label: 'Differential 2', value: dx2, set: setDx2, ph: 'Alternative' }),
-    React.createElement(QV2AssessField, { label: 'Differential 3', value: dx3, set: setDx3, ph: 'Alternative' }),
-    React.createElement(QV2AssessField, { label: 'Clinical reasoning', value: reasoning, set: setReasoning, ph: 'Key positives, red flags, why this diagnosis…', area: true }));
+    React.createElement(QV2AssessField, { label: _t('session.working_diagnosis'), value: dx1, set: setDx1, ph: _t('session.working_diagnosis') }),
+    React.createElement(QV2AssessField, { label: _t('session.differential_2'), value: dx2, set: setDx2, ph: _t('session.differential_2') }),
+    React.createElement(QV2AssessField, { label: _t('session.differential_3'), value: dx3, set: setDx3, ph: _t('session.differential_3') }),
+    React.createElement(QV2AssessField, { label: _t('session.clinical_reasoning'), value: reasoning, set: setReasoning, ph: _t('session.clinical_reasoning'), area: true }));
 
   const investigationsTab = React.createElement('div', null,
     React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Select the investigations you would order (up to ' + QV2_MAX_INVESTIGATIONS + '). Choose deliberately — over-ordering is not rewarded.'),
     React.createElement(QV2Picker, { catalog: window.QORA_INVESTIGATIONS || {}, selected: inv, onToggle: toggle(setInv, QV2_MAX_INVESTIGATIONS), max: QV2_MAX_INVESTIGATIONS, search: invSearch, setSearch: setInvSearch, unit: 'investigations' }));
 
   const therapyTab = React.createElement('div', null,
-    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Select your management plan.'),
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, _t('session.select_therapy')),
     React.createElement(QV2Picker, { catalog: window.QORA_THERAPIES || {}, selected: tx, onToggle: toggle(setTx, 0), search: txSearch, setSearch: setTxSearch, unit: 'treatments' }),
-    React.createElement('div', { style: { marginTop: 8 } },
-      React.createElement(QV2AssessField, { label: 'Patient education & safety-netting (notes)', value: edukasi, set: setEdukasi, ph: 'What you would tell the patient…', area: true })));
+      React.createElement(QV2AssessField, { label: _t('session.patient_education'), value: edukasi, set: setEdukasi, ph: 'What you would tell the patient...', area: true }));
 
   const panel = tab === 'conversation' ? conversationTab : tab === 'investigations' ? investigationsTab : tab === 'therapy' ? therapyTab : diagnosisTab;
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: 20 } },
     React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back to interview'),
-    React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Your assessment'),
+    React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, _t('session.your_assessment')),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 16 } }, 'Commit your workup before the answer key is revealed.'),
     React.createElement('div', { style: { display: 'flex', gap: 4, marginBottom: 18, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' } },
       tabs.map(([val, lab]) => React.createElement('button', { key: val, onClick: () => setTab(val), style: {
@@ -1839,11 +1978,18 @@ function QV2PrepRow({ icon, title, body, status, tone }) {
 
 function QV2SessionSetup({ caseSummary, onStart, onBack }) {
   const [mode, setMode] = React.useState(caseSummary.mode === 'osce_full' ? 'osce' : 'practice');
+  const [lang, setLang] = React.useState('en');
   const [micState, setMicState] = React.useState('idle'); // idle | requesting | granted | denied
   const [stt, setStt] = React.useState(null); // null=checking | 'browser' | 'server' | false
   React.useEffect(() => {
     if (typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition)) { setStt('browser'); return; }
     qv2Fetch('/api/ai/voice-status').then((d) => setStt(d && d.stt ? 'server' : false)).catch(() => setStt(false));
+  }, []);
+  // Load preferred language from profile
+  React.useEffect(function () {
+    qv2Fetch('/api/users/me').then(function (d) {
+      if (d && d.preferred_language) setLang(d.preferred_language);
+    }).catch(function () {});
   }, []);
   async function requestMic() {
     setMicState('requesting');
@@ -1861,6 +2007,17 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
     React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
       React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning. A task guide and history hints help you along. The timer is optional.' }),
       React.createElement(QV2ModeCard, { active: mode === 'osce', onClick: () => setMode('osce'), tone: 'violet', badge: 'OSCE', title: 'OSCE exam', body: 'Exam conditions — no hints. A countdown runs; when it ends you finish or continue for a penalty.' })),
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose session language'),
+    React.createElement('div', { className: 'as d2', style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 } },
+      [['en','English'],['id','Bahasa Indonesia'],['ms','Bahasa Melayu'],['tl','Tagalog'],['vi','Tiếng Việt'],['th','ภาษาไทย']].map(function(p) {
+        var code = p[0], label = p[1];
+        return React.createElement('button', { key: code, onClick: function() { setLang(code); }, style: {
+          padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: lang === code ? 700 : 500,
+          border: '1px solid ' + (lang === code ? 'var(--primary)' : 'var(--border)'),
+          background: lang === code ? 'var(--primary-l)' : 'var(--surface)',
+          color: lang === code ? 'var(--primary)' : 'var(--text-2)',
+        } }, (lang === code ? '✓ ' : '') + label);
+      })),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Session preparation'),
     React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 18 } },
       React.createElement('div', { style: { display: 'flex', gap: 12, alignItems: 'center', padding: 12, borderRadius: 'var(--r-md)', background: 'var(--surface-2)', border: '1px solid var(--border)' } },
@@ -1875,7 +2032,7 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
       React.createElement(QV2PrepRow, { icon: '🔒', title: 'Privacy & security', body: 'Your audio is processed securely and is not stored without your explicit consent.' }),
       React.createElement(QV2PrepRow, { icon: '🎧', title: 'Audio quality', body: 'For best results, use a quiet room and check your microphone works.' })),
     React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 16 } }, micState === 'granted' ? '✓ All set — you can start now.' : 'You can start now and enable the mic later.'),
-    React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
+    React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
 }
 
 // ---- In-session task panel (instruksi §4.6) ----
@@ -1917,19 +2074,31 @@ function QV2TimeUpModal({ onFinish, onContinue }) {
 // Primary: the browser's built-in Web Speech API (free, real-time, no key,
 // no TTS needed since replies are text). Fallback for browsers without it
 // (e.g. Firefox): record audio and transcribe via the backend /api/ai/transcribe.
-const QV2_SR = (typeof window !== 'undefined') && (window.SpeechRecognition || window.webkitSpeechRecognition);
+const QV2_SR = (typeof window !== 'undefined') ? (window.SpeechRecognition || window.webkitSpeechRecognition || null) : null;
 
-function QV2MicButton({ onTranscript, disabled, lang }) {
+// Map short language codes to SpeechRecognition locale codes
+const QV2_LANG_MAP = {
+  en: 'en-US', id: 'id-ID', ms: 'ms-MY', tl: 'tl-PH',
+  vi: 'vi-VN', th: 'th-TH', zh: 'zh-CN', ja: 'ja-JP',
+  ko: 'ko-KR', es: 'es-ES', fr: 'fr-FR', ar: 'ar-SA',
+  pt: 'pt-BR', hi: 'hi-IN', bn: 'bn-BD',
+};
+
+function QV2MicButton({ onTranscript, disabled, sessionLang }) {
   const [state, setState] = React.useState('idle'); // idle | listening | busy | error
+  const [errMsg, setErrMsg] = React.useState('');
   const ref = React.useRef(null);
   const chunksRef = React.useRef([]);
 
   function startNative() {
     try {
-      const rec = new QV2_SR();
-      rec.lang = lang || 'en-US';
+      var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) { setState('error'); setErrMsg('Speech recognition not supported — try Chrome or Edge'); setTimeout(function() { setState('idle'); setErrMsg(''); }, 4000); return; }
+      const rec = new SR();
+      var locale = QV2_LANG_MAP[(sessionLang || 'en')] || 'en-US';
+      rec.lang = locale;
       rec.interimResults = true;
-      rec.continuous = false;
+      rec.continuous = true;
       rec.maxAlternatives = 1;
       let finalText = '';
       rec.onresult = (e) => {
@@ -1941,18 +2110,37 @@ function QV2MicButton({ onTranscript, disabled, lang }) {
         onTranscript((finalText + interim).replace(/\s+/g, ' ').trim());
       };
       rec.onerror = (ev) => {
-        if (ev && ev.error === 'no-speech') { setState('idle'); return; }
-        setState('error'); setTimeout(() => setState('idle'), 2500);
+        var msg = (ev && ev.error) || 'unknown';
+        if (msg === 'no-speech') { setErrMsg('No speech detected — try again'); setTimeout(function() { setErrMsg(''); }, 3000); setState('idle'); return; }
+        if (msg === 'not-allowed' || msg === 'service-not-allowed') { setErrMsg('Mic blocked — allow mic access in browser settings'); setTimeout(function() { setErrMsg(''); }, 5000); setState('error'); return; }
+        if (msg === 'network') { setErrMsg('Network error — check connection'); setTimeout(function() { setErrMsg(''); }, 4000); setState('idle'); return; }
+        setErrMsg('Mic error: ' + msg); setTimeout(function() { setErrMsg(''); }, 4000);
+        setState('idle');
       };
-      rec.onend = () => setState((s) => (s === 'error' ? s : 'idle'));
+      rec.onend = () => {
+        // Keep listening if user hasn't manually stopped — continuous mode restarts
+        if (ref.current === rec && state !== 'idle' && state !== 'error') {
+          try { rec.start(); } catch(e) { setState('idle'); }
+          return;
+        }
+        setState((s) => (s === 'error' ? s : 'idle'));
+      };
       ref.current = rec;
-      rec.start();
+      try {
+        rec.start();
+      } catch(e) {
+        setErrMsg('Failed to start mic: ' + (e.message || e));
+        setTimeout(function() { setErrMsg(''); }, 4000);
+        setState('idle');
+        return;
+      }
       setState('listening');
-    } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+      setErrMsg('');
+    } catch (e) { setErrMsg('Mic error: ' + (e.message || e)); setTimeout(() => { setErrMsg(''); }, 4000); setState('error'); setTimeout(() => setState('idle'), 2500); }
   }
 
   async function startBackend() {
-    if (!navigator.mediaDevices || !window.MediaRecorder) { setState('error'); setTimeout(() => setState('idle'), 2500); return; }
+    if (!navigator.mediaDevices || !window.MediaRecorder) { setErrMsg('Voice not supported — use Chrome/Edge or type instead'); setState('error'); setTimeout(() => setState('idle'), 2500); return; }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const rec = new MediaRecorder(stream);
@@ -1963,26 +2151,32 @@ function QV2MicButton({ onTranscript, disabled, lang }) {
         setState('busy');
         try {
           const blob = new Blob(chunksRef.current, { type: rec.mimeType || 'audio/webm' });
+          if (!blob.size) { setErrMsg('No audio recorded — try again'); setState('idle'); return; }
           const fd = new FormData();
           fd.append('audio', blob, 'speech.webm');
           const tok = _qv2Token();
           const res = await fetch(_qv2Base() + '/api/ai/transcribe', { method: 'POST', headers: tok ? { Authorization: 'Bearer ' + tok } : {}, body: fd });
           const json = await res.json().catch(() => null);
           const text = json && json.data && json.data.transcript;
-          if (res.ok && text) { onTranscript(text); setState('idle'); }
-          else { setState('error'); setTimeout(() => setState('idle'), 2500); }
-        } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+          if (res.ok && text) { onTranscript(text); setState('idle'); setErrMsg(''); }
+          else if (res.status === 401) { setErrMsg('Session expired — please re-login'); setState('idle'); }
+          else if (res.status === 503) { setErrMsg('Transcription service unavailable'); setState('idle'); }
+          else { setErrMsg('Transcription failed: ' + ((json && json.error) || ('HTTP ' + res.status))); setState('idle'); }
+        } catch (e) { setErrMsg('Network error: ' + (e.message || e)); setState('idle'); }
       };
       rec.start();
       ref.current = rec;
       setState('listening');
-    } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+      setErrMsg('');
+    } catch (e) { setErrMsg('Mic access denied — allow in browser settings'); setState('error'); setTimeout(() => setState('idle'), 2500); }
   }
 
   function stopListening() {
     const r = ref.current;
+    ref.current = null;  // Clear ref BEFORE stopping so onend doesn't auto-restart
     if (!r) return;
     try { r.stop(); } catch (e) {}
+    setState('idle');
   }
 
   const onClick = () => {
@@ -1991,15 +2185,17 @@ function QV2MicButton({ onTranscript, disabled, lang }) {
     if (QV2_SR) startNative(); else startBackend();
   };
   const title = state === 'listening' ? 'Stop' : state === 'busy' ? 'Transcribing…' : state === 'error' ? 'Voice input unavailable' : (QV2_SR ? 'Speak your question (in-browser)' : 'Speak your question');
-  return React.createElement('button', { onClick, disabled: disabled || state === 'busy', title, style: {
-    width: 46, flexShrink: 0, borderRadius: 12, cursor: state === 'busy' ? 'default' : 'pointer', fontSize: 16, fontFamily: 'Poppins',
-    border: '1px solid ' + (state === 'listening' ? 'var(--red)' : 'var(--border)'),
-    background: state === 'listening' || state === 'error' ? 'var(--red-l)' : 'var(--surface)',
-    color: state === 'listening' ? 'var(--red-d)' : 'var(--text-2)',
-  } }, state === 'listening' ? '⏹' : state === 'busy' ? '…' : '🎙️');
+  return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 } },
+    React.createElement('button', { onClick, disabled: disabled || state === 'busy', title, style: {
+      width: 46, flexShrink: 0, borderRadius: 12, cursor: state === 'busy' ? 'default' : 'pointer', fontSize: 16, fontFamily: 'Poppins',
+      border: '1px solid ' + (state === 'listening' ? 'var(--red)' : 'var(--border)'),
+      background: state === 'listening' || state === 'error' ? 'var(--red-l)' : 'var(--surface)',
+      color: state === 'listening' ? 'var(--red-d)' : 'var(--text-2)',
+    } }, state === 'listening' ? '⏹' : state === 'busy' ? '…' : '🎙️'),
+    errMsg && React.createElement('div', { style: { fontSize: 10, color: 'var(--red-d)', maxWidth: 180, textAlign: 'center', lineHeight: 1.3 } }, errMsg));
 }
 
-function QV2Session({ caseSummary, mode, onScored, onExit }) {
+function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
   const [sessionId, setSessionId] = React.useState(null);
   const [messages, setMessages] = React.useState([]); // {role, text}
   const [input, setInput] = React.useState('');
@@ -2015,7 +2211,7 @@ function QV2Session({ caseSummary, mode, onScored, onExit }) {
   const wide = useIsWide(900);
 
   React.useEffect(() => {
-    qv2Fetch('/api/v2/sessions', { method: 'POST', body: { case_id: caseSummary.id } })
+    qv2Fetch('/api/v2/sessions', { method: 'POST', body: { case_id: caseSummary.id, language: language || 'en' } })
       .then(d => { setSessionId(d.sessionId); setMessages([{ role: 'patient', text: d.openingLine || '…' }]); })
       .catch(e => setErr(String(e.message || e)));
   }, [caseSummary.id]);
@@ -2116,7 +2312,7 @@ function QV2Session({ caseSummary, mode, onScored, onExit }) {
         : (m.streaming ? m.text + ' ▋' : m.text))),
       React.createElement('div', { ref: endRef })),
     React.createElement('div', { style: { display: 'flex', gap: 8, padding: '12px 0 16px' } },
-      React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), disabled: busy }),
+      React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), disabled: busy, sessionLang: language }),
       React.createElement('input', {
         value: input, onChange: e => setInput(e.target.value),
         onKeyDown: e => { if (e.key === 'Enter') send(); },
@@ -2147,6 +2343,14 @@ function QV2ItemRow({ item, status }) {
 function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
+  var _t = window.__t || function(k) { return k; };
+  // Confetti on mount
+  React.useEffect(function () {
+    if (typeof window.confetti === 'function') {
+      var score = report.overall || 0;
+      window.confetti({ particleCount: score >= 80 ? 120 : score >= 60 ? 60 : 20, spread: score >= 80 ? 100 : 70, origin: { y: 0.6 } });
+    }
+  }, []);
   // map item text -> status from per_item (loose lowercase contains match)
   const statusFor = (text) => {
     const t = String(text || '').toLowerCase();
@@ -2237,7 +2441,7 @@ function QV2Progress({ onBack }) {
   React.useEffect(() => { qv2Fetch('/api/v2/progress').then(setP).catch((e) => setErr(String(e.message || e))); }, []);
   if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load progress: ' + err);
   if (!p) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading progress…');
-  const dimLabel = { history_coverage: 'History coverage', red_flags: 'Red-flag screening', ice_fife: 'ICE / FIFE', communication: 'Communication', diagnostic_reasoning: 'Diagnostic reasoning', investigations: 'Investigation selection', management: 'Management' };
+  const dimLabel = { history_coverage: 'History coverage', red_flags: 'Red-flag screening', ice_fife: 'ICE / FIFE', questioning_technique: 'Questioning technique', communication: 'Communication', diagnostic_reasoning: 'Diagnostic reasoning', investigations: 'Investigation selection', management: 'Management', clinical_safety: 'Clinical safety' };
   const dims = p.dimensionAverages || {};
   const specs = p.specialtyCounts || {};
   const dimKeys = Object.keys(dims);
@@ -2366,8 +2570,8 @@ function QoraDashboard({ onNav, onStartCase }) {
       // Recent Activity
       React.createElement('div', null,
         React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-          React.createElement('span', null, '📋 Recent sessions'),
-          recent.length > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600 } }, 'View all')),
+          React.createElement('span', null, '\uD83D\uDCCB ' + _t('dashboard.recent_sessions')),
+          recent.length > 0 && React.createElement('button', { onClick: () => onNav('sessions'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600 } }, _t('dashboard.browse_cases'))),
         recent.length === 0 && React.createElement('div', { style: { padding: '28px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 16, border: '1px dashed var(--border)' } },
           'Complete your first case to see activity here.'),
         React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
@@ -2378,8 +2582,12 @@ function QoraDashboard({ onNav, onStartCase }) {
               React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2 } }, s.presentation || 'Case'),
               React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress'))))))),
 
-      // Right column: specialties + dimensions
+      // Right column: specialties + dimensions + radar
       React.createElement('div', null,
+        // Skill radar chart
+        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, textAlign: 'center' } }, '\uD83D\uDCCA ' + _t('dashboard.skill_breakdown')),
+          React.createElement(QSkillRadar, { dims: dims, size: 200 })),
         // Achievements
         (p.badges && p.badges.some((b) => b.earned)) ? React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 16 } },
           React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🏅 Achievements'),
@@ -2396,7 +2604,7 @@ function QoraDashboard({ onNav, onStartCase }) {
         hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
           React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 Skill breakdown'),
           Object.keys(dims).map(k => {
-            const dimLabel = { history_coverage: 'History', red_flags: 'Red flags', ice_fife: 'ICE/FIFE', communication: 'Communication', diagnostic_reasoning: 'Reasoning', investigations: 'Investigations', management: 'Management' };
+            const dimLabel = { history_coverage: 'History', red_flags: 'Red flags', ice_fife: 'ICE/FIFE', questioning_technique: 'Questioning', communication: 'Communication', diagnostic_reasoning: 'Reasoning', investigations: 'Investigations', management: 'Management', clinical_safety: 'Safety' };
             const pct = dims[k];
             return React.createElement('div', { key: k, style: { marginBottom: 8 } },
               React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
@@ -2419,15 +2627,16 @@ function QoraV2Screen() {
   const [view, setView] = React.useState('catalogue'); // catalogue | setup | session | result | progress
   const [picked, setPicked] = React.useState(null);
   const [sessionMode, setSessionMode] = React.useState('practice');
+  const [sessionLanguage, setSessionLanguage] = React.useState('en');
   const [report, setReport] = React.useState(null);
   const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
   const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
   let body;
   if (view === 'setup' && picked) {
-    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setView('session'); }, onBack: () => setView('catalogue') });
+    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setView('session'); }, onBack: () => setView('catalogue') });
   } else if (view === 'session' && picked) {
-    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
+    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
   } else if (view === 'result' && report && picked) {
     body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => setView('catalogue'), onLibrary: () => setView('catalogue') });
   } else if (view === 'progress') {
@@ -2456,6 +2665,7 @@ function QoraProfile({ onNav }) {
   const [err, setErr] = React.useState('');
   const [saving, setSaving] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
+  var _t = window.__t || function(k) { return k; };
   const [form, setForm] = React.useState({ full_name: '', school: '', year: '', avatar_emoji: '👤', avatar_color: '#5865F2' });
   React.useEffect(() => {
     qv2Fetch('/api/users/me')
@@ -2469,11 +2679,11 @@ function QoraProfile({ onNav }) {
     catch (e) { setErr(String(e.message || e)); }
     setSaving(false);
   }
-  if (err && !me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load profile: ' + err);
-  if (!me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading profile…');
+  if (err && !me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, _t('common.error') + ': ' + err);
+  if (!me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, _t('common.loading'));
   const level = Math.floor((me.xp || 0) / 200) + 1;
   return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 18 } }, 'Your profile'),
+    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 18 } }, _t('profile.title')),
     React.createElement('div', { className: 'as', style: { display: 'flex', alignItems: 'center', gap: 16, padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 18 } },
       React.createElement('div', { style: { width: 64, height: 64, borderRadius: '50%', background: form.avatar_color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 30, flexShrink: 0 } }, form.avatar_emoji),
       React.createElement('div', { style: { flex: 1, minWidth: 0 } },
@@ -2483,10 +2693,10 @@ function QoraProfile({ onNav }) {
     React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 24 } },
       [['XP', me.xp || 0], ['Level', level], ['Streak', (me.streak || 0) + 'd'], ['Sessions', me.total_sessions || 0]].map(([lab, val]) =>
         React.createElement(QV2Stat, { key: lab, label: lab, val: val }))),
-    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, 'Edit details'),
-    React.createElement(QP_Field, { label: 'Full name', value: form.full_name, set: set('full_name'), ph: 'Your name' }),
-    React.createElement(QP_Field, { label: 'Medical school', value: form.school, set: set('school'), ph: 'e.g. University of ...' }),
-    React.createElement(QP_Field, { label: 'Year / stage', value: form.year, set: set('year'), ph: 'e.g. Year 4 / Clerkship' }),
+    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, _t('profile.edit')),
+    React.createElement(QP_Field, { label: _t('profile.name'), value: form.full_name, set: set('full_name'), ph: 'Your name' }),
+    React.createElement(QP_Field, { label: _t('profile.school'), value: form.school, set: set('school'), ph: 'e.g. University of ...' }),
+    React.createElement(QP_Field, { label: _t('profile.year'), value: form.year, set: set('year'), ph: 'e.g. Year 4 / Clerkship' }),
     React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', margin: '4px 0 6px' } }, 'Avatar'),
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 } },
       QP_AVATARS.map((em) => React.createElement('button', { key: em, onClick: () => set('avatar_emoji')(em), style: { width: 40, height: 40, borderRadius: 10, fontSize: 20, cursor: 'pointer', background: form.avatar_emoji === em ? 'var(--primary-l)' : 'var(--surface)', border: '1px solid ' + (form.avatar_emoji === em ? 'var(--primary)' : 'var(--border)') } }, em))),
@@ -2494,9 +2704,9 @@ function QoraProfile({ onNav }) {
       QP_COLORS.map((col) => React.createElement('button', { key: col, onClick: () => set('avatar_color')(col), 'aria-label': 'Avatar colour ' + col, style: { width: 30, height: 30, borderRadius: '50%', background: col, cursor: 'pointer', border: form.avatar_color === col ? '3px solid var(--text-1)' : '2px solid var(--surface)', boxShadow: '0 0 0 1px var(--border)' } }))),
     err && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err),
     React.createElement('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } },
-      React.createElement('button', { onClick: save, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving…' : 'Save changes'),
-      React.createElement('button', { onClick: () => onNav && onNav('dashboard'), style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Back'),
-      saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '✓ Saved')));
+      React.createElement('button', { onClick: save, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
+      React.createElement('button', { onClick: () => onNav && onNav('dashboard'), style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, _t('common.back')),
+      saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '\u2713 ' + _t('common.save') + 'd')));
 }
 
 // ---- Pricing / upgrade (Xendit paywall; prices are config-driven, §7.3) ----
@@ -2576,6 +2786,175 @@ window.QoraPricing = QoraPricing;
 
 // ===== END qora-v2.jsx =====
 
+// ===== BEGIN qora-enhancements.jsx =====
+// ============================================================
+// Qora — Phase A enhancements: skill chart, session history,
+// settings panel, i18n helpers
+// ------------------------------------------------------------
+// Self-contained components that extend qora-v2.jsx without
+// modifying the original. Additive — loaded after qora-v2.jsx
+// in the bundle LOAD_ORDER.
+// ============================================================
+
+// ── i18n shortcut ──
+var _t = window.__t || function (k) { return k; };
+
+// ── SVG Radar / Spider chart for skill breakdown ──
+function QSkillRadar(props) {
+  var dims = props.dims || {};
+  var keys = Object.keys(dims);
+  var n = keys.length;
+  if (n < 3) return React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', textAlign: 'center', padding: 20 } }, 'Complete a few cases across different specialties to see your skill radar.');
+
+  var size = props.size || 180;
+  var cx = size / 2, cy = size / 2, r = size / 2 - 16;
+  var slice = 2 * Math.PI / n;
+  var L = { history_coverage: _t('dashboard.dim_history_coverage'), red_flags: _t('dashboard.dim_red_flags'), ice_fife: _t('dashboard.dim_ice_fife'), questioning_technique: _t('dashboard.dim_questioning_technique'), communication: _t('dashboard.dim_communication'), diagnostic_reasoning: _t('dashboard.dim_diagnostic_reasoning'), investigations: _t('dashboard.dim_investigations'), management: _t('dashboard.dim_management'), clinical_safety: _t('dashboard.dim_clinical_safety'), coverage: 'Coverage', fife: 'FIFE', redFlags: 'Red flags' };
+  var rings = [0.25, 0.5, 0.75, 1.0];
+  var elements = [];
+
+  rings.forEach(function (pct) {
+    var pts = [];
+    for (var i = 0; i <= n; i++) {
+      var angle = -Math.PI / 2 + slice * (i % n);
+      pts.push((cx + r * pct * Math.cos(angle)).toFixed(1) + ',' + (cy + r * pct * Math.sin(angle)).toFixed(1));
+    }
+    elements.push(React.createElement('polygon', { key: 'r' + pct, points: pts.join(' '), fill: 'none', stroke: 'var(--border)', strokeWidth: 1, opacity: 0.5 }));
+  });
+
+  for (var i = 0; i < n; i++) {
+    var angle = -Math.PI / 2 + slice * i;
+    elements.push(React.createElement('line', { key: 'a' + i, x1: cx, y1: cy, x2: (cx + r * Math.cos(angle)), y2: (cy + r * Math.sin(angle)), stroke: 'var(--border)', strokeWidth: 1, opacity: 0.3 }));
+  }
+
+  var dataPts = [];
+  for (var i = 0; i <= n; i++) {
+    var angle = -Math.PI / 2 + slice * (i % n);
+    var val = (dims[keys[i % n]] || 0) / 100;
+    dataPts.push((cx + r * val * Math.cos(angle)).toFixed(1) + ',' + (cy + r * val * Math.sin(angle)).toFixed(1));
+  }
+  elements.push(React.createElement('polygon', { points: dataPts.join(' '), fill: 'var(--primary)', fillOpacity: 0.15, stroke: 'var(--primary)', strokeWidth: 2 }));
+
+  for (var i = 0; i < n; i++) {
+    var angle = -Math.PI / 2 + slice * i;
+    var val = (dims[keys[i]] || 0) / 100;
+    elements.push(React.createElement('circle', { key: 'd' + i, cx: cx + r * val * Math.cos(angle), cy: cy + r * val * Math.sin(angle), r: 4, fill: 'var(--primary)', stroke: '#fff', strokeWidth: 2 }));
+  }
+
+  for (var i = 0; i < n; i++) {
+    var angle = -Math.PI / 2 + slice * i;
+    var label = L[keys[i]] || keys[i];
+    var pct = Math.round(dims[keys[i]] || 0);
+    elements.push(React.createElement('text', { key: 'l' + i, x: cx + (r + 20) * Math.cos(angle), y: cy + (r + 20) * Math.sin(angle), textAnchor: 'middle', dominantBaseline: 'central', fontSize: 9, fontWeight: 600, fill: 'var(--text-1)', fontFamily: 'Poppins' }, label + ' ' + pct + '%'));
+  }
+
+  return React.createElement('svg', { width: size, height: size + 10, viewBox: '0 0 ' + size + ' ' + size, style: { display: 'block', margin: '0 auto' } }, elements);
+}
+
+// ── Session History Screen ──
+function QoraSessions(props) {
+  var onNav = props.onNav;
+  var sessionsState = React.useState(null);
+  var sessions = sessionsState[0];
+  var setSessions = sessionsState[1];
+  var specLabel = { internal_medicine: 'Internal Medicine', surgery: 'Surgery', paediatrics: 'Paediatrics', obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology', ent: 'ENT', dermatology: 'Dermatology', ophthalmology: 'Ophthalmology', emergency: 'Emergency' };
+
+  React.useEffect(function () {
+    qv2Fetch('/api/v2/sessions?limit=50').then(function (d) { setSessions((d && d.sessions) || []); }).catch(function () {});
+  }, []);
+
+  function renderSession(s, i) {
+    var icon = s.specialty === 'emergency' ? '\uD83D\uDE91' : s.specialty === 'surgery' ? '\uD83D\uDD2A' : s.specialty === 'paediatrics' ? '\uD83D\uDC76' : s.specialty === 'psychiatry' ? '\uD83E\uDDE0' : s.specialty === 'ophthalmology' ? '\uD83D\uDC41' : '\uD83D\uDC89';
+    var specName = specLabel[s.specialty] || s.specialty;
+    var hasScore = s.score != null;
+    var detail = hasScore ? ' \u00B7 ' + _t('result.overall_score') + ': ' + s.score : ' \u00B7 ' + (s.status || 'In progress');
+    var badge = hasScore ? s.score + '%' : '...';
+    return React.createElement('div', { key: s.sessionId || i, className: 'as d' + Math.min(i, 3), style: { display: 'flex', alignItems: 'center', gap: 14, padding: 14, borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-xs)' } },
+      React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: 'var(--primary-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 } }, icon),
+      React.createElement('div', { style: { flex: 1, minWidth: 0 } },
+        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2 } }, s.presentation || 'Case'),
+        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, specName + detail)),
+      React.createElement('span', { style: { fontSize: 10, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: hasScore ? 'var(--teal-l)' : 'var(--surface-2)', color: hasScore ? 'var(--teal-d)' : 'var(--text-3)' } }, badge));
+  }
+
+  var content;
+  if (sessions === null) {
+    content = React.createElement('div', { style: { padding: 40, textAlign: 'center', color: 'var(--text-3)' } }, _t('common.loading'));
+  } else if (sessions.length === 0) {
+    content = React.createElement('div', { style: { padding: 40, textAlign: 'center', color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 16, border: '1px dashed var(--border)' } }, _t('dashboard.no_sessions'));
+  } else {
+    content = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } }, sessions.map(renderSession));
+  }
+
+  return React.createElement('div', { className: 'au', style: { maxWidth: 860, margin: '0 auto', padding: '28px 20px 60px' } },
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
+      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
+      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\uD83D\uDCCB ' + _t('dashboard.recent_sessions'))),
+    content);
+}
+
+// ── Settings Panel (full page) ──
+function QoraSettings(props) {
+  var onNav = props.onNav;
+  var dataState = React.useState(null);
+  var me = dataState[0];
+  var setMe = dataState[1];
+  var errState = React.useState('');
+  var err = errState[0];
+  var setErr = errState[1];
+  var savingState = React.useState(false);
+  var saving = savingState[0];
+  var setSaving = savingState[1];
+  var savedState = React.useState(false);
+  var saved = savedState[0];
+  var setSaved = savedState[1];
+  var langState = React.useState('en');
+  var lang = langState[0];
+  var setLang = langState[1];
+
+  React.useEffect(function () {
+    qv2Fetch('/api/users/me').then(function (d) { setMe(d); setLang(d.preferred_language || 'en'); }).catch(function (e) { setErr(String(e.message || e)); });
+  }, []);
+
+  async function saveLang() {
+    setSaving(true); setErr('');
+    try {
+      var d = await qv2Fetch('/api/users/me', { method: 'PATCH', body: { preferred_language: lang } });
+      setMe(d); setSaved(true); setTimeout(function () { setSaved(false); }, 2000);
+    } catch (e) { setErr(String(e.message || e)); }
+    setSaving(false);
+  }
+
+  var LANGS = [['en', 'English'], ['id', 'Bahasa Indonesia'], ['ms', 'Bahasa Melayu'], ['tl', 'Tagalog'], ['vi', 'Ti\u1EBFng Vi\u1EC7t'], ['th', '\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22']];
+  var REGION_LABEL = { indo: 'Indonesia', asean: 'ASEAN', row: 'Rest of World' };
+
+  if (!me) return React.createElement('div', { style: { padding: 40, textAlign: 'center', color: 'var(--text-3)' } }, _t('common.loading'));
+
+  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '28px 20px 60px' } },
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
+      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
+      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\u2699\uFE0F ' + _t('profile.settings'))),
+    React.createElement('div', { className: 'as', style: { padding: 24, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
+      React.createElement('div', { style: { marginBottom: 20 } },
+        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 6 } }, _t('profile.language')),
+        React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
+          LANGS.map(function (p) {
+            var code = p[0], label = p[1];
+            return React.createElement('button', { key: code, onClick: function () { setLang(code); }, style: { padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: lang === code ? 700 : 500, border: '1px solid ' + (lang === code ? 'var(--primary)' : 'var(--border)'), background: lang === code ? 'var(--primary-l)' : 'var(--surface)', color: lang === code ? 'var(--primary)' : 'var(--text-2)' } }, (lang === code ? '\u2713 ' : '') + label);
+          }))),
+      React.createElement('div', { style: { marginBottom: 20 } },
+        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, _t('profile.region')),
+        React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)' } }, REGION_LABEL[me.region] || me.region || 'ROW')),
+      React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginBottom: 16 } },
+        'Email: ' + me.email + ' \u00B7 ' + _t('dashboard.sessions') + ': ' + (me.total_sessions || 0)),
+      err ? React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err) : null,
+      React.createElement('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } },
+        React.createElement('button', { onClick: saveLang, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
+        saved ? React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal)', fontWeight: 600 } }, '\u2713 ' + _t('profile.save') + 'd') : null)));
+}
+
+// ===== END qora-enhancements.jsx =====
+
 // ===== BEGIN inline App (from Virtual Patient Simulator.html) =====
     // ============================================================
     // Qora — Standalone App with Dashboard + Cases
@@ -2648,7 +3027,7 @@ window.QoraPricing = QoraPricing;
               React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
           // Nav
           React.createElement('nav', { style: { display: 'flex', gap: 4 } },
-            [['dashboard','Dashboard'],['cases','Cases']].map(function(pair) {
+            [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
                 padding: '6px 14px', borderRadius: 10, border: 'none',
@@ -2680,6 +3059,8 @@ window.QoraPricing = QoraPricing;
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
+          screen === 'sessions' && React.createElement(QoraSessions, { onNav: navigate }),
+          screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
           screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
 
         // Settings drawer

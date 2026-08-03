@@ -435,22 +435,19 @@ const QV2_LANG_MAP = {
 
 function QV2MicButton({ onTranscript, disabled, sessionLang }) {
   const [state, setState] = React.useState('idle'); // idle | listening | busy | error
+  const [errMsg, setErrMsg] = React.useState('');
   const ref = React.useRef(null);
   const chunksRef = React.useRef([]);
 
   function startNative() {
     try {
-      // Request mic permission first (required by some browsers for SpeechRecognition)
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(function(s) { s.getTracks().forEach(function(t) { t.stop(); }); }).catch(function() {});
-      }
       var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) { setState('error'); setTimeout(function() { setState('idle'); }, 2500); return; }
+      if (!SR) { setState('error'); setErrMsg('Speech recognition not supported — try Chrome or Edge'); setTimeout(function() { setState('idle'); setErrMsg(''); }, 4000); return; }
       const rec = new SR();
       var locale = QV2_LANG_MAP[(sessionLang || 'en')] || 'en-US';
       rec.lang = locale;
       rec.interimResults = true;
-      rec.continuous = false;
+      rec.continuous = true;
       rec.maxAlternatives = 1;
       let finalText = '';
       rec.onresult = (e) => {
@@ -462,18 +459,37 @@ function QV2MicButton({ onTranscript, disabled, sessionLang }) {
         onTranscript((finalText + interim).replace(/\s+/g, ' ').trim());
       };
       rec.onerror = (ev) => {
-        if (ev && ev.error === 'no-speech') { setState('idle'); return; }
-        setState('error'); setTimeout(() => setState('idle'), 2500);
+        var msg = (ev && ev.error) || 'unknown';
+        if (msg === 'no-speech') { setErrMsg('No speech detected — try again'); setTimeout(function() { setErrMsg(''); }, 3000); setState('idle'); return; }
+        if (msg === 'not-allowed' || msg === 'service-not-allowed') { setErrMsg('Mic blocked — allow mic access in browser settings'); setTimeout(function() { setErrMsg(''); }, 5000); setState('error'); return; }
+        if (msg === 'network') { setErrMsg('Network error — check connection'); setTimeout(function() { setErrMsg(''); }, 4000); setState('idle'); return; }
+        setErrMsg('Mic error: ' + msg); setTimeout(function() { setErrMsg(''); }, 4000);
+        setState('idle');
       };
-      rec.onend = () => setState((s) => (s === 'error' ? s : 'idle'));
+      rec.onend = () => {
+        // Keep listening if user hasn't manually stopped — continuous mode restarts
+        if (ref.current === rec && state !== 'idle' && state !== 'error') {
+          try { rec.start(); } catch(e) { setState('idle'); }
+          return;
+        }
+        setState((s) => (s === 'error' ? s : 'idle'));
+      };
       ref.current = rec;
-      rec.start();
+      try {
+        rec.start();
+      } catch(e) {
+        setErrMsg('Failed to start mic: ' + (e.message || e));
+        setTimeout(function() { setErrMsg(''); }, 4000);
+        setState('idle');
+        return;
+      }
       setState('listening');
-    } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+      setErrMsg('');
+    } catch (e) { setErrMsg('Mic error: ' + (e.message || e)); setTimeout(() => { setErrMsg(''); }, 4000); setState('error'); setTimeout(() => setState('idle'), 2500); }
   }
 
   async function startBackend() {
-    if (!navigator.mediaDevices || !window.MediaRecorder) { setState('error'); setTimeout(() => setState('idle'), 2500); return; }
+    if (!navigator.mediaDevices || !window.MediaRecorder) { setErrMsg('Voice not supported — use Chrome/Edge or type instead'); setState('error'); setTimeout(() => setState('idle'), 2500); return; }
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       const rec = new MediaRecorder(stream);
@@ -484,26 +500,32 @@ function QV2MicButton({ onTranscript, disabled, sessionLang }) {
         setState('busy');
         try {
           const blob = new Blob(chunksRef.current, { type: rec.mimeType || 'audio/webm' });
+          if (!blob.size) { setErrMsg('No audio recorded — try again'); setState('idle'); return; }
           const fd = new FormData();
           fd.append('audio', blob, 'speech.webm');
           const tok = _qv2Token();
           const res = await fetch(_qv2Base() + '/api/ai/transcribe', { method: 'POST', headers: tok ? { Authorization: 'Bearer ' + tok } : {}, body: fd });
           const json = await res.json().catch(() => null);
           const text = json && json.data && json.data.transcript;
-          if (res.ok && text) { onTranscript(text); setState('idle'); }
-          else { setState('error'); setTimeout(() => setState('idle'), 2500); }
-        } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+          if (res.ok && text) { onTranscript(text); setState('idle'); setErrMsg(''); }
+          else if (res.status === 401) { setErrMsg('Session expired — please re-login'); setState('idle'); }
+          else if (res.status === 503) { setErrMsg('Transcription service unavailable'); setState('idle'); }
+          else { setErrMsg('Transcription failed: ' + ((json && json.error) || ('HTTP ' + res.status))); setState('idle'); }
+        } catch (e) { setErrMsg('Network error: ' + (e.message || e)); setState('idle'); }
       };
       rec.start();
       ref.current = rec;
       setState('listening');
-    } catch (e) { setState('error'); setTimeout(() => setState('idle'), 2500); }
+      setErrMsg('');
+    } catch (e) { setErrMsg('Mic access denied — allow in browser settings'); setState('error'); setTimeout(() => setState('idle'), 2500); }
   }
 
   function stopListening() {
     const r = ref.current;
+    ref.current = null;  // Clear ref BEFORE stopping so onend doesn't auto-restart
     if (!r) return;
     try { r.stop(); } catch (e) {}
+    setState('idle');
   }
 
   const onClick = () => {
@@ -512,12 +534,14 @@ function QV2MicButton({ onTranscript, disabled, sessionLang }) {
     if (QV2_SR) startNative(); else startBackend();
   };
   const title = state === 'listening' ? 'Stop' : state === 'busy' ? 'Transcribing…' : state === 'error' ? 'Voice input unavailable' : (QV2_SR ? 'Speak your question (in-browser)' : 'Speak your question');
-  return React.createElement('button', { onClick, disabled: disabled || state === 'busy', title, style: {
-    width: 46, flexShrink: 0, borderRadius: 12, cursor: state === 'busy' ? 'default' : 'pointer', fontSize: 16, fontFamily: 'Poppins',
-    border: '1px solid ' + (state === 'listening' ? 'var(--red)' : 'var(--border)'),
-    background: state === 'listening' || state === 'error' ? 'var(--red-l)' : 'var(--surface)',
-    color: state === 'listening' ? 'var(--red-d)' : 'var(--text-2)',
-  } }, state === 'listening' ? '⏹' : state === 'busy' ? '…' : '🎙️');
+  return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, flexShrink: 0 } },
+    React.createElement('button', { onClick, disabled: disabled || state === 'busy', title, style: {
+      width: 46, flexShrink: 0, borderRadius: 12, cursor: state === 'busy' ? 'default' : 'pointer', fontSize: 16, fontFamily: 'Poppins',
+      border: '1px solid ' + (state === 'listening' ? 'var(--red)' : 'var(--border)'),
+      background: state === 'listening' || state === 'error' ? 'var(--red-l)' : 'var(--surface)',
+      color: state === 'listening' ? 'var(--red-d)' : 'var(--text-2)',
+    } }, state === 'listening' ? '⏹' : state === 'busy' ? '…' : '🎙️'),
+    errMsg && React.createElement('div', { style: { fontSize: 10, color: 'var(--red-d)', maxWidth: 180, textAlign: 'center', lineHeight: 1.3 } }, errMsg));
 }
 
 function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
