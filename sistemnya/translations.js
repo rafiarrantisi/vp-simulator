@@ -86,6 +86,12 @@ window.QORA_TRANSLATIONS = {
   'profile.settings': { en: 'Settings', id: 'Pengaturan' },
   'profile.language': { en: 'Preferred language', id: 'Bahasa preferensi' },
   'profile.region': { en: 'Region', id: 'Region' },
+  'profile.billing': { en: 'Billing & plan', id: 'Tagihan & paket' },
+  'profile.plan': { en: 'Current plan', id: 'Paket saat ini' },
+
+  // ── Billing ──
+  'billing.success': { en: 'Payment successful!', id: 'Pembayaran berhasil!' },
+  'billing.failed': { en: 'Payment not completed', id: 'Pembayaran belum selesai' },
 
   // ── Result / Debrief ──
   'result.title': { en: 'Session complete!', id: 'Sesi selesai!' },

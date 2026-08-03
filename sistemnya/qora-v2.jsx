@@ -117,7 +117,7 @@ function QV2Catalogue({ onPick, onProgress }) {
           React.createElement(QV2Pill, { tone: 'primary' }, QV2_SPEC_LABEL[c.specialty] || c.specialty),
           c.mode === 'osce_full' ? React.createElement(QV2Pill, { tone: 'violet' }, 'OSCE') : React.createElement(QV2Pill, { tone: 'teal' }, 'Anamnesis')),
         React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.3 } }, c.presentation),
-        React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)' } }, c.chief_complaint),
+        React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', fontStyle: 'italic' } }, c.first_impression_id || c.first_impression || c.chief_complaint),
         React.createElement('div', { style: { marginTop: 'auto', display: 'flex', gap: 12, fontSize: 11, color: 'var(--text-3)', fontWeight: 600 } },
           React.createElement('span', null, '◆ Difficulty ' + (c.difficulty || '–')),
           React.createElement('span', null, '⏱ ~' + (c.estimated_minutes || '–') + ' min')))))
@@ -338,6 +338,18 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
       if (d && d.preferred_language) setLang(d.preferred_language);
     }).catch(function () {});
   }, []);
+  // Check billing status — if free limit reached, show upsell instead of starting
+  var billState = React.useState(null);
+  var billing = billState[0];
+  var setBilling = billState[1];
+  React.useEffect(function () {
+    qv2Fetch('/api/billing/me').then(function (d) {
+      setBilling(d);
+      if (d && d.usage && d.usage.sessions >= (d.free_session_limit || 3) && !d.unlimited) {
+        setBilling(Object.assign({}, d, { limitReached: true }));
+      }
+    }).catch(function () {});
+  }, []);
   async function requestMic() {
     setMicState('requesting');
     try {
@@ -347,9 +359,9 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
     } catch (e) { setMicState('denied'); }
   }
   return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('button', { onClick: onBack, style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 Library'),
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Get ready for your session'),
-    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22 } }, caseSummary.presentation + ' · ' + (QV2_SPEC_LABEL[caseSummary.specialty] || caseSummary.specialty)),
+    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22, fontStyle: 'italic' } }, caseSummary.first_impression_id || caseSummary.first_impression || caseSummary.presentation),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose a mode'),
     React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
       React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning. A task guide and history hints help you along. The timer is optional.' }),
@@ -379,7 +391,14 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
       React.createElement(QV2PrepRow, { icon: '🔒', title: 'Privacy & security', body: 'Your audio is processed securely and is not stored without your explicit consent.' }),
       React.createElement(QV2PrepRow, { icon: '🎧', title: 'Audio quality', body: 'For best results, use a quiet room and check your microphone works.' })),
     React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 16 } }, micState === 'granted' ? '✓ All set — you can start now.' : 'You can start now and enable the mic later.'),
-    React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
+    billing && billing.limitReached
+      ? React.createElement('div', { style: { padding: 16, borderRadius: 12, border: '1px solid var(--amber)', background: 'var(--amber-l)', marginBottom: 12 } },
+          React.createElement('div', { style: { fontSize: 13.5, fontWeight: 700, color: 'var(--amber-d)', marginBottom: 4 } }, '⚡ Free session limit reached'),
+          React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'You have used all ' + (billing.free_session_limit || 3) + ' free sessions this period. Upgrade to keep practising without limits.'),
+          React.createElement('div', { style: { display: 'flex', gap: 8 } },
+            React.createElement('button', { onClick: function () { if (window.__goBilling) window.__goBilling(); }, style: { padding: '10px 18px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Upgrade plan'),
+            React.createElement('button', { onClick: onBack, style: { padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Back to library')))
+      : React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
 }
 
 // ---- In-session task panel (instruksi §4.6) ----
@@ -423,197 +442,23 @@ function QV2TimeUpModal({ onFinish, onContinue }) {
 const QV2_SILENCE_THRESHOLD = 30;  // dB level below which we consider silence
 const QV2_SILENCE_DURATION = 2500;  // ms of silence before auto-send
 
-function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
-  const [state, setState] = React.useState('idle'); // idle | listening | processing | error
-  const [errMsg, setErrMsg] = React.useState('');
-  const [audioLevel, setAudioLevel] = React.useState(0);
-  const streamRef = React.useRef(null);
-  const mediaRecorderRef = React.useRef(null);
-  const chunksRef = React.useRef([]);
-  const audioContextRef = React.useRef(null);
-  const analyserRef = React.useRef(null);
-  const silenceTimerRef = React.useRef(null);
-  const lastSoundRef = React.useRef(Date.now());
-
-  async function startListening() {
-    try {
-      setErrMsg('');
-      setState('listening');
-      setAudioLevel(0);
-      lastSoundRef.current = Date.now();
-
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
-      streamRef.current = stream;
-
-      // Setup audio analysis for silence detection
-      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      audioContextRef.current = audioContext;
-      const analyser = audioContext.createAnalyser();
-      analyserRef.current = analyser;
-      analyser.fftSize = 512;
-      const source = audioContext.createMediaStreamSource(stream);
-      source.connect(analyser);
-
-      // Monitor audio level for silence detection
-      const dataArray = new Uint8Array(analyser.frequencyBinCount);
-      function checkSilence() {
-        if (state !== 'listening') return;
-        analyser.getByteFrequencyData(dataArray);
-        let sum = 0;
-        for (let i = 0; i < dataArray.length; i++) {
-          sum += dataArray[i];
-        }
-        const avg = sum / dataArray.length;
-        setAudioLevel(avg);
-
-        if (avg > QV2_SILENCE_THRESHOLD) {
-          lastSoundRef.current = Date.now();
-          if (silenceTimerRef.current) {
-            clearTimeout(silenceTimerRef.current);
-            silenceTimerRef.current = null;
-          }
-        } else if (chunksRef.current.length > 0 && Date.now() - lastSoundRef.current > QV2_SILENCE_DURATION) {
-          // Silence detected, auto-send
-          stopAndSend();
-          return;
-        }
-
-        if (state === 'listening') {
-          requestAnimationFrame(checkSilence);
-        }
-      }
-      requestAnimationFrame(checkSilence);
-
-      // Setup MediaRecorder
-      chunksRef.current = [];
-      const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm';
-      const mediaRecorder = new MediaRecorder(stream, { mimeType });
-      mediaRecorderRef.current = mediaRecorder;
-
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          chunksRef.current.push(e.data);
-        }
-      };
-
-      mediaRecorder.start(100); // Collect data every 100ms
-    } catch (e) {
-      setErrMsg('Mic access denied. Please allow microphone permission.');
-      setState('error');
-    }
-  }
-
-  async function stopAndSend() {
-    if (state !== 'listening') return;
-    setState('processing');
-
-    // Stop recording
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop();
-    }
-
-    // Wait for onstop to fire
-    mediaRecorderRef.current.onstop = async () => {
-      // Stop audio stream
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach(track => track.stop());
-        streamRef.current = null;
-      }
-
-      // Close audio context
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-        audioContextRef.current = null;
-      }
-
-      if (chunksRef.current.length === 0) {
-        setState('idle');
-        return;
-      }
-
-      // Upload to backend for transcription
-      try {
-        const blob = new Blob(chunksRef.current, { type: mediaRecorderRef.current.mimeType });
-        const formData = new FormData();
-        formData.append('audio', blob, 'audio.webm');
-
-        const res = await fetch('/api/ai/transcribe', {
-          method: 'POST',
-          body: formData,
-        });
-
-        const json = await res.json();
-        if (res.ok && json.transcript) {
-          onTranscript(json.transcript);
-          // Auto-send after transcription
-          if (onAutoSend && json.transcript.trim()) {
-            onAutoSend(json.transcript);
-          }
-        } else {
-          setErrMsg('Transcription failed');
-          setState('error');
-        }
-      } catch (e) {
-        setErrMsg('Upload failed');
-        setState('error');
-      } finally {
-        setState('idle');
-        setAudioLevel(0);
-      }
-    };
-
-    // Clear silence timer
-    if (silenceTimerRef.current) {
-      clearTimeout(silenceTimerRef.current);
-      silenceTimerRef.current = null;
-    }
-  }
-
-  function stopListening() {
-    if (state !== 'listening') return;
-
-    // Stop recording
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop();
-    }
-
-    // Stop audio stream
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(track => track.stop());
-      streamRef.current = null;
-    }
-
-    // Close audio context
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-      audioContextRef.current = null;
-    }
-
-    setState('idle');
-    setAudioLevel(0);
-
-    if (silenceTimerRef.current) {
-      clearTimeout(silenceTimerRef.current);
-      silenceTimerRef.current = null;
-    }
-  }
+function QV2MicButton({ micState, onStart, onStop, errMsg }) {
+  // Pure visual component - all logic in parent
+  const isListening = micState === 'listening';
+  const isProcessing = micState === 'processing';
 
   const onClick = () => {
-    if (state === 'listening') {
-      stopListening();
-    } else if (state === 'idle' || state === 'error') {
-      startListening();
+    if (isListening) {
+      onStop();
+    } else if (!isProcessing) {
+      onStart();
     }
   };
-
-  const isListening = state === 'listening';
-  const isProcessing = state === 'processing';
-  const pulseScale = isListening ? 1 + (audioLevel / 100) * 0.15 : 1;
 
   return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, padding: '12px 0' } },
     React.createElement('button', {
       onClick,
-      disabled: disabled || isProcessing,
+      disabled: isProcessing,
       title: isListening ? 'Stop recording' : 'Start recording',
       style: {
         width: 80,
@@ -623,10 +468,8 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
         background: isListening ? 'var(--red-l)' : isProcessing ? 'var(--primary-l)' : 'var(--surface)',
         color: isListening ? 'var(--red)' : isProcessing ? 'var(--primary)' : 'var(--text-2)',
         fontSize: 32,
-        cursor: disabled || isProcessing ? 'not-allowed' : 'pointer',
+        cursor: isProcessing ? 'not-allowed' : 'pointer',
         transition: 'all 0.2s ease',
-        transform: `scale(${pulseScale})`,
-        boxShadow: isListening ? '0 0 20px rgba(239, 68, 68, 0.3)' : 'none',
         position: 'relative',
         overflow: 'visible',
       }
@@ -641,7 +484,6 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
           bottom: -6,
           borderRadius: '50%',
           border: '2px solid var(--red)',
-          opacity: audioLevel / 100,
           animation: 'pulse 1.5s ease-in-out infinite',
           pointerEvents: 'none',
         }
@@ -672,6 +514,135 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
   const [overtime, setOvertime] = React.useState(false);
   const endRef = React.useRef(null);
   const wide = useIsWide(900);
+
+  // Mic control state
+  const [micState, setMicState] = React.useState('idle'); // idle | listening | processing | error
+  const [micErrMsg, setMicErrMsg] = React.useState('');
+  const mediaRecorderRef = React.useRef(null);
+  const audioChunksRef = React.useRef([]);
+  const silenceTimerRef = React.useRef(null);
+  const lastSoundTimeRef = React.useRef(Date.now());
+  const shouldAutoReactivateRef = React.useRef(false);
+
+  async function handleMicStart() {
+    try {
+      setMicErrMsg('');
+      setMicState('listening');
+      lastSoundTimeRef.current = Date.now();
+
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
+
+      // Setup audio analysis for silence detection
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(analyser);
+      analyser.fftSize = 512;
+
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      let audioContextRef = audioContext;
+
+      function checkSilence() {
+        if (micState !== 'listening') {
+          audioContextRef.close();
+          return;
+        }
+        analyser.getByteFrequencyData(dataArray);
+        const avg = dataArray.reduce((sum, val) => sum + val, 0) / dataArray.length;
+
+        if (avg > QV2_SILENCE_THRESHOLD) {
+          lastSoundTimeRef.current = Date.now();
+          if (silenceTimerRef.current) {
+            clearTimeout(silenceTimerRef.current);
+            silenceTimerRef.current = null;
+          }
+        } else if (audioChunksRef.current.length > 0 && Date.now() - lastSoundTimeRef.current > QV2_SILENCE_DURATION) {
+          // Silence detected, stop and process
+          if (silenceTimerRef.current) {
+            clearTimeout(silenceTimerRef.current);
+            silenceTimerRef.current = null;
+          }
+          handleMicStop();
+          return;
+        }
+
+        if (micState === 'listening') {
+          silenceTimerRef.current = setTimeout(checkSilence, 200);
+        }
+      }
+
+      silenceTimerRef.current = setTimeout(checkSilence, 500);
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          audioChunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        stream.getTracks().forEach(t => t.stop());
+        if (audioChunksRef.current.length === 0) {
+          setMicState('idle');
+          return;
+        }
+
+        setMicState('processing');
+        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+        const formData = new FormData();
+        formData.append('audio', audioBlob);
+
+        try {
+          const tok = _qv2Token();
+          const res = await fetch(_qv2Base() + '/api/ai/transcribe', {
+            method: 'POST',
+            headers: tok ? { Authorization: 'Bearer ' + tok } : {},
+            body: formData,
+          });
+
+          const json = await res.json();
+          if (res.ok && json.data && json.data.transcript) {
+            const transcript = json.data.transcript.trim();
+            setInput(transcript);
+            // Auto-send
+            if (transcript) {
+              await send(transcript);
+              // Auto-reactivate mic after patient responds
+              shouldAutoReactivateRef.current = true;
+            }
+          } else {
+            setMicErrMsg('Transcription failed');
+            setMicState('error');
+          }
+        } catch (e) {
+          setMicErrMsg('Upload failed');
+          setMicState('error');
+        } finally {
+          if (!shouldAutoReactivateRef.current) {
+            setMicState('idle');
+          }
+        }
+      };
+
+      mediaRecorder.start(100);
+    } catch (e) {
+      setMicErrMsg('Mic access denied');
+      setMicState('error');
+    }
+  }
+
+  function handleMicStop() {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    }
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+    setMicState('idle');
+  }
 
   React.useEffect(() => {
     qv2Fetch('/api/v2/sessions', { method: 'POST', body: { case_id: caseSummary.id, language: language || 'en' } })

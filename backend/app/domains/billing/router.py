@@ -105,6 +105,41 @@ def my_entitlement(user: User = Depends(get_current_user), db: Session = Depends
     })
 
 
+@router.get("/history")
+def payment_history(user: User = Depends(get_current_user), db: Session = Depends(get_db)):
+    """Billing history for the payment page: current entitlement, usage this
+    period, and recent sessions with their scores. Frontend renders this as
+    the payment/subscription status page."""
+    ent = service.get_entitlement(db, user.id)
+    usage = service.usage_this_period(db, user.id)
+    from app.domains.sessions.models import SessionRow
+    rows = (
+        db.query(SessionRow)
+        .filter(SessionRow.user_id == user.id)
+        .order_by(SessionRow.started_at.desc())
+        .limit(10)
+        .all()
+    )
+    history = [
+        {
+            "id": r.id, "caseId": r.case_id, "mode": r.mode,
+            "status": r.status,
+            "startedAt": r.started_at.isoformat() if r.started_at else None,
+            "endedAt": r.ended_at.isoformat() if r.ended_at else None,
+            "totalScore": r.total_score,
+        }
+        for r in rows
+    ]
+    return ok({
+        "plan": ent.plan,
+        "status": ent.status,
+        "current_period_end": ent.current_period_end.isoformat() if ent.current_period_end else None,
+        "usage": usage,
+        "free_session_limit": get_settings().free_session_limit,
+        "history": history,
+    })
+
+
 @router.get("/checkout/{plan}")
 def checkout(plan: str, user: User = Depends(get_current_user)):
     s = get_settings()

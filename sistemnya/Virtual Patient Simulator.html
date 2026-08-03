@@ -87,6 +87,12 @@
         navigate('qora-landing');
       }, [navigate]);
 
+      // Global hook: lets any nested screen (e.g. session setup upsell) jump to billing.
+      React.useEffect(() => {
+        window.__goBilling = () => navigate('billing');
+        return () => { delete window.__goBilling; };
+      }, [navigate]);
+
       React.useEffect(() => {
         const t = setTimeout(() => {
           document.querySelectorAll('.au,.af,.as,.ab,.ar,.al').forEach(el => {
@@ -116,7 +122,7 @@
               React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
           // Nav
           React.createElement('nav', { style: { display: 'flex', gap: 4 } },
-            [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile']].map(function(pair) {
+            [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
                 padding: '6px 14px', borderRadius: 10, border: 'none',
@@ -150,6 +156,8 @@
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
           screen === 'sessions' && React.createElement(QoraSessions, { onNav: navigate }),
           screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
+          screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
+          (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
           screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
 
         // Settings drawer
