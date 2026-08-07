@@ -116,18 +116,13 @@ def _openai_compatible(base_url: str | None):
                         f"LLM tanpa choices: {_err(r) or repr(r)[:200]}"
                     )
                 msg = r.choices[0].message
-                # Sebagian model (reasoning) menaruh teks di `reasoning`/
-                # `reasoning_content`, content kosong → ambil fallback.
-                content = (
-                    msg.content
-                    or getattr(msg, "reasoning_content", None)
-                    or getattr(msg, "reasoning", None)
-                    or ""
-                )
+                # Reasoning model (gpt-oss) menaruh chain-of-thought di
+                # `reasoning` — JANGAN pernah fallback ke situ utk output
+                # user-facing (bocor CoT ke mahasiswa). Content kosong =
+                # transient (truncated/overload) → retry via _with_retry.
+                content = msg.content or ""
                 if not str(content).strip():
-                    # Konten kosong = anggap transient → biar _with_retry
-                    # mencoba lagi (kata kunci 'overload' lolos filter).
-                    raise RuntimeError("LLM kembalikan konten kosong (overload?)")
+                    raise RuntimeError("LLM kembalikan konten kosong (overload/truncated?)")
                 return content
 
             return _with_retry(_call)
