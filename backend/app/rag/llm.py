@@ -92,6 +92,7 @@ def _openai_compatible(base_url: str | None):
         api_key=s.llm_api_key,
         base_url=base_url or None,
         default_headers=headers or None,
+        timeout=120.0,  # judge/patient calls must not hang the UI forever
     )
 
     def _err(r):

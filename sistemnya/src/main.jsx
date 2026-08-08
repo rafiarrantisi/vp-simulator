@@ -1987,7 +1987,7 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
   const [stt, setStt] = React.useState(null); // null=checking | 'browser' | 'server' | false
   React.useEffect(() => {
     if (typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition)) { setStt('browser'); return; }
-    qv2Fetch('/api/ai/voice-status').then((d) => setStt(d && d.stt ? 'server' : false)).catch(() => setStt(false));
+    setStt(false); // browser STT only — no server transcription
   }, []);
   // Load preferred language from profile
   React.useEffect(function () {
@@ -2099,39 +2099,79 @@ function QV2TimeUpModal({ onFinish, onContinue }) {
 const QV2_SILENCE_THRESHOLD = 30;  // dB level below which we consider silence
 const QV2_SILENCE_DURATION = 2500;  // ms of silence before auto-send
 
-function QV2MicButton({ micState, onStart, onStop, errMsg }) {
-  // Pure visual component - all logic in parent
-  const isListening = micState === 'listening';
-  const isProcessing = micState === 'processing';
+function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
+  // Self-contained browser STT (Web Speech API only — no server upload, no Groq).
+  const [state, setState] = React.useState('idle'); // idle | listening | error
+  const [errMsg, setErrMsg] = React.useState('');
+  const recRef = React.useRef(null);
 
-  const onClick = () => {
-    if (isListening) {
-      onStop();
-    } else if (!isProcessing) {
-      onStart();
+  const LANG_MAP = { en: 'en-US', id: 'id-ID', ms: 'ms-MY', tl: 'tl-PH', vi: 'vi-VN', th: 'th-TH' };
+
+  function stopRec() {
+    if (recRef.current) {
+      try { recRef.current.stop(); } catch (e) {}
+      recRef.current = null;
     }
-  };
+    setState('idle');
+  }
+
+  function startRec() {
+    if (disabled) return;
+    const SR = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition);
+    if (!SR) {
+      setErrMsg('Voice input is not supported in this browser. Use Chrome/Edge/Safari, or type instead.');
+      setState('error');
+      return;
+    }
+    setErrMsg('');
+    const rec = new SR();
+    recRef.current = rec;
+    rec.lang = LANG_MAP[sessionLang] || 'en-US';
+    rec.continuous = false;
+    rec.interimResults = false;
+
+    rec.onresult = async (e) => {
+      const t = ((e.results && e.results[0] && e.results[0][0] && e.results[0][0].transcript) || '').trim();
+      if (!t) return;
+      setState('idle');
+      if (onTranscript) onTranscript(t);
+      if (onAutoSend) await onAutoSend(t);
+    };
+    rec.onerror = (e) => {
+      if (e.error === 'not-allowed') setErrMsg('Microphone blocked — allow mic access for this site, then tap again.');
+      else if (e.error === 'no-speech') setErrMsg('No speech detected — try again.');
+      else if (e.error !== 'aborted') setErrMsg('Voice input error (' + (e.error || 'unknown') + ').');
+      setState('idle');
+    };
+    rec.onend = () => { if (recRef.current === rec) setState('idle'); };
+
+    setState('listening');
+    try { rec.start(); } catch (e) { setErrMsg('Could not start voice input.'); setState('idle'); }
+  }
+
+  const isListening = state === 'listening';
+  const onClick = () => { if (isListening) stopRec(); else startRec(); };
 
   return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, padding: '12px 0' } },
     React.createElement('button', {
       onClick,
-      disabled: isProcessing,
+      disabled: !!disabled,
       title: isListening ? 'Stop recording' : 'Start recording',
       style: {
         width: 80,
         height: 80,
         borderRadius: '50%',
         border: isListening ? '3px solid var(--red)' : '3px solid var(--border)',
-        background: isListening ? 'var(--red-l)' : isProcessing ? 'var(--primary-l)' : 'var(--surface)',
-        color: isListening ? 'var(--red)' : isProcessing ? 'var(--primary)' : 'var(--text-2)',
+        background: isListening ? 'var(--red-l)' : 'var(--surface)',
+        color: isListening ? 'var(--red)' : 'var(--text-2)',
         fontSize: 32,
-        cursor: isProcessing ? 'not-allowed' : 'pointer',
+        cursor: disabled ? 'not-allowed' : 'pointer',
         transition: 'all 0.2s ease',
         position: 'relative',
         overflow: 'visible',
       }
     },
-      isProcessing ? '⏳' : isListening ? '⏹' : '🎙️',
+      isListening ? '⏹' : '🎙️',
       isListening && React.createElement('div', {
         style: {
           position: 'absolute',
@@ -2149,8 +2189,7 @@ function QV2MicButton({ micState, onStart, onStop, errMsg }) {
     React.createElement('div', {
       style: { fontSize: 12, color: 'var(--text-2)', fontWeight: 500 }
     },
-      isProcessing ? 'Transcribing...' : isListening ? 'Listening... (auto-sends on silence)' : 'Tap to speak'
-    ),
+      isListening ? 'Listening… (tap to stop)' : 'Tap to speak'),
     errMsg && React.createElement('div', {
       style: { fontSize: 11, color: 'var(--red)', marginTop: 4, maxWidth: 240, textAlign: 'center' }
     }, errMsg)

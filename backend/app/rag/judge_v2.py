@@ -101,11 +101,21 @@ def _as_items(seq) -> list[dict]:
 
 
 def _transcript_text(transcript: list[dict]) -> str:
-    return "\n".join(
-        f"{'Doctor' if m.get('role') == 'user' else 'Patient'}: "
-        f"{m.get('content', m.get('text', ''))}"
-        for m in transcript if m.get("role") in ("user", "patient")
-    )
+    """Serialise the transcript for the judge, capped to the last 40 turns
+    and per-message 500 chars — long sessions must not balloon the prompt
+    (judge latency was ~100s+ on uncapped transcripts; score stays reliable
+    because anamnesis value concentrates in the recent exchanges)."""
+    rows = []
+    for m in transcript:
+        if m.get("role") not in ("user", "patient"):
+            continue
+        text = str(m.get("content", m.get("text", ""))).strip()
+        if len(text) > 500:
+            text = text[:500] + "…"
+        rows.append(
+            f"{'Doctor' if m.get('role') == 'user' else 'Patient'}: {text}"
+        )
+    return "\n".join(rows[-40:])
 
 
 def _student_decisions(ddx: dict | None, plan: dict | None) -> str:
