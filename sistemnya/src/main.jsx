@@ -2156,16 +2156,17 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
     React.createElement('button', {
       onClick,
       disabled: !!disabled,
-      title: isListening ? 'Stop recording' : 'Start recording',
+      title: isListening ? 'Stop recording' : (disabled ? 'Waiting for the patient to reply…' : 'Start recording'),
       style: {
         width: 80,
         height: 80,
         borderRadius: '50%',
         border: isListening ? '3px solid var(--red)' : '3px solid var(--border)',
-        background: isListening ? 'var(--red-l)' : 'var(--surface)',
-        color: isListening ? 'var(--red)' : 'var(--text-2)',
+        background: isListening ? 'var(--red-l)' : disabled ? 'var(--surface-2)' : 'var(--surface)',
+        color: isListening ? 'var(--red)' : disabled ? 'var(--text-3)' : 'var(--text-2)',
         fontSize: 32,
         cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.45 : 1,
         transition: 'all 0.2s ease',
         position: 'relative',
         overflow: 'visible',
@@ -2189,7 +2190,7 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
     React.createElement('div', {
       style: { fontSize: 12, color: 'var(--text-2)', fontWeight: 500 }
     },
-      isListening ? 'Listening… (tap to stop)' : 'Tap to speak'),
+      isListening ? 'Listening… (tap to stop)' : (disabled ? 'Patient is replying…' : 'Tap to speak')),
     errMsg && React.createElement('div', {
       style: { fontSize: 11, color: 'var(--red)', marginTop: 4, maxWidth: 240, textAlign: 'center' }
     }, errMsg)
