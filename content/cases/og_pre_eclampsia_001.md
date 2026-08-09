@@ -12,7 +12,7 @@ difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "NICE guideline NG133: Hypertension in pregnancy", "ACOG Practice Bulletin 222" ]
+source_refs: ["PNPK Tata Laksana Komplikasi Kehamilan (KMK 91/2017) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes912017"]
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have this really bad headache and my feet are swollen, and I'm worried about my blood pressure."
 anamnesis_checklist:

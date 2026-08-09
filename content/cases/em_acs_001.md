@@ -12,7 +12,7 @@ difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "2024 ESC Guidelines for the management of acute coronary syndromes" ]
+source_refs: ["PNPK Tata Laksana Angina Pektoris Stabil (KMK 1419/2023) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes14192023", "Guideline ACS internasional (ESC/AHA)"]
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have this heavy, squeezing pain in the middle of my chest that started about an hour ago."
 anamnesis_checklist:

@@ -12,7 +12,7 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: ["NICE guideline NG126: Ectopic pregnancy and miscarriage (2023)"]
+source_refs: ["PNPK Tata Laksana Komplikasi Kehamilan (KMK 91/2017) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes912017"]
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have some light bleeding and a bit of cramping, and I'm worried about the baby."
 anamnesis_checklist:

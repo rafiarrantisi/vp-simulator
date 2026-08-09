@@ -13,6 +13,7 @@ estimated_minutes: 12
 mode_default: osce_full
 languages: [en]
 source_refs:
+  - "PNPK Tata Laksana Glaukoma (KMK 1488/2023) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes14882023"
   - "NICE CKS: Glaucoma; Royal College of Ophthalmologists acute angle closure guidance"
   - "Migrated from legacy kasus-107 (PPK Kemenkes — Glaukoma Akut, ICD-10 H40.2)"
 authoring:

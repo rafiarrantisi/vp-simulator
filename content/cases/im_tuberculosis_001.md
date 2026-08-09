@@ -12,7 +12,7 @@ difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
 languages: [en]
-source_refs: ["WHO guidelines for tuberculosis management"]
+source_refs: ["Program Nasional Penanggulangan TB (Permenkes), WHO TB guidelines (no PNPK on JDIH)"]
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have a bad cough that won't go away, and I've been losing weight."
 anamnesis_checklist:

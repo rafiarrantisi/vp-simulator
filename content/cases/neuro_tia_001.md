@@ -12,7 +12,7 @@ difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
 languages: [en]
-source_refs: [ "NICE guideline NG128: Stroke and transient ischaemic attack in over 16s" ]
+source_refs: ["PNPK Tata Laksana Stroke (KMK 304/2026) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes3042026"]
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I had a strange episode where my right arm went weak and I couldn't speak clearly for about ten minutes."
 anamnesis_checklist:

@@ -12,7 +12,7 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: ["American Diabetes Association Standards of Care 2024"]
+source_refs: ["PNPK Tata Laksana Diabetes Melitus Tipe 2 Dewasa (KMK 603/2020) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107m6032020"]
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I've been drinking a lot and peeing a lot, and I'm always thirsty."
 anamnesis_checklist:
