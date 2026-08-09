@@ -33,7 +33,7 @@ FRONTMATTER (Part A — hidden scoring ground truth, NEVER shown to the patient)
   estimated_minutes: <int>
   mode_default: <mode from TARGET>
   languages: [en]
-  source_refs: [ "<authoritative guideline used>" ]
+  source_refs: [ "PPK Kemenkes (Panduan Praktik Klinis) for <condition> — or standard reference if no PPK exists" ]
   authoring: { drafted_by: ai_v1, model: "<author model>", reviewed_by: null, reviewed_at: null, review_notes: null }
   chief_complaint: "<one lay sentence>"
   anamnesis_checklist:        # items the student should ELICIT; each { item, critical }
@@ -62,12 +62,14 @@ FRONTMATTER (Part A — hidden scoring ground truth, NEVER shown to the patient)
   scoring_weights_override: null
 
 PERSONA BODY (Part B — markdown, this is ALL the patient model sees). Required H2 sections:
-  ## Identity                 (THOROUGH: full name, age, occupation, family, personality traits, fears, quirks — make them feel like a real person, not a template)
+  ## Identity                 (THOROUGH: full name, age, occupation, family, personality traits, fears, quirks — make them feel like a real person, not a template. ALL names must be INDONESIAN and age-appropriate: elderly (60+) -> traditional names (e.g. Slamet, Siti, Sumarni, Kartini); 35-59 -> mixed traditional/modern (e.g. Bambang, Ratna, Agus, Dewi); 18-34 -> modern (e.g. Rizky, Alya, Dimas, Nadia); children -> modern kids' names. Spouse/children/family names also Indonesian. Keep occupations/roles realistic for Indonesia (e.g. ojek driver, factory worker, warung owner, civil servant, housewife).)
   ## Opening line             (one verbatim first line, lay words)
   ## How I present            (physical demeanour: posture, voice, eye contact, emotional state visible on their face)
   ## What I know              (the facts to disclose ONLY when asked, structured as bullet points)
   ## Communication profile    (education level, vocabulary, tendency to ramble/be terse, emotional tone)
   ## Disclosure rules         (answer restraint: answer only what is asked, then stop)
+  ## Vital signs              (numbers the patient heard from a nurse: temperature °C, blood pressure mmHg, heart rate bpm, respiratory rate/min, oxygen saturation if relevant — MUST be clinically consistent with the condition and with each other)
+  ## Physical findings        (per body area, in semi-lay terms the patient can narrate: general appearance, skin, head/neck, chest, abdomen, limbs, neuro — ONLY areas with relevant findings; findings MUST be consistent with the condition. Never include the diagnosis name or medical jargon here.)
 
 HARD RULES:
 - Lay language only in the body. The patient does NOT know medical terms or their diagnosis.
@@ -75,7 +77,16 @@ HARD RULES:
   ICD codes, or any frontmatter/scoring/checklist structure (leakage = fail).
 - Internal consistency: every checklist item that expects a patient answer must have
   a matching fact in "## What I know".
-- English. Clinically accurate per standard references."""
+- English. Clinically accurate per standard references.
+- PEDIATRIC cases (patient 0-18): the persona is ALWAYS the mother (or primary
+  caregiver), never the child. If the doctor asks the child about their symptoms, the
+  mother answers realistically ("he can't tell me that, he's only 2"). The
+  anamnesis_checklist MUST include: pregnancy history, birth/delivery history, and
+  growth & development milestones; "## What I know" MUST contain matching facts.
+- GROUNDING: base the case on the PPK Kemenkes entry for the condition when one
+  exists (cite it in source_refs); otherwise use a standard reference. Prioritise
+  conditions commonly seen in Indonesia (TB, dengue, typhoid, etc.) when choosing
+  the presentation angle."""
 
 
 def build_author_prompt(case_id: str, specialty: str, presentation: str,

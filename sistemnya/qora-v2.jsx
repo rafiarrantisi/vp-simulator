@@ -134,21 +134,45 @@ function QV2AssessField({ label, value, set, ph, area }) {
     }));
 }
 
-// Reusable searchable, categorized, optionally-capped picker (§4.8).
+// Reusable searchable, categorized picker with category dropdown + free-text custom add (§4.8).
 function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }) {
+  const [cat, setCat] = React.useState('');
+  const [custom, setCustom] = React.useState('');
   const q = (search || '').toLowerCase().trim();
+  const cats = Object.keys(catalog || {});
+  let visible = [];
+  if (q) {
+    cats.forEach((c) => (catalog[c] || []).forEach((it) => { if (it.toLowerCase().includes(q)) visible.push(it); }));
+  } else if (cat) {
+    visible = catalog[cat] || [];
+  }
+  const addCustom = () => {
+    const v = custom.trim();
+    if (!v) return;
+    if (selected.indexOf(v) < 0) onToggle(v);
+    setCustom('');
+  };
+  const removeSel = (it) => onToggle(it);
   return React.createElement('div', null,
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 } },
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('input', { value: search, onChange: (e) => setSearch(e.target.value), placeholder: 'Search ' + (unit || 'items') + '…',
         style: { flex: 1, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
       React.createElement('span', { style: { fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', color: max && selected.length >= max ? 'var(--red-d)' : 'var(--text-2)' } }, max ? (selected.length + ' / ' + max + ' selected') : (selected.length + ' selected'))),
-    Object.keys(catalog).map((cat) => {
-      const items = catalog[cat].filter((it) => !q || it.toLowerCase().includes(q));
-      if (!items.length) return null;
-      return React.createElement('div', { key: cat, style: { marginBottom: 14 } },
-        React.createElement('div', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 6 } }, cat),
-        React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
-          items.map((it) => {
+    React.createElement('div', { style: { display: 'flex', gap: 8, marginBottom: 12 } },
+      React.createElement('select', { value: cat, onChange: (e) => setCat(e.target.value),
+        style: { flex: 1, padding: '9px 10px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } },
+        React.createElement('option', { value: '' }, 'Choose a category…'),
+        cats.map((c) => React.createElement('option', { key: c, value: c }, c + ' (' + (catalog[c] || []).length + ')'))),
+      React.createElement('input', { value: custom, onChange: (e) => setCustom(e.target.value), onKeyDown: (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } }, placeholder: 'Or type your own…',
+        style: { flex: 1, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
+      React.createElement('button', { onClick: addCustom, disabled: !custom.trim() || (max && selected.length >= max), style: { padding: '0 14px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: (!custom.trim() || (max && selected.length >= max)) ? 0.5 : 1 } }, 'Add')),
+    selected.length > 0 && React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 } },
+      selected.map((it) => React.createElement('button', { key: it, onClick: () => removeSel(it), title: 'Remove', style: {
+        padding: '5px 10px', borderRadius: 999, fontSize: 12, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600,
+        border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)' } }, '✓ ' + it + ' ✕'))),
+    visible.length > 0
+      ? React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
+          visible.map((it) => {
             const on = selected.indexOf(it) >= 0;
             const capped = !!max && !on && selected.length >= max;
             return React.createElement('button', { key: it, onClick: () => onToggle(it), disabled: capped, style: {
@@ -158,8 +182,9 @@ function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }
               background: on ? 'var(--primary-l)' : 'var(--surface)',
               color: on ? 'var(--primary)' : 'var(--text-2)',
             } }, (on ? '✓ ' : '') + it);
-          })));
-    }));
+          }))
+      : React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', padding: '8px 2px' } },
+          q ? 'No matches — try a different search, or type your own above.' : 'Pick a category above or search — no need to scroll through everything.'));
 }
 
 const QV2_MAX_INVESTIGATIONS = 8;
@@ -196,11 +221,11 @@ function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) 
     React.createElement(QV2AssessField, { label: _t('session.clinical_reasoning'), value: reasoning, set: setReasoning, ph: _t('session.clinical_reasoning'), area: true }));
 
   const investigationsTab = React.createElement('div', null,
-    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Select the investigations you would order (up to ' + QV2_MAX_INVESTIGATIONS + '). Choose deliberately — over-ordering is not rewarded.'),
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Optional — select the investigations you would order (up to ' + QV2_MAX_INVESTIGATIONS + '), or type your own. Over-ordering is not rewarded. Leave empty if unsure.'),
     React.createElement(QV2Picker, { catalog: window.QORA_INVESTIGATIONS || {}, selected: inv, onToggle: toggle(setInv, QV2_MAX_INVESTIGATIONS), max: QV2_MAX_INVESTIGATIONS, search: invSearch, setSearch: setInvSearch, unit: 'investigations' }));
 
   const therapyTab = React.createElement('div', null,
-    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, _t('session.select_therapy')),
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Optional — ' + _t('session.select_therapy') + ' You can also type your own.'),
     React.createElement(QV2Picker, { catalog: window.QORA_THERAPIES || {}, selected: tx, onToggle: toggle(setTx, 0), search: txSearch, setSearch: setTxSearch, unit: 'treatments' }),
       React.createElement(QV2AssessField, { label: _t('session.patient_education'), value: edukasi, set: setEdukasi, ph: 'What you would tell the patient...', area: true }));
 
