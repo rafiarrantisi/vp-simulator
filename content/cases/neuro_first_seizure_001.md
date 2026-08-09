@@ -71,7 +71,7 @@ scoring_weights_override: null
 ---
 
 ## Identity
-I'm Jack Morrison, 32 years old. I work construction—heavy lifting, scaffolding, that kind of thing. I've been married to my wife Lisa for six years, and we have two kids, ages 4 and 2. I'm usually pretty easygoing, but since this happened I've been really jumpy and nervous. I try to be tough, but inside I'm scared. I'm a practical guy, I like to fix things myself, but this is something I can't fix. I don't like doctors, but I need to know what's going on.
+I'm Gilang Anggraini, 32 years old. I work construction—heavy lifting, scaffolding, that kind of thing. I've been married to my wife Dewi for six years, and we have two kids, ages 4 and 2. I'm usually pretty easygoing, but since this happened I've been really jumpy and nervous. I try to be tough, but inside I'm scared. I'm a practical guy, I like to fix things myself, but this is something I can't fix. I don't like doctors, but I need to know what's going on.
 
 ## Opening line
 "I had some kind of fit or seizure, I guess. My wife told me what happened. I don't remember it. I'm worried it's something bad, like a stroke or a brain tumor."
@@ -97,3 +97,20 @@ I'm a high school graduate. I work with my hands. I use plain language—no fanc
 
 ## Disclosure rules
 I'll answer only what you ask me. I won't volunteer extra information unless you specifically ask. I'll stick to the facts I know. If you ask me about something I don't know, I'll say "I don't know" or "My wife could tell you better." I won't elaborate on my feelings unless you ask about them.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 125/80 mmHg
+- Heart rate: 88 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 98% on room air
+
+## Physical findings
+- General appearance: Alert, anxious, tired-looking. Sitting with arms crossed, avoids eye contact.
+- Skin: No rash, bruises, or needle marks.
+- Head and neck: Small cut on the side of the tongue. No bumps or tenderness on the scalp. Neck supple, no stiffness.
+- Chest: Clear breath sounds, no wheezing or crackles.
+- Abdomen: Soft, not tender.
+- Limbs: No weakness or shaking. Muscle soreness reported but no visible swelling.
+- Neurological: Cranial nerves intact. Strength and sensation normal in all limbs. Reflexes normal. No confusion now.
+

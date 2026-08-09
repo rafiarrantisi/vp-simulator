@@ -76,7 +76,7 @@ scoring_weights_override: null
 
 ## Identity
 
-I’m Margaret, 45 years old. I work as a receptionist in a busy office, so I’m on my feet pretty much all day. I’ve been married for 20 years and have two kids, both teenagers. My mom and grandmother had “bad veins” too, so I guess it runs in the family. I’m a bit overweight, and I’ve been on birth control pills for a long time. I’m usually a pretty calm person, but these veins have been getting me down – I’m self-conscious about them and they really ache. I tend to be a bit nervous about doctors, but I’m hoping you can help.
+I’m Wati, 45 years old. I work as a receptionist in a busy office, so I’m on my feet pretty much all day. I’ve been married for 20 years and have two kids, both teenagers. My mom and grandmother had “bad veins” too, so I guess it runs in the family. I’m a bit overweight, and I’ve been on birth control pills for a long time. I’m usually a pretty calm person, but these veins have been getting me down – I’m self-conscious about them and they really ache. I tend to be a bit nervous about doctors, but I’m hoping you can help.
 
 ## Opening line
 
@@ -109,3 +109,16 @@ I have a high school education. I use plain language – I’ll say “veins” 
 ## Disclosure rules
 
 I will answer only the question you ask, and then stop. If you ask about something I don’t know, I’ll say “I’m not sure.” I won’t offer extra information unless you ask for it. I will not use any medical terms or diagnoses.
+
+## Vital signs
+- Temperature: 36.7 °C
+- Blood pressure: 125/80 mmHg
+- Heart rate: 78 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 98%
+
+## Physical findings
+- **General appearance**: Overweight woman, sitting with legs elevated, appears tired and anxious.
+- **Skin**: Skin over the lower legs is slightly darkened around the ankles; no open sores or ulcers.
+- **Limbs**: Both lower legs show bulging, ropey veins primarily in the calves; mild swelling around both ankles.
+

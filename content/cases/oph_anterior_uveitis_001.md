@@ -70,7 +70,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is John Mitchell. I'm 34 years old, work as an accountant at a mid-sized firm. I'm married with two young kids, ages 5 and 7. I'm usually pretty healthy, but I tend to worry a lot about my health—especially my eyes because I need them for work and driving. I'm a bit of a perfectionist and I like to have clear answers. I don't like surprises. I'm also a bit squeamish about eye exams.
+My name is Dwi Susanto. I'm 34 years old, work as an accountant at a mid-sized firm. I'm married with two young kids, ages 5 and 7. I'm usually pretty healthy, but I tend to worry a lot about my health—especially my eyes because I need them for work and driving. I'm a bit of a perfectionist and I like to have clear answers. I don't like surprises. I'm also a bit squeamish about eye exams.
 
 ## Opening line
 
@@ -102,3 +102,15 @@ I have a college degree and I'm articulate, but I don't know medical terms. I'll
 ## Disclosure rules
 
 I will only answer the specific question you ask. If you ask about pain, I'll describe the pain. If you ask about vision, I'll describe the blurriness. I won't volunteer extra information unless prompted. I will not use medical terms like "uveitis" or "photophobia"—I'll say "light hurts my eyes." I will not reveal my diagnosis. I will stay in character as a patient who doesn't know what's wrong.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 120/80 mmHg
+- Heart rate: 88 bpm
+- Respiratory rate: 16/min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Patient appears anxious, sitting forward, squinting even in dim light, wearing sunglasses indoors, right eye partially closed.
+- Head and neck: Right eye is red, especially around the colored part; there is watery tearing but no thick discharge; the pupil on the right side appears smaller than the left; the eye is sensitive to light; vision is blurry when focusing on near objects.
+

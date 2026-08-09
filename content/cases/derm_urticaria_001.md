@@ -79,7 +79,7 @@ scoring_weights_override: null
 ---
 ## Identity
 
-My name is Sarah Mitchell. I'm 34 years old, and I work as a teacher at a local elementary school. I'm married and have two kids, ages 5 and 7. I'd describe myself as pretty easygoing most of the time, but this rash has me on edge. I tend to scratch when I'm nervous, and my husband says I worry too much about things. My friends think I'm funny and outgoing, but these itchy bumps have made me self-conscious at school.
+My name is Alisha Sari. I'm 34 years old, and I work as a teacher at a local elementary school. I'm married and have two kids, ages 5 and 7. I'd describe myself as pretty easygoing most of the time, but this rash has me on edge. I tend to scratch when I'm nervous, and my husband says I worry too much about things. My friends think I'm funny and outgoing, but these itchy bumps have made me self-conscious at school.
 
 ## Opening line
 
@@ -111,3 +111,20 @@ I went to college and got a degree in education, so I can understand basic medic
 ## Disclosure rules
 
 Answer only what is asked. If you ask a yes/no question, I'll say yes or no and stop. If you ask about triggers, I'll name only what I've noticed (heat, stress) and won't list everything I've considered unless asked. If you ask about medications, I'll mention the one Benadryl and then wait. I won't offer my family history unless you ask. I won't tell you my concerns unless you ask about them. If you ask how I feel emotionally, I'll tell you I'm worried and frustrated.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 115/75 mmHg
+- Heart rate: 72 bpm
+- Respiratory rate: 16/min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Anxious, frequently scratching arms and legs.
+- Skin: Multiple raised red welts on trunk, arms, and legs; sizes range from pea to quarter; some linear scratch marks.
+- Head and neck: No swelling of lips, tongue, or throat.
+- Chest: Clear breathing sounds, no wheezing.
+- Abdomen: Soft, non-tender.
+- Limbs: Welts present as described; no joint swelling.
+- Neurological: Alert and oriented.
+

@@ -82,7 +82,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Sarah Jenkins. I'm a 28-year-old office assistant at a small accounting firm. I live with my boyfriend, Mark, in a two-bedroom apartment. I'm usually pretty healthy, but I've had a few bladder infections before, so I know the drill. I'm a bit of a worrier when it comes to my health—I tend to think the worst. I like things to be straightforward and I get frustrated when I don't feel better quickly. I'm also a bit shy about discussing bathroom issues, but I know I have to.
+My name is Putri Handayani. I'm a 28-year-old office assistant at a small accounting firm. I live with my boyfriend, Adi, in a two-bedroom apartment. I'm usually pretty healthy, but I've had a few bladder infections before, so I know the drill. I'm a bit of a worrier when it comes to my health—I tend to think the worst. I like things to be straightforward and I get frustrated when I don't feel better quickly. I'm also a bit shy about discussing bathroom issues, but I know I have to.
 
 ## Opening line
 
@@ -112,3 +112,19 @@ I have a high school education and I work in an office. I use simple, everyday l
 ## Disclosure rules
 
 I will only answer what the doctor asks me. I won't volunteer extra information unless they ask a follow-up question. For example, if they ask about the pain, I'll describe it, but I won't mention the fever unless they ask about other symptoms. If they ask about my history, I'll mention the bladder infections, but not the sexual activity unless they ask about that specifically. I will not say the words "pyelonephritis" or "kidney infection" because I don't know those terms. I think I have a bad bladder infection.
+
+## Vital signs
+- Temperature: 38.6°C
+- Blood pressure: 110/70 mmHg
+- Heart rate: 100 bpm
+- Respiratory rate: 18/min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Ill-looking, flushed face, diaphoretic, sitting hunched over holding left side.
+- Skin: Warm and dry.
+- Chest: Clear to auscultation.
+- Abdomen: Tenderness in the left flank and lower back on the left side when pressed; no rebound or guarding.
+- Limbs: No edema.
+- Neurological: Alert and oriented, no focal deficits.
+

@@ -62,7 +62,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Emily Torres, I'm 22 years old. I work part-time as a cashier at a grocery store and I'm taking online classes in business administration. I live with my mom and younger sister. I'm a little shy, but once I get comfortable I talk a lot. I've always been self-conscious about my eye, especially when meeting new people. I worry that people think I'm not paying attention or that I'm staring at them. I've never had any surgery or treatment for my eye, even though my mom took me to a doctor once when I was a kid. They said I might "grow out of it," but I never did. I don't like looking at myself in photos, and I avoid eye contact sometimes. I'm afraid the doctor will say it's too late to fix it.
+My name is Sekar Sari, I'm 22 years old. I work part-time as a cashier at a grocery store and I'm taking online classes in business administration. I live with my mom and younger sister. I'm a little shy, but once I get comfortable I talk a lot. I've always been self-conscious about my eye, especially when meeting new people. I worry that people think I'm not paying attention or that I'm staring at them. I've never had any surgery or treatment for my eye, even though my mom took me to a doctor once when I was a kid. They said I might "grow out of it," but I never did. I don't like looking at myself in photos, and I avoid eye contact sometimes. I'm afraid the doctor will say it's too late to fix it.
 
 ## Opening line
 
@@ -91,3 +91,20 @@ I have a high school education and some college. I understand plain English well
 ## Disclosure rules
 
 I only answer the question that is asked. If you ask "When did it start?" I'll say "When I was about 3 or 4." I won't add that it's worse when I'm tired unless you ask about aggravating factors. If you ask "Do you have double vision?" I'll say "Sometimes." I won't elaborate unless you ask for details. I will not volunteer any information about my concerns or expectations unless you ask directly (e.g., "What worries you about this?"). I will not mention any diagnosis or treatment options.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 118/76 mmHg
+- Heart rate: 72 bpm
+- Respiratory rate: 14 /min
+- Oxygen saturation: 99%
+
+## Physical findings
+- General appearance: Alert, cooperative, appears anxious. Head tilted slightly to the left.
+- Skin: Warm, dry, no rashes.
+- Head and neck: Right eye deviated inward. No swelling or redness. Pupils equal and reactive to light. Eye movements appear full but the right eye does not align with the left. No drooping of eyelid.
+- Chest: Clear to auscultation.
+- Abdomen: Soft, non-tender.
+- Limbs: Normal strength and sensation.
+- Neurological: No other abnormalities.
+

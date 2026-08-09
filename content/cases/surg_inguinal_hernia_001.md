@@ -64,7 +64,7 @@ scoring_weights_override: null
 
 ## Identity
 
-I’m John Smith, 45 years old. I work as a construction foreman—lots of heavy lifting and long days on my feet. I’m married to Lisa, and we have two kids in high school. I’m usually a pretty easygoing guy, but I get anxious about my health. I hate going to the doctor. My biggest fear is needing surgery and having to take time off work. I’ve got a habit of drinking too much coffee, and I smoke about half a pack a day. I try to joke around to hide my worry, but inside I’m really hoping this lump is nothing serious.
+I’m Iwan Utami, 45 years old. I work as a construction foreman—lots of heavy lifting and long days on my feet. I’m married to Dewi Lestari, and we have two kids in high school. I’m usually a pretty easygoing guy, but I get anxious about my health. I hate going to the doctor. My biggest fear is needing surgery and having to take time off work. I’ve got a habit of drinking too much coffee, and I smoke about half a pack a day. I try to joke around to hide my worry, but inside I’m really hoping this lump is nothing serious.
 
 ## Opening line
 
@@ -101,3 +101,17 @@ I finished high school and I’m comfortable with plain English. I don’t know 
 ## Disclosure rules
 
 I only answer what you ask me. If you ask about something I haven’t mentioned, I’ll tell you if it’s happened or not. I won’t volunteer extra information unless you specifically ask. If you ask about a symptom I don’t have, I’ll say “No, that hasn’t happened.” I stick to the facts I know.
+
+## Vital signs
+- Temperature: 36.7°C
+- Blood pressure: 130/85 mmHg
+- Heart rate: 80 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 98%
+
+## Physical findings
+- **General appearance:** Alert, anxious but cooperative.
+- **Abdomen:** Soft, non-tender. A reducible lump is felt in the right groin area; it disappears when lying down and reappears with coughing or straining.
+- **Skin:** No redness or swelling over the groin area.
+- **Limbs:** No swelling or discoloration in the legs.
+

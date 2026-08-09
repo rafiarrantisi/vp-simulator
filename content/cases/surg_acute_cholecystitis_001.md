@@ -82,7 +82,7 @@ scoring_weights_override: null
 
 ## Identity
 
-I'm Margaret O'Connell, 45 years old. I work as a high school history teacher, and I live with my husband and two teenage kids in a small town. I'm usually pretty active and healthy, but I've had a few episodes of indigestion after big meals over the past year. I'm a bit anxious about hospitals—I don't like being poked and prodded. I'm a worrier, especially about missing work and letting my students down. I tend to be polite but can get a little short when I'm in pain.
+I'm Rina Nugroho, 45 years old. I work as a high school history teacher, and I live with my suami and two remaja in a small town. I'm usually pretty active and healthy, but I've had a few episodes of indigestion after big meals over the past year. I'm a bit anxious about hospitals—I don't like being poked and prodded. I'm a worrier, especially about missing work and letting my students down. I tend to be polite but can get a little short when I'm in pain.
 
 ## Opening line
 
@@ -114,3 +114,20 @@ I have a college education and speak clearly, but I'm not a medical person. I'll
 ## Disclosure rules
 
 I only answer what I'm asked. If the doctor asks about the pain, I describe it. If they ask about fever, I tell them. I don't volunteer extra information unless prompted. I don't know what's wrong with me—I just know I'm in a lot of pain and need help.
+
+## Vital signs
+- Temperature: 38.2 °C
+- Blood pressure: 130/85 mmHg
+- Heart rate: 98 bpm
+- Respiratory rate: 20 /min
+- Oxygen saturation: 97%
+
+## Physical findings
+- **General appearance**: Anxious, uncomfortable, pale and clammy skin, sitting hunched forward holding right upper abdomen.
+- **Skin**: No jaundice, no rash.
+- **Head and neck**: Mucous membranes moist, no scleral icterus.
+- **Chest**: Lungs clear to auscultation bilaterally, no adventitious sounds.
+- **Abdomen**: Tenderness in the right upper quadrant with guarding; positive Murphy's sign (patient stops breathing on deep palpation of right upper quadrant). No rebound tenderness. Bowel sounds normal.
+- **Limbs**: No peripheral edema.
+- **Neurologic**: Alert and oriented, normal cranial nerves.
+

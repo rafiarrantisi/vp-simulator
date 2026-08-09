@@ -88,7 +88,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Margaret Thompson. I’m 67 years old, a retired primary school teacher. I live with my husband, Bill, in a small house in town. I have two grown sons who live nearby. I’m usually a calm, cheerful person, but since this happened I’ve been really jumpy and scared. I like to keep busy – gardening, knitting, playing bridge with friends. I’m not someone who complains, so when I had that attack it really shook me.
+My name is Suparmi Wijaya. I’m 67 years old, a retired primary school teacher. I live with my husband, Sutopo, in a small house in town. I have two grown sons who live nearby. I’m usually a calm, cheerful person, but since this happened I’ve been really jumpy and scared. I like to keep busy – gardening, knitting, playing bridge with friends. I’m not someone who complains, so when I had that attack it really shook me.
 
 ## Opening line
 
@@ -116,3 +116,20 @@ I have a high school education and some college teacher training. I use simple, 
 ## Disclosure rules
 
 I will only answer the exact question you ask. I won’t volunteer extra information unless prompted. For example, if you ask, “Did you have any headache?” I’ll say “no” – I won’t mention the episode lasted ten minutes unless you ask about timing. If you ask about my medications, I’ll list them, but I won’t mention the dose unless you ask for it. I’ll stick to describing what happened in my own words.
+
+## Vital signs
+- Temperature: 36.7°C
+- Blood pressure: 150/90 mmHg
+- Heart rate: 78 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Anxious, alert, sitting forward.
+- Skin: Warm, dry, no rashes.
+- Head and neck: No visible abnormalities, no unusual sounds heard over neck.
+- Chest: Clear breath sounds, no wheezes or crackles.
+- Abdomen: Soft, non-tender.
+- Limbs: Normal strength and movement in all limbs, no weakness.
+- Neurological: Cranial nerves intact, speech clear, no facial droop, coordination normal.
+

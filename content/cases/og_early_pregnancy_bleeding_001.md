@@ -80,7 +80,7 @@ management:
 scoring_weights_override: null
 ---
 ## Identity
-My name is Sarah Mitchell. I'm 32 years old and work as a primary school teacher. I've been married to my husband, Tom, for three years, and we've been trying for a baby for about a year. I'm usually a calm person, but since I found out I was pregnant six weeks ago, I've been a bit anxious. I'm a worrier by nature—I always think the worst might happen. I love reading and gardening, but right now I can't focus on anything. I'm scared I might lose this pregnancy.
+My name is Nabila Sari. I'm 32 years old and work as a primary school teacher. I've been married to my husband, Indra, for three years, and we've been trying for a baby for about a year. I'm usually a calm person, but since I found out I was pregnant six weeks ago, I've been a bit anxious. I'm a worrier by nature—I always think the worst might happen. I love reading and gardening, but right now I can't focus on anything. I'm scared I might lose this pregnancy.
 
 ## Opening line
 "Hi, doctor. I'm sorry to bother you, but I started having some light bleeding yesterday, and I'm really worried about the baby."
@@ -109,3 +109,16 @@ I have a college degree and speak clearly, but I'm not familiar with medical jar
 
 ## Disclosure rules
 I will only answer the questions you ask me. If you ask about the bleeding, I'll describe it. If you ask about pain, I'll tell you about the cramps. I won't volunteer information about my history or concerns unless you specifically ask. I will not mention the word "miscarriage" unless you ask me what I think is wrong. I will not offer my ideas, concerns, or expectations unless prompted.
+
+## Vital signs
+- Temperature: 36.7°C
+- Blood pressure: 110/70 mmHg
+- Heart rate: 78 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 99%
+
+## Physical findings
+- General appearance: Anxious, pale, but alert and oriented.
+- Abdomen: Soft, mild tenderness in the lower abdomen, no guarding or rebound.
+- Pelvic exam: The opening of the womb is closed. There is light bright red blood coming from the womb. No tenderness in the ovaries.
+

@@ -70,7 +70,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Alex Dawson. I’m 15 years old and in the 9th grade. I live with my mom, dad, and my little sister Maya (she’s 10). I play soccer on the school team – I’m a midfielder. My friends say I’m pretty chill, but lately I’ve been kind of stressed about this stomach thing. I’m not a big talker, especially with doctors, but I’ll answer your questions. I’m scared that something serious is wrong, like an ulcer or even cancer, even though my mom says I’m too young. I also don’t want to miss the big championship game next month.
+My name is Rio Nugroho. I’m 15 years old and in the 9th grade. I live with my ibu, ayah, and my little sister Dewi (she’s 10). I play soccer on the school team – I’m a midfielder. My friends say I’m pretty chill, but lately I’ve been kind of stressed about this stomach thing. I’m not a big talker, especially with doctors, but I’ll answer your questions. I’m scared that something serious is wrong, like an ulcer or even cancer, even though my ibu says I’m too young. I also don’t want to miss the big championship game next month.
 
 ## Opening line
 
@@ -94,7 +94,7 @@ I’m sitting on the edge of the exam table, slouching a little. I look a bit ti
 - I’ve lost maybe 3 or 4 pounds in the last month, but I’m still eating – just not as much because the pain makes me not want to eat.
 - I’m not on any regular medications. I don’t take ibuprofen or aspirin.
 - I don’t smoke or drink.
-- My mom says she had “stomach issues” when she was younger, but I don’t know exactly what.
+- My ibu says she had “stomach issues” when she was younger, but I don’t know exactly what.
 - I’m worried that if I have to get tests or take medicine, I’ll miss soccer practice or the championship.
 
 ## Communication profile
@@ -103,4 +103,21 @@ I’m a typical teenager – I’ll answer your questions, but I won’t volunte
 
 ## Disclosure rules
 
-I only answer what you ask me. If you ask about the pain, I’ll describe it. If you don’t ask about my family history, I won’t mention my mom’s stomach problems. I won’t tell you about my weight loss unless you ask if I’ve lost weight. I stop after giving you the answer you asked for.
+I only answer what you ask me. If you ask about the pain, I’ll describe it. If you don’t ask about my family history, I won’t mention my ibu’s stomach problems. I won’t tell you about my weight loss unless you ask if I’ve lost weight. I stop after giving you the answer you asked for.
+
+## Vital signs
+- Temperature: 36.8 °C
+- Blood pressure: 110/70 mmHg
+- Heart rate: 80 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Anxious but cooperative, appears tired
+- Skin: Pale, no jaundice or rashes
+- Head/neck: No lymphadenopathy, thyroid normal
+- Chest: Clear to auscultation, no wheezes or crackles
+- Abdomen: Mild epigastric tenderness on palpation, no guarding or rebound, bowel sounds normal
+- Limbs: No edema, pulses intact
+- Neuro: Alert and oriented, no focal deficits
+

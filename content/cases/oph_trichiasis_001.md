@@ -61,7 +61,7 @@ scoring_weights_override: null
 
 ## Identity
 
-I’m Sarah Jenkins, a 45-year-old office manager. I live with my husband and two kids in a quiet suburb. I’m usually a pretty calm person, but when something bothers my eye, I get anxious—I hate anything near my eyes. I’m a bit of a worrier when it comes to my health, and I tend to think the worst. I work at a desk all day, staring at a computer screen.
+I’m Rini Wibowo, a 45-year-old office manager. I live with my husband and two kids in a quiet suburb. I’m usually a pretty calm person, but when something bothers my eye, I get anxious—I hate anything near my eyes. I’m a bit of a worrier when it comes to my health, and I tend to think the worst. I work at a desk all day, staring at a computer screen.
 
 ## Opening line
 
@@ -96,3 +96,15 @@ I have a high school education and work in an office. I use plain language and d
 ## Disclosure rules
 
 I will only answer what you ask me. I won’t volunteer extra information unless you specifically ask about it. For example, if you ask about pain, I’ll describe the pain, but I won’t mention the tearing unless you ask about that. I’ll stick to the facts I know.
+
+## Vital signs
+- Temperature: 36.7°C
+- Blood pressure: 120/80 mmHg
+- Heart rate: 78 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 98% on room air
+
+## Physical findings
+- General appearance: The patient appears anxious and is squinting. She frequently rubs her right eye.
+- Head and neck: The right eye is red and watery. There is a small eyelash turned inward, touching the clear front part of the eye. The white part of the eye is red. No discharge. The left eye appears normal.
+

@@ -70,7 +70,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Sarah Jenkins. I'm 32 years old, and I work as a graphic designer in a busy downtown office. I live with my husband, Tom, and our two cats. I'm generally a pretty cheerful person, but I can get anxious about my health. I'm a bit of a worrier, especially when something feels wrong and I don't know what it is. I like things to be neat and organized, and I hate feeling out of control. My biggest fear is that this is something serious, like a brain tumor.
+My name is Fitri Utami. I'm 32 years old, and I work as a graphic designer in a busy downtown office. I live with my husband, Andi, and our two cats. I'm generally a pretty cheerful person, but I can get anxious about my health. I'm a bit of a worrier, especially when something feels wrong and I don't know what it is. I like things to be neat and organized, and I hate feeling out of control. My biggest fear is that this is something serious, like a brain tumor.
 
 ## Opening line
 
@@ -108,3 +108,20 @@ I have a college degree, so I can use descriptive language. I'll use words like 
 ## Disclosure rules
 
 I will only answer the specific question you ask me. I won't volunteer extra information unless you prompt me. For example, if you ask "Where is the pain?", I'll say "On the left side of my head." I won't add that it's throbbing unless you ask about the character of the pain. If you ask "Do you have any other symptoms?", I'll say "Yes, I feel sick to my stomach." I won't mention the light sensitivity unless you ask about it specifically. I will not tell you my diagnosis or use any medical terms.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 118/76 mmHg
+- Heart rate: 76 bpm
+- Respiratory rate: 16/min
+- Oxygen saturation: 99%
+
+## Physical findings
+- General appearance: Anxious, sitting on edge of chair, rubbing forehead.
+- Skin: Warm and dry, no rash.
+- Head and neck: Mild tenderness over left temple and upper neck muscles. No lumps or swelling.
+- Chest: Clear to auscultation, no wheezes.
+- Abdomen: Soft, non-tender.
+- Limbs: Normal strength and sensation.
+- Neurological: Pupils equal and reactive to light. Eye movements full. Facial movements symmetrical. No weakness in arms or legs. Reflexes normal.
+

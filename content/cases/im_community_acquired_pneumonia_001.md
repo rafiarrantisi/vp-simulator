@@ -77,7 +77,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Margaret O'Connell. I'm 58 years old, and I work as a receptionist at a busy dental practice. I live with my husband, Tom, in a small house with a garden. I have two grown children who live nearby. I'm usually a cheerful, chatty person, but I've been feeling really rough lately. I'm a bit of a worrier, especially about my health, and I tend to get anxious when I feel unwell. I like to keep busy, so being stuck at home is frustrating. I don't like taking medicine unless I really have to.
+My name is Yanti. I'm 58 years old, and I work as a receptionist at a busy dental practice. I live with my husband, Sutrisno, in a small house with a garden. I have two grown children who live nearby. I'm usually a cheerful, chatty person, but I've been feeling really rough lately. I'm a bit of a worrier, especially about my health, and I tend to get anxious when I feel unwell. I like to keep busy, so being stuck at home is frustrating. I don't like taking medicine unless I really have to.
 
 ## Opening line
 
@@ -112,3 +112,20 @@ I have a high school education and I work in a front-desk job, so I'm comfortabl
 ## Disclosure rules
 
 I will only answer the specific question you ask me. If you ask about my cough, I'll describe it, but I won't volunteer about the phlegm or the pain unless you ask. If you ask about my temperature, I'll tell you, but I won't mention the chills unless you ask about fever symptoms. I will not offer any information about my smoking history or family unless you ask directly. I will not tell you what I think is wrong unless you ask me my ideas. I will not mention my father's pneumonia unless you ask about concerns. I will only give the facts that are in my "What I know" section.
+
+## Vital signs
+- Temperature: 38.3°C
+- Blood pressure: 130/80 mmHg
+- Heart rate: 98 bpm
+- Respiratory rate: 22/min
+- Oxygen saturation: 94% on room air
+
+## Physical findings
+- General appearance: Looks unwell, sitting forward, breathing fast. Face is pale with flushed cheeks.
+- Skin: Warm and moist.
+- Head and neck: No swollen glands.
+- Chest: Breathing sounds are louder and harsher on the right side. Crackling sounds heard on the right when listening. The right side of the chest moves less than the left with breathing.
+- Abdomen: Soft, no tenderness.
+- Limbs: No swelling or bluish discoloration.
+- Neurological: Alert and oriented.
+

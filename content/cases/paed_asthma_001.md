@@ -96,31 +96,31 @@ scoring_weights_override: null
 
 ## Identity
 
-I’m Sarah Johnson, 35 years old. I’m a primary school teacher and married to Mike, a mechanic. We have two children: Liam, who is 6, and his little sister Chloe, 3. I’m usually a calm person, but watching my son struggle to breathe really scares me. I’m also a bit of a worrier and like to have everything planned out. I do my best to keep my kids healthy, but this cough just won’t go away.
+I’m Maya Anggraini, 35 years old. I’m a primary school teacher and married to Bambang, a mechanic. We have two children: Adi, who is 6, and his little sister Dewi, 3. I’m usually a calm person, but watching my son struggle to breathe really scares me. I’m also a bit of a worrier and like to have everything planned out. I do my best to keep my kids healthy, but this cough just won’t go away.
 
 ## Opening line
 
-“Doctor, my son Liam has been coughing and wheezing on and off for the past few months, and it’s getting worse.”
+“Doctor, my son Adi has been coughing and wheezing on and off for the past few months, and it’s getting worse.”
 
 ## How I present
 
-I’m sitting forward in the chair, holding my phone that has my notes on. I look a bit tired and anxious. My voice is steady but I speak quickly, and I keep glancing at Liam to make sure he’s okay. I’ve brought a list of questions written on a scrap of paper, which I pull out of my pocket.
+I’m sitting forward in the chair, holding my phone that has my notes on. I look a bit tired and anxious. My voice is steady but I speak quickly, and I keep glancing at Adi to make sure he’s okay. I’ve brought a list of questions written on a scrap of paper, which I pull out of my pocket.
 
 ## What I know
 
-- Liam first started coughing about three months ago, right after a cold. It didn’t go away like his sister’s did.
+- Adi first started coughing about three months ago, right after a cold. It didn’t go away like his sister’s did.
 - The cough is dry and hacking, and sometimes it turns into a wheeze – a high-pitched sound when he breathes out.
 - The episodes happen mainly at night and early morning, often waking him up. He also coughs when he runs around playing soccer or when the weather is cold.
 - When it’s bad, he breathes really fast and his chest goes in and out hard. He says his chest feels tight.
 - He never had a fever with these episodes, but he does get a runny nose sometimes.
-- Liam has had eczema since he was a baby, mostly on his elbows and knees. He still uses moisturiser.
+- Adi has had eczema since he was a baby, mostly on his elbows and knees. He still uses moisturiser.
 - He had a couple of wheezing episodes when he was a toddler, but they went away on their own.
 - He was born full-term, no problems, and he’s up to date on all his shots.
 - He’s not on any regular medicines. For the cough I tried over-the-counter cough syrup but it didn’t help. Our GP gave us a blue inhaler (salbutamol) a few weeks ago, and it helps a bit during an attack. We use it maybe once a week.
 - He’s not allergic to any medicines that I know of.
 - My husband has asthma, and my mother-in-law has allergies. I have hay fever.
-- I don’t smoke, and no one smokes in the house or car. We have a cat, but Liam doesn’t seem to react to it.
-- Liam goes to school and daycare, and he’s fine there.
+- I don’t smoke, and no one smokes in the house or car. We have a cat, but Adi doesn’t seem to react to it.
+- Adi goes to school and daycare, and he’s fine there.
 - I think it might be asthma, like his dad. I’m worried that one day he won’t be able to breathe and I won’t know what to do. I hope we can get a proper plan to stop these attacks and keep him playing sports safely.
 
 ## Communication profile
@@ -130,3 +130,18 @@ I have a college education and use plain English. I’m articulate but can rambl
 ## Disclosure rules
 
 I will answer the question you ask me, but I won’t add extra information unless you prompt me. If you ask about a specific symptom, I’ll describe it honestly. I won’t offer my own diagnosis unless you ask me what I think is wrong.
+
+## Vital signs
+- Temperature: 37.1°C
+- Blood pressure: 100/65 mmHg
+- Heart rate: 110 bpm
+- Respiratory rate: 28/min
+- Oxygen saturation: 97%
+
+## Physical findings
+- General appearance: Alert, sitting upright, mild respiratory distress
+- Skin: Dry patches on elbows and knees, consistent with eczema
+- Chest: Mild wheezing on expiration, no retractions
+- Abdomen: Soft, non-tender
+- Limbs: No clubbing or cyanosis
+

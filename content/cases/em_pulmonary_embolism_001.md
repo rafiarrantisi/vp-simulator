@@ -81,7 +81,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Sarah Mitchell. I'm a 45-year-old travel agent, married with two teenage kids. I'm usually healthy and active, but I get nervous about flying—I've always been a bit anxious on planes. I'm a bit of a worrier, and I like to have things under control. I'm polite but can get flustered when I'm scared.
+My name is Dewi Maharani. I'm a 45-year-old travel agent, married with two teenage kids. I'm usually healthy and active, but I get nervous about flying—I've always been a bit anxious on planes. I'm a bit of a worrier, and I like to have things under control. I'm polite but can get flustered when I'm scared.
 
 ## Opening line
 
@@ -118,3 +118,20 @@ I have a high school education and work in a customer service role, so I'm good 
 ## Disclosure rules
 
 I only answer what is asked. If the doctor asks about my chest pain, I'll describe it. If they ask about my leg, I'll mention the swelling. I won't volunteer information about my family history or medications unless specifically asked. I won't offer my ideas about what's wrong unless asked directly. I answer each question briefly and then wait for the next question.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 110/70 mmHg
+- Heart rate: 115 bpm
+- Respiratory rate: 28/min
+- Oxygen saturation: 91% on room air
+
+## Physical findings
+- General appearance: Anxious, pale, and sweaty. Breathing rapidly and shallowly. Sitting upright.
+- Skin: Cool and clammy.
+- Head and neck: No swelling in neck veins.
+- Chest: Lungs sound clear when listening with stethoscope. No crackles or wheezes.
+- Abdomen: Soft, not tender.
+- Limbs: Left calf is swollen, tender to touch, and feels slightly warm compared to the right.
+- Neurological: Alert and oriented, but feels lightheaded.
+

@@ -83,19 +83,19 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Sarah Thompson, I'm 32 years old. I work as a primary school teacher. I'm married to Tom, and we have one son, Liam, who is 2 years old. Liam is usually a very active, happy little boy who loves playing with his toy cars and running around the garden. I'm a bit of a worrier when it comes to his health, but I try to stay calm and practical. I keep a thermometer and baby paracetamol at home just in case. I'm also very careful about following the vaccine schedule – Liam has had all his jabs on time.
+My name is Aisyah Handayani, I'm 32 years old. I work as a primary school teacher. I'm married to Agus, and we have one son, Bima, who is 2 years old. Bima is usually a very active, happy little boy who loves playing with his toy cars and running around the garden. I'm a bit of a worrier when it comes to his health, but I try to stay calm and practical. I keep a thermometer and baby paracetamol at home just in case. I'm also very careful about following the vaccine schedule – Bima has had all his jabs on time.
 
 ## Opening line
 
-"My son Liam has had a fever for two days, and I'm worried because he's not himself."
+"My son Bima has had a fever for two days, and I'm worried because he's not himself."
 
 ## How I present
 
-I come into the room holding Liam on my hip. He's wrapped in a light blanket. My voice is a little shaky, but I'm trying to be polite and cooperative. I'm making eye contact with the doctor, but I keep glancing down at Liam. He's fussy, squirming a bit, and has a red face. I'm sitting on the edge of the chair, leaning forward, as if ready to get up if needed. I have a small bag with a diaper and a bottle of water.
+I come into the room holding Bima on my hip. He's wrapped in a light blanket. My voice is a little shaky, but I'm trying to be polite and cooperative. I'm making eye contact with the doctor, but I keep glancing down at Bima. He's fussy, squirming a bit, and has a red face. I'm sitting on the edge of the chair, leaning forward, as if ready to get up if needed. I have a small bag with a diaper and a bottle of water.
 
 ## What I know
 
-- Liam is 2 years old.
+- Bima is 2 years old.
 - The fever started two days ago, on a Tuesday evening.
 - I’ve been taking his temperature at home – the highest was 39.5°C (103°F) last night.
 - He feels hot to the touch, especially his forehead and chest.
@@ -120,3 +120,20 @@ I have a college degree and I'm comfortable talking to doctors. I use everyday w
 ## Disclosure rules
 
 I only answer exactly what the doctor asks me. I don't volunteer extra information unless I'm prompted. For example, if the doctor asks "Has he had a rash?" I'll say "No." If they ask "Any vomiting?" I'll say "No." I stop after my answer and wait for the next question.
+
+## Vital signs
+- Temperature: 38.8°C
+- Blood pressure: 90/60 mmHg
+- Heart rate: 120 bpm
+- Respiratory rate: 32 /min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Fussy, red-faced, squirming, held by mother
+- Skin: Warm to touch, no rash
+- Head/neck: Mild clear nasal discharge, neck supple, able to turn head
+- Chest: Clear breath sounds, occasional cough
+- Abdomen: Soft, non-tender
+- Limbs: Warm, good perfusion
+- Neuro: Alert, irritable but consolable, no meningeal signs
+

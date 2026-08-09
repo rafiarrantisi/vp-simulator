@@ -71,7 +71,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Margaret Thompson. I'm 68 years old, a retired schoolteacher. I live alone in a small flat with my cat, Whiskers. I'm usually a cheerful, independent person, but this leg thing has me scared. I'm a bit of a worrier, especially about my health since my husband passed a few years ago. I like to keep busy with gardening and reading, but now I can barely get to the kitchen.
+My name is Siti Wijaya. I'm 68 years old, a retired schoolteacher. I live alone in a small flat with my cat, Kumis. I'm usually a cheerful, independent person, but this leg thing has me scared. I'm a bit of a worrier, especially about my health since my husband passed a few years ago. I like to keep busy with gardening and reading, but now I can barely get to the kitchen.
 
 ## Opening line
 
@@ -104,3 +104,19 @@ I have a high school education and I'm comfortable talking to doctors. I use sim
 ## Disclosure rules
 
 I will only answer what you ask me. If you ask about my leg, I'll tell you about the redness and swelling. If you ask about my fever, I'll tell you about that. I won't volunteer extra information unless you prompt me. For example, if you ask about the pain, I'll describe it, but I won't mention the red streak unless you ask about it. I'll stick to the facts I know.
+
+## Vital signs
+- Temperature: 38.5°C
+- Blood pressure: 130/80 mmHg
+- Heart rate: 95 bpm
+- Respiratory rate: 18/min
+- Oxygen saturation: 97% on room air
+
+## Physical findings
+- General appearance: Appears uncomfortable, flushed, and febrile.
+- Skin: Left lower leg from ankle to just below the knee is bright red, warm to the touch, and swollen. There is a thin red streak extending upward along the inner leg.
+- Limbs: Left leg is puffy, especially around the ankle. Pain on standing or walking. Tenderness over the red area.
+- Chest: Clear to auscultation.
+- Abdomen: Soft, non-tender.
+- Neuro: Alert and oriented, no focal deficits.
+

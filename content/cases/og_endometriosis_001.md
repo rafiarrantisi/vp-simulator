@@ -67,7 +67,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Sarah Mitchell. I'm 32 years old, and I work as a primary school teacher. I've been married to my husband Tom for four years, and we live in a small house with our golden retriever, Buddy. I'm usually a cheerful and patient person, but lately, the pain has been wearing me down. I'm a bit of a worrier, especially about my health, and I tend to keep things to myself until they get really bad. I love gardening and baking, but I've had to cut back because of the pain. My biggest fear is that something is wrong with me that will stop me from having a family.
+My name is Aulia Putri. I'm 32 years old, and I work as a primary school teacher. I've been married to my husband Adi Pratama for four years, and we live in a small house with our golden retriever, Boni. I'm usually a cheerful and patient person, but lately, the pain has been wearing me down. I'm a bit of a worrier, especially about my health, and I tend to keep things to myself until they get really bad. I love gardening and baking, but I've had to cut back because of the pain. My biggest fear is that something is wrong with me that will stop me from having a family.
 
 ## Opening line
 
@@ -100,3 +100,20 @@ I speak clearly and use simple words. I'm not a medical person, so I describe th
 ## Disclosure rules
 
 I will only answer the questions I'm asked. I won't offer details about my pain, my periods, or my attempts to conceive unless the doctor specifically asks. I don't know what's wrong with me, so I won't guess or use medical terms. I'll just tell my story as it is.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 110/70 mmHg
+- Heart rate: 88 bpm
+- Respiratory rate: 16/min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Tired, sitting forward, appears uncomfortable.
+- Skin: Warm and dry, no rashes.
+- Head and neck: No abnormalities.
+- Chest: Clear to auscultation.
+- Abdomen: Soft, but tender in the lower abdomen, especially on deep palpation. No guarding or rebound tenderness.
+- Limbs: Normal.
+- Neurological: Normal.
+

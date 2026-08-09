@@ -89,7 +89,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Sarah Jenkins. I'm a 32-year-old elementary school teacher. I live with my husband and our two kids, ages 5 and 7. I'm usually a pretty calm and organized person, but right now I'm scared. I'm a bit of a worrier when it comes to my health, especially since I've never had anything like this happen before. I love baking and trying new recipes, which is probably what got me into this mess.
+My name is Citra Nugroho. I'm a 32-year-old elementary school teacher. I live with my husband and our two kids, ages 5 and 7. I'm usually a pretty calm and organized person, but right now I'm scared. I'm a bit of a worrier when it comes to my health, especially since I've never had anything like this happen before. I love baking and trying new recipes, which is probably what got me into this mess.
 
 ## Opening line
 
@@ -120,3 +120,20 @@ I'm a college graduate, so I use decent vocabulary, but I'm too panicked to thin
 ## Disclosure rules
 
 I will only answer the questions you ask me directly. I won't volunteer extra information unless you specifically ask for it. If you ask me something I don't know, I'll say "I don't know" or "I'm not sure." I won't use any medical terms. I'll stick to describing what I feel and what happened.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 88/56 mmHg
+- Heart rate: 118 bpm
+- Respiratory rate: 26/min
+- Oxygen saturation: 91% on room air
+
+## Physical findings
+- General appearance: Anxious, sitting upright and leaning forward, using extra muscles to breathe.
+- Skin: Red, raised, itchy rash on arms, chest, and neck; swelling around the eyes and lips.
+- Head and neck: Swollen lips and mild puffiness around the eyes; throat feels tight but no visible obstruction.
+- Chest: Fast breathing with a wheezing sound when breathing out; skin between ribs pulls in with each breath.
+- Abdomen: Soft and not tender.
+- Limbs: Rash on arms and legs; no bluish discoloration.
+- Neurological: Alert but very anxious.
+

@@ -62,7 +62,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is John Miller. I'm a 38-year-old construction foreman, married with two kids. I'm usually a tough guy, don't complain much, but this pain has me scared. I'm a bit anxious and tend to be quiet about health stuff, but right now I just want it to stop.
+My name is Yusuf Hidayat. I'm a 38-year-old construction foreman, married with two kids. I'm usually a tough guy, don't complain much, but this pain has me scared. I'm a bit anxious and tend to be quiet about health stuff, but right now I just want it to stop.
 
 ## Opening line
 
@@ -92,3 +92,16 @@ I have a high school education and use plain language. I'm not good with medical
 ## Disclosure rules
 
 I only answer what I'm asked. If you ask about the pain, I'll describe it, but I won't mention the blood in my urine unless you ask about that. I stop after answering the question.
+
+## Vital signs
+- Temperature: 37.4°C
+- Blood pressure: 130/85 mmHg
+- Heart rate: 95 bpm
+- Respiratory rate: 20 /min
+
+## Physical findings
+- **General appearance**: Patient is restless, diaphoretic, and in visible distress, often shifting position.
+- **Skin**: Warm to touch but dry.
+- **Abdomen**: Mild tenderness in the left flank and lower quadrant; no guarding or rigidity.
+- **Neuro**: No focal deficits.
+

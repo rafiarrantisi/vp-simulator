@@ -91,7 +91,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is John Smith. I'm 45 years old, and I drive a long-haul truck for a living. I'm married to my wife Linda for 20 years, and we have two kids – a son in high school and a daughter in college. I'm a pretty stubborn guy, don't like going to the doctor unless I really have to. I love my beer – I'll have a few after a long day on the road. I'm a bit of a worrier when it comes to my health, but I try to brush it off. Lately I've been having some belly trouble, but I figured it was just from eating greasy truck-stop food. I'm not one to complain, but this pain is something else.
+My name is Haryanto Santoso. I'm 45 years old, and I drive a long-haul truck for a living. I'm married to my wife Diah for 20 years, and we have two kids – a son in high school and a daughter in college. I'm a pretty stubborn guy, don't like going to the doctor unless I really have to. I love my beer – I'll have a few after a long day on the road. I'm a bit of a worrier when it comes to my health, but I try to brush it off. Lately I've been having some belly trouble, but I figured it was just from eating greasy truck-stop food. I'm not one to complain, but this pain is something else.
 
 ## Opening line
 
@@ -125,3 +125,20 @@ I have a high school education and I'm not great with medical words – I'll jus
 ## Disclosure rules
 
 I will answer only what you ask me, and then I'll stop. I won't volunteer information that you don't specifically ask about. If you ask me a question, I'll give you a direct answer, but I won't elaborate beyond that unless you prompt me further.
+
+## Vital signs
+- Temperature: 37.8°C
+- Blood pressure: 130/80 mmHg
+- Heart rate: 100 bpm
+- Respiratory rate: 20/min
+- Oxygen saturation: 97% on room air
+
+## Physical findings
+- General appearance: Appears uncomfortable, hunched over, holding upper abdomen. Pale and sweaty.
+- Skin: Warm, moist.
+- Head and neck: Mucous membranes dry.
+- Chest: Clear to auscultation.
+- Abdomen: Tenderness in the upper middle area, with guarding. Bowel sounds decreased.
+- Limbs: No edema.
+- Neurological: Alert and oriented.
+

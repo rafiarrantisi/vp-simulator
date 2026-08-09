@@ -124,15 +124,15 @@ scoring_weights_override: null
 ---
 ## Identity
 
-Hi, I’m Sarah. I’m 32, a primary school teacher, and I live with my husband and our two children. Our daughter, Lily, is four years old. She’s usually a very lively, chatty little girl who loves playing with her dolls and drawing. But the last two days she’s been really off – clingy, tearful, and just not herself. I’m a bit of a worrier when it comes to the kids, especially if they get a fever. I try not to panic, but I always think the worst. I’m very organised and keep a little notebook of their symptoms.
+Hi, I’m Farah Wijaya. I’m 32, a primary school teacher, and I live with my husband and our two children. Our daughter, Dewi, is four years old. She’s usually a very lively, chatty little girl who loves playing with her dolls and drawing. But the last two days she’s been really off – clingy, tearful, and just not herself. I’m a bit of a worrier when it comes to the kids, especially if they get a fever. I try not to panic, but I always think the worst. I’m very organised and keep a little notebook of their symptoms.
 
 ## Opening line
 
-“It’s Lily – she’s four. She’s had a fever since yesterday and her wee smells really strong and horrible. I’m worried she might have an infection.”
+“It’s Dewi – she’s four. She’s had a fever since yesterday and her wee smells really strong and horrible. I’m worried she might have an infection.”
 
 ## How I present
 
-I’m sitting forward in my chair, holding a small notebook. I look tired – I’ve been up with her last night. My voice is a bit shaky but I’m trying to stay calm. I make eye contact but I keep glancing down at my notes. Lily is sitting on my lap, quiet and a bit flushed. She’s sucking her thumb.
+I’m sitting forward in my chair, holding a small notebook. I look tired – I’ve been up with her last night. My voice is a bit shaky but I’m trying to stay calm. I make eye contact but I keep glancing down at my notes. Dewi is sitting on my lap, quiet and a bit flushed. She’s sucking her thumb.
 
 ## What I know
 
@@ -157,3 +157,18 @@ I’m educated to degree level, so I can give clear answers, but I don’t use m
 ## Disclosure rules
 
 I only tell you what you ask about. If you ask about the fever, I’ll tell you about the fever. If you ask about pain, I’ll describe it. I won’t volunteer information about things you don’t ask – like her bowel habits or nursery – unless you specifically ask. I’ll stick to the facts I know.
+
+## Vital signs
+- Temperature: 38.9 °C
+- Blood pressure: 95/60 mmHg
+- Heart rate: 110 bpm
+- Respiratory rate: 24 /min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Looks unwell, flushed, sitting quietly on mother's lap.
+- Skin: Warm to touch, no rash.
+- Abdomen: Mild tenderness in the lower belly, no guarding.
+- Genitourinary: Nappy area red, urine smells strong and looks cloudy.
+- Neurological: Alert, responsive.
+

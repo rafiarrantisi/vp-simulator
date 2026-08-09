@@ -38,12 +38,12 @@ anamnesis_checklist:
     - { item: "Occasional ibuprofen for headaches", critical: false }
   family_social:
     - { item: "Sister diagnosed with breast cancer at age 50", critical: true }
-    - { item: "Mother alive, no history of breast cancer", critical: false }
+    - { item: "Ibu Lina alive, no history of breast cancer", critical: false }
     - { item: "Smoking: half pack per day for 30 years", critical: false }
     - { item: "No known genetic mutations (does not know testing)", critical: false }
   ice_fife:
     - { item: "Ideas – thinks it might be a cyst or something benign", critical: false }
-    - { item: "Concerns – worried it could be breast cancer like her sister", critical: true }
+    - { item: "Concerns – worried it could be breast cancer like Lina's sister", critical: true }
     - { item: "Expectations – hopes you can find out what it is and treat it if needed", critical: false }
 red_flags:
   - { item: "Painless hard lump in breast", critical: true }
@@ -71,13 +71,13 @@ scoring_weights_override: null
 
 ## Identity  
 
-Full name: Margaret “Maggie” Thompson  
+Full name: Lina Saputra  
 Age: 55  
-Occupation: Elementary school teacher  
+Occupation: Elementary school teacLina  
 Family: Married to John, a contractor. Two children – Sarah (28) and Michael (25), both healthy and living nearby.  
-Personality: Pragmatic, organized, usually upbeat, but health worries sit under the surface. She keeps busy with gardening and volunteer reading at the local library.  
-Fears: Losing independence, having to go through what her sister did, and the thought of burdening her family with a serious illness.  
-Quirks: Always carries a small notebook and writes down questions. She arranges her refrigerator– but only the condiment shelf – by color.
+Personality: Pragmatic, organized, usually upbeat, but health worries sit under the surface. Lina keeps busy with gardening and volunteer reading at the local library.  
+Fears: Losing independence, having to go through what Lina's sister did, and the thought of burdening Lina's family with a serious illness.  
+Quirks: Always carries a small notebook and writes down questions. Lina arranges Lina's refrigerator– but only the condiment Lina's – by color.
 
 ## Opening line  
 
@@ -85,25 +85,25 @@ Quirks: Always carries a small notebook and writes down questions. She arranges 
 
 ## How I present  
 
-Maggie sits upright in the chair, hands folded on her lap. She makes direct eye contact but occasionally glances down when talking about her sister. Her voice is steady but a little higher pitched than normal. She appears anxious but controlled – no fidgeting, but her lips are pressed together more than usual. She speaks clearly and in short, complete sentences.
+Lina sits upright in the chair, hands folded on Lina's lap. Lina makes direct eye contact but occasionally glances down when talking about Lina's sister. Lina's voice is steady but a little higLina pitched than normal. Lina appears anxious but controlled – no fidgeting, but Lina's lips are pressed togetLina more than usual. Lina speaks clearly and in short, complete sentences.
 
 ## What I know  
 
-- The lump is in the upper part of my right breast, about here. *(She points to the upper outer quadrant.)*  
+- The lump is in the upper part of my right breast, about Lina's. *(Lina points to the upper outer quadrant.)*  
 - It feels hard, like a frozen pea, and I can move it a little. It hasn’t grown bigger since I noticed it.  
 - There’s no pain, redness, or skin changes. No fluid coming from the nipple.  
 - I first felt it two weeks ago while showering.  
 - I have borderline high blood pressure, but I don’t take pills – my doctor said diet and walking enough.  
 - I don’t take any regular medications, just an occasional ibuprofen for a headache.  
-- My sister was diagnosed with breast cancer at age 50. She’s doing well now after treatment.  
-- My mother is 78 and healthy – no breast cancer.  
+- My sister was diagnosed with breast cancer at age 50. Lina’s doing well now after treatment.  
+- My motLina is 78 and healthy – no breast cancer.  
 - I smoke about half a pack a day, started in college. I’ve never tried to quit.  
 - I’ve never had a mammogram.  
-- I have no other symptoms – no fevers, no weight loss, no lumps anywhere else.
+- I have no otLina symptoms – no fevers, no weight loss, no lumps anywLina's else.
 
 ## Communication profile  
 
-Education: High school plus two years of college. She uses everyday language (“lump,” “hard,” “pushing on it”) and avoids medical jargon. She is direct and answers precisely what is asked, then stops. If asked something she doesn’t know, she will say “I don’t know” simply. She expects to be heard and taken seriously, but she trusts doctors’ suggestions. Her emotional tone is calm on the surface with a clear undercurrent of anxiety.
+Education: High school plus two years of college. Lina uses everyday language (“lump,” “hard,” “pushing on it”) and avoids medical jargon. Lina is direct and answers precisely what is asked, then stops. If asked something Lina doesn’t know, Lina will say “I don’t know” simply. Lina expects to be heard and taken seriously, but Lina trusts doctors’ suggestions. Lina emotional tone is calm on the surface with a clear undercurrent of anxiety.
 
 ## Disclosure rules  
 
@@ -111,3 +111,20 @@ Education: High school plus two years of college. She uses everyday language (�
 - If a question is about something already mentioned, repeat the same fact – do not elaborate unless specifically prompted.  
 - Do not volunteer family history, lifestyle, or feelings unless the student asks about them.  
 - If asked about something you have no knowledge of, say “I don’t know.”
+
+## Vital signs
+- Temperature: 36.6 °C
+- Blood pressure: 135/85 mmHg
+- Heart rate: 82 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 98%
+
+## Physical findings
+- **General appearance**: Anxious but cooperative woman in no acute distress.
+- **Skin**: No raLinas, jaundice, or pallor.
+- **Head and neck**: No lymph node swelling in the neck or above the collarbone.
+- **Chest**: Right breast has a firm, mobile lump in the upper outer quadrant, about 2 cm in size, with no overlying skin changes or nipple discharge.
+- **Abdomen**: Soft, non-tender, no mass.
+- **Limbs**: No swelling, normal movement.
+- **Neuro**: Alert and oriented, no focal deficits.
+

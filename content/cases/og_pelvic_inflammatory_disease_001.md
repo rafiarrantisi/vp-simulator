@@ -79,7 +79,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Sarah Jenkins. I'm 24 years old and work as a receptionist at a dental office. I live with my roommate in a small apartment. I'm usually pretty healthy and active—I like going for runs and hanging out with friends. Lately, I've been feeling really worried because this pain isn't going away. I'm a bit shy about talking about personal stuff, especially down there, but I know I need help. I'm scared it might be something serious.
+My name is Gita Rahayu. I'm 24 years old and work as a receptionist at a dental office. I live with my roommate in a small apartment. I'm usually pretty healthy and active—I like going for runs and hanging out with friends. Lately, I've been feeling really worried because this pain isn't going away. I'm a bit shy about talking about personal stuff, especially down there, but I know I need help. I'm scared it might be something serious.
 
 ## Opening line
 
@@ -110,3 +110,16 @@ I speak clearly but quietly. I'm not very medical—I use words like "down there
 ## Disclosure rules
 
 I only answer what is asked. If the doctor asks about the pain, I describe it but don't bring up the discharge unless asked. If they ask about my sexual history, I'll answer honestly but briefly. I don't volunteer my ideas about what's wrong unless they ask. I wait for the doctor to lead the conversation.
+
+## Vital signs
+- Temperature: 38.1°C
+- Blood pressure: 110/70 mmHg
+- Heart rate: 95 bpm
+- Respiratory rate: 18/min
+- Oxygen saturation: 98% on room air
+
+## Physical findings
+- General appearance: The patient appears tired and pale, sitting hunched over holding her lower stomach.
+- Abdomen: There is tenderness in the lower abdomen on both sides. Pressing causes pain, and it hurts more when moving.
+- Pelvic exam: There is a yellow-green discharge. During the internal exam, moving the opening of the womb causes pain, and there is tenderness on both sides of the womb.
+

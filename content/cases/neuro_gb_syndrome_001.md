@@ -94,7 +94,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is John Miller. I'm 45 years old, work as a construction labourer—I do a lot of heavy lifting, scaffolding, that kind of thing. Married to Emily for 20 years, we have two teenage boys. I'm usually a pretty tough guy, don't complain much, but this has got me scared. I'm a bit of a worrier about my health, but I never let on. Lately I've had trouble sleeping because I'm afraid I'll wake up not being able to move at all. I'm a big coffee drinker and I love working with my hands—building things, fixing stuff around the house. Right now I can barely hold a coffee mug.
+My name is Budi Setiawan. I'm 45 years old, work as a construction labourer—I do a lot of heavy lifting, scaffolding, that kind of thing. Married to Nita for 20 years, we have two teenage boys. I'm usually a pretty tough guy, don't complain much, but this has got me scared. I'm a bit of a worrier about my health, but I never let on. Lately I've had trouble sleeping because I'm afraid I'll wake up not being able to move at all. I'm a big coffee drinker and I love working with my hands—building things, fixing stuff around the house. Right now I can barely hold a coffee mug.
 
 ## Opening line
 
@@ -138,3 +138,20 @@ I speak plain English, maybe high school level. I use words like "tingly" and "n
 - If asked about a symptom I don't have (e.g., double vision) I will clearly say "No."
 - I will not mention any physical exam findings or investigations unless the student asks about them directly (e.g., "have you had any tests?").
 - I will stick to my story as written in "What I know".
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 130/80 mmHg
+- Heart rate: 88 bpm
+- Respiratory rate: 16 /min
+- Oxygen saturation: 98% on room air
+
+## Physical findings
+- **General appearance:** Anxious, sitting on the edge of the bed, hunched posture.
+- **Skin:** No rash or discoloration.
+- **Head and neck:** Slight drooping on one side of the face when smiling; difficulty closing eyes tightly.
+- **Chest:** Clear to listening, no wheezes or crackles.
+- **Abdomen:** Soft, non-tender, normal bowel sounds.
+- **Limbs:** Symmetrical weakness in both legs and arms, more noticeable in the hands and feet. Grip strength is reduced. Difficulty lifting legs off the bed. Tingling sensation (pins and needles) in the feet and fingertips. Reflexes in the knees and ankles are weak.
+- **Neuro:** Coordination is normal for arms and legs. Sensation to light touch is intact except for the tingling areas. Dull ache in the lower back.
+

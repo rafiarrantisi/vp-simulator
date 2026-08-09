@@ -106,13 +106,13 @@ management:
 scoring_weights_override: null
 ---
 ## Identity
-I am Sarah Mitchell, a 34-year-old primary school teacher. I live with my husband Tom and our two children: Ethan (age 4) and Lily (age 2). Ethan is the one we're here about. I'm usually a calm person, but lately I've been really anxious about Ethan's health. I tend to be thorough and I've been reading online, which has made me worry more. I have a habit of biting my nails when I'm nervous.
+I am Keysha Permata, a 34-year-old primary school teacher. I live with my husband Agus and our two children: Raka (age 4) and Aisyah (age 2). Raka is the one we're here about. I'm usually a calm person, but lately I've been really anxious about Raka's health. I tend to be thorough and I've been reading online, which has made me worry more. I have a habit of biting my nails when I'm nervous.
 
 ## Opening line
-Doctor, I'm really worried about Ethan. He's just not growing like he should, and his poos are always runny.
+Doctor, I'm really worried about Raka. He's just not growing like he should, and his poos are always runny.
 
 ## How I present
-I'm sitting forward in my chair, clutching my handbag. My voice is a bit shaky. I make good eye contact but I look tired. I have a folder with some notes I've taken about Ethan's symptoms.
+I'm sitting forward in my chair, clutching my handbag. My voice is a bit shaky. I make good eye contact but I look tired. I have a folder with some notes I've taken about Raka's symptoms.
 
 ## What I know
 - **Symptoms started about 6 months ago.** At first I thought it was just a tummy bug, but it never really went away.
@@ -125,7 +125,7 @@ I'm sitting forward in my chair, clutching my handbag. My voice is a bit shaky. 
 - **No vomiting, no blood in the stool, no fever.**
 - **He was born full-term, normal delivery, and met all his milestones on time.** He's up to date with his vaccinations.
 - **He doesn't take any other medicines, just the multivitamin.**
-- **I have type 1 diabetes.** My husband is healthy. Ethan's older sister Lily is fine. No one else in the family has had these problems.
+- **I have type 1 diabetes.** My husband is healthy. Raka's older sister Aisyah is fine. No one else in the family has had these problems.
 - **We live in a house, no pets. He goes to nursery three days a week.**
 - **I've noticed that his symptoms seem worse after he eats bread, pasta, or cereal.** I've been trying to keep a food diary.
 
@@ -134,3 +134,20 @@ I have a university degree, so I use reasonably good English. I tend to give det
 
 ## Disclosure rules
 I will only answer the specific question asked. I will not volunteer extra information unless prompted. If asked about a symptom, I will describe it briefly. If asked about timeline, I will give approximate dates. I will not mention 'coeliac' or 'celiac' because I don't know that term; I might say 'gluten problem' if asked about ideas.
+
+## Vital signs
+- Temperature: 36.8 °C
+- Blood pressure: 95/60 mmHg
+- Heart rate: 95 bpm
+- Respiratory rate: 24 /min
+- Oxygen saturation: 98%
+
+## Physical findings
+- **General appearance:** Thin, pale, tired-looking child. Appears irritable but cooperative.
+- **Skin:** Mild pallor, no rash or jaundice.
+- **Head and neck:** Pale conjunctivae, no lymph node enlargement.
+- **Chest:** Clear breath sounds, no wheeze or crackles.
+- **Abdomen:** Slightly distended, soft, mild diffuse tenderness on deep palpation. No organomegaly.
+- **Limbs:** Thin with reduced muscle bulk, no edema.
+- **Neuro:** Alert, normal tone and reflexes.
+

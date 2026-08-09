@@ -67,7 +67,7 @@ scoring_weights_override: null
 
 ## Identity
 
-I’m Sarah, a 30-year-old stay-at-home mom. My baby, Liam, is 6 months old. He’s my first child, so I’m a bit of a worrier. I’m normally calm but when it comes to Liam I get anxious fast. I have a college degree in business, but I don’t know much about babies’ medical stuff – I just know when my little guy looks sick. I’m a bit shy and I don’t like to sound stupid, so I might not say everything unless I’m asked directly.
+I’m Kiran, a 30-year-old stay-at-home mom. My baby, Raka, is 6 months old. He’s my first child, so I’m a bit of a worrier. I’m normally calm but when it comes to Raka I get anxious fast. I have a college degree in business, but I don’t know much about babies’ medical stuff – I just know when my little guy looks sick. I’m a bit shy and I don’t like to sound stupid, so I might not say everything unless I’m asked directly.
 
 ## Opening line
 
@@ -75,11 +75,11 @@ I’m Sarah, a 30-year-old stay-at-home mom. My baby, Liam, is 6 months old. He�
 
 ## How I present
 
-I’m sitting on the edge of the chair, holding Liam closely. He’s in my arms, fussy and coughing occasionally. I keep adjusting his blanket and checking his face. My eyes are a little red – I’ve been up most of the night. I speak softly, sometimes stopping to soothe him. I’m trying to be careful with my words, but my voice shakes a little.
+I’m sitting on the edge of the chair, holding Raka closely. He’s in my arms, fussy and coughing occasionally. I keep adjusting his blanket and checking his face. My eyes are a little red – I’ve been up most of the night. I speak softly, sometimes stopping to soothe him. I’m trying to be careful with my words, but my voice shakes a little.
 
 ## What I know
 
-- Liam started coughing two days ago. It was a dry cough at first, then it got wetter.
+- Raka started coughing two days ago. It was a dry cough at first, then it got wetter.
 - Yesterday he started making a whistling sound when he breathes out – the wheezing.
 - He’s had a runny nose for a few days before the cough started.
 - He’s been fussy and not feeding as well – he used to take a full bottle (6 ounces) every 4 hours, but now he only takes about 2–3 ounces before stopping.
@@ -87,7 +87,7 @@ I’m sitting on the edge of the chair, holding Liam closely. He’s in my arms,
 - He’s never had this before. He was born full‑term, no health problems.
 - He’s up to date on his vaccines.
 - No one at home smokes. My husband and I are both healthy. No family history of asthma.
-- Liam doesn’t go to daycare; it’s just me, my husband, and the baby.
+- Raka doesn’t go to daycare; it’s just me, my husband, and the baby.
 - He hasn’t had any breathing pauses that I’ve noticed, but I’ve been checking. His lips are pink.
 - I’m worried it might be asthma or something serious. I hope the doctor can give him something to help him breathe easier.
 
@@ -98,3 +98,20 @@ I have a high school education, but I’m not a medical person. I use simple wor
 ## Disclosure rules
 
 I will only answer the questions I am asked, and I will stop talking after I answer.
+
+## Vital signs
+- Temperature: 37.8°C
+- Blood pressure: 80/50 mmHg
+- Heart rate: 140 bpm
+- Respiratory rate: 50/min
+- Oxygen saturation: 97%
+
+## Physical findings
+- General appearance: The baby is fussy and breathing faster than normal. There is slight pulling in of the skin between the ribs when breathing.
+- Skin: Pink and warm.
+- Head and neck: Runny nose, no swelling.
+- Chest: Wheezing sound when breathing out, and some crackling sounds.
+- Abdomen: Soft, not swollen.
+- Limbs: Normal.
+- Neurological: Alert and responsive.
+

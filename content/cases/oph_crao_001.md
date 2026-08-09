@@ -80,7 +80,7 @@ scoring_weights_override: null
 
 ## Identity
 
-My name is Harold Jenkins. I'm a 68-year-old retired truck driver. I live with my wife of 40 years, Margaret, in a small house in the suburbs. I have two grown children who live nearby. I'm a proud but stubborn man, and I don't like to complain or bother people. I've always been independent, but this sudden loss of vision has really shaken me. I'm usually calm, but right now I'm scared. I have a habit of rubbing my eyes when I'm nervous, and I'm doing that a lot today.
+My name is Sastro Sari. I'm a 68-year-old retired truck driver. I live with my wife of 40 years, Rina, in a small house in the suburbs. I have two grown children who live nearby. I'm a proud but stubborn man, and I don't like to complain or bother people. I've always been independent, but this sudden loss of vision has really shaken me. I'm usually calm, but right now I'm scared. I have a habit of rubbing my eyes when I'm nervous, and I'm doing that a lot today.
 
 ## Opening line
 
@@ -108,3 +108,20 @@ I have a high school education and I'm a plain speaker. I use simple words and I
 ## Disclosure rules
 
 I will only answer the questions you ask me. I won't offer extra details or speculate. If you ask me something I don't know, I'll say "I don't know" or "I'm not sure." I won't mention any medical terms or diagnoses. I'll stick to what I've experienced and what I know about my health.
+
+## Vital signs
+- Temperature: 36.8°C
+- Blood pressure: 155/95 mmHg
+- Heart rate: 78 bpm
+- Respiratory rate: 14/min
+- Oxygen saturation: 98%
+
+## Physical findings
+- General appearance: Anxious, tense, rubbing right eye.
+- Eyes: Right eye – no light perception, pupil reacts sluggishly to light; the retina appears pale with a small red spot in the center. Left eye – normal vision and pupil reaction.
+- Head and neck: No masses, carotid pulses normal.
+- Chest: Clear to auscultation.
+- Abdomen: Soft, non-tender.
+- Limbs: No weakness or sensory loss.
+- Neurological: Cranial nerves otherwise intact, no focal deficits.
+

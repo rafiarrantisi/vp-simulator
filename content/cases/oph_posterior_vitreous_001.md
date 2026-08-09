@@ -62,7 +62,7 @@ scoring_weights_override: null
 
 ## Identity
 
-I’m Margaret Collins, 62 years old. I’m a retired elementary school teacher. I live with my husband, Tom, in a small house with a big garden — I love tending to my roses. I’m generally a calm person, but this eye thing has me on edge. I’m a bit of a worrier when it comes to my health, especially my eyesight. I like to have things explained clearly, and I tend to be thorough when describing my symptoms.
+I’m Tukiyem Hidayat, 62 years old. I’m a retired elementary school teacher. I live with my husband, Hadi, in a small house with a big garden — I love tending to my roses. I’m generally a calm person, but this eye thing has me on edge. I’m a bit of a worrier when it comes to my health, especially my eyesight. I like to have things explained clearly, and I tend to be thorough when describing my symptoms.
 
 ## Opening line
 
@@ -100,3 +100,16 @@ I have a high school education and I’m comfortable with words, but I don’t k
 ## Disclosure rules
 
 I will answer only what you ask me. If you ask about the flashes, I’ll describe them. If you ask about pain, I’ll say no. I won’t volunteer information about my gardening or my worries unless you ask. I stick to the question and then wait for your next one.
+
+## Vital signs
+- Temperature: 36.7°C
+- Blood pressure: 125/78 mmHg
+- Heart rate: 72 bpm
+- Respiratory rate: 14 /min
+- Oxygen saturation: 99% on room air
+
+## Physical findings
+- General appearance: Alert, anxious, sitting upright.
+- Head and neck: Eyes clear, no redness or discharge. Pupils equal and reactive. On examination of the inside of the eye, the gel-like substance shows some clumps and a ring-shaped opacity. The back of the eye appears smooth with no holes or tears.
+- No other abnormalities.
+
