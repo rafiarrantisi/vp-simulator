@@ -159,11 +159,9 @@
             React.createElement('div', null,
               React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 } }, 'Qora'),
               !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
-          // Nav — scrolls horizontally on mobile so all 5 items stay reachable
-          React.createElement('nav', { style: {
-            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: isMobile ? 'flex-start' : 'center',
-            overflowX: isMobile ? 'auto' : 'visible',
-            msOverflowStyle: 'none', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch',
+          // Nav — desktop/tablet: centered; mobile: moved to a bottom tab bar
+          !isMobile && React.createElement('nav', { style: {
+            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: 'center',
           } },
             [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
@@ -192,7 +190,7 @@
               auth && auth.email ? auth.email[0].toUpperCase() : '?'))),
 
         // Main content
-        React.createElement('main', { key: screenKey, style: { flex: 1 } },
+        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
@@ -202,6 +200,27 @@
           screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
           (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
           screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
+
+        // Bottom tab bar (mobile only) — native mobile pattern, all 5 items always visible
+        isLoggedIn && isMobile && React.createElement('nav', { style: {
+          position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100,
+          background: 'rgba(245,247,255,0.96)',
+          backdropFilter: 'blur(20px)',
+          borderTop: '1px solid var(--border)',
+          display: 'flex',
+          padding: '6px 4px calc(6px + env(safe-area-inset-bottom))',
+        } },
+          [['dashboard','🏠','Home'],['cases','📚','Cases'],['sessions','🕘','Sessions'],['profile','👤','Profile'],['billing','💳','Billing']].map(function(pair) {
+            var s = pair[0], ic = pair[1], l = pair[2];
+            return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
+              flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+              padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer',
+              fontFamily: 'Poppins', fontSize: 9.5, fontWeight: screen === s ? 700 : 500,
+              color: screen === s ? 'var(--primary)' : 'var(--text-3)',
+            } },
+              React.createElement('span', { style: { fontSize: 19, lineHeight: 1 } }, ic),
+              React.createElement('span', null, l));
+          })),
 
         // Settings drawer
         showSettings && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 1000, animation: 'overlayIn 0.2s ease' } },

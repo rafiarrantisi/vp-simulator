@@ -2719,6 +2719,7 @@ function QoraDashboard({ onNav, onStartCase }) {
   const [err, setErr] = React.useState('');
   const [recent, setRecent] = React.useState([]);
   const [me, setMe] = React.useState(null);
+  const isMobile = useIsMobile();
   React.useEffect(() => {
     qv2Fetch('/api/v2/progress').then(setP).catch(e => setErr(String(e.message || e)));
     qv2Fetch('/api/v2/sessions?limit=5').then(d => setRecent((d && d.sessions) || [])).catch(() => {});
@@ -2744,21 +2745,21 @@ function QoraDashboard({ onNav, onStartCase }) {
   // Recent sessions helper
   const specLabel = { internal_medicine: 'Internal medicine', surgery: 'Surgery', paediatrics: 'Paediatrics', obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology', ent: 'ENT', dermatology: 'Dermatology', ophthalmology: 'Ophthalmology', emergency: 'Emergency' };
 
-  return React.createElement('div', { style: { maxWidth: 1100, margin: '0 auto', padding: '32px 24px 60px' } },
+  return React.createElement('div', { style: { maxWidth: 'min(1100px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '20px 10px 60px' : '32px 24px 60px' } },
     // Hero
     React.createElement('div', { className: 'au', style: {
       background: 'linear-gradient(135deg, var(--primary) 0%, #7C3AED 100%)',
-      borderRadius: 28, padding: '36px 40px', marginBottom: 28,
+      borderRadius: 24, padding: isMobile ? '26px 20px' : '36px 40px', marginBottom: 28,
       position: 'relative', overflow: 'hidden', color: '#fff',
     }},
       React.createElement('div', { style: { position: 'absolute', right: -60, top: -60, width: 320, height: 320, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)' } }),
       React.createElement('div', { style: { position: 'absolute', right: -20, top: -20, width: 220, height: 220, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.12)' } }),
       React.createElement('div', { style: { position: 'absolute', right: 40, top: 20, width: 140, height: 140, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.15)' } }),
-      React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative' } },
-        React.createElement('div', { style: { maxWidth: 520 } },
+      React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', flexDirection: isMobile ? 'column' : 'row', gap: 18 } },
+        React.createElement('div', { style: { maxWidth: 520, minWidth: 0 } },
           React.createElement('div', { style: { display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 16, backdropFilter: 'blur(8px)' } },
             React.createElement('span', { style: { fontSize: 13 } }, '👨‍⚕️'), ' Clinical Interview Trainer'),
-          React.createElement('h1', { style: { fontSize: 30, fontWeight: 800, lineHeight: 1.2, marginBottom: 10 } },
+          React.createElement('h1', { style: { fontSize: 'clamp(24px, 7vw, 30px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 10 } },
             'Welcome back' + (firstName ? ', ' + firstName : '') + '! 👋'),
           React.createElement('p', { style: { fontSize: 14, opacity: 0.82, marginBottom: 28, lineHeight: 1.6 } },
             'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.'),
@@ -2766,7 +2767,7 @@ function QoraDashboard({ onNav, onStartCase }) {
             React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--primary)', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' } }, '▶ Start new case'),
             completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Continue practising'))),
         // XP card
-        React.createElement('div', { style: { background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', borderRadius: 20, padding: '18px 22px', minWidth: 200, border: '1px solid rgba(255,255,255,0.2)' } },
+        React.createElement('div', { style: { background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', borderRadius: 20, padding: '18px 22px', minWidth: isMobile ? 0 : 200, width: isMobile ? '100%' : 'auto', border: '1px solid rgba(255,255,255,0.2)' } },
           React.createElement('div', { style: { fontSize: 11, opacity: 0.7, fontWeight: 600, marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.07em' } }, 'Your Progress'),
           React.createElement('div', { style: { fontSize: 28, fontWeight: 800, lineHeight: 1 } }, 'Lv ' + level),
           React.createElement('div', { style: { fontSize: 12, opacity: 0.75, marginBottom: 14 } }, levelName),
@@ -3583,11 +3584,9 @@ function QoraSettings(props) {
             React.createElement('div', null,
               React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 } }, 'Qora'),
               !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
-          // Nav — scrolls horizontally on mobile so all 5 items stay reachable
-          React.createElement('nav', { style: {
-            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: isMobile ? 'flex-start' : 'center',
-            overflowX: isMobile ? 'auto' : 'visible',
-            msOverflowStyle: 'none', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch',
+          // Nav — desktop/tablet: centered; mobile: moved to a bottom tab bar
+          !isMobile && React.createElement('nav', { style: {
+            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: 'center',
           } },
             [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
@@ -3616,7 +3615,7 @@ function QoraSettings(props) {
               auth && auth.email ? auth.email[0].toUpperCase() : '?'))),
 
         // Main content
-        React.createElement('main', { key: screenKey, style: { flex: 1 } },
+        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
@@ -3626,6 +3625,27 @@ function QoraSettings(props) {
           screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
           (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
           screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
+
+        // Bottom tab bar (mobile only) — native mobile pattern, all 5 items always visible
+        isLoggedIn && isMobile && React.createElement('nav', { style: {
+          position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100,
+          background: 'rgba(245,247,255,0.96)',
+          backdropFilter: 'blur(20px)',
+          borderTop: '1px solid var(--border)',
+          display: 'flex',
+          padding: '6px 4px calc(6px + env(safe-area-inset-bottom))',
+        } },
+          [['dashboard','🏠','Home'],['cases','📚','Cases'],['sessions','🕘','Sessions'],['profile','👤','Profile'],['billing','💳','Billing']].map(function(pair) {
+            var s = pair[0], ic = pair[1], l = pair[2];
+            return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
+              flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+              padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer',
+              fontFamily: 'Poppins', fontSize: 9.5, fontWeight: screen === s ? 700 : 500,
+              color: screen === s ? 'var(--primary)' : 'var(--text-3)',
+            } },
+              React.createElement('span', { style: { fontSize: 19, lineHeight: 1 } }, ic),
+              React.createElement('span', null, l));
+          })),
 
         // Settings drawer
         showSettings && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 1000, animation: 'overlayIn 0.2s ease' } },
