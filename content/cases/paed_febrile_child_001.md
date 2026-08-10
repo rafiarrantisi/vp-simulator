@@ -5,6 +5,7 @@ status: in_review
 specialty: paediatrics
 system: general
 presentation: "Fever in a child"
+presentation_id: "Demam pada anak"
 first_impression: "A child appears unwell."
 first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Febrile illness in a child"

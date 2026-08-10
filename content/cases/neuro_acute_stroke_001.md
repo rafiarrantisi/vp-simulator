@@ -5,6 +5,7 @@ status: in_review
 specialty: neurology
 system: nervous
 presentation: "Sudden weakness of the right side of the body"
+presentation_id: "Kelemahan mendadak pada lengan dan kaki kanan sejak pagi"
 first_impression: "Elderly man sitting slumped in wheelchair, right arm limp and face slightly drooping."
 first_impression_id: "Pasien tampak duduk letih di kursi roda, lengan kanan lemas dan wajah sedikit mencong."
 target_condition: "Acute ischaemic stroke in thrombolysis window"

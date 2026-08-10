@@ -5,6 +5,7 @@ status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
 presentation: "Heavy painful periods"
+presentation_id: "Haid berat dan nyeri hebat selama dua hari setiap bulan"
 first_impression: "Patient appears to have gynecological concerns."
 first_impression_id: "Pasien tampak mengalami masalah ginekologi."
 target_condition: "Menorrhagia"

@@ -112,3 +112,63 @@ def test_v2_progress_records_after_score(monkeypatch):
     assert p1["completedCases"] >= 1
     assert p1["specialtyCounts"].get("ophthalmology", 0) >= 1
     assert "really uncomfortable" not in str(p1)  # no persona leakage into progress
+
+
+# ── Physical-exam (PF) step (Aug 2026) ──
+def test_v2_pf_reveals_only_examined_areas():
+    from app.domains.sessions.v2_router import parse_pf_findings
+    from app.domains.cases.v2_catalog import load_v2_case
+
+    case = load_v2_case("em_dengue_001")
+    findings = parse_pf_findings(case)
+    assert "general" in findings and "skin" in findings and "abdomen" in findings
+    assert "chest" in findings  # dengue case has chest findings
+
+    H = _auth()
+    sid = client.post("/api/v2/sessions", json={"case_id": "em_dengue_001"}, headers=H).json()["data"]["sessionId"]
+    # Examine ONLY skin + abdomen -> those are revealed, chest is NOT
+    r = client.post(f"/api/v2/sessions/{sid}/pf",
+                    json={"notes": "I check the skin for rash and palpate the abdomen.", "areas": ["skin", "abdomen"]},
+                    headers=H).json()["data"]
+    assert set(r["examined"]) == {"skin", "abdomen"}
+    assert "skin" in r["findings"] and "abdomen" in r["findings"]
+    assert "chest" not in r["findings"]  # isolation rule: unexamined area stays hidden
+    assert "general" in r["available_areas"]
+
+
+def test_v2_pf_unknown_areas_ignored_and_404_case():
+    H = _auth()
+    assert client.post("/api/v2/sessions/nope_999/pf", json={"areas": ["skin"]}, headers=H).status_code == 404
+
+
+def test_v2_score_accepts_pf_fields_and_rubric_has_physical_exam(monkeypatch):
+    from app.rag.llm import StubLlmClient
+    from app.domains.scoring.rubric_v2 import RUBRICS
+    assert "physical_exam" in RUBRICS["osce_full"]
+    assert sum(RUBRICS["osce_full"].values()) == 100
+
+    monkeypatch.setattr("app.rag.engine_v2.get_llm_client", lambda: StubLlmClient())
+    monkeypatch.setattr("app.rag.judge_v2.is_stub", lambda: True)
+    H = _auth()
+    sid = client.post("/api/v2/sessions", json={"case_id": "em_dengue_001"}, headers=H).json()["data"]["sessionId"]
+    sc = client.post(f"/api/v2/sessions/{sid}/score",
+                     json={"mode": "osce", "pf_notes": "Rash on arms, tender abdomen.", "pf_areas": ["skin", "abdomen"]},
+                     headers=H).json()
+    d = sc["data"]
+    assert d["mode"] == "osce_full"
+    assert "physical_exam" in d["weights"]
+    assert d["weights"]["physical_exam"] == 10
+    assert "answer_key" in d
+
+
+def test_v2_get_turns_restores_session(monkeypatch):
+    from app.rag.llm import StubLlmClient
+    monkeypatch.setattr("app.rag.engine_v2.get_llm_client", lambda: StubLlmClient())
+    H = _auth()
+    sid = client.post("/api/v2/sessions", json={"case_id": "em_dengue_001", "language": "id"}, headers=H).json()["data"]["sessionId"]
+    client.post(f"/api/v2/sessions/{sid}/turns", json={"text": "Selamat pagi"}, headers=H)
+    r = client.get(f"/api/v2/sessions/{sid}/turns", headers=H).json()["data"]
+    assert r["case_id"] == "em_dengue_001" and r["language"] == "id"
+    roles = [t["role"] for t in r["turns"]]
+    assert "user" in roles and "patient" in roles
+    assert r["opening_line"]

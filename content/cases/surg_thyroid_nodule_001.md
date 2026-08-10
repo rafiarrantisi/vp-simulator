@@ -5,6 +5,7 @@ status: in_review
 specialty: surgery
 system: endocrine
 presentation: "Anterior neck lump"
+presentation_id: "Benjolan di leher depan yang teraba sejak beberapa minggu lalu"
 first_impression: "Patient appears in pain."
 first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Solitary thyroid nodule"

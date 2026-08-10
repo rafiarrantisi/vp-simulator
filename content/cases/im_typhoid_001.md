@@ -5,6 +5,7 @@ status: in_review
 specialty: internal_medicine
 system: gastrointestinal
 presentation: "Sustained fever and abdominal discomfort for 5 days"
+presentation_id: "Demam menetap dan nyeri perut selama 5 hari"
 first_impression: "Patient looks flushed, restless, and slightly slumped, with a tired, uncomfortable expression."
 first_impression_id: "Pasien tampak kemerahan, gelisah, dan sedikit merosot, dengan ekspresi lelah dan tidak nyaman."
 target_condition: "Typhoid fever"

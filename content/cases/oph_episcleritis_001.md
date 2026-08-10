@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: ocular_surface
 presentation: "Sectoral red eye, painless, normal vision"
+presentation_id: "Bercak merah di satu bagian mata kanan, tidak nyeri, penglihatan normal"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Episcleritis"

@@ -5,6 +5,7 @@ status: in_review
 specialty: paediatrics
 system: gastrointestinal
 presentation: "Watery diarrhoea and vomiting in a toddler"
+presentation_id: "Diare cair dan muntah pada balita"
 first_impression: "Toddler lies limp in mother's arms, eyes sunken, skin doughy to touch."
 first_impression_id: "Anak tampak lemas di gendongan ibu, mata cekung, kulit terasa kenyal."
 target_condition: "Acute gastroenteritis with dehydration"

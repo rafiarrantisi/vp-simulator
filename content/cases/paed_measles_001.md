@@ -5,6 +5,7 @@ status: in_review
 specialty: paediatrics
 system: infectious_disease
 presentation: "Fever and rash in a child"
+presentation_id: "Demam dan ruam pada anak yang dimulai dari wajah"
 first_impression: "A child appears unwell."
 first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Morbilli (measles)"

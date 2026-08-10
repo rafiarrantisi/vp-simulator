@@ -5,6 +5,7 @@ status: in_review
 specialty: emergency
 system: endocrine
 presentation: "Confusion fruity breath and deep breathing"
+presentation_id: "Kebingungan, napas cepat, dan bau napas seperti buah"
 first_impression: "A person appears drowsy, breathing deeply, dry lips."
 first_impression_id: "Seseorang tampak mengantuk, napas dalam, bibir kering."
 target_condition: "Diabetic ketoacidosis"

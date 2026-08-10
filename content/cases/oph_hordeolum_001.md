@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: adnexa
 presentation: "Painful eyelid lump"
+presentation_id: "Benjolan merah dan nyeri pada kelopak mata kanan atas selama 3 hari"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Hordeolum (stye)"

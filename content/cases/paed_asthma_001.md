@@ -5,6 +5,7 @@ status: in_review
 specialty: paediatrics
 system: respiratory
 presentation: "Recurrent wheeze and cough in a 6-year-old"
+presentation_id: "Batuk dan mengi berulang pada anak usia 6 tahun"
 first_impression: "A child appears unwell."
 first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Paediatric asthma"

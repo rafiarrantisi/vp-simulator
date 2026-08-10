@@ -1700,8 +1700,25 @@ async function qv2Fetch(path, opts, _retried) {
 const QV2_SPEC_LABEL = {
   internal_medicine: 'Internal medicine', surgery: 'Surgery', paediatrics: 'Paediatrics',
   obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology',
-  ent: 'ENT', dermatology: 'Dermatology', ophthalmology: 'Ophthalmology', emergency: 'Emergency',
+  ophthalmology: 'Ophthalmology', emergency: 'Emergency', ent: 'ENT', dermatology: 'Dermatology',
 };
+// Indonesian specialty labels — used when the detected region is Indonesia so
+// the catalogue pills match the user's language (Aug 2026).
+const QV2_SPEC_LABEL_ID = {
+  internal_medicine: 'Penyakit Dalam', surgery: 'Bedah', paediatrics: 'Pediatri',
+  obstetrics_gynaecology: 'Obgyn', psychiatry: 'Psikiatri', neurology: 'Neurologi',
+  ophthalmology: 'Mata', emergency: 'IGD', ent: 'THT', dermatology: 'Kulit',
+};
+function _qv2SpecLabel(sp) {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('qora_region') === 'indo') {
+      return QV2_SPEC_LABEL_ID[sp] || QV2_SPEC_LABEL[sp] || sp;
+    }
+  } catch (e) {}
+  return QV2_SPEC_LABEL[sp] || sp;
+}
+// Localised case title: Indonesian when the case carries one, English fallback.
+function _qv2Title(c) { return (c && (c.presentation_id || c.presentation)) || (c && c.presentation) || ''; }
 
 function QV2Pill({ children, tone }) {
   const t = tone || 'primary';
@@ -1741,7 +1758,7 @@ function QV2Catalogue({ onPick, onProgress }) {
       shown.length + (shown.length === cases.length ? '' : ' of ' + cases.length) + ' cases across ' + specs.length + ' specialties'),
     // specialty filter chips
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
-      [['', _t('cases.filter_all')]].concat(specs.map(s => [s, QV2_SPEC_LABEL[s] || s])).map(([val, lab]) =>
+      [['', _t('cases.filter_all')]].concat(specs.map(s => [s, _qv2SpecLabel(s)])).map(([val, lab]) =>
         React.createElement('button', { key: val || 'all', onClick: () => setFilter(val), style: {
           padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: filter === val ? 700 : 500,
           fontFamily: 'Poppins', cursor: 'pointer',
@@ -1771,9 +1788,9 @@ function QV2Catalogue({ onPick, onProgress }) {
         },
       },
         React.createElement('div', { style: { display: 'flex', gap: 6, flexWrap: 'wrap' } },
-          React.createElement(QV2Pill, { tone: 'primary' }, QV2_SPEC_LABEL[c.specialty] || c.specialty),
+          React.createElement(QV2Pill, { tone: 'primary' }, _qv2SpecLabel(c.specialty)),
           c.mode === 'osce_full' ? React.createElement(QV2Pill, { tone: 'violet' }, 'OSCE') : React.createElement(QV2Pill, { tone: 'teal' }, 'Anamnesis')),
-        React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.3 } }, c.presentation),
+        React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.3 } }, _qv2Title(c)),
         React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', fontStyle: 'italic' } }, c.first_impression_id || c.first_impression || c.chief_complaint),
         React.createElement('div', { style: { marginTop: 'auto', display: 'flex', gap: 12, fontSize: 11, color: 'var(--text-3)', fontWeight: 600 } },
           React.createElement('span', null, '◆ Difficulty ' + (c.difficulty || '–')),
@@ -2007,7 +2024,14 @@ function QV2PrepRow({ icon, title, body, status, tone }) {
 
 function QV2SessionSetup({ caseSummary, onStart, onBack }) {
   const [mode, setMode] = React.useState(caseSummary.mode === 'osce_full' ? 'osce' : 'practice');
-  const [lang, setLang] = React.useState('en');
+  // Default the session language from the detected region (indo -> id) so the
+  // mic uses id-ID out of the box; the profile's preferred_language overrides
+  // async below. (Aug 2026 fix: defaulting to 'en' made Indonesian voice input
+  // use en-US and fail to transcribe.)
+  const [lang, setLang] = React.useState(function () {
+    try { return (typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('qora_region') === 'indo') ? 'id' : 'en'; }
+    catch (e) { return 'en'; }
+  });
   const [micState, setMicState] = React.useState('idle'); // idle | requesting | granted | denied
   const [stt, setStt] = React.useState(null); // null=checking | 'browser' | 'server' | false
   React.useEffect(() => {
@@ -2222,13 +2246,14 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
   );
 }
 
-function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
-  const [sessionId, setSessionId] = React.useState(null);
+function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSessionId, onSessionReady }) {
+  const [sessionId, setSessionId] = React.useState(initialSessionId || null);
   const [messages, setMessages] = React.useState([]); // {role, text}
   const [input, setInput] = React.useState('');
   const [busy, setBusy] = React.useState(false);
   const [err, setErr] = React.useState('');
-  const [stage, setStage] = React.useState('chat'); // chat | assess
+  const [stage, setStage] = React.useState('chat'); // chat | pf | assess
+  const [pf, setPf] = React.useState({ notes: '', areas: [] });
   const isOsce = mode === 'osce';
   const [secs, setSecs] = React.useState((caseSummary.estimated_minutes || 15) * 60);
   const [timerOn, setTimerOn] = React.useState(isOsce); // OSCE auto-starts the countdown
@@ -2367,8 +2392,25 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
   }
 
   React.useEffect(() => {
+    // Restore an in-flight session (hash routing: refresh keeps you in chat)
+    // or start a fresh one.
+    if (initialSessionId) {
+      qv2Fetch('/api/v2/sessions/' + initialSessionId + '/turns')
+        .then(d => {
+          const turns = (d && d.turns) || [];
+          setMessages(turns.map(t => ({ role: t.role, text: t.content || t.text || '' })));
+          if (!turns.length && d && d.opening_line) setMessages([{ role: 'patient', text: d.opening_line }]);
+        })
+        .catch(e => setErr(String(e.message || e)));
+      return;
+    }
     qv2Fetch('/api/v2/sessions', { method: 'POST', body: { case_id: caseSummary.id, language: language || 'en' } })
-      .then(d => { setSessionId(d.sessionId); setMessages([{ role: 'patient', text: d.openingLine || '…' }]); })
+      .then(d => {
+        setSessionId(d.sessionId);
+        setMessages([{ role: 'patient', text: d.openingLine || '…' }]);
+        try { sessionStorage.setItem('qora_session_meta', JSON.stringify({ sessionId: d.sessionId, caseId: caseSummary.id, mode: mode, language: language || 'en' })); } catch (e) {}
+        if (onSessionReady) onSessionReady(d.sessionId);
+      })
       .catch(e => setErr(String(e.message || e)));
   }, [caseSummary.id]);
 
@@ -2429,18 +2471,22 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
   async function score(ddx, mgmt) {
     if (!sessionId) return;
     setBusy(true);
-    try { const report = await qv2Fetch('/api/v2/sessions/' + sessionId + '/score', { method: 'POST', body: { ddx, management: mgmt, mode: mode, overtime: overtime } }); onScored(report); }
+    try { const report = await qv2Fetch('/api/v2/sessions/' + sessionId + '/score', { method: 'POST', body: { ddx, management: mgmt, mode: mode, overtime: overtime, pf_notes: pf.notes || null, pf_areas: (pf.areas && pf.areas.length) ? pf.areas : null } }); try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} onScored(report); }
     catch (e) { setErr(String(e.message || e)); setBusy(false); }
   }
 
   React.useEffect(() => {
-    if (!timerOn || stage !== 'chat') return undefined;
+    if (!timerOn || (stage !== 'chat' && stage !== 'pf')) return undefined;
     const id = setInterval(() => setSecs((s) => {
       if (s <= 1) { if (isOsce && !overtime) setTimeUp(true); return 0; }
       return s - 1;
     }), 1000);
     return () => clearInterval(id);
   }, [timerOn, stage, isOsce, overtime]);
+
+  if (stage === 'pf') {
+    return React.createElement(QV2PhysicalExam, { caseSummary, sessionId, language: language, onBack: () => setStage('chat'), onContinue: (pfData) => { setPf(pfData); setStage('assess'); } });
+  }
 
   if (stage === 'assess') {
     return React.createElement(QV2Assess, { caseSummary, isOsce, busy, transcript: messages, onBack: () => setStage('chat'), onSubmit: score });
@@ -2452,7 +2498,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('button', { onClick: onExit, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
       React.createElement(QV2Pill, { tone: isOsce ? 'violet' : 'teal' }, isOsce ? 'OSCE' : 'Practice'),
-      React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1 } }, caseSummary.presentation),
+      React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1 } }, _qv2Title(caseSummary)),
       !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
     React.createElement(QV2MediaBar, { caseId: caseSummary.id }),
     err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8 } }, err),
@@ -2477,7 +2523,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit }) {
           placeholder: 'Or type a question…', disabled: busy,
           style: { flex: 1, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)' },
         }),
-        React.createElement('button', { onClick: () => setStage('assess'), disabled: busy, style: { padding: '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Assess →'))));
+        React.createElement('button', { onClick: () => setStage(isOsce ? 'pf' : 'assess'), disabled: busy, style: { padding: '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, isOsce ? 'Exam →' : 'Assess →'))));
 
   return React.createElement('div', { style: { maxWidth: wide ? 1200 : 760, margin: '0 auto', padding: '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
     wide && React.createElement('div', { style: { width: 240, flexShrink: 0, marginLeft: -40 } },
@@ -2787,20 +2833,69 @@ function QoraV2Screen() {
   const [sessionMode, setSessionMode] = React.useState('practice');
   const [sessionLanguage, setSessionLanguage] = React.useState('en');
   const [report, setReport] = React.useState(null);
+  const [initialSessionId, setInitialSessionId] = React.useState(null);
   const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
   const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
+  // ── Hash routing (Aug 2026): every screen has a URL so refresh/back keep
+  //    your place — #/cases, #/cases/<id>, #/session/<sid>, #/result, #/progress.
+  function setHash(path) {
+    try { var want = '#/' + path; if (location.hash !== want) location.hash = want; } catch (e) {}
+  }
+  function hashParts() {
+    try { return (location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean); } catch (e) { return []; }
+  }
+
+  const applyRoute = React.useCallback(function (parts) {
+    var p0 = parts[0], p1 = parts[1];
+    if (p0 === 'session' && p1) {
+      var meta = null;
+      try { meta = JSON.parse(sessionStorage.getItem('qora_session_meta') || 'null'); } catch (e) {}
+      setInitialSessionId(p1);
+      var cid = (meta && meta.caseId) || null;
+      var fetchCase = function (caseId, lang) {
+        qv2Fetch('/api/v2/cases/' + caseId).then(function (d) { setPicked(d); if (lang) setSessionLanguage(lang); if (meta && meta.mode) setSessionMode(meta.mode); setView('session'); }).catch(function () { setView('catalogue'); setHash('cases'); });
+      };
+      if (cid) { fetchCase(cid, (meta && meta.language) || 'en'); }
+      else {
+        qv2Fetch('/api/v2/sessions/' + p1 + '/turns').then(function (d) { if (d && d.case_id) fetchCase(d.case_id, d.language || 'en'); else throw new Error('no case'); }).catch(function () { setView('catalogue'); setHash('cases'); });
+      }
+      return;
+    }
+    if (p0 === 'cases' && p1) {
+      qv2Fetch('/api/v2/cases/' + p1).then(function (d) { setPicked(d); setReport(null); setView('setup'); }).catch(function () { setView('catalogue'); setHash('cases'); });
+      return;
+    }
+    if (p0 === 'result') {
+      var saved = null;
+      try { saved = JSON.parse(sessionStorage.getItem('qora_last_report') || 'null'); } catch (e) {}
+      if (saved && saved.report && saved.caseId) {
+        qv2Fetch('/api/v2/cases/' + saved.caseId).then(function (d) { setPicked(d); setReport(saved.report); setView('result'); }).catch(function () { setView('catalogue'); setHash('cases'); });
+      } else { setView('catalogue'); setHash('cases'); }
+      return;
+    }
+    if (p0 === 'progress') { setView('progress'); return; }
+    setView('catalogue');
+  }, []);
+
+  React.useEffect(function () { applyRoute(hashParts()); }, []);
+  React.useEffect(function () {
+    var fn = function () { applyRoute(hashParts()); };
+    window.addEventListener('hashchange', fn);
+    return function () { window.removeEventListener('hashchange', fn); };
+  }, [applyRoute]);
+
   let body;
   if (view === 'setup' && picked) {
-    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setView('session'); }, onBack: () => setView('catalogue') });
+    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setReport(null); setInitialSessionId(null); setView('session'); }, onBack: () => { setView('catalogue'); setHash('cases'); } });
   } else if (view === 'session' && picked) {
-    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, onScored: (r) => { setReport(r); setView('result'); }, onExit: () => setView('catalogue') });
+    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, initialSessionId: initialSessionId, onSessionReady: (sid) => setHash('session/' + sid), onScored: (r) => { setReport(r); try { sessionStorage.setItem('qora_last_report', JSON.stringify({ report: r, caseId: picked.id })); } catch (e) {} setView('result'); setHash('result'); }, onExit: () => { try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
   } else if (view === 'result' && report && picked) {
-    body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => setView('catalogue'), onLibrary: () => setView('catalogue') });
+    body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); }, onLibrary: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
   } else if (view === 'progress') {
-    body = React.createElement(QV2Progress, { onBack: () => setView('catalogue') });
+    body = React.createElement(QV2Progress, { onBack: () => { setView('catalogue'); setHash('cases'); } });
   } else {
-    body = React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setView('setup'); }, onProgress: () => setView('progress') });
+    body = React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setInitialSessionId(null); setView('setup'); setHash('cases/' + c.id); }, onProgress: () => { setView('progress'); setHash('progress'); } });
   }
   return React.createElement(React.Fragment, null, onboard ? React.createElement(QV2Onboarding, { onDone: dismiss }) : null, body);
 }
@@ -2986,6 +3081,102 @@ window.QoraProfile = QoraProfile;
 window.QoraPricing = QoraPricing;
 
 // ===== END qora-v2.jsx =====
+
+// ===== BEGIN qora-pf.jsx =====
+// ── Physical-examination step (Aug 2026) ─────────────────────────────────────
+// Inserted between the anamnesis chat and the assessment in OSCE mode:
+//   1. The student selects which areas they examine + writes what they do/expect.
+//   2. "Reveal findings" -> POST /api/v2/sessions/{id}/pf returns the patient's
+//      findings for the EXAMINED areas only (isolation rule).
+//   3. The revealed data + notes travel with the score request (pf_notes/pf_areas).
+// Uses React.createElement (legacy Babel-standalone bundle) + design tokens only.
+
+function QV2PhysicalExam({ caseSummary, sessionId, language, onBack, onContinue }) {
+  const [areas, setAreas] = React.useState([]);
+  const [notes, setNotes] = React.useState('');
+  const [findings, setFindings] = React.useState(null); // {area: text} | null (not yet revealed)
+  const [busy, setBusy] = React.useState(false);
+  const [err, setErr] = React.useState('');
+  const isId = language === 'id';
+
+  const AREA_DEFS = [
+    ['general', 'General appearance', 'Pemeriksaan umum'],
+    ['skin', 'Skin', 'Kulit'],
+    ['head_neck', 'Head & neck', 'Kepala & leher'],
+    ['chest', 'Chest', 'Dada'],
+    ['abdomen', 'Abdomen', 'Perut'],
+    ['limbs', 'Limbs', 'Ekstremitas'],
+    ['neuro', 'Neurological', 'Neurologis'],
+  ];
+
+  const toggleArea = (k) => setAreas((cur) => cur.indexOf(k) >= 0 ? cur.filter((x) => x !== k) : cur.concat([k]));
+
+  async function reveal() {
+    if (!areas.length) {
+      setErr(isId ? 'Pilih minimal satu area yang kamu periksa terlebih dahulu.' : 'Select at least one area you examined first.');
+      return;
+    }
+    setBusy(true); setErr('');
+    try {
+      const d = await qv2Fetch('/api/v2/sessions/' + sessionId + '/pf', { method: 'POST', body: { notes: notes.trim(), areas: areas } });
+      setFindings((d && d.findings) ? d.findings : {});
+    } catch (e) { setErr(String(e.message || e)); }
+    setBusy(false);
+  }
+
+  const label = (k) => { const d = AREA_DEFS.find((x) => x[0] === k); return d ? (isId ? d[2] : d[1]) : k; };
+
+  return React.createElement('div', { className: 'au', style: { maxWidth: 680, margin: '0 auto', padding: 20 } },
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, isId ? '← Kembali ke wawancara' : '← Back to interview'),
+    React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, isId ? '🩺 Pemeriksaan Fisik' : '🩺 Physical Examination'),
+    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18, lineHeight: 1.6 } },
+      isId
+        ? 'Tuliskan pemeriksaan fisik yang kamu lakukan — area mana yang kamu periksa dan temuan apa yang kamu harapkan temukan. Setelah itu tekan "Lihat hasil" untuk mendapatkan data temuan pasien.'
+        : 'State which areas you examine and what you expect to find. Press "Reveal findings" to get the patient\'s actual findings.'),
+
+    // Area chips
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 8 } }, isId ? 'Area yang kamu periksa' : 'Areas you examine'),
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 } },
+      AREA_DEFS.map(function (d) {
+        var k = d[0], active = areas.indexOf(k) >= 0;
+        return React.createElement('button', { key: k, onClick: () => toggleArea(k), style: {
+          padding: '8px 14px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: active ? 700 : 500,
+          border: '1px solid ' + (active ? 'var(--primary)' : 'var(--border)'),
+          background: active ? 'var(--primary-l)' : 'var(--surface)',
+          color: active ? 'var(--primary)' : 'var(--text-2)',
+        } }, (active ? '✓ ' : '') + (isId ? d[2] : d[1]));
+      })),
+
+    // Notes
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 8 } }, isId ? 'Catatan pemeriksaan' : 'Examination notes'),
+    React.createElement('textarea', {
+      value: notes, onChange: (e) => setNotes(e.target.value),
+      placeholder: isId ? 'Contoh: palpasi dada kanan, auskultasi jantung, periksa leher — ekspektasi ada pembengkakan...' : 'e.g. palpate the right chest, auscultate the heart, examine the neck — expecting a lump...',
+      style: { width: '100%', minHeight: 90, padding: '11px 13px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)', resize: 'vertical', boxSizing: 'border-box' },
+    }),
+
+    err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginTop: 10 } }, err),
+
+    React.createElement('button', { onClick: reveal, disabled: busy, style: { width: '100%', marginTop: 16, padding: 13, borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
+      busy ? (isId ? 'Mengungkap…' : 'Revealing…') : (isId ? '🔍 Lihat hasil pemeriksaan →' : '🔍 Reveal findings →')),
+
+    // Revealed findings
+    findings && React.createElement('div', { style: { marginTop: 20 } },
+      React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10 } }, isId ? '📋 Temuan pasien' : '📋 Patient findings'),
+      Object.keys(findings).length === 0
+        ? React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', padding: '14px', borderRadius: 12, border: '1px dashed var(--border)', background: 'var(--surface-2)' } },
+            isId ? 'Tidak ada temuan tercatat untuk area yang kamu pilih. Periksa kembali area yang dipilih.' : 'No recorded findings for the areas you selected. Review your area choices.')
+        : AREA_DEFS.filter((d) => findings[d[0]]).map((d) =>
+            React.createElement('div', { key: d[0], style: { padding: 12, borderRadius: 12, background: 'var(--surface-2)', border: '1px solid var(--border)', marginBottom: 10 } },
+              React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--primary)', marginBottom: 5 } }, isId ? d[2] : d[1]),
+              React.createElement('div', { style: { fontSize: 13, color: 'var(--text-1)', lineHeight: 1.55 } }, findings[d[0]])))),
+
+    // Continue
+    React.createElement('button', { onClick: () => onContinue({ notes: notes.trim(), areas: areas }), disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
+      isId ? 'Lanjut ke penilaian →' : 'Continue to assessment →'));
+}
+
+// ===== END qora-pf.jsx =====
 
 // ===== BEGIN qora-enhancements.jsx =====
 // ============================================================
@@ -3285,7 +3476,16 @@ function QoraSettings(props) {
 
     function App() {
       const [auth, setAuth] = React.useState(loadAuth);
-      const [screen, setScreen] = React.useState(() => loadAuth() ? 'dashboard' : 'qora-landing');
+      // Hash routing (Aug 2026): the screen lives in the URL (#/dashboard,
+      // #/cases, #/cases/<id>, #/session/<sid>...) so refresh & back/forward
+      // keep your place instead of always resetting to the dashboard.
+      const [screen, setScreen] = React.useState(() => {
+        var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
+        var authed = loadAuth();
+        if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
+        if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing'].indexOf(h) >= 0) return h;
+        return authed ? 'dashboard' : 'qora-landing';
+      });
       const [screenKey, setScreenKey] = React.useState(0);
       const [showSettings, setShowSettings] = React.useState(false);
 
@@ -3293,6 +3493,20 @@ function QoraSettings(props) {
         setScreen(s);
         setScreenKey(k => k + 1);
         window.scrollTo(0, 0);
+        try { var want = '#/' + s; if (location.hash !== want) location.hash = want; } catch (e) {}
+      }, []);
+
+      React.useEffect(() => {
+        var fn = function () {
+          var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
+          var next = null;
+          if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
+          else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing'].indexOf(h) >= 0) next = h;
+          else next = loadAuth() ? 'dashboard' : 'qora-landing';
+          setScreen((cur) => cur === next ? cur : next);
+        };
+        window.addEventListener('hashchange', fn);
+        return function () { window.removeEventListener('hashchange', fn); };
       }, []);
 
       const handleLogin = React.useCallback((credentials) => {

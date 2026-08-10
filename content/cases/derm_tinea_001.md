@@ -5,6 +5,7 @@ status: in_review
 specialty: dermatology
 system: integumentary
 presentation: "Round itchy patches on the torso"
+presentation_id: "Bercak bulat gatal di badan"
 first_impression: "Patient appears to have skin concerns."
 first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Tinea corporis"

@@ -5,6 +5,7 @@ status: in_review
 specialty: surgery
 system: genitourinary
 presentation: "Sudden severe testicular pain"
+presentation_id: "Nyeri hebat pada testis kanan yang muncul tiba-tiba beberapa jam lalu"
 first_impression: "Patient appears in pain."
 first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Testicular torsion"

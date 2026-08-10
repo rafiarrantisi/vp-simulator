@@ -5,6 +5,7 @@ status: in_review
 specialty: paediatrics
 system: growth_and_development
 presentation: "Short stature and poor growth in a 3-year-old"
+presentation_id: "Anak usia 3 tahun dengan perawakan pendek dan pertumbuhan yang lambat"
 first_impression: "Child is small for stated age, sits quietly, avoids eye contact."
 first_impression_id: "Anak tampak kecil untuk usianya, duduk diam, menghindari kontak mata."
 target_condition: "Stunting (chronic malnutrition)"

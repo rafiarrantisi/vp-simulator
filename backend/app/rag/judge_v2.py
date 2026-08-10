@@ -80,6 +80,17 @@ def _ground_truth_block(gt: dict, dims: list[str]) -> str:
         if inv_lines:
             parts.append("[appropriate_investigations]\n" + "\n".join(inv_lines))
 
+    if "physical_exam" in dims:
+        pf = gt.get("physical_exam_findings") or {}
+        pf_lines = []
+        for k, v in pf.items():
+            if isinstance(v, dict):
+                pf_lines.append(f"  - {k}: {json.dumps(v, ensure_ascii=False)}")
+            elif v:
+                pf_lines.append(f"  - {k}: {v}")
+        if pf_lines:
+            parts.append("[physical_exam_findings — the patient's REAL findings]\n" + "\n".join(pf_lines))
+
     if "management" in dims:
         mg = gt.get("management") or {}
         flat = (mg.get("pharmacological") or []) + (mg.get("non_pharmacological") or []) \
@@ -137,7 +148,8 @@ def _student_decisions(ddx: dict | None, plan: dict | None) -> str:
 
 def build_judge_prompt(case: CaseV2, transcript: list[dict], mode: str,
                        weights: dict[str, int],
-                       ddx: dict | None = None, plan: dict | None = None):
+                       ddx: dict | None = None, plan: dict | None = None,
+                       student_pf: dict | None = None):
     gt = build_judge_ground_truth(case)
     dims = list(weights.keys())
     weight_lines = "\n".join(f"  - {d} (max {w}): {DIMENSION_LABELS.get(d, d)}"
@@ -146,6 +158,7 @@ def build_judge_prompt(case: CaseV2, transcript: list[dict], mode: str,
     # Determine if questioning_technique is in-scope
     assess_questioning = "questioning_technique" in dims
     assess_safety = "clinical_safety" in dims
+    assess_pf = "physical_exam" in dims
 
     system = (
         "You are a SENIOR CLINICAL EXAMINER — a consultant physician who has served "
@@ -255,6 +268,25 @@ def build_judge_prompt(case: CaseV2, transcript: list[dict], mode: str,
         "  - Do NOT reward blanket ordering — selective, reasoned choices score higher.\n"
     )
 
+    if assess_pf:
+        system += (
+            "\n=== PHYSICAL EXAMINATION (when in scope) ===\n"
+            "When scoring 'physical_exam', evaluate the candidate's PHYSICAL EXAM "
+            "PERFORMANCE (the structured PF step, not chat):\n"
+            "  - Did they examine the RELEVANT areas for the presentation (e.g. chest for "
+            "dyspnoea, abdomen for pain)? Unexamined relevant areas = deduction.\n"
+            "  - Did they note the KEY expected findings per area (inspection, palpation, "
+            "auscultation) — compared against the physical_exam_findings ground truth?\n"
+            "  - Was the examination SAFE and respectful (e.g. vital signs checked for an "
+            "unstable patient, proper exposure, no omitted red-flag areas)?\n"
+            "  - Do NOT reward examining irrelevant areas or a scattergun full-body exam "
+            "that skips the key findings. Selective, targeted, findings-oriented examination "
+            "scores higher.\n"
+            "A score of 8-10/10 is a polished, targeted examination that captured the key "
+            "findings. 4-7/10 is partial (some areas examined, key findings missed). "
+            "0-3/10 is an omitted or badly targeted examination.\n"
+        )
+
     system += (
         "\n=== MANAGEMENT (when in scope) ===\n"
         "  - Is the proposed management APPROPRIATE for the diagnosis?\n"
@@ -290,6 +322,13 @@ def build_judge_prompt(case: CaseV2, transcript: list[dict], mode: str,
         f"TRANSCRIPT:\n{_transcript_text(transcript)}"
     )
     extra = _student_decisions(ddx, plan)
+    if student_pf and (student_pf.get("notes") or student_pf.get("areas")):
+        pf_lines = []
+        if student_pf.get("notes"):
+            pf_lines.append(f"STUDENT PHYSICAL EXAMINATION: {student_pf['notes']}")
+        if student_pf.get("areas"):
+            pf_lines.append("AREAS EXAMINED: " + ", ".join(student_pf["areas"]))
+        extra = (extra + "\n" if extra else "") + "\n".join(pf_lines)
     if extra:
         content += f"\n\nSTUDENT CLINICAL DECISIONS:\n{extra}"
     return system, [{"role": "user", "content": content}]
@@ -347,7 +386,8 @@ def _normalize(raw: dict, mode: str, weights: dict[str, int]) -> dict:
 def evaluate_v2(case: CaseV2, transcript: list[dict], *,
                 mode: str | None = None,
                 student_ddx: dict | None = None,
-                student_management: dict | None = None) -> dict:
+                student_management: dict | None = None,
+                student_pf: dict | None = None) -> dict:
     """Score a session against schema-v2 ground truth. Returns a structured
     report + the answer key for the debrief reveal."""
     resolved_mode = (mode or case.frontmatter.get("mode_default") or "anamnesis").lower()
@@ -359,7 +399,7 @@ def evaluate_v2(case: CaseV2, transcript: list[dict], *,
     else:
         try:
             system, user = build_judge_prompt(case, transcript, resolved_mode, weights,
-                                              student_ddx, student_management)
+                                              student_ddx, student_management, student_pf)
             raw_text = get_llm_client().generate(
                 system, user,
                 model=get_settings().llm_judge_model,

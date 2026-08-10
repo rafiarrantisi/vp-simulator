@@ -5,6 +5,7 @@ status: in_review
 specialty: internal_medicine
 system: digestive
 presentation: "Heartburn"
+presentation_id: "Rasa panas atau terbakar di dada setelah makan"
 first_impression: "Patient appears uncomfortable."
 first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Gastro-oesophageal reflux disease"

@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: lens
 presentation: "Gradual painless blurring of vision"
+presentation_id: "Penglihatan berkabut yang memburuk perlahan tanpa nyeri selama setahun"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Senile cataract"

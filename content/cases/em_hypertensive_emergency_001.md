@@ -5,6 +5,7 @@ status: in_review
 specialty: emergency
 system: cardiovascular
 presentation: "Severe headache and blurred vision with very high blood pressure"
+presentation_id: "Sakit kepala parah dan penglihatan kabur dengan tekanan darah sangat tinggi"
 first_impression: "Patient sits rigidly, squinting and pressing temples, looks uncomfortable and distressed."
 first_impression_id: "Pasien tampak duduk kaku, menyipitkan mata dan menekan pelipis, tampak tidak nyaman dan gelisah."
 target_condition: "Hypertensive emergency"

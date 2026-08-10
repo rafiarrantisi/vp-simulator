@@ -5,6 +5,7 @@ status: in_review
 specialty: internal_medicine
 system: cardiovascular
 presentation: "Unilateral leg swelling and pain"
+presentation_id: "Kaki kiri bengkak dan nyeri selama tiga hari"
 first_impression: "Patient appears uncomfortable."
 first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: Deep vein thrombosis

@@ -5,6 +5,7 @@ status: in_review
 specialty: internal_medicine
 system: renal
 presentation: "Swollen ankles and foamy urine"
+presentation_id: "Pergelangan kaki bengkak dan urine berbusa"
 first_impression: "Patient appears uncomfortable."
 first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Chronic kidney disease stage 4"

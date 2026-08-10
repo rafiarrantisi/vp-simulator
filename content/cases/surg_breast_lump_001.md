@@ -5,6 +5,7 @@ status: in_review
 specialty: surgery
 system: breast
 presentation: "Painless lump in the right breast"
+presentation_id: "Benjolan di payudara kanan yang tidak terasa sakit"
 first_impression: "Patient appears in pain."
 first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Invasive ductal carcinoma"

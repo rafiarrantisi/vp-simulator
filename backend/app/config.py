@@ -51,9 +51,11 @@ class Settings(BaseSettings):
     # Tier A v0.13.0: cap balasan utk persona (cegah essay panjang →
     # kurangi tail latency). 220 ≈ 3-4 kalimat ID, cukup utk balasan
     # pasien answer-restrained. Judge butuh lebih utk JSON struktural.
-    # NOTE: 1024 sempat dipakai utk gpt-oss-20b:free (reasoning model),
-    # di-revert ke 220 stlh kembali ke deepseek-v4-flash (Aug 2026).
-    llm_persona_max_tokens: int = 220
+    # NOTE: deepseek-v4-flash emits ~90-250 reasoning tokens before content
+    # (measured Aug 2026: 94 reasoning tokens for a trivial task). 220
+    # truncates patient replies (reasoning eats the budget -> empty/"...."
+    # responses). 1024 keeps reasoning + full content safe.
+    llm_persona_max_tokens: int = 1024
     llm_judge_max_tokens: int = 2400
 
     # ── Voice (Fase 4) ──

@@ -5,6 +5,7 @@ status: in_review
 specialty: ent
 system: ear
 presentation: "Ear pain in a child"
+presentation_id: "Nyeri telinga pada anak selama dua hari"
 first_impression: "Patient appears to have ear, nose, or throat discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
 target_condition: "Acute otitis media"

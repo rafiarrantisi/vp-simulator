@@ -5,6 +5,7 @@ status: in_review
 specialty: neurology
 system: nervous
 presentation: "Weakness and numbness on one side of the body"
+presentation_id: "Kelemahan dan mati rasa pada satu sisi tubuh"
 first_impression: "Patient appears to have neurological concerns."
 first_impression_id: "Pasien tampak mengalami masalah neurologis."
 target_condition: "Multiple sclerosis"

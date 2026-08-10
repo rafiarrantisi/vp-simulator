@@ -5,6 +5,7 @@ status: in_review
 specialty: internal_medicine
 system: musculoskeletal
 presentation: "Acute joint pain"
+presentation_id: "Nyeri sendi akut pada jempol kaki yang tiba-tiba merah, bengkak, dan sangat nyeri"
 first_impression: "Patient appears uncomfortable."
 first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Gout"

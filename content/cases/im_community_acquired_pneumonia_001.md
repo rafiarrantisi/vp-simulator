@@ -5,6 +5,7 @@ status: in_review
 specialty: internal_medicine
 system: respiratory
 presentation: "Cough and breathlessness"
+presentation_id: "Batuk dan sesak napas selama beberapa hari"
 first_impression: "Patient appears uncomfortable."
 first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Community-acquired pneumonia"

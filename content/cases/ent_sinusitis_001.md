@@ -5,6 +5,7 @@ status: in_review
 specialty: ent
 system: ent
 presentation: "Facial pain and nasal congestion"
+presentation_id: "Tekanan di wajah dan hidung tersumbat"
 first_impression: "Patient appears to have ear, nose, or throat discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
 target_condition: "Acute sinusitis"

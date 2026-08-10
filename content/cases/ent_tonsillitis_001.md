@@ -5,6 +5,7 @@ status: in_review
 specialty: ent
 system: ent
 presentation: "Sore throat and difficulty swallowing"
+presentation_id: "Nyeri tenggorokan parah dan sulit menelan"
 first_impression: "Patient appears to have ear, nose, or throat discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
 target_condition: "Acute tonsillitis"

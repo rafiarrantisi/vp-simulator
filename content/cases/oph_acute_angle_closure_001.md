@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: glaucoma
 presentation: "Acute painful red eye with visual loss"
+presentation_id: "Mata merah sakit akut dengan penurunan penglihatan"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Acute angle-closure glaucoma"

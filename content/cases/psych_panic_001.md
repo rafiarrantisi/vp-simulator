@@ -5,6 +5,7 @@ status: in_review
 specialty: psychiatry
 system: nervous
 presentation: "Sudden attacks of overwhelming fear"
+presentation_id: "Serangan tiba-tiba rasa takut luar biasa, seperti akan mati atau gila"
 first_impression: "Patient appears anxious or sad."
 first_impression_id: "Pasien tampak cemas atau sedih."
 target_condition: "Panic disorder"

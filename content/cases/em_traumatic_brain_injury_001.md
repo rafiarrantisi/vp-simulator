@@ -5,6 +5,7 @@ status: in_review
 specialty: emergency
 system: nervous
 presentation: "Head injury with loss of consciousness"
+presentation_id: "Benturan kepala dengan penurunan kesadaran sementara"
 first_impression: "Patient appears drowsy, holding his head, with a visible scalp laceration."
 first_impression_id: "Pasien tampak mengantuk, memegangi kepalanya, dengan luka robek di kulit kepala."
 target_condition: "Traumatic brain injury"

@@ -5,6 +5,7 @@ status: in_review
 specialty: emergency
 system: infectious
 presentation: "High fever, muscle pain and jaundice after flooding"
+presentation_id: "Demam tinggi, nyeri otot, dan mata kuning setelah banjir"
 first_impression: "Patient lies prostrate on the stretcher, flushed, shivering, with scleral icterus."
 first_impression_id: "Pasien tampak terbaring lemas di brankar, wajah merah, menggigil, dengan sklera ikterik."
 target_condition: "Leptospirosis"

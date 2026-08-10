@@ -5,6 +5,7 @@ status: in_review
 specialty: psychiatry
 system: nervous
 presentation: "Intrusive thoughts and repetitive rituals"
+presentation_id: "Pikiran mengganggu berulang dan ritual yang dilakukan berulang kali"
 first_impression: "Patient appears anxious or sad."
 first_impression_id: "Pasien tampak cemas atau sedih."
 target_condition: "Obsessive-compulsive disorder"

@@ -5,6 +5,7 @@ status: in_review
 specialty: paediatrics
 system: urinary
 presentation: "Feverish 4-year-old with smelly urine"
+presentation_id: "Anak perempuan 4 tahun demam dengan air kencing berbau busuk"
 first_impression: "A child appears unwell."
 first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Urinary tract infection in a child"

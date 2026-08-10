@@ -5,6 +5,7 @@ status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
 presentation: "Cyclical pelvic pain and subfertility"
+presentation_id: "Nyeri panggul siklus haid dan sulit hamil selama 2 tahun"
 first_impression: "Patient appears to have gynecological concerns."
 first_impression_id: "Pasien tampak mengalami masalah ginekologi."
 target_condition: "Endometriosis"

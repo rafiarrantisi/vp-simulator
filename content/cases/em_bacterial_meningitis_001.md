@@ -5,6 +5,7 @@ status: in_review
 specialty: emergency
 system: nervous
 presentation: "High fever, severe headache and neck stiffness"
+presentation_id: "Demam tinggi, sakit kepala hebat, dan kaku leher"
 first_impression: "Patient lies still, grimacing, flushed and photophobic, avoiding light."
 first_impression_id: "Pasien tampak terbaring kaku, meringis, wajah memerah dan menghindari cahaya."
 target_condition: "Bacterial meningitis"

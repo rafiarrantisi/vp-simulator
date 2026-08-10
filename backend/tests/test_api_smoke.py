@@ -31,34 +31,26 @@ def test_full_flow():
     assert me["data"]["email"] == "smoke@uni.ac.id"
     assert me["data"]["role"] == "student"
 
-    cases = client.get("/api/cases").json()
+    cases = client.get("/api/v2/cases", headers=H).json()  # v2 catalogue (content/cases) — legacy registry is empty post-pivot
     assert cases["success"] is True
-    assert cases["meta"]["total"] >= 1  # registry terisi oleh ingest
-    c0 = cases["data"][0]
-    for k in ("caseId", "title_id", "icd10", "skdi"):
+    assert cases["data"]["total"] >= 1
+    c0 = cases["data"]["cases"][0]
+    for k in ("id", "specialty", "presentation", "difficulty"):
         assert k in c0
-    assert "responses" not in c0  # CaseSummary TIDAK bawa persona/jawaban
+    assert "anamnesis_checklist" not in c0  # Part A TIDAK bocor ke katalog
 
-    st = client.post("/api/sessions", json={"case_id": c0["caseId"], "mode": "normal"},
-                      headers=H).json()
+    st = client.post("/api/v2/sessions", json={"case_id": c0["id"]}, headers=H).json()
     sid = st["data"]["sessionId"]
 
-    turn = client.post(f"/api/sessions/{sid}/turns", json={"text": "Selamat pagi"},
+    turn = client.post(f"/api/v2/sessions/{sid}/turns", json={"text": "Selamat pagi"},
                         headers=H).json()
     assert turn["success"] is True
-    assert "reply" in turn["data"] and turn["data"]["audioUrl"] is None
+    assert turn["data"]["reply"]
 
-    ev = client.post("/api/scoring/evaluate", json={"session_id": sid}, headers=H).json()
+    ev = client.post(f"/api/v2/sessions/{sid}/score", json={"mode": "practice"}, headers=H).json()
     d = ev["data"]
-    assert d["breakdown"]["coverage"]["max"] == 40
-    assert d["breakdown"]["fife"]["max"] == 20
-    assert d["breakdown"]["redFlags"]["max"] == 20
-    assert d["breakdown"]["communication"]["max"] == 20
-    assert "missedItems" in d and "positiveNotes" in d
-
-    pa = client.patch(f"/api/sessions/{sid}", json={"status": "completed"},
-                       headers=H).json()
-    assert pa["data"]["status"] == "completed"
+    assert "per_dimension" in d and "overall" in d and "answer_key" in d
+    assert d["weights"]["history_coverage"] == 25  # anamnesis rubric intact
 
     # Fase 4: /api/ai/transcribe kini WAJIB auth (bukan lagi stub 501).
     assert client.post("/api/ai/transcribe").status_code == 401

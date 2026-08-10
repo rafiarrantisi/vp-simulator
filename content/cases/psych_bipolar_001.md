@@ -5,6 +5,7 @@ status: in_review
 specialty: psychiatry
 system: nervous
 presentation: "Episodes of high mood and reckless behaviour"
+presentation_id: "Mood meningkat drastis dan perilaku impulsif yang meresahkan"
 first_impression: "Patient appears anxious or sad."
 first_impression_id: "Pasien tampak cemas atau sedih."
 target_condition: "Bipolar I disorder"

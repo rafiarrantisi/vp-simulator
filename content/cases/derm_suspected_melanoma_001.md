@@ -5,6 +5,7 @@ status: in_review
 specialty: dermatology
 system: integumentary
 presentation: "Changing mole"
+presentation_id: "Tahi lalat di punggung berubah bentuk dan warna dalam beberapa bulan"
 first_impression: "Patient appears to have skin concerns."
 first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Suspected melanoma"

@@ -5,6 +5,7 @@ status: in_review
 specialty: emergency
 system: cardiovascular
 presentation: "Chest pain"
+presentation_id: "Nyeri dada terasa berat dan seperti ditekan sejak 1 jam yang lalu"
 first_impression: "Patient appears anxious, clutching chest, pale and diaphoretic."
 first_impression_id: "Pasien tampak cemas, memegangi dada, pucat dan berkeringat dingin."
 target_condition: "Acute coronary syndrome"

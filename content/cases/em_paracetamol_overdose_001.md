@@ -5,6 +5,7 @@ status: in_review
 specialty: emergency
 system: gastrointestinal
 presentation: "Overdose"
+presentation_id: "Terlalu banyak minum obat pereda sakit kepala dan kini mual"
 first_impression: "A person appears pale, nauseous, holding stomach."
 first_impression_id: "Seseorang tampak pucat, mual, memegangi perut."
 target_condition: "Paracetamol overdose"

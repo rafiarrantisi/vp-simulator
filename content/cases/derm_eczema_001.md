@@ -5,6 +5,7 @@ status: in_review
 specialty: dermatology
 system: dermatology
 presentation: "Itchy rash"
+presentation_id: "Ruam gatal di lengan dan tungkai"
 first_impression: "Patient appears to have skin concerns."
 first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Atopic eczema"

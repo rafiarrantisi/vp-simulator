@@ -5,6 +5,7 @@ status: in_review
 specialty: dermatology
 system: integumentary
 presentation: "Facial redness and flushing"
+presentation_id: "Wajah merah dan memerah terus, serta muncul bintil yang tidak kunjung hilang"
 first_impression: "Patient appears to have skin concerns."
 first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Acne rosacea"

@@ -32,12 +32,13 @@ RUBRICS: dict[str, dict[str, int]] = {
     },
     # Full OSCE arc.
     "osce_full": {
-        "history_coverage": 20,
+        "history_coverage": 15,
         "red_flags": 10,
         "ice_fife": 5,
         "questioning_technique": 10,
         "communication": 10,
-        "investigations": 15,
+        "physical_exam": 10,
+        "investigations": 10,
         "diagnostic_reasoning": 15,
         "management": 10,
         "clinical_safety": 5,
@@ -61,6 +62,7 @@ DIMENSION_LABELS: dict[str, str] = {
     "questioning_technique": "Questioning technique",
     "communication": "Communication & professionalism",
     "diagnostic_reasoning": "Diagnostic reasoning (DDx)",
+    "physical_exam": "Physical examination",
     "investigations": "Investigation selection",
     "management": "Management",
     "clinical_safety": "Clinical safety & red-flag action",

@@ -64,7 +64,16 @@
 
     function App() {
       const [auth, setAuth] = React.useState(loadAuth);
-      const [screen, setScreen] = React.useState(() => loadAuth() ? 'dashboard' : 'qora-landing');
+      // Hash routing (Aug 2026): the screen lives in the URL (#/dashboard,
+      // #/cases, #/cases/<id>, #/session/<sid>...) so refresh & back/forward
+      // keep your place instead of always resetting to the dashboard.
+      const [screen, setScreen] = React.useState(() => {
+        var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
+        var authed = loadAuth();
+        if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
+        if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing'].indexOf(h) >= 0) return h;
+        return authed ? 'dashboard' : 'qora-landing';
+      });
       const [screenKey, setScreenKey] = React.useState(0);
       const [showSettings, setShowSettings] = React.useState(false);
 
@@ -72,6 +81,20 @@
         setScreen(s);
         setScreenKey(k => k + 1);
         window.scrollTo(0, 0);
+        try { var want = '#/' + s; if (location.hash !== want) location.hash = want; } catch (e) {}
+      }, []);
+
+      React.useEffect(() => {
+        var fn = function () {
+          var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
+          var next = null;
+          if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
+          else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing'].indexOf(h) >= 0) next = h;
+          else next = loadAuth() ? 'dashboard' : 'qora-landing';
+          setScreen((cur) => cur === next ? cur : next);
+        };
+        window.addEventListener('hashchange', fn);
+        return function () { window.removeEventListener('hashchange', fn); };
       }, []);
 
       const handleLogin = React.useCallback((credentials) => {

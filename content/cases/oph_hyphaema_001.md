@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: trauma
 presentation: "Blood in the front of the eye after blunt trauma"
+presentation_id: "Darah di dalam mata kanan setelah terkena kok bulu tangkis 4 jam yang lalu"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Traumatic hyphaema"

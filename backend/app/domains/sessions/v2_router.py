@@ -9,6 +9,7 @@ calibrated v2 judge, and reuses the billing gate/metering/cost guardrail.
   POST /api/v2/sessions/{id}/score       evaluate_v2 -> report + answer key (post-session reveal)
 """
 from datetime import datetime, timedelta, timezone
+import re
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
@@ -125,6 +126,21 @@ class V2TurnReq(BaseModel):
     text: str
 
 
+@router.get("/sessions/{session_id}/turns")
+def v2_get_turns(session_id: str, user: User = Depends(get_current_user),
+                 db: Session = Depends(get_db)):
+    """Chat turn history — used to restore an in-flight session after a refresh
+    (hash-routing, Aug 2026). Returns the transcript + session metadata."""
+    s = _owned(db, session_id, user)
+    return ok({
+        "turns": _history(db, session_id),
+        "case_id": s.case_id,
+        "language": s.language,
+        "status": s.status,
+        "opening_line": load_v2_case(s.case_id).find_section("opening line"),
+    })
+
+
 @router.post("/sessions/{session_id}/turns", dependencies=[_ai_rl])
 def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_current_user),
             db: Session = Depends(get_db)):
@@ -200,6 +216,69 @@ class V2ScoreReq(BaseModel):
     management: dict | None = None
     mode: str | None = None       # UI session mode: "practice" | "osce"
     overtime: bool = False        # continued past the OSCE timer -> score penalty
+    pf_notes: str | None = None   # free-text physical exam the student performed
+    pf_areas: list[str] | None = None  # areas examined (general/skin/head_neck/chest/abdomen/limbs/neuro)
+
+
+class V2PFReq(BaseModel):
+    notes: str = ""               # what the student examined / expected to find
+    areas: list[str] = []         # examined areas; only these get revealed (isolation rule)
+
+
+# Part B `## Physical findings` bullet labels -> canonical area keys.
+_PF_AREA_PATTERNS = {
+    "general": ["general"],
+    "skin": ["skin"],
+    "head_neck": ["head", "neck"],
+    "chest": ["chest", "thorax", "cardio", "respir"],
+    "abdomen": ["abdomen", "abdo", "belly"],
+    "limbs": ["limb", "extremit"],
+    "neuro": ["neuro"],
+}
+
+
+def parse_pf_findings(case) -> dict[str, str]:
+    """Parse the patient's `## Physical findings` (Part B) into area -> text.
+
+    The patient LLM narrates these in lay terms; the PF step reveals ONLY the
+    areas the student examined (isolation rule — same contract as the chat)."""
+    section = case.find_section("physical findings")
+    if not section:
+        return {}
+    out: dict[str, str] = {}
+    for line in section.splitlines():
+        line = line.strip()
+        # Pattern is `- **Label:** text` — the colon sits INSIDE the bold
+        # (`**Label:**` = `**` + "Label:" + `**`), so match `:**` not `**:`.
+        m = re.match(r"^-\s*\*\*(.+?):\*\*\s*(.*)$", line)
+        if not m:
+            continue
+        label, text = m.group(1).strip(), m.group(2).strip()
+        lk = label.lower()
+        key = next((k for k, pats in _PF_AREA_PATTERNS.items() if any(p in lk for p in pats)), None)
+        if key and text:
+            out[key] = (out[key] + " " + text) if key in out else text
+    return out
+
+
+@router.post("/sessions/{session_id}/pf")
+def v2_pf(session_id: str, req: V2PFReq, user: User = Depends(get_current_user),
+          db: Session = Depends(get_db)):
+    """Structured physical-exam step (Aug 2026): the student states which areas
+    they examine + what they expect; the endpoint reveals the patient's findings
+    for those areas only. Stateless — the notes travel with the score request."""
+    s = _owned(db, session_id, user)
+    try:
+        case = load_v2_case(s.case_id)
+    except FileNotFoundError:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
+    all_findings = parse_pf_findings(case)
+    examined = [a for a in (req.areas or []) if a in all_findings]
+    return ok({
+        "findings": {a: all_findings[a] for a in examined},
+        "examined": examined,
+        "available_areas": sorted(all_findings.keys()),
+    })
 
 
 # UI session mode -> scoring rubric mode. "practice" scores history only;
@@ -261,7 +340,8 @@ def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_
     transcript = _history(db, session_id)
     rubric_mode = _UI_MODE_TO_RUBRIC.get((req.mode or "").lower())
     report = evaluate_v2(case, transcript, mode=rubric_mode,
-                         student_ddx=req.ddx, student_management=req.management)
+                         student_ddx=req.ddx, student_management=req.management,
+                         student_pf={"notes": req.pf_notes or "", "areas": req.pf_areas or []})
     if req.overtime:  # continued past the OSCE time limit (§4.3) -> small penalty
         orig = int(report.get("overall", 0) or 0)
         report["overall"] = max(0, orig - _OVERTIME_PENALTY)

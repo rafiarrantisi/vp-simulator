@@ -5,6 +5,7 @@ status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
 presentation: "Pelvic pain and discharge"
+presentation_id: "Nyeri perut bagian bawah dan keputihan yang tidak normal"
 first_impression: "Patient appears to have gynecological concerns."
 first_impression_id: "Pasien tampak mengalami masalah ginekologi."
 target_condition: "Pelvic inflammatory disease"

@@ -5,6 +5,7 @@ status: in_review
 specialty: neurology
 system: nervous
 presentation: "First seizure"
+presentation_id: "Kejang pertama kali dan takut akan kambuh lagi"
 first_impression: "Patient appears to have neurological concerns."
 first_impression_id: "Pasien tampak mengalami masalah neurologis."
 target_condition: "First unprovoked seizure"

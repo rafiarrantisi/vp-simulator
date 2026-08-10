@@ -5,6 +5,7 @@ status: in_review
 specialty: surgery
 system: gastrointestinal
 presentation: "Right upper quadrant pain"
+presentation_id: "Nyeri tajam di perut kanan atas sejak semalam"
 first_impression: "Patient appears in pain."
 first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Acute cholecystitis"

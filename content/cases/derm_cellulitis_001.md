@@ -5,6 +5,7 @@ status: in_review
 specialty: dermatology
 system: integumentary
 presentation: "Hot red swollen leg"
+presentation_id: "Kaki merah, panas, bengkak, dan nyeri saat berjalan"
 first_impression: "Patient appears to have skin concerns."
 first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Lower limb cellulitis"

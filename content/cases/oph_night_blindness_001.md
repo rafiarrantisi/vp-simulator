@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: retina
 presentation: "Difficulty seeing in the dark"
+presentation_id: "Kesulitan melihat pada malam hari selama beberapa bulan, semakin memburuk"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Vitamin A deficiency (night blindness)"

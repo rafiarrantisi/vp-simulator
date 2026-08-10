@@ -5,6 +5,7 @@ status: in_review
 specialty: neurology
 system: nervous
 presentation: "Trembling hands and slow movement"
+presentation_id: "Tangan gemetar dan gerakan melambat secara bertahap"
 first_impression: "Patient appears to have neurological concerns."
 first_impression_id: "Pasien tampak mengalami masalah neurologis."
 target_condition: "Parkinson disease"

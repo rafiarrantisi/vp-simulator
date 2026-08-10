@@ -5,6 +5,7 @@ status: in_review
 specialty: ent
 system: ent
 presentation: "Horse voice for 4 weeks"
+presentation_id: "Suara serak selama 4 minggu"
 first_impression: "Patient appears to have ear, nose, or throat discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
 target_condition: "Laryngeal carcinoma"

@@ -10,6 +10,7 @@ diverifikasi tanpa kredensial). SDK di-import lazy.
 """
 from __future__ import annotations
 
+import re
 import time
 from collections.abc import Iterator
 from typing import Protocol
@@ -122,7 +123,11 @@ def _openai_compatible(base_url: str | None):
                 # user-facing (bocor CoT ke mahasiswa). Content kosong =
                 # transient (truncated/overload) → retry via _with_retry.
                 content = msg.content or ""
-                if not str(content).strip():
+                # Meaningful-content guard (Aug 2026): deepseek-v4-flash can
+                # emit a bare "...."/"…" or stray punctuation when overloaded.
+                # Strip non-alphanumerics — "Hmm." / "Yes." stay, "...." is
+                # treated as empty and retried like other transient failures.
+                if not re.sub(r"[^0-9A-Za-z]", "", str(content)):
                     raise RuntimeError("LLM kembalikan konten kosong (overload/truncated?)")
                 return content
 

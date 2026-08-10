@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: visual
 presentation: "Sudden painless loss of vision"
+presentation_id: "Kehilangan penglihatan mendadak tanpa nyeri pada satu mata"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Central retinal artery occlusion"

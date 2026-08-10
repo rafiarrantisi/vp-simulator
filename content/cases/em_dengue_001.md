@@ -5,6 +5,7 @@ status: in_review
 specialty: emergency
 system: infectious disease
 presentation: "Fever, headache and body aches for 3 days"
+presentation_id: "Demam tinggi, sakit kepala berat, dan nyeri badan selama 3 hari"
 first_impression: "Patient appears flushed, restless, and uncomfortable, rubbing her temples while seated."
 first_impression_id: "Pasien tampak kemerahan, gelisah, dan tidak nyaman, sambil mengusap pelipisnya."
 target_condition: "Dengue fever with warning signs"

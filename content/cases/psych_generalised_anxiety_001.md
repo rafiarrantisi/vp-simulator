@@ -5,6 +5,7 @@ status: in_review
 specialty: psychiatry
 system: nervous system
 presentation: "Worry and restlessness"
+presentation_id: "Cemas dan gelisah terus-menerus selama berbulan-bulan"
 first_impression: "Patient appears anxious or sad."
 first_impression_id: "Pasien tampak cemas atau sedih."
 target_condition: "Generalised anxiety disorder"

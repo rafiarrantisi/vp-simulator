@@ -5,6 +5,7 @@ status: in_review
 specialty: paediatrics
 system: gastrointestinal
 presentation: "Failing to thrive and loose stools"
+presentation_id: "Anak tidak tumbuh baik dan sering buang air besar encer"
 first_impression: "A child appears unwell."
 first_impression_id: "Seorang anak tampak tidak sehat."
 target_condition: "Coeliac disease"

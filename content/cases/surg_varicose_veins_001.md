@@ -5,6 +5,7 @@ status: in_review
 specialty: surgery
 system: cardiovascular
 presentation: "Painful bulging veins in both legs"
+presentation_id: "Nyeri dan tonjolan pembuluh darah di kedua tungkai"
 first_impression: "Patient appears in pain."
 first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Chronic venous insufficiency"

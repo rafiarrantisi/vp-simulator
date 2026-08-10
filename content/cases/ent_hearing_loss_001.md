@@ -5,6 +5,7 @@ status: in_review
 specialty: ent
 system: auditory
 presentation: "Gradual hearing loss in both ears"
+presentation_id: "Gangguan pendengaran bertahap di kedua telinga, terutama saat ramai"
 first_impression: "Patient appears to have ear, nose, or throat discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
 target_condition: "Presbycusis"

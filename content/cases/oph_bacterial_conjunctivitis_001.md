@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: ocular_surface
 presentation: "Red eye with discharge"
+presentation_id: "Mata merah dengan sekret lengket selama 2 hari, kelopak saling menempel saat bangun tidur"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Bacterial conjunctivitis"

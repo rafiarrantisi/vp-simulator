@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: nervous
 presentation: "Sudden vision loss with pain on eye movement"
+presentation_id: "Kehilangan penglihatan mendadak pada satu mata disertai nyeri saat menggerakkan mata"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Optic neuritis"

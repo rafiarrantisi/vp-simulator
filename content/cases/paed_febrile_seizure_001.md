@@ -5,6 +5,7 @@ status: in_review
 specialty: paediatrics
 system: nervous
 presentation: "Convulsion in a febrile toddler"
+presentation_id: "Kejang pada balita yang sedang demam"
 first_impression: "Toddler lies still, flushed, eyes half-open; mother trembles, tearful, clutching him tightly."
 first_impression_id: "Anak tampak lemas, wajah merah, mata setengah terbuka; ibu tampak gemetar, menangis, memeluknya erat."
 target_condition: "Febrile seizure"

@@ -69,7 +69,7 @@ def test_overall_recomputed_and_clamped():
     weights = RUBRICS["anamnesis"]
     raw = {
         "per_dimension": {
-            "history_coverage": {"score": 999, "feedback": "x"},  # over-max -> clamp to 35
+            "history_coverage": {"score": 999, "feedback": "x"},  # over-max -> clamp to 25
             "red_flags": {"score": -5, "feedback": ""},            # negative -> clamp to 0
             "ice_fife": {"score": 10, "feedback": ""},
         },
@@ -78,10 +78,11 @@ def test_overall_recomputed_and_clamped():
         "summary": "ok",
     }
     norm = _normalize(raw, "anamnesis", weights)
-    assert norm["per_dimension"]["history_coverage"]["score"] == 35  # clamped to max
+    assert norm["per_dimension"]["history_coverage"]["score"] == 25  # clamped to max
     assert norm["per_dimension"]["red_flags"]["score"] == 0          # clamped to 0
+    assert norm["per_dimension"]["ice_fife"]["score"] == 8           # 10 clamped to max 8
     # overall = sum of clamped dimension scores (not the model's 500)
-    assert norm["overall"] == 35 + 0 + 10 + 0 + 0
+    assert norm["overall"] == 25 + 0 + 8 + 0 + 0
     assert norm["per_item"][0]["status"] == "hit"  # normalised lowercase
 
 
@@ -91,7 +92,8 @@ def test_osce_full_mode_end_to_end(monkeypatch):
     report = evaluate_v2(case, [{"role": "user", "content": "hello"}])
     assert report["mode"] == "osce_full"  # from case mode_default
     assert set(report["per_dimension"].keys()) == set(RUBRICS["osce_full"].keys())
-    assert report["per_dimension"]["investigations"]["max"] == 15
+    assert report["per_dimension"]["investigations"]["max"] == 10
+    assert report["per_dimension"]["physical_exam"]["max"] == 10
     assert report["per_dimension"]["management"]["max"] == 10
     ak = report["answer_key"]
     assert ak["investigations"]["appropriate"]

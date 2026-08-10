@@ -5,6 +5,7 @@ status: in_review
 specialty: surgery
 system: urinary
 presentation: "Loin pain"
+presentation_id: "Nyeri pinggang kiri yang hilang timbul"
 first_impression: "Patient appears in pain."
 first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Ureteric (renal) colic"

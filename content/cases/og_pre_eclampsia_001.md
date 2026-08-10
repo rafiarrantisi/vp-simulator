@@ -5,6 +5,7 @@ status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
 presentation: "Swelling and headache in late pregnancy"
+presentation_id: "Bengkak di kaki dan sakit kepala pada ibu hamil tua"
 first_impression: "Patient appears to have gynecological concerns."
 first_impression_id: "Pasien tampak mengalami masalah ginekologi."
 target_condition: Pre-eclampsia

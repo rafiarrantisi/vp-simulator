@@ -5,6 +5,7 @@ status: in_review
 specialty: surgery
 system: gastrointestinal
 presentation: "Groin lump"
+presentation_id: "Benjolan di selangkangan yang muncul dan hilang"
 first_impression: "Patient appears in pain."
 first_impression_id: "Pasien tampak kesakitan."
 target_condition: "Inguinal hernia"

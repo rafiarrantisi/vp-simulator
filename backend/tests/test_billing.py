@@ -33,7 +33,7 @@ def test_plan_catalog_and_helpers():
     cat = plans.plan_catalog(s)
     assert {p["id"] for p in cat} == {"free", "monthly", "annual", "exam_pass"}
     assert plans.is_unlimited("monthly") and not plans.is_unlimited("free")
-    assert plans.plan_price(s, "annual") == s.price_annual_usd
+    assert plans.plan_price(s, "annual") == s.price_annual_row
 
 
 # ── Lemon Squeezy signature + mapping ──

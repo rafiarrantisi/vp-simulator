@@ -5,6 +5,7 @@ status: in_review
 specialty: dermatology
 system: integumentary
 presentation: "Red scaly patches on elbows and knees"
+presentation_id: "Bercak merah bersisik di siku dan lutut yang tidak kunjung hilang"
 first_impression: "Patient appears to have skin concerns."
 first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Plaque psoriasis"

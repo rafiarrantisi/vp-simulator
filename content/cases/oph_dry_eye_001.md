@@ -5,6 +5,7 @@ status: in_review
 specialty: ophthalmology
 system: ocular_surface
 presentation: "Dry, gritty, irritable eyes"
+presentation_id: "Mata kering, perih, dan terasa berat selama 2 bulan, semakin parah minggu ini"
 first_impression: "Patient appears to have eye discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
 target_condition: "Dry eye disease"

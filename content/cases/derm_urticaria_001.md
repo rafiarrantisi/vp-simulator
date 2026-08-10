@@ -5,6 +5,7 @@ status: in_review
 specialty: dermatology
 system: dermatologic
 presentation: "Recurrent raised itchy welts"
+presentation_id: "Bentol-bentol merah gatal yang muncul hilang timbul"
 first_impression: "Patient appears to have skin concerns."
 first_impression_id: "Pasien tampak memiliki masalah kulit."
 target_condition: "Chronic urticaria"

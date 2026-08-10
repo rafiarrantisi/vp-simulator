@@ -5,6 +5,7 @@ status: in_review
 specialty: neurology
 system: nervous system
 presentation: "Progressive weakness after a stomach bug"
+presentation_id: "Kelemahan progresif pada kaki dan tangan setelah diare berat"
 first_impression: "Patient appears to have neurological concerns."
 first_impression_id: "Pasien tampak mengalami masalah neurologis."
 target_condition: "Guillain-Barre syndrome"

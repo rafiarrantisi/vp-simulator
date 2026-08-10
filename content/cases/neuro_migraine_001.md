@@ -5,6 +5,7 @@ status: in_review
 specialty: neurology
 system: nervous
 presentation: "Recurrent headache"
+presentation_id: "Sakit kepala berulang yang terasa berat dan membuat mual"
 first_impression: "Patient appears to have neurological concerns."
 first_impression_id: "Pasien tampak mengalami masalah neurologis."
 target_condition: "Migraine"

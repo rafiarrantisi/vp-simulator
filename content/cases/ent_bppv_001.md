@@ -5,6 +5,7 @@ status: in_review
 specialty: ent
 system: vestibular
 presentation: "Dizziness"
+presentation_id: "Pusing berat saat membolak-balikkan badan di tempat tidur"
 first_impression: "Patient appears to have ear, nose, or throat discomfort."
 first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
 target_condition: "Benign paroxysmal positional vertigo"

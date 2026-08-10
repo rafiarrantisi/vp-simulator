@@ -5,6 +5,7 @@ status: in_review
 specialty: psychiatry
 system: psychiatric
 presentation: "Wanting to cut down drinking"
+presentation_id: "Ingin mengurangi minum alkohol tetapi tidak bisa berhenti"
 first_impression: "Patient appears anxious or sad."
 first_impression_id: "Pasien tampak cemas atau sedih."
 target_condition: "Alcohol dependence"

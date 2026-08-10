@@ -5,6 +5,7 @@ status: in_review
 specialty: internal_medicine
 system: gastrointestinal
 presentation: "Acute abdominal pain"
+presentation_id: "Nyeri perut yang memburuk, dari tengah ke kanan bawah, selama 18 jam"
 first_impression: "Patient appears uncomfortable."
 first_impression_id: "Pasien tampak tidak nyaman."
 target_condition: "Appendicitis"
