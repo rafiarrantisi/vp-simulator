@@ -103,6 +103,21 @@ def _openai_compatible(base_url: str | None):
         return e
 
     class _OAI:
+        # deepseek-v4-flash on OpenRouter is a reasoning model: with reasoning
+        # ENABLED it burns the ENTIRE max_tokens budget on chain-of-thought and
+        # returns ZERO content (measured Aug 2026: finish=length, reasoning=4000,
+        # content=0 — the cause of empty/"...." replies AND empty judge reports).
+        # Disable reasoning so output is direct content. OpenRouter-only param.
+        @staticmethod
+        def _extra():
+            try:
+                bu = str(getattr(client, "base_url", "") or "")
+                if "openrouter" in bu:
+                    return {"reasoning": {"enabled": False}}
+            except Exception:  # noqa: BLE001
+                pass
+            return None
+
         def generate(self, system, messages, model=None, max_tokens=None, temperature=None):
             def _call():
                 kwargs = {
@@ -112,6 +127,9 @@ def _openai_compatible(base_url: str | None):
                 }
                 if max_tokens is not None:
                     kwargs["max_tokens"] = max_tokens
+                extra = self._extra()
+                if extra:
+                    kwargs["extra_body"] = extra
                 r = client.chat.completions.create(**kwargs)
                 if not getattr(r, "choices", None):
                     raise RuntimeError(
@@ -142,6 +160,9 @@ def _openai_compatible(base_url: str | None):
             }
             if max_tokens is not None:
                 kwargs["max_tokens"] = max_tokens
+            extra = self._extra()
+            if extra:
+                kwargs["extra_body"] = extra
             st = client.chat.completions.create(**kwargs)
             for ch in st:
                 if not getattr(ch, "choices", None):

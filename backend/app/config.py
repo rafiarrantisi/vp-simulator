@@ -56,7 +56,10 @@ class Settings(BaseSettings):
     # truncates patient replies (reasoning eats the budget -> empty/"...."
     # responses). 1024 keeps reasoning + full content safe.
     llm_persona_max_tokens: int = 1024
-    llm_judge_max_tokens: int = 2400
+    # Judge JSON is large (per_item × all dimensions + feedback). Reasoning is
+    # DISABLED for OpenRouter (llm.py) so this budget is pure content — 8000
+    # covers the biggest OSCE cases without truncation.
+    llm_judge_max_tokens: int = 8000
 
     # ── Voice (Fase 4) ──
     # STT: OpenAI-compatible /audio/transcriptions. Default reuse OpenRouter

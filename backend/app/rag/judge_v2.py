@@ -271,8 +271,10 @@ def build_judge_prompt(case: CaseV2, transcript: list[dict], mode: str,
     if assess_pf:
         system += (
             "\n=== PHYSICAL EXAMINATION (when in scope) ===\n"
-            "When scoring 'physical_exam', evaluate the candidate's PHYSICAL EXAM "
-            "PERFORMANCE (the structured PF step, not chat):\n"
+            "The candidate's structured PF submission appears under "
+            "'STUDENT PHYSICAL EXAMINATION' in the input — score 'physical_exam' "
+            "from THAT section (areas examined + exam notes), NOT from the chat "
+            "transcript. Evaluate:\n"
             "  - Did they examine the RELEVANT areas for the presentation (e.g. chest for "
             "dyspnoea, abdomen for pain)? Unexamined relevant areas = deduction.\n"
             "  - Did they note the KEY expected findings per area (inspection, palpation, "
@@ -323,11 +325,11 @@ def build_judge_prompt(case: CaseV2, transcript: list[dict], mode: str,
     )
     extra = _student_decisions(ddx, plan)
     if student_pf and (student_pf.get("notes") or student_pf.get("areas")):
-        pf_lines = []
-        if student_pf.get("notes"):
-            pf_lines.append(f"STUDENT PHYSICAL EXAMINATION: {student_pf['notes']}")
+        pf_lines = ["STUDENT PHYSICAL EXAMINATION (structured PF step — score 'physical_exam' from this section):"]
         if student_pf.get("areas"):
             pf_lines.append("AREAS EXAMINED: " + ", ".join(student_pf["areas"]))
+        if student_pf.get("notes"):
+            pf_lines.append(f"EXAM NOTES: {student_pf['notes']}")
         extra = (extra + "\n" if extra else "") + "\n".join(pf_lines)
     if extra:
         content += f"\n\nSTUDENT CLINICAL DECISIONS:\n{extra}"
@@ -344,6 +346,22 @@ def _empty_report(mode: str, weights: dict[str, int], note: str) -> dict:
         "summary": "",
         "_note": note,
     }
+
+
+def _extract_json(text: str):
+    """Parse the FIRST complete JSON object in `text`, ignoring any prose or
+    trailing garbage the model emits (regex `{.*}` breaks on trailing text).
+    Returns None when no valid object exists."""
+    if not text:
+        return None
+    start = text.find("{")
+    if start < 0:
+        return None
+    try:
+        obj, _ = json.JSONDecoder().raw_decode(text[start:])
+        return obj if isinstance(obj, dict) else None
+    except json.JSONDecodeError:
+        return None
 
 
 def _normalize(raw: dict, mode: str, weights: dict[str, int]) -> dict:
@@ -406,8 +424,9 @@ def evaluate_v2(case: CaseV2, transcript: list[dict], *,
                 max_tokens=get_settings().llm_judge_max_tokens,
                 temperature=_JUDGE_TEMPERATURE,
             )
-            m = re.search(r"\{.*\}", raw_text, re.DOTALL)
-            report = _normalize(json.loads(m.group(0) if m else raw_text), resolved_mode, weights)
+            obj = _extract_json(raw_text)
+            report = _normalize(obj, resolved_mode, weights) if obj is not None else \
+                _empty_report(resolved_mode, weights, "judge returned no parseable JSON")
         except Exception as e:  # scoring must never fail the session
             report = _empty_report(resolved_mode, weights, f"judge parse failed, valid fallback: {e}")
 
