@@ -41,7 +41,7 @@ function QLFeature({ icon, title, body }) {
 /* ── Stats / Social proof ── */
 function QLStats() {
   var items = [
-    { icon: '📚', num: '82+', label: 'Cases' },
+    { icon: '📚', num: '92+', label: 'Cases' },
     { icon: '🏥', num: '10', label: 'Specialties' },
     { icon: '🎯', num: '3', label: 'Difficulty Levels' },
     { icon: '🌍', num: '1,200+', label: 'Users' },
@@ -258,7 +258,7 @@ function QLFAQ() {
     { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer. You interview virtual patients, list your differentials, and get scored against a hidden checklist \u2014 designed for medical students, IMG candidates, and residents.' },
     { q: 'Who is this for?', a: 'Pre-clinical students building history-taking skills, clinical students (koas) preparing for OSCEs, IMG candidates facing licensing exams, and residents brushing up on specialties outside their core focus.' },
     { q: 'How does scoring work?', a: 'Every case has a hidden checklist. The system evaluates your questions (did you cover the key items?), your differentials (red flags, appropriate breadth), and your management plan \u2014 then shows you exactly what you missed.' },
-    { q: 'How many cases are available?', a: 'Currently 82+ cases across 10 specialties at 3 difficulty levels (pre-clinical, clinical, advanced). New cases are added regularly.' },
+    { q: 'How many cases are available?', a: 'Currently 92+ cases across 10 specialties at 3 difficulty levels (pre-clinical, clinical, advanced). New cases are added regularly.' },
     { q: 'Can I use this on mobile?', a: 'Yes \u2014 Qora works on desktop, tablet, and phone. The interface adapts to your screen size.' },
     { q: 'Is this a replacement for clinical training?', a: 'No. Qora is a study aid and practice tool. It complements \u2014 never replaces \u2014 real clinical exposure and supervision.' },
   ];
@@ -471,7 +471,7 @@ function QoraLanding({ onLogin }) {
       React.createElement(QLHowItWorks, null)),
 
     // ── Specialties ──
-    React.createElement(QLSection, { id: 'specialties', title: '82+ cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, orthopaedics, ophthalmology, and family medicine \u2014 with more added regularly.' },
+    React.createElement(QLSection, { id: 'specialties', title: '92+ cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, orthopaedics, ophthalmology, and family medicine \u2014 with more added regularly.' },
       React.createElement(QLSpecialties, null)),
 
     // ── Features ──

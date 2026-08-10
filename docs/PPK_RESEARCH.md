@@ -78,19 +78,19 @@ Query `"pedoman nasional pelayanan kedokteran"` melaporkan **60 dokumen PNPK** t
 
 ## 4. Rekomendasi Backlog Kasus Baru (prioritas, grounding PNPK)
 
-**Tier 1 — wajib (kasus IGD/ujian Indonesia yang belum ada):**
-1. `em_dengue` — DBD fase demam + warning signs (level koas) — guideline WHO dengue; cek overlap `paed_febrile_child`
-2. `im_typhoid` — demam tifoid (koas) — Pedoman Pengendalian 364/2006
-3. `paed_acute_gastroenteritis` — diare akut + dehidrasi (pre-klinik/koas)
-4. `paed_febrile_seizure` — kejang demam (pre-klinik/koas)
-5. `neuro_acute_stroke` — stroke iskemik akut window trombolisis (PPDS) — **PNPK Stroke 304/2026**
-6. `em_hypertensive_emergency` — hipertensi emergensi (koas/PPDS) — **PNPK Hipertensi Dewasa 4634/2021**
+**Tier 1 — wajib (kasus IGD/ujian Indonesia yang belum ada):** ✅ GENERATED 10 Agu 2026
+1. `em_dengue_001` — DBD fase demam + warning signs (level koas) — guideline WHO dengue; cek overlap `paed_febrile_child`
+2. `im_typhoid_001` — demam tifoid (koas) — Pedoman Pengendalian 364/2006
+3. `paed_acute_gastroenteritis_001` — diare akut + dehidrasi (pre-klinik/koas)
+4. `paed_febrile_seizure_001` — kejang demam (pre-klinik/koas)
+5. `neuro_acute_stroke_001` — stroke iskemik akut window trombolisis (PPDS) — **PNPK Stroke 304/2026**
+6. `em_hypertensive_emergency_001` — hipertensi emergensi (koas/PPDS) — **PNPK Hipertensi Dewasa 4634/2021**
 
-**Tier 2 — pengayaan:**
-7. `em_leptospirosis` (PPDS)
-8. `em_bacterial_meningitis` (PPDS)
-9. `em_traumatic_brain_injury` (koas/PPDS) — **PNPK TBI 1600/2022**
-10. `paed_stunting` (koas) — **PNPK Stunting 1928/2022** (bisa jadi kasus anamnesis tumbuh kembang — nilai jual lokal)
+**Tier 2 — pengayaan:** ✅ GENERATED 10 Agu 2026
+7. `em_leptospirosis_001` (PPDS)
+8. `em_bacterial_meningitis_001` (PPDS)
+9. `em_traumatic_brain_injury_001` (koas/PPDS) — **PNPK TBI 1600/2022**
+10. `paed_stunting_001` (koas) — **PNPK Stunting 1928/2022** (kasus anamnesis tumbuh kembang — nilai jual lokal)
 
 **Tier 3 — link PNPK ke kasus existing (source_refs, tanpa generate ulang):**
 - `im_tuberculosis` → program nasional TB + WHO (catat: PNPK TB tidak ditemukan di JDIH)
