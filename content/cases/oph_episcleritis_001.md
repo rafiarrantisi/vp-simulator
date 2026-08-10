@@ -16,6 +16,7 @@ languages: [en]
 source_refs:
   - "NICE CKS: Red eye; Episcleritis and scleritis differentiation"
   - "Migrated from legacy kasus-108 (PPK Kemenkes — Episkleritis, ICD-10 H15.1)"
+  - "AAO Preferred Practice Pattern — episcleritis/scleritis"
 authoring:
   drafted_by: migrated_from_kasus-108
   model: human+ai

@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "British Thoracic Society guidelines for community-acquired pneumonia" ]
+source_refs:
+  - "British Thoracic Society guidelines for community-acquired pneumonia"
+  - "ATS/IDSA community-acquired pneumonia guideline (2019)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I've had a bad cough and feel short of breath for the past few days."
 anamnesis_checklist:

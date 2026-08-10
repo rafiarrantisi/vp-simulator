@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 12
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "NICE guidelines for atopic eczema" ]
+source_refs:
+  - "NICE guidelines for atopic eczema"
+  - "EDF 2022 atopic dermatitis guideline; NICE atopic eczema guidance"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have an itchy rash on my arms and legs."
 anamnesis_checklist:

@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "American Academy of Dermatology guidelines for rosacea" ]
+source_refs:
+  - "American Academy of Dermatology guidelines for rosacea"
+  - "National Rosacea Society / AAD rosacea guidelines (2017)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My face keeps getting red and flushing, and I have bumps that won't go away."
 anamnesis_checklist:

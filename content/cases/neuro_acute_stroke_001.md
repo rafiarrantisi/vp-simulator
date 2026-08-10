@@ -13,7 +13,11 @@ difficulty: 3
 estimated_minutes: 25
 mode_default: osce_full
 languages: [en]
-source_refs: [ "PPK Kemenkes (Panduan Praktik Klinis) untuk Stroke Iskemik — 2021" ]
+source_refs:
+  - "PPK Kemenkes (Panduan Praktik Klinis) untuk Stroke Iskemik — 2021"
+  - "PNPK Tata Laksana Stroke (KMK 304/2026) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes3042026"
+  - "AHA/ASA acute ischaemic stroke guidelines (2019)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I suddenly couldn't move my right arm and leg this morning."
 anamnesis_checklist:

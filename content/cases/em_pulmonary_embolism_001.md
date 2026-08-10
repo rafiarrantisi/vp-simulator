@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: ["NICE guideline NG158: Venous thromboembolic diseases"]
+source_refs:
+  - "NICE guideline NG158: Venous thromboembolic diseases"
+  - "ESC 2019 Guidelines — acute pulmonary embolism"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have sudden chest pain and can't catch my breath after a long flight."
 anamnesis_checklist:

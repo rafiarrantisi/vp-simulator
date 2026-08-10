@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "NICE guideline NG20: Coeliac disease (2015, updated 2021)" ]
+source_refs:
+  - "NICE guideline NG20: Coeliac disease (2015, updated 2021)"
+  - "ESPGHAN guidelines — coeliac disease (2020)"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

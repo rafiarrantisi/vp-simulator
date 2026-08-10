@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
 languages: [en]
-source_refs: [ "American Academy of Ophthalmology Preferred Practice Pattern: Retinal and Ophthalmic Artery Occlusions" ]
+source_refs:
+  - "American Academy of Ophthalmology Preferred Practice Pattern: Retinal and Ophthalmic Artery Occlusions"
+  - "AAO Preferred Practice Pattern — retinal vascular disease; AHA statement on retinal ischaemia"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I suddenly lost vision in my right eye about an hour ago, and it's not getting better."
 anamnesis_checklist:

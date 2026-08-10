@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: ["DSM-5-TR"]
+source_refs:
+  - "DSM-5-TR"
+  - "NICE CG115 — Alcohol-use disorders"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I want to cut down on my drinking but I can't seem to stop."
 anamnesis_checklist:

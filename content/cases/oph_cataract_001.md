@@ -16,6 +16,7 @@ languages: [en]
 source_refs:
   - "NICE CKS: Cataracts"
   - "Migrated from legacy kasus-106 (PPK Kemenkes — Katarak, ICD-10 H26.9)"
+  - "AAO Preferred Practice Pattern — cataract (2021)"
 authoring:
   drafted_by: migrated_from_kasus-106
   model: human+ai

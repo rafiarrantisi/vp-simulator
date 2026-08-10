@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "American College of Surgeons guidelines for breast cancer diagnosis" ]
+source_refs:
+  - "American College of Surgeons guidelines for breast cancer diagnosis"
+  - "NICE NG101 — Early and locally advanced breast cancer"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I found a lump in my right breast a couple of weeks ago."
 anamnesis_checklist:

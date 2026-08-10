@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 20
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "DSM-5-TR" ]
+source_refs:
+  - "DSM-5-TR"
+  - "NICE NG222 — Depression in adults"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I've been feeling really down and tired for the last few weeks, and I just can't seem to shake it."
 anamnesis_checklist:

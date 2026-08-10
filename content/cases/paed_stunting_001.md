@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "PPK Kemenkes (Panduan Praktik Klinis) for Stunting — KMK 1928/2022" ]
+source_refs:
+  - "PPK Kemenkes (Panduan Praktik Klinis) for Stunting — KMK 1928/2022"
+  - "WHO Child Growth Standards — height-for-age"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

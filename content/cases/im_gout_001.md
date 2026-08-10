@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "American College of Rheumatology guideline for gout management" ]
+source_refs:
+  - "American College of Rheumatology guideline for gout management"
+  - "ACR gout treatment guideline (2020)"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

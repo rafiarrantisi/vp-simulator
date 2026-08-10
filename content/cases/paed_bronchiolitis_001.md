@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "American Academy of Pediatrics. Clinical Practice Guideline: Diagnosis and Management of Bronchiolitis. Pediatrics. 2014;134(5):e1474-e1502." ]
+source_refs:
+  - "American Academy of Pediatrics. Clinical Practice Guideline: Diagnosis and Management of Bronchiolitis. Pediatrics. 2014;134(5):e1474-e1502."
+  - "AAP clinical practice guideline — bronchiolitis (2014)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My baby has been wheezing and coughing for two days."
 anamnesis_checklist:

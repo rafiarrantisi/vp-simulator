@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 18
 mode_default: osce_full
 languages: [en]
-source_refs: [ "EAACI/GA²LEN/EDF/WAO guideline for urticaria" ]
+source_refs:
+  - "EAACI/GA²LEN/EDF/WAO guideline for urticaria"
+  - "EAACI/GA²LEN/EDF/WAO urticaria guideline (2021)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I keep getting these red, itchy bumps that come and go."
 anamnesis_checklist:

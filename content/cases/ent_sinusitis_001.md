@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 12
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "IDSA guidelines for acute sinusitis 2023" ]
+source_refs:
+  - "IDSA guidelines for acute sinusitis 2023"
+  - "AAO-HNS clinical practice guideline — acute rhinosinusitis (2015)"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

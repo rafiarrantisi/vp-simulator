@@ -16,6 +16,7 @@ languages: [en]
 source_refs:
   - "Royal College of Ophthalmologists / EyeWiki: Hyphema management"
   - "Migrated from legacy kasus-109 (PPK Kemenkes — Hifema, ICD-10 H21.0)"
+  - "AAO Preferred Practice Pattern — ocular trauma (hyphaema)"
 authoring:
   drafted_by: migrated_from_kasus-109
   model: human+ai

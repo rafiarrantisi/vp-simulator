@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: ["PNPK Tata Laksana Batu Saluran Kemih (KMK 1560/2022) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes15602022"]
+source_refs:
+  - "PNPK Tata Laksana Batu Saluran Kemih (KMK 1560/2022) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes15602022"
+  - "EAU guidelines — urolithiasis (2024)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have a terrible pain in my left side that comes and goes."
 anamnesis_checklist:

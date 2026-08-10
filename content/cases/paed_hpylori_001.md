@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "NICE guideline on dyspepsia and peptic ulcer disease (NG30)" ]
+source_refs:
+  - "NICE guideline on dyspepsia and peptic ulcer disease (NG30)"
+  - "ESPGHAN/NASPGHAN — Helicobacter pylori management (2016)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My stomach hurts off and on for the past two months."
 anamnesis_checklist:

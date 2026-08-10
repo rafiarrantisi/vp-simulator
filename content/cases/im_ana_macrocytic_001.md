@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: ["NICE guideline NG24: Anaemia - B12 and folate deficiency"]
+source_refs:
+  - "NICE guideline NG24: Anaemia - B12 and folate deficiency"
+  - "British Committee for Standards in Haematology — vitamin B12/folate (2014)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I've been feeling really tired and get out of breath easily when I walk up stairs."
 anamnesis_checklist:

@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "American Academy of Ophthalmology Preferred Practice Pattern: Esotropia" ]
+source_refs:
+  - "American Academy of Ophthalmology Preferred Practice Pattern: Esotropia"
+  - "AAO Preferred Practice Pattern — strabismus"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My right eye has been turning in since I was little, and now it's getting worse."
 anamnesis_checklist:

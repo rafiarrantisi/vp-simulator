@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "AAO-HNS Clinical Practice Guideline: Benign Paroxysmal Positional Vertigo (Update), 2017" ]
+source_refs:
+  - "AAO-HNS Clinical Practice Guideline: Benign Paroxysmal Positional Vertigo (Update), 2017"
+  - "Bárány Society — BPPV diagnostic criteria and treatment (2017)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I get really dizzy when I turn over in bed."
 anamnesis_checklist:

@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
 languages: [en]
-source_refs: [ "National Institute for Health and Care Excellence (NICE) guideline NG152, Guillain-Barre syndrome, 2024" ]
+source_refs:
+  - "National Institute for Health and Care Excellence (NICE) guideline NG152, Guillain-Barre syndrome, 2024"
+  - "Lancet Seminar — Guillain-Barré syndrome (2016)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I've been getting weaker in my legs and arms since last week after a bad stomach bug."
 

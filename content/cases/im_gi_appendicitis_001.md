@@ -16,6 +16,7 @@ languages: [en]
 source_refs:
   - "GMC MLA Content Map (2026)"
   - "NICE CKS: Appendicitis"
+  - "WSES Jerusalem guidelines — acute appendicitis (2020)"
 authoring:
   drafted_by: human+ai
   model: adapted_from_build_plan_5.1

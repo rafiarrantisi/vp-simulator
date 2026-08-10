@@ -16,6 +16,7 @@ languages:
   - en
 source_refs:
   - "AAO-HNS clinical practice guideline: age-related hearing loss"
+  - "NICE NG98 — Hearing loss in adults"
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

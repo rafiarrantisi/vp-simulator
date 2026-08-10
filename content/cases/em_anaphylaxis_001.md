@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "World Allergy Organization Anaphylaxis Guidelines 2020" ]
+source_refs:
+  - "World Allergy Organization Anaphylaxis Guidelines 2020"
+  - "WAO Anaphylaxis Guidance (2020)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I suddenly broke out in hives and now I can't breathe properly."
 anamnesis_checklist:

@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "American Academy of Ophthalmology Preferred Practice Pattern: Posterior Vitreous Detachment" ]
+source_refs:
+  - "American Academy of Ophthalmology Preferred Practice Pattern: Posterior Vitreous Detachment"
+  - "AAO Preferred Practice Pattern — posterior vitreous detachment"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I see flashes of light and floaters in my right eye."
 anamnesis_checklist:

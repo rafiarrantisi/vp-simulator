@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
 languages: [en]
-source_refs: [ "NICE guideline NG220: Multiple sclerosis in adults" ]
+source_refs:
+  - "NICE guideline NG220: Multiple sclerosis in adults"
+  - "NICE NG144 — Multiple sclerosis"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have weakness and numbness on my right side that started a few days ago."
 anamnesis_checklist:

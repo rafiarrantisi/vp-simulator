@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "American Thyroid Association guidelines for thyroid nodule evaluation" ]
+source_refs:
+  - "American Thyroid Association guidelines for thyroid nodule evaluation"
+  - "ATA — thyroid nodule management (2015)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have a lump on the front of my neck that I noticed a few weeks ago."
 anamnesis_checklist:

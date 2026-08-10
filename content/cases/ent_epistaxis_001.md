@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "AAO-HNS Clinical Practice Guideline: Epistaxis" ]
+source_refs:
+  - "AAO-HNS Clinical Practice Guideline: Epistaxis"
+  - "ENT-UK / NICE CKS — epistaxis management"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

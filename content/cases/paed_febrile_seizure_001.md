@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "PPK Kemenkes (Panduan Praktik Klinis) for Febrile Seizure — standard guidance: simple vs complex febrile seizure (age 6mo-5y, generalised <15 min, single in 24h, no focality), risk factors for recurrence, red flags for meningitis, first aid, no routine EEG/neuroimaging for simple febrile seizure." ]
+source_refs:
+  - "PPK Kemenkes (Panduan Praktik Klinis) for Febrile Seizure — standard guidance: simple vs complex febrile seizure (age 6mo-5y, generalised <15 min, single in 24h, no focality), risk factors for recurrence, red flags for meningitis, first aid, no routine EEG/neuroimaging for simple febrile seizure."
+  - "NICE NG143 — feverish illness; AAP febrile seizures (1996)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My son had a seizure when he had a fever."
 anamnesis_checklist:

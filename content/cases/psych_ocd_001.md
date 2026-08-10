@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 20
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "DSM-5-TR" ]
+source_refs:
+  - "DSM-5-TR"
+  - "NICE CG31 — Obsessive-compulsive disorder"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I keep having bad thoughts and I have to do things over and over to make them go away."
 anamnesis_checklist:

@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "World Society of Emergency Surgery (WSES) guidelines for acute diverticulitis" ]
+source_refs:
+  - "World Society of Emergency Surgery (WSES) guidelines for acute diverticulitis"
+  - "ASCRS clinical practice guideline — diverticulitis (2020)"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

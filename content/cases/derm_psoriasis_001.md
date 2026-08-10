@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "NICE guideline CG153: Psoriasis: assessment and management" ]
+source_refs:
+  - "NICE guideline CG153: Psoriasis: assessment and management"
+  - "AAD-NPF psoriasis clinical guidelines (2019); NICE psoriasis CG153"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have red, scaly patches on my elbows and knees that won't go away."
 anamnesis_checklist:

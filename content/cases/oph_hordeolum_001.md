@@ -16,6 +16,7 @@ languages: [en]
 source_refs:
   - "NICE CKS: Styes (hordeola)"
   - "Migrated from legacy kasus-103 (PPK Kemenkes — Hordeolum, ICD-10 H00.0)"
+  - "AAO Preferred Practice Pattern — hordeolum and chalazion"
 authoring:
   drafted_by: migrated_from_kasus-103
   model: human+ai

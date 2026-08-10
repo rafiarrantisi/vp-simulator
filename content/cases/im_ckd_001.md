@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
 languages: [en]
-source_refs: ["PNPK Tata Laksana Hipertensi Dewasa (KMK 4634/2021) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes46342021"]
+source_refs:
+  - "PNPK Tata Laksana Hipertensi Dewasa (KMK 4634/2021) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes46342021"
+  - "KDIGO 2024 Clinical Practice Guideline — CKD"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

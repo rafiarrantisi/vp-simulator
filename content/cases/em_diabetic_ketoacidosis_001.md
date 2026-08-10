@@ -13,7 +13,11 @@ difficulty: 2
 estimated_minutes: 20
 mode_default: osce_full
 languages: [en]
-source_refs: [ "American Diabetes Association. Standards of Medical Care in Diabetes—2023. Diabetes Care. 2023;46(Suppl 1):S1-S291." ]
+source_refs:
+  - "American Diabetes Association. Standards of Medical Care in Diabetes—2023. Diabetes Care. 2023;46(Suppl 1):S1-S291."
+  - "PNPK Tata Laksana Diabetes Melitus Tipe 2 Dewasa (KMK 603/2020) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107m6032020"
+  - "ISPAD Clinical Practice Consensus Guidelines — diabetic ketoacidosis (2022)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I'm confused and breathing really fast, and my breath smells funny."
 anamnesis_checklist:

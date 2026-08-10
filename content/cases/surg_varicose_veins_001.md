@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "Chronic Venous Insufficiency Clinical Practice Guidelines, Society for Vascular Surgery" ]
+source_refs:
+  - "Chronic Venous Insufficiency Clinical Practice Guidelines, Society for Vascular Surgery"
+  - "NICE CG168 — Varicose veins"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have bulging, painful veins in both my legs."
 anamnesis_checklist:

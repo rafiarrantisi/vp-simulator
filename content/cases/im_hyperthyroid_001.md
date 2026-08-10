@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "American Thyroid Association Guidelines for the Diagnosis and Management of Hyperthyroidism (2016)" ]
+source_refs:
+  - "American Thyroid Association Guidelines for the Diagnosis and Management of Hyperthyroidism (2016)"
+  - "ATA guidelines — hyperthyroidism (2016)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I've been losing weight without trying and I feel shaky and my heart races."
 anamnesis_checklist:

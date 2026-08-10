@@ -16,6 +16,7 @@ languages: [en]
 source_refs:
   - "NICE CKS: Conjunctivitis - infective"
   - "Migrated from legacy kasus-104 (PPK Kemenkes — Konjungtivitis, ICD-10 H10.9)"
+  - "AAO Preferred Practice Pattern — conjunctivitis (2018)"
 authoring:
   drafted_by: migrated_from_kasus-104
   model: human+ai

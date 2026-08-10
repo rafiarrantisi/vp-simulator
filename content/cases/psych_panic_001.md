@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "DSM-5-TR" ]
+source_refs:
+  - "DSM-5-TR"
+  - "NICE CG113 — Panic disorder"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I keep having these sudden attacks where I feel like I'm dying or losing my mind."
 anamnesis_checklist:

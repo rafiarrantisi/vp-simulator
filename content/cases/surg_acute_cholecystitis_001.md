@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: ["SAGES guidelines for acute cholecystitis"]
+source_refs:
+  - "SAGES guidelines for acute cholecystitis"
+  - "Tokyo Guidelines (TG18) — acute cholecystitis"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have a sharp pain under my right ribs that started last night and won't go away."
 anamnesis_checklist:

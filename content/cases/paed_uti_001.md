@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: ["NICE guideline NG224: Urinary tract infection in under 16s"]
+source_refs:
+  - "NICE guideline NG224: Urinary tract infection in under 16s"
+  - "AAP — UTI in children guideline (2011); NICE NG224"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

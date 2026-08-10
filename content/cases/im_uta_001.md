@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "NICE guideline NG158: Venous thromboembolic diseases" ]
+source_refs:
+  - "NICE guideline NG158: Venous thromboembolic diseases"
+  - "CHEST guideline — antithrombotic therapy for VTE (2021)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My left leg has been swollen and painful for three days."
 anamnesis_checklist:

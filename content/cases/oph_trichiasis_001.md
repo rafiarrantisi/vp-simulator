@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: ["AAO Preferred Practice Pattern: Trichiasis"]
+source_refs:
+  - "AAO Preferred Practice Pattern: Trichiasis"
+  - "WHO trachoma guidelines — trichiasis surgery"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My eye has been hurting and feels like something is stuck in it."
 anamnesis_checklist:

@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: ["NICE guideline NG87: Gastro-oesophageal reflux disease and dyspepsia in adults"]
+source_refs:
+  - "NICE guideline NG87: Gastro-oesophageal reflux disease and dyspepsia in adults"
+  - "ACG clinical guideline — gastroesophageal reflux disease (2022)"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

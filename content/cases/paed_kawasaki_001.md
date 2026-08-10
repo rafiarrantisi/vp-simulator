@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
 languages: [en]
-source_refs: ["American Heart Association guidelines for Kawasaki disease (2017)"]
+source_refs:
+  - "American Heart Association guidelines for Kawasaki disease (2017)"
+  - "AHA scientific statement — Kawasaki disease (2017)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My 2-year-old has had a high fever for 5 days and his eyes are really red."
 anamnesis_checklist:

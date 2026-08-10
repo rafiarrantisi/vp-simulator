@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "AAO-HNSF Clinical Practice Guideline: Tonsillitis (2019)" ]
+source_refs:
+  - "AAO-HNSF Clinical Practice Guideline: Tonsillitis (2019)"
+  - "NICE NG84 — Sore throat (acute)"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

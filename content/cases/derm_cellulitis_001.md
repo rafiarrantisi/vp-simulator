@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: ["NICE guideline for cellulitis (2019)"]
+source_refs:
+  - "NICE guideline for cellulitis (2019)"
+  - "IDSA Skin and Soft Tissue Infections guideline (Stevens et al., 2014)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "My left leg is red, hot, and swollen, and it hurts to walk."
 anamnesis_checklist:

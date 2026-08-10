@@ -13,7 +13,10 @@ difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
 languages: [en]
-source_refs: [ "American College of Gastroenterology guidelines for acute pancreatitis" ]
+source_refs:
+  - "American College of Gastroenterology guidelines for acute pancreatitis"
+  - "IAP/APA evidence-based guidelines — acute pancreatitis (2013)"
+
 authoring:
   drafted_by: ai_v1
   model: "deepseek/deepseek-v4-flash"

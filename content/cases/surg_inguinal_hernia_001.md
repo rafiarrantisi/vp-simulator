@@ -13,7 +13,11 @@ difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: [ "NICE guidelines on inguinal hernia (2023)", "UpToDate: Inguinal hernia in adults" ]
+source_refs:
+  - "NICE guidelines on inguinal hernia (2023)"
+  - "UpToDate: Inguinal hernia in adults"
+  - "European Hernia Society — inguinal hernia guideline"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have a lump in my groin that comes and goes."
 anamnesis_checklist:

@@ -13,7 +13,10 @@ difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
 languages: [en]
-source_refs: ["NICE guideline NG73: Endometriosis (2017, updated 2024)"]
+source_refs:
+  - "NICE guideline NG73: Endometriosis (2017, updated 2024)"
+  - "ESHRE guideline — endometriosis (2022)"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I have really bad pain in my lower belly every month around my period, and I've been trying to get pregnant for two years without success."
 anamnesis_checklist:

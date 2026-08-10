@@ -111,3 +111,13 @@ Query `"pedoman nasional pelayanan kedokteran"` melaporkan **60 dokumen PNPK** t
 3. Kalau tidak ada PNPK (DBD, tifoid, TB, asma, pneumonia, diare, dll) → `source_refs` pakai guideline internasional/WHO + panduan program Kemenkes, dan **tulis statusnya** di review_notes.
 4. Nama pasien: Indonesia, sesuai umur (tradisional untuk lansia, modern untuk muda) — sudah jadi aturan author pipeline.
 5. Tiap kasus baru wajib punya `## Vital signs` + `## Physical findings` konsisten dengan kondisi (aturan pipeline sudah aktif).
+
+---
+
+## 5. Audit Grounding source_refs — LENGKAP (10 Agu 2026)
+
+Semua **92 case** sekarang punya `source_refs` otoritatif (idempotent, deterministic, no-LLM):
+
+- **PNPK Kemenkes** (verified JDIH): Stroke 304/2026 (neuro_tia, neuro_acute_stroke), DM T2 603/2020 (im_new_t2dm, em_dka), Hipertensi 4634/2021 (em_hypertensive_emergency, im_ckd), Glaukoma 1488/2023 (oph_acute_angle_closure), Angina 1419/2023 (em_acs), Stunting 1928/2022 (paed_stunting), TBI 1600/2022 (em_tbi), Batu Saluran Kemih 1560/2022 (surg_renal_colic), Komplikasi Kehamilan 91/2017 (og_pre_eclampsia, og_early_pregnancy_bleeding)
+- **Guideline internasional** utk kondisi tanpa PNPK: IDSA (cellulitis, pyelo), ACR (gout), GINA (asthma), ATS/IDSA (CAP), ESC (ACS/PE), ESHRE (endometriosis), NICE (depression NG222, ADHD NG87, HMB NG88, sore throat NG84, breast NG101, dsb), AHA (Kawasaki), AAP (AOM, bronchiolitis, UTI), AAO PPP (seluruh oph), WHO (dengue, TB, measles, diarrhoea, trachoma, vit A), dll.
+- Tool: `backend/tools/link_guideline_refs.py` — REF_MAP terkurasi, dedup token-based, lint-verified, idempotent. 60 case di-update, 32 sudah grounded.

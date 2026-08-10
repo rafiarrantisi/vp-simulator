@@ -16,6 +16,7 @@ languages: [en]
 source_refs:
   - "NICE CKS: Blepharitis"
   - "Migrated from legacy kasus-105 (PPK Kemenkes — Blefaritis, ICD-10 H01.0)"
+  - "AAO Preferred Practice Pattern — blepharitis"
 authoring:
   drafted_by: migrated_from_kasus-105
   model: human+ai

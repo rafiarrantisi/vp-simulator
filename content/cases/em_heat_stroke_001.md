@@ -13,7 +13,10 @@ difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages: [en]
-source_refs: ["ACEP Clinical Policy for Heat Stroke"]
+source_refs:
+  - "ACEP Clinical Policy for Heat Stroke"
+  - "Bouchama A, Knochel JP. Heat stroke. N Engl J Med 2002"
+
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
 chief_complaint: "I collapsed during a marathon and feel really hot and confused."
 anamnesis_checklist:
