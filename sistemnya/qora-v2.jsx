@@ -177,18 +177,19 @@ function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }
     setCustom('');
   };
   const removeSel = (it) => onToggle(it);
+  const isMobile = useIsMobile();
   return React.createElement('div', null,
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('input', { value: search, onChange: (e) => setSearch(e.target.value), placeholder: 'Search ' + (unit || 'items') + '…',
-        style: { flex: 1, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
+        style: { flex: 1, minWidth: 0, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
       React.createElement('span', { style: { fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', color: max && selected.length >= max ? 'var(--red-d)' : 'var(--text-2)' } }, max ? (selected.length + ' / ' + max + ' selected') : (selected.length + ' selected'))),
-    React.createElement('div', { style: { display: 'flex', gap: 8, marginBottom: 12 } },
+    React.createElement('div', { style: { display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' } },
       React.createElement('select', { value: cat, onChange: (e) => setCat(e.target.value),
-        style: { flex: 1, padding: '9px 10px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } },
+        style: { flex: isMobile ? '1 1 100%' : 1, padding: '9px 10px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } },
         React.createElement('option', { value: '' }, 'Choose a category…'),
         cats.map((c) => React.createElement('option', { key: c, value: c }, c + ' (' + (catalog[c] || []).length + ')'))),
       React.createElement('input', { value: custom, onChange: (e) => setCustom(e.target.value), onKeyDown: (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } }, placeholder: 'Or type your own…',
-        style: { flex: 1, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
+        style: { flex: 1, minWidth: 0, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
       React.createElement('button', { onClick: addCustom, disabled: !custom.trim() || (max && selected.length >= max), style: { padding: '0 14px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: (!custom.trim() || (max && selected.length >= max)) ? 0.5 : 1 } }, 'Add')),
     selected.length > 0 && React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 } },
       selected.map((it) => React.createElement('button', { key: it, onClick: () => removeSel(it), title: 'Remove', style: {
@@ -350,6 +351,16 @@ function useIsWide(px) {
 function useIsMobile() { return !useIsWide(768); }
 function useIsTablet() { return !useIsWide(1024); }
 
+// Shared dimension labels (rubric v2 — includes physical_exam added Aug 2026).
+const QV2_DIM_LABEL = {
+  history_coverage: 'History coverage', red_flags: 'Red-flag screening',
+  ice_fife: 'ICE / FIFE', questioning_technique: 'Questioning technique',
+  communication: 'Communication', physical_exam: 'Physical Exam',
+  diagnostic_reasoning: 'Diagnostic reasoning', investigations: 'Investigation selection',
+  management: 'Management', clinical_safety: 'Clinical safety',
+  coverage: 'Coverage', fife: 'FIFE', redFlags: 'Red flags',
+};
+
 // ---- Session setup: mode selection + preparation (instruksi §4.3 + §4.5) ----
 function QV2ModeCard({ active, onClick, tone, badge, title, body }) {
   return React.createElement('button', { onClick, className: 'as', style: {
@@ -422,8 +433,8 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22, fontStyle: 'italic' } }, caseSummary.first_impression_id || caseSummary.first_impression || caseSummary.presentation_id || caseSummary.presentation),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose a mode'),
     React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
-      React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning. A task guide and history hints help you along. The timer is optional.' }),
-      React.createElement(QV2ModeCard, { active: mode === 'osce', onClick: () => setMode('osce'), tone: 'violet', badge: 'OSCE', title: 'OSCE exam', body: 'Exam conditions — no hints. A countdown runs; when it ends you finish or continue for a penalty.' })),
+      React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning — history only, no physical exam step. A task guide and history hints help you along. The timer is optional.' }),
+      React.createElement(QV2ModeCard, { active: mode === 'osce', onClick: () => setMode('osce'), tone: 'violet', badge: 'OSCE', title: 'OSCE exam', body: 'Exam conditions — no hints. Includes the physical examination step. A countdown runs; when it ends you finish or continue for a penalty.' })),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose session language'),
     React.createElement('div', { className: 'as d2', style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 } },
       [['en','English'],['id','Bahasa Indonesia'],['ms','Bahasa Melayu'],['tl','Tagalog'],['vi','Tiếng Việt'],['th','ภาษาไทย']].map(function(p) {
@@ -869,6 +880,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
         : (m.streaming ? m.text + ' ▋' : m.text))),
       React.createElement('div', { ref: endRef })),
     React.createElement('div', { style: { padding: '12px 0 16px', display: 'flex', flexDirection: 'column', gap: 10 } },
+      isOsce && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', textAlign: 'center' } }, '🩺 Done with your questions? Tap ' + (isMobile ? 'Exam' : 'Exam →') + ' to perform the physical examination before assessing.'),
       React.createElement('div', { style: { display: 'flex', justifyContent: 'center' } },
         React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t), disabled: busy, sessionLang: language, compact: isMobile })),
       React.createElement('div', { style: { display: 'flex', gap: 8 } },
@@ -876,9 +888,9 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
           value: input, onChange: e => setInput(e.target.value),
           onKeyDown: e => { if (e.key === 'Enter') send(); },
           placeholder: 'Or type a question…', disabled: busy,
-          style: { flex: 1, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)' },
+          style: { flex: 1, minWidth: 0, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)' },
         }),
-        React.createElement('button', { onClick: () => setStage(isOsce ? 'pf' : 'assess'), disabled: busy, style: { padding: '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, isOsce ? 'Exam →' : 'Assess →'))));
+        React.createElement('button', { onClick: () => setStage(isOsce ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, isOsce ? 'Exam →' : 'Assess →'))));
 
   return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 0' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
     wide && React.createElement('div', { style: { width: 240, flexShrink: 0, marginLeft: -40 } },
@@ -927,7 +939,7 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
           const d = dims[k]; const pct = d.max ? Math.round((d.score / d.max) * 100) : 0;
           return React.createElement('div', { key: k, style: { marginBottom: 6 } },
             React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11.5, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
-              React.createElement('span', null, k.replace(/_/g, ' ')),
+              React.createElement('span', null, QV2_DIM_LABEL[k] || k.replace(/_/g, ' ')),
               React.createElement('span', null, d.score + '/' + d.max)),
             React.createElement('div', { style: { height: 6, borderRadius: 999, background: 'var(--surface-3)' } },
               React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)' } })));
@@ -1000,7 +1012,7 @@ function QV2Progress({ onBack }) {
   React.useEffect(() => { qv2Fetch('/api/v2/progress').then(setP).catch((e) => setErr(String(e.message || e))); }, []);
   if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load progress: ' + err);
   if (!p) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading progress…');
-  const dimLabel = { history_coverage: 'History coverage', red_flags: 'Red-flag screening', ice_fife: 'ICE / FIFE', questioning_technique: 'Questioning technique', communication: 'Communication', diagnostic_reasoning: 'Diagnostic reasoning', investigations: 'Investigation selection', management: 'Management', clinical_safety: 'Clinical safety' };
+  const dimLabel = QV2_DIM_LABEL;
   const dims = p.dimensionAverages || {};
   const specs = p.specialtyCounts || {};
   const dimKeys = Object.keys(dims);
@@ -1164,7 +1176,7 @@ function QoraDashboard({ onNav, onStartCase }) {
         hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
           React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 Skill breakdown'),
           Object.keys(dims).map(k => {
-            const dimLabel = { history_coverage: 'History', red_flags: 'Red flags', ice_fife: 'ICE/FIFE', questioning_technique: 'Questioning', communication: 'Communication', diagnostic_reasoning: 'Reasoning', investigations: 'Investigations', management: 'Management', clinical_safety: 'Safety' };
+            const dimLabel = QV2_DIM_LABEL;
             const pct = dims[k];
             return React.createElement('div', { key: k, style: { marginBottom: 8 } },
               React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },

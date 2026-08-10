@@ -18,9 +18,12 @@ function QSkillRadar(props) {
   if (n < 3) return React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', textAlign: 'center', padding: 20 } }, 'Complete a few cases across different specialties to see your skill radar.');
 
   var size = props.size || 180;
-  var cx = size / 2, cy = size / 2, r = size / 2 - 16;
+  // Room for axis labels + "%" text around the polygon (they were clipping at
+  // the svg edge before — "text cut off top/bottom/left/right" on the dashboard).
+  var pad = 44;
+  var cx = size / 2 + pad, cy = size / 2 + pad, r = size / 2 - 26;
   var slice = 2 * Math.PI / n;
-  var L = { history_coverage: _t('dashboard.dim_history_coverage'), red_flags: _t('dashboard.dim_red_flags'), ice_fife: _t('dashboard.dim_ice_fife'), questioning_technique: _t('dashboard.dim_questioning_technique'), communication: _t('dashboard.dim_communication'), diagnostic_reasoning: _t('dashboard.dim_diagnostic_reasoning'), investigations: _t('dashboard.dim_investigations'), management: _t('dashboard.dim_management'), clinical_safety: _t('dashboard.dim_clinical_safety'), coverage: 'Coverage', fife: 'FIFE', redFlags: 'Red flags' };
+  var L = { history_coverage: _t('dashboard.dim_history_coverage'), red_flags: _t('dashboard.dim_red_flags'), ice_fife: _t('dashboard.dim_ice_fife'), questioning_technique: _t('dashboard.dim_questioning_technique'), communication: _t('dashboard.dim_communication'), physical_exam: 'Physical Exam', diagnostic_reasoning: _t('dashboard.dim_diagnostic_reasoning'), investigations: _t('dashboard.dim_investigations'), management: _t('dashboard.dim_management'), clinical_safety: _t('dashboard.dim_clinical_safety'), coverage: 'Coverage', fife: 'FIFE', redFlags: 'Red flags' };
   var rings = [0.25, 0.5, 0.75, 1.0];
   var elements = [];
 
@@ -56,10 +59,10 @@ function QSkillRadar(props) {
     var angle = -Math.PI / 2 + slice * i;
     var label = L[keys[i]] || keys[i];
     var pct = Math.round(dims[keys[i]] || 0);
-    elements.push(React.createElement('text', { key: 'l' + i, x: cx + (r + 20) * Math.cos(angle), y: cy + (r + 20) * Math.sin(angle), textAnchor: 'middle', dominantBaseline: 'central', fontSize: 9, fontWeight: 600, fill: 'var(--text-1)', fontFamily: 'Poppins' }, label + ' ' + pct + '%'));
+    elements.push(React.createElement('text', { key: 'l' + i, x: cx + (r + 22) * Math.cos(angle), y: cy + (r + 22) * Math.sin(angle), textAnchor: 'middle', dominantBaseline: 'central', fontSize: 9.5, fontWeight: 600, fill: 'var(--text-1)', fontFamily: 'Poppins' }, label + ' ' + pct + '%'));
   }
 
-  return React.createElement('svg', { width: size, height: size + 10, viewBox: '0 0 ' + size + ' ' + size, style: { display: 'block', margin: '0 auto' } }, elements);
+  return React.createElement('svg', { width: size + pad * 2, height: size + pad * 2 + 4, viewBox: '0 0 ' + (size + pad * 2) + ' ' + (size + pad * 2), style: { display: 'block', margin: '0 auto', maxWidth: '100%' } }, elements);
 }
 
 // ── Session History Screen ──
