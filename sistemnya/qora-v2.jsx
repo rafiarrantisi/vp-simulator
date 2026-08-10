@@ -60,8 +60,15 @@ function _qv2SpecLabel(sp) {
   } catch (e) {}
   return QV2_SPEC_LABEL[sp] || sp;
 }
-// Localised case title: Indonesian when the case carries one, English fallback.
-function _qv2Title(c) { return (c && (c.presentation_id || c.presentation)) || (c && c.presentation) || ''; }
+// Localised case title: follows the user's region — Indonesian for indo,
+// English otherwise (presentation_id only exists for Indonesian).
+function _qv2Title(c) {
+  if (!c) return '';
+  var indo = false;
+  try { indo = typeof window !== 'undefined' && window.localStorage && window.localStorage.getItem('qora_region') === 'indo'; } catch (e) {}
+  if (indo) return c.presentation_id || c.presentation || '';
+  return c.presentation || c.presentation_id || '';
+}
 
 function QV2Pill({ children, tone }) {
   const t = tone || 'primary';
