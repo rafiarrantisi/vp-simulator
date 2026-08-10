@@ -15,7 +15,7 @@ function QLSection(props) {
     background: props.dark ? 'var(--surface-2)' : 'transparent',
     borderBottom: props.dark ? 'none' : '1px solid var(--border)',
   } },
-    React.createElement('div', { style: { maxWidth: 920, margin: '0 auto' } },
+    React.createElement('div', { style: { maxWidth: 'min(920px, calc(100% - 32px))', margin: '0 auto' } },
       props.title && React.createElement('h2', { className: 'au', style: {
         fontSize: 'clamp(22px, 3.5vw, 34px)', fontWeight: 800,
         color: 'var(--text-1)', textAlign: 'center', marginBottom: 8,
@@ -23,7 +23,7 @@ function QLSection(props) {
       } }, props.title),
       props.subtitle && React.createElement('p', { className: 'au d1', style: {
         fontSize: 14.5, color: 'var(--text-2)', textAlign: 'center',
-        maxWidth: 580, margin: '0 auto 40px', lineHeight: 1.7,
+        maxWidth: 'min(580px, calc(100% - 24px))', margin: '0 auto 40px', lineHeight: 1.7,
       } }, props.subtitle),
       props.children));
 }
@@ -48,7 +48,7 @@ function QLStats() {
   ];
   return React.createElement('div', { className: 'au', style: {
     display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap',
-    margin: '40px auto 0', maxWidth: 780,
+    margin: '40px auto 0', maxWidth: 'min(780px, 100%)',
   } },
     items.map(function(item, i) {
       return React.createElement('div', { key: item.label, style: {
@@ -232,7 +232,7 @@ function QLPricing(props) {
 /* ── Testimonial ── */
 function QLTestimonial() {
   return React.createElement('div', { className: 'au', style: {
-    maxWidth: 620, margin: '0 auto',
+    maxWidth: 'min(620px, calc(100% - 32px))', margin: '0 auto',
     padding: 28, borderRadius: 'var(--r-xl)',
     background: 'var(--surface)', border: '1px solid var(--border)',
     boxShadow: 'var(--sh-md)', textAlign: 'center',
@@ -275,7 +275,7 @@ function QLFAQ() {
     next[i] = !next[i];
     setOpenArr(next);
   };
-  return React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 8 } },
+  return React.createElement('div', { style: { maxWidth: 'min(640px, calc(100% - 32px))', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 8 } },
     items.map(function(item, i) {
       var isOpen = openArr[i] || false;
       return React.createElement('div', { key: item.q, className: 'as d' + Math.min(i, 3), style: {
@@ -307,7 +307,7 @@ function QLFooter() {
     borderTop: '1px solid var(--border)', background: 'var(--surface)',
     padding: '32px 24px',
   } },
-    React.createElement('div', { style: { maxWidth: 920, margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 } },
+    React.createElement('div', { style: { maxWidth: 'min(920px, calc(100% - 32px))', margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 } },
       React.createElement('div', null,
         React.createElement('div', { style: { fontSize: 14, fontWeight: 800, color: 'var(--text-1)' } }, 'Qora'),
         React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 2 } }, 'Clinical Interview Trainer')),
@@ -400,7 +400,7 @@ function QLAuth({ mode, setMode, onLogin }) {
       style: { width: '100%', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Poppins', color: 'var(--text-1)' },
     }));
 
-  return React.createElement('div', { className: 'as', style: { maxWidth: 400, margin: '40px auto', padding: 28, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-lg)' } },
+  return React.createElement('div', { className: 'as', style: { maxWidth: 'min(400px, calc(100% - 32px))', margin: '40px auto', padding: 28, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-lg)' } },
     React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, isSignup ? 'Create your account' : 'Welcome back'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 20 } }, isSignup ? 'Start practising clinical interviews in minutes.' : 'Log in to continue your practice.'),
     isSignup && field('Full name', name, setName, 'text', 'Your name'),
@@ -433,7 +433,7 @@ function QoraLanding({ onLogin }) {
   }, []);
   const go = (m) => { setMode(m); setView('auth'); };
 
-  const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: 1080, margin: '0 auto' } },
+  const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: 'min(1080px, calc(100% - 32px))', margin: '0 auto' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 8 } },
       React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' } }, 'Qora'),
       React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' } }, 'Clinical interview trainer')),
@@ -449,14 +449,14 @@ function QoraLanding({ onLogin }) {
   return React.createElement('div', { style: { minHeight: '100vh' } }, header,
     // ── Hero ──
     React.createElement('section', { style: { padding: '60px 24px 20px' } },
-      React.createElement('div', { style: { maxWidth: 900, margin: '0 auto', textAlign: 'center' } },
+      React.createElement('div', { style: { maxWidth: 'min(900px, 100%)', margin: '0 auto', textAlign: 'center' } },
         React.createElement('div', { className: 'au', style: { display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)', background: 'var(--primary-l)', padding: '5px 12px', borderRadius: 999, marginBottom: 20 } }, 'Beta \u00b7 for medical students & IMG exam candidates'),
         React.createElement('h1', { className: 'au', style: { fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 18 } },
           'Practise the patient interview, ',
           React.createElement('span', { style: { color: 'var(--primary)' } }, 'across every specialty.')),
-        React.createElement('p', { className: 'au d1', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 620, margin: '0 auto 28px' } },
+        React.createElement('p', { className: 'au d1', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 'min(620px, 100%)', margin: '0 auto 28px' } },
           'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring against a hidden checklist and a full model-answer reveal. From internal medicine to emergency.'),
-        React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12 } },
+        React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' } },
           React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
           React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'I have an account')),
         // Stats

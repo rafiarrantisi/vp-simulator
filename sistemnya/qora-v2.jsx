@@ -100,7 +100,7 @@ function QV2Catalogue({ onPick, onProgress }) {
 
   const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)));
   const DIFF_LABEL = { '1': _t('cases.difficulty_1'), '2': _t('cases.difficulty_2'), '3': _t('cases.difficulty_3') };
-  return React.createElement('div', { className: 'au', style: { maxWidth: 1080, margin: '0 auto', padding: '24px 20px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(1080px, calc(100% - 24px))', margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 6 } },
       React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, _t('cases.title')),
       onProgress && React.createElement('button', { onClick: onProgress, style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, '\uD83D\uDCCA ' + _t('dashboard.your_progress'))),
@@ -255,7 +255,7 @@ function QV2Assess({ caseSummary, isOsce, busy, transcript, onBack, onSubmit }) 
 
   const panel = tab === 'conversation' ? conversationTab : tab === 'investigations' ? investigationsTab : tab === 'therapy' ? therapyTab : diagnosisTab;
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: 20 } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(720px, calc(100% - 16px))', margin: '0 auto', padding: 16 } },
     React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back to interview'),
     React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, _t('session.your_assessment')),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 16 } }, 'Commit your workup before the answer key is revealed.'),
@@ -335,7 +335,7 @@ function QV2MediaBar({ caseId }) {
     open && React.createElement(QV2MediaModal, { media, onClose: () => setOpen(false) }));
 }
 
-// ---- Responsive helper ----
+// ---- Responsive helper ---- 
 function useIsWide(px) {
   const q = '(min-width: ' + (px || 900) + 'px)';
   const [wide, setWide] = React.useState(() => typeof window !== 'undefined' && window.matchMedia(q).matches);
@@ -347,6 +347,8 @@ function useIsWide(px) {
   }, [q]);
   return wide;
 }
+function useIsMobile() { return !useIsWide(768); }
+function useIsTablet() { return !useIsWide(1024); }
 
 // ---- Session setup: mode selection + preparation (instruksi §4.3 + §4.5) ----
 function QV2ModeCard({ active, onClick, tone, badge, title, body }) {
@@ -414,10 +416,10 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
       setMicState('granted');
     } catch (e) { setMicState('denied'); }
   }
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '28px 20px 60px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(640px, calc(100% - 16px))', margin: '0 auto', padding: '24px 16px 60px' } },
     React.createElement('button', { onClick: onBack, style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 Library'),
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Get ready for your session'),
-    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22, fontStyle: 'italic' } }, caseSummary.first_impression_id || caseSummary.first_impression || caseSummary.presentation),
+    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22, fontStyle: 'italic' } }, caseSummary.first_impression_id || caseSummary.first_impression || caseSummary.presentation_id || caseSummary.presentation),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose a mode'),
     React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
       React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning. A task guide and history hints help you along. The timer is optional.' }),
@@ -483,7 +485,7 @@ function QV2TaskPanel({ mode, secs, timerOn, onToggleTimer }) {
 // ---- Time-up choice (instruksi §4.3) ----
 function QV2TimeUpModal({ onFinish, onContinue }) {
   return React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 1002, background: 'rgba(26,29,46,0.55)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, animation: 'overlayIn 0.2s ease' } },
-    React.createElement('div', { className: 'as', style: { maxWidth: 400, width: '100%', padding: 26, borderRadius: 'var(--r-2xl)', background: 'var(--surface)', boxShadow: 'var(--sh-xl)', textAlign: 'center' } },
+    React.createElement('div', { className: 'as', style: { maxWidth: 'min(400px, calc(100% - 40px))', width: '100%', padding: 22, borderRadius: 'var(--r-2xl)', background: 'var(--surface)', boxShadow: 'var(--sh-xl)', textAlign: 'center' } },
       React.createElement('div', { style: { fontSize: 38, marginBottom: 10 } }, '⏰'),
       React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } }, "Time's up"),
       React.createElement('div', { style: { fontSize: 13.5, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 22 } }, 'Your OSCE time has ended. Finish now and go to your assessment, or keep going — continuing past time applies a small score penalty.'),
@@ -498,11 +500,13 @@ function QV2TimeUpModal({ onFinish, onContinue }) {
 const QV2_SILENCE_THRESHOLD = 30;  // dB level below which we consider silence
 const QV2_SILENCE_DURATION = 2500;  // ms of silence before auto-send
 
-function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
+function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang, compact }) {
   // Self-contained browser STT (Web Speech API only — no server upload, no Groq).
   const [state, setState] = React.useState('idle'); // idle | listening | error
   const [errMsg, setErrMsg] = React.useState('');
   const recRef = React.useRef(null);
+  const sz = compact ? 60 : 80;
+  const iconSz = compact ? 26 : 32;
 
   const LANG_MAP = { en: 'en-US', id: 'id-ID', ms: 'ms-MY', tl: 'tl-PH', vi: 'vi-VN', th: 'th-TH' };
 
@@ -557,13 +561,13 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang }) {
       disabled: !!disabled,
       title: isListening ? 'Stop recording' : (disabled ? 'Waiting for the patient to reply…' : 'Start recording'),
       style: {
-        width: 80,
-        height: 80,
+        width: sz,
+        height: sz,
         borderRadius: '50%',
         border: isListening ? '3px solid var(--red)' : '3px solid var(--border)',
         background: isListening ? 'var(--red-l)' : disabled ? 'var(--surface-2)' : 'var(--surface)',
         color: isListening ? 'var(--red)' : disabled ? 'var(--text-3)' : 'var(--text-2)',
-        fontSize: 32,
+        fontSize: iconSz,
         cursor: disabled ? 'not-allowed' : 'pointer',
         opacity: disabled ? 0.45 : 1,
         transition: 'all 0.2s ease',
@@ -611,6 +615,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
   const [overtime, setOvertime] = React.useState(false);
   const endRef = React.useRef(null);
   const wide = useIsWide(900);
+  const isMobile = useIsMobile();
 
   // Mic control state
   const [micState, setMicState] = React.useState('idle'); // idle | listening | processing | error
@@ -844,11 +849,11 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
   const mmss = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
 
-  const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: 'calc(100vh - 130px)' } },
+  const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 140px)' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('button', { onClick: onExit, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
       React.createElement(QV2Pill, { tone: isOsce ? 'violet' : 'teal' }, isOsce ? 'OSCE' : 'Practice'),
-      React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1 } }, _qv2Title(caseSummary)),
+      React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, _qv2Title(caseSummary)),
       !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
     React.createElement(QV2MediaBar, { caseId: caseSummary.id }),
     err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8 } }, err),
@@ -865,7 +870,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
       React.createElement('div', { ref: endRef })),
     React.createElement('div', { style: { padding: '12px 0 16px', display: 'flex', flexDirection: 'column', gap: 10 } },
       React.createElement('div', { style: { display: 'flex', justifyContent: 'center' } },
-        React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t), disabled: busy, sessionLang: language })),
+        React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t), disabled: busy, sessionLang: language, compact: isMobile })),
       React.createElement('div', { style: { display: 'flex', gap: 8 } },
         React.createElement('input', {
           value: input, onChange: e => setInput(e.target.value),
@@ -875,7 +880,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
         }),
         React.createElement('button', { onClick: () => setStage(isOsce ? 'pf' : 'assess'), disabled: busy, style: { padding: '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, isOsce ? 'Exam →' : 'Assess →'))));
 
-  return React.createElement('div', { style: { maxWidth: wide ? 1200 : 760, margin: '0 auto', padding: '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
+  return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 0' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
     wide && React.createElement('div', { style: { width: 240, flexShrink: 0, marginLeft: -40 } },
       React.createElement(QV2TaskPanel, { mode: mode, secs: secs, timerOn: timerOn, onToggleTimer: () => setTimerOn((v) => !v) })),
     chatColumn,
@@ -911,7 +916,7 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
     const hit = (report.per_item || []).find(p => t && (t.includes(String(p.item || '').toLowerCase()) || String(p.item || '').toLowerCase().includes(t)));
     return hit ? hit.status : null;
   };
-  return React.createElement('div', { className: 'au', style: { maxWidth: 820, margin: '0 auto', padding: '24px 20px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(820px, calc(100% - 16px))', margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Debrief'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18 } }, caseSummary.presentation),
     // overall + dimensions
@@ -1113,14 +1118,14 @@ function QoraDashboard({ onNav, onStartCase }) {
           React.createElement('div', { style: { fontSize: 11, opacity: 0.65, textAlign: 'right' } }, (p.xp || 0) + ' XP')))),
 
     // Stats Row
-    React.createElement('div', { className: 'au', style: { display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 28 } },
+    React.createElement('div', { className: 'au', style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 12, marginBottom: 24 } },
       React.createElement(QDStat, { label: 'Cases completed', value: completedCases, icon: '📋', color: 'var(--primary)', sub: 'across ' + specKeys.length + ' specialties' }),
       React.createElement(QDStat, { label: 'Total sessions', value: totalSessions, icon: '🔥', color: 'var(--amber)', sub: 'practice encounters' }),
       React.createElement(QDStat, { label: 'Avg score', value: avgScore + '%', icon: '📈', color: 'var(--teal)', sub: hasDims ? 'across all dimensions' : 'complete a case to see' }),
       React.createElement(QDStat, { label: 'Streak', value: p.streak ? p.streak + 'd' : '0d', icon: '🏅', color: 'var(--gold)', sub: p.streak ? 'days in a row' : 'start your streak' })),
 
     // Two-column: Recent + Specialties
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 } },
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 20 } },
       // Recent Activity
       React.createElement('div', null,
         React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },

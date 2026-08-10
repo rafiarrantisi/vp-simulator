@@ -41,7 +41,7 @@ function QV2PhysicalExam({ caseSummary, sessionId, language, onBack, onContinue 
 
   const label = (k) => { const d = AREA_DEFS.find((x) => x[0] === k); return d ? (isId ? d[2] : d[1]) : k; };
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 680, margin: '0 auto', padding: 20 } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(680px, calc(100% - 16px))', margin: '0 auto', padding: 16 } },
     React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, isId ? '← Kembali ke wawancara' : '← Back to interview'),
     React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, isId ? '🩺 Pemeriksaan Fisik' : '🩺 Physical Examination'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18, lineHeight: 1.6 } },

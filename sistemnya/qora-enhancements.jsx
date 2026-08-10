@@ -97,7 +97,7 @@ function QoraSessions(props) {
     content = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } }, sessions.map(renderSession));
   }
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 860, margin: '0 auto', padding: '28px 20px 60px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(860px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
       React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
       React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\uD83D\uDCCB ' + _t('dashboard.recent_sessions'))),
@@ -152,7 +152,7 @@ function QoraBilling(props) {
   var limit = data.free_session_limit || 3;
   var pct = Math.min(Math.round(usedSessions / limit * 100), 100);
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 760, margin: '0 auto', padding: '28px 20px 60px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(760px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
       React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
       React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\uD83D\uDCB3 ' + (window.__t ? window.__t('profile.billing', {}) || 'Billing & plan' : 'Billing & plan'))),
@@ -200,7 +200,7 @@ function QoraBillingResult(props) {
   var okResult = !!props.ok;
   var onNav = props.onNav;
   var _t = window.__t || function (k) { return k; };
-  return React.createElement('div', { className: 'au', style: { maxWidth: 480, margin: '0 auto', padding: '60px 20px', textAlign: 'center' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(480px, calc(100% - 16px))', margin: '0 auto', padding: '60px 20px', textAlign: 'center' } },
     React.createElement('div', { style: { fontSize: 56, marginBottom: 16 } }, okResult ? '\uD83C\uDF89' : '\uD83D\uDEA8'),
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } },
       okResult ? (window.__t ? window.__t('billing.success', {}) || 'Payment successful!' : 'Payment successful!') : (window.__t ? window.__t('billing.failed', {}) || 'Payment not completed' : 'Payment not completed')),
@@ -250,7 +250,7 @@ function QoraSettings(props) {
 
   if (!me) return React.createElement('div', { style: { padding: 40, textAlign: 'center', color: 'var(--text-3)' } }, _t('common.loading'));
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '28px 20px 60px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(640px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
       React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
       React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\u2699\uFE0F ' + _t('profile.settings'))),

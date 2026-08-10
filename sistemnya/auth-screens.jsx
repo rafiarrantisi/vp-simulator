@@ -86,8 +86,8 @@ const LandingScreen = ({ onLogin, onSignup }) => {
 
       {/* ── HERO ── */}
       <section style={{
-        maxWidth: 1200, margin: '0 auto', padding: '64px 24px 40px',
-        display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: 56, alignItems: 'center',
+        maxWidth: 'min(1200px, calc(100% - 24px))', margin: '0 auto', padding: '64px 24px 40px',
+        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 56, alignItems: 'center',
         width: '100%',
       }}>
         <div className="au">
@@ -114,7 +114,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
             }}>mata kamu</span>, kapan saja.
           </h1>
-          <p style={{ fontSize: 17, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 36, maxWidth: 520 }}>
+          <p style={{ fontSize: 17, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 36, maxWidth: 'min(520px, calc(100% - 24px))' }}>
             Simulator pasien virtual untuk skill anamnesis & pemeriksaan oftalmologi.
             Kasus realistis, scoring otomatis, dan feedback langsung — siap-siap OSCE tanpa keringat dingin.
           </p>
@@ -213,11 +213,11 @@ const LandingScreen = ({ onLogin, onSignup }) => {
       </section>
 
       {/* ── Stats strip ── */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '20px 24px 40px', width: '100%' }}>
+      <section style={{ maxWidth: 'min(1200px, calc(100% - 24px))', margin: '0 auto', padding: '20px 24px 40px', width: '100%' }}>
         <div className="au" style={{
           background: 'var(--surface)', borderRadius: 24, padding: '28px 32px',
           border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)',
-          display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16,
+          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 16,
         }}>
           {[
             { v: '12+', l: 'Kasus Klinis', c: 'var(--primary)' },
@@ -235,7 +235,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
       </section>
 
       {/* ── FEATURES ── */}
-      <section id="section-0" style={{ maxWidth: 1200, margin: '0 auto', padding: '60px 24px', width: '100%' }}>
+      <section id="section-0" style={{ maxWidth: 'min(1200px, calc(100% - 24px))', margin: '0 auto', padding: '60px 24px', width: '100%' }}>
         <div className="au" style={{ textAlign: 'center', marginBottom: 48 }}>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -247,12 +247,12 @@ const LandingScreen = ({ onLogin, onSignup }) => {
           <h2 style={{ fontSize: 36, fontWeight: 800, color: 'var(--text-1)', marginBottom: 12, letterSpacing: '-0.02em' }}>
             Semua yang kamu butuhkan, di satu tempat.
           </h2>
-          <p style={{ fontSize: 15, color: 'var(--text-2)', maxWidth: 560, margin: '0 auto', lineHeight: 1.6 }}>
+          <p style={{ fontSize: 15, color: 'var(--text-2)', maxWidth: 'min(560px, calc(100% - 24px))', margin: '0 auto', lineHeight: 1.6 }}>
             Dari anamnesis hingga pemeriksaan mata lengkap — semua di rancang sesuai standar OSCE Indonesia.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 20 }}>
           {[
             { icon: '💬', color: 'var(--primary)', bg: 'var(--primary-l)',
               title: 'Anamnesis Realistik',
@@ -294,7 +294,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
         borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
         padding: '64px 24px',
       }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div style={{ maxWidth: 'min(1200px, calc(100% - 24px))', margin: '0 auto' }}>
           <div className="au" style={{ textAlign: 'center', marginBottom: 48 }}>
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -308,7 +308,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
             </h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, position: 'relative' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 24, position: 'relative' }}>
             {/* connector line */}
             <div style={{
               position: 'absolute', left: '16.66%', right: '16.66%', top: 36,
@@ -344,8 +344,8 @@ const LandingScreen = ({ onLogin, onSignup }) => {
       </section>
 
       {/* ── FOR WHO ── */}
-      <section id="section-2" style={{ maxWidth: 1200, margin: '0 auto', padding: '72px 24px', width: '100%' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'center' }}>
+      <section id="section-2" style={{ maxWidth: 'min(1200px, calc(100% - 24px))', margin: '0 auto', padding: '72px 24px', width: '100%' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 48, alignItems: 'center' }}>
           <div className="au">
             <div style={{
               display: 'inline-flex', alignItems: 'center', gap: 8,
@@ -419,7 +419,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
       </section>
 
       {/* ── FINAL CTA ── */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', padding: '40px 24px 80px', width: '100%' }}>
+      <section style={{ maxWidth: 'min(1200px, calc(100% - 24px))', margin: '0 auto', padding: '40px 24px 80px', width: '100%' }}>
         <div className="au" style={{
           background: 'linear-gradient(135deg, var(--primary) 0%, #8B5CF6 50%, #6366F1 100%)',
           borderRadius: 32, padding: '56px 48px',
@@ -439,7 +439,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
             <h2 style={{ fontSize: 40, fontWeight: 800, lineHeight: 1.1, marginBottom: 14, letterSpacing: '-0.02em' }}>
               Siap jadi dokter mata yang mantap?
             </h2>
-            <p style={{ fontSize: 16, opacity: 0.9, marginBottom: 32, maxWidth: 520, margin: '0 auto 32px', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 16, opacity: 0.9, marginBottom: 32, maxWidth: 'min(520px, calc(100% - 24px))', margin: '0 auto 32px', lineHeight: 1.6 }}>
               Daftar sekarang, gratis selamanya untuk mahasiswa. Akses semua kasus dasar tanpa kartu kredit.
             </p>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -462,7 +462,7 @@ const LandingScreen = ({ onLogin, onSignup }) => {
         borderTop: '1px solid var(--border)', background: 'var(--surface)',
         padding: '32px 24px',
       }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
+        <div style={{ maxWidth: 'min(1200px, calc(100% - 24px))', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16 }}>
           <BrandLogo size="md" />
           <div style={{ fontSize: 12, color: 'var(--text-3)' }}>
             © 2026 Qora · Dibuat dengan ❤️ untuk dokter muda Indonesia
@@ -575,7 +575,7 @@ const LoginScreen = ({ onLogin, onBack, onGoSignup, mode = 'login' }) => {
   return (
     <div style={{
       minHeight: '100vh',
-      display: 'grid', gridTemplateColumns: '1fr 1fr',
+      display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))',
     }}>
       {/* ── LEFT — Form ── */}
       <div style={{
@@ -729,7 +729,7 @@ const LoginScreen = ({ onLogin, onBack, onGoSignup, mode = 'login' }) => {
             </div>
 
             {/* Social */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 10 }}>
               {[
                 { name: 'Google', icon: (
                   <svg width="16" height="16" viewBox="0 0 48 48">

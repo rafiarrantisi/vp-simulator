@@ -76,6 +76,22 @@
       });
       const [screenKey, setScreenKey] = React.useState(0);
       const [showSettings, setShowSettings] = React.useState(false);
+      // Mobile/tablet breakpoints (Aug 2026 responsive pass) — inline-styled
+      // app, so layout adapts via JS matchMedia, not stylesheet media queries.
+      const [isMobile, setIsMobile] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches);
+      const [isTablet, setIsTablet] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
+      React.useEffect(() => {
+        var mqM = window.matchMedia('(max-width: 768px)');
+        var mqT = window.matchMedia('(max-width: 1024px)');
+        var fm = function (e) { setIsMobile(e.matches); };
+        var ft = function (e) { setIsTablet(e.matches); };
+        if (mqM.addEventListener) mqM.addEventListener('change', fm); else mqM.addListener(fm);
+        if (mqT.addEventListener) mqT.addEventListener('change', ft); else mqT.addListener(ft);
+        return function () {
+          if (mqM.removeEventListener) mqM.removeEventListener('change', fm); else mqM.removeListener(fm);
+          if (mqT.removeEventListener) mqT.removeEventListener('change', ft); else mqT.removeListener(ft);
+        };
+      }, []);
 
       const navigate = React.useCallback((s) => {
         setScreen(s);
@@ -136,35 +152,39 @@
           background: 'rgba(245,247,255,0.88)',
           backdropFilter: 'blur(20px)',
           borderBottom: '1px solid var(--border)',
-          padding: '0 24px', height: 60,
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: isMobile ? '0 10px' : '0 24px', height: 56,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
         }},
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }, onClick: () => navigate('dashboard') },
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', flexShrink: 0 }, onClick: () => navigate('dashboard') },
             React.createElement('div', null,
-              React.createElement('div', { style: { fontSize: 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 } }, 'Qora'),
-              React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
-          // Nav
-          React.createElement('nav', { style: { display: 'flex', gap: 4 } },
+              React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 } }, 'Qora'),
+              !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
+          // Nav — scrolls horizontally on mobile so all 5 items stay reachable
+          React.createElement('nav', { style: {
+            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: isMobile ? 'flex-start' : 'center',
+            overflowX: isMobile ? 'auto' : 'visible',
+            msOverflowStyle: 'none', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch',
+          } },
             [['dashboard','Dashboard'],['cases','Cases'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
-                padding: '6px 14px', borderRadius: 10, border: 'none',
+                padding: isMobile ? '6px 9px' : '6px 14px', borderRadius: 10, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
                 background: screen === s ? 'var(--primary-l)' : 'transparent',
                 color: screen === s ? 'var(--primary)' : 'var(--text-2)',
-                fontSize: 13, fontWeight: screen === s ? 700 : 500,
+                fontSize: isMobile ? 12 : 13, fontWeight: screen === s ? 700 : 500,
                 cursor: 'pointer', transition: 'all 0.18s ease',
                 fontFamily: 'Poppins',
               } }, l);
             })),
           // Right side
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10 } },
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 10, flexShrink: 0 } },
             React.createElement('button', { onClick: function() { setShowSettings(true); }, style: {
-              width: 32, height: 32, borderRadius: 8, border: '1px solid var(--border)',
+              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: 8, border: '1px solid var(--border)',
               background: 'var(--surface)', cursor: 'pointer', fontSize: 14,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }, title: 'Settings' }, '⚙️'),
             React.createElement('button', { onClick: function() { navigate('profile'); }, style: {
-              width: 32, height: 32, borderRadius: '50%',
+              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: '50%',
               background: screen === 'profile' ? 'var(--primary-d, var(--primary))' : 'var(--primary)', color: '#fff',
               border: screen === 'profile' ? '2px solid var(--text-1)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
               fontFamily: 'Poppins',
