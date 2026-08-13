@@ -1,5 +1,25 @@
 // functions/api/[[path]].ts — proxy /api/* ke backend FastAPI via Cloudflare Tunnel
-const BACKEND = "https://back-mounts-learn-aspects.trycloudflare.com"; // quick tunnel; ganti ke api.qoramedical.com saat named tunnel
+// Retry 530 (same-zone subrequest loop-protection) — request tidak pernah sampai
+// backend saat 530, jadi aman di-retry untuk semua method.
+const BACKEND = "https://api.qoramedical.com"; // named tunnel -> VPS FastAPI :8000
+
+async function fetchWithRetry(url: string, init: RequestInit): Promise<Response> {
+  let last: Response | null = null;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await fetch(url, init);
+      if (res.status !== 530 && !(res.status >= 500 && ["GET", "HEAD"].includes(init.method || "GET"))) {
+        return res;
+      }
+      last = res;
+    } catch (e) {
+      last = null;
+      if (attempt === 2) throw e;
+    }
+    await new Promise((r) => setTimeout(r, 150 * (attempt + 1)));
+  }
+  return last!;
+}
 
 export async function onRequest(context: { request: Request }): Promise<Response> {
   const url = new URL(context.request.url);
@@ -8,7 +28,7 @@ export async function onRequest(context: { request: Request }): Promise<Response
     context.request.method === "GET" || context.request.method === "HEAD"
       ? undefined
       : await context.request.arrayBuffer();
-  const upstream = await fetch(target, {
+  const upstream = await fetchWithRetry(target, {
     method: context.request.method,
     headers: context.request.headers,
     body,
