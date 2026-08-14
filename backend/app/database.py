@@ -18,7 +18,22 @@ _connect_args = (
     else {}
 )
 
-engine = create_engine(_settings.database_url, connect_args=_connect_args, future=True)
+engine = create_engine(
+    _settings.database_url,
+    connect_args=_connect_args,
+    future=True,
+    # v0.16.1: prod = Supabase TRANSACTION pooler (port 6543). Session pooler
+    # (5432) caps at 15 clients (EMAXCONNSESSION) -> DB bottleneck saat
+    # concurrency >15. Supavisor free tier: banyak client conn, tapi ~15
+    # server conn (transaksi simultan). pool_pre_ping + recycle handle
+    # connection recycling; pool sengaja kecil (10+10) biar reconnect storm
+    # pas burst gak menumpuk; pool_timeout=10 fail-fast (503) bukan hang 30s.
+    pool_pre_ping=True,
+    pool_recycle=300,
+    pool_size=10,
+    max_overflow=10,
+    pool_timeout=10,
+)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 
 

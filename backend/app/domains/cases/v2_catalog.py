@@ -3,6 +3,7 @@ from `content/cases/`. Read-only; only lint-clean cases are served. Summaries
 NEVER include Part A scoring ground truth (no leakage to the catalogue)."""
 from __future__ import annotations
 
+from functools import lru_cache
 from pathlib import Path
 
 from app.config import get_settings
@@ -20,7 +21,15 @@ def load_v2_case(case_id: str) -> CaseV2:
     return parse_case_v2(fp)
 
 
-def list_v2_cases(*, specialty: str | None = None, published_only: bool = False) -> list[CaseV2]:
+@lru_cache(maxsize=8)
+def _catalog_cached(specialty: str | None, published_only: bool) -> tuple[CaseV2, ...]:
+    """Catalog parses 82+ markdown files — cache by (specialty, published_only).
+
+    v0.16.1: sebelumnya parse ulang SEMUA file per request (~2s + 2x per call
+    via specialties_present) -> bottleneck concurrency. Kasus berubah hanya
+    saat deploy (backend restart) → lru_cache aman. CaseV2 read-only di path
+    catalog (summary/lint tidak memutasi).
+    """
     out: list[CaseV2] = []
     for fp in sorted(_dir().glob("*.md")):
         try:
@@ -34,7 +43,11 @@ def list_v2_cases(*, specialty: str | None = None, published_only: bool = False)
         if published_only and c.frontmatter.get("status") != "published":
             continue
         out.append(c)
-    return out
+    return tuple(out)
+
+
+def list_v2_cases(*, specialty: str | None = None, published_only: bool = False) -> list[CaseV2]:
+    return list(_catalog_cached(specialty, published_only))
 
 
 def summary(c: CaseV2) -> dict:
@@ -57,5 +70,6 @@ def summary(c: CaseV2) -> dict:
     }
 
 
+@lru_cache(maxsize=1)
 def specialties_present() -> list[str]:
-    return sorted({c.frontmatter.get("specialty") for c in list_v2_cases() if c.frontmatter.get("specialty")})
+    return sorted({c.frontmatter.get("specialty") for c in _catalog_cached(None, False) if c.frontmatter.get("specialty")})

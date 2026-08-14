@@ -87,6 +87,16 @@ async def lifespan(_app: FastAPI):
     init_db()  # dev: create tables. Prod: Alembic (backend-plan §10).
     _ensure_upload_dirs()
     _seed_admin_user()
+    # v0.16.1: pre-warm catalog cache di tiap worker (lru_cache per-proses).
+    # Tanpa ini, worker cold-cache parse 82 file per request pertama (~2s)
+    # SAMBIL megang koneksi DB (dependency auth) -> pool exhaustion saat burst.
+    try:
+        from app.domains.cases.v2_catalog import list_v2_cases, specialties_present
+        list_v2_cases()
+        specialties_present()
+        _log.info("[catalog] pre-warm OK")
+    except Exception:
+        _log.warning("[catalog] pre-warm gagal", exc_info=True)
     yield
 
 
@@ -105,6 +115,20 @@ for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_
     app.include_router(r)
 
 
+# v0.16.1: pool DB habis (burst) -> 503 cepat, bukan 500 + stacktrace.
+# Frontend/CF function bisa retry; user dapat pesan jelas.
+from sqlalchemy.exc import TimeoutError as SaTimeoutError
+
+
+@app.exception_handler(SaTimeoutError)
+async def _db_pool_timeout_handler(_request, _exc):
+    return JSONResponse(
+        status_code=503,
+        content={"success": False, "data": None,
+                 "error": "Server sibuk — coba lagi sebentar lagi."},
+    )
+
+
 # v0.15.0: serve binary foto via FastAPI StaticFiles, mounted di bawah /api/*
 # supaya nginx existing proxy `^/(api|health)` route otomatis ke uvicorn —
 # zero nginx config change. Folder dibuat saat lifespan startup (idempoten).
@@ -115,6 +139,19 @@ app.mount(
     StaticFiles(directory=str(_upload_base / "eye-photos"), check_dir=False),
     name="eye_photos_static",
 )
+
+# TEMPORARY (responsive test harness — REMOVE after verification): serves
+# /mobiletest/mobiletest.html so the cloud browser can iframe the app at
+# phone/tablet widths. Port 8080 is firewall-blocked; 8000 is open.
+_mt = Path("/tmp/mobiletest")
+if _mt.exists():
+    app.mount("/mobiletest", StaticFiles(directory=str(_mt), html=True), name="mobiletest")
+# TEMPORARY same-origin test build of the frontend (/app/...) so the harness
+# can drive the app via JS (cross-origin iframes are read-only in the cloud
+# browser). REMOVE together with the mobiletest mount.
+_dist = Path("/home/ubuntu/vp-simulator/sistemnya/dist")
+if _dist.exists():
+    app.mount("/app", StaticFiles(directory=str(_dist), html=True), name="app_test")
 
 
 @app.get("/health")
