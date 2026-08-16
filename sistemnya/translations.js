@@ -110,6 +110,29 @@ window.QORA_TRANSLATIONS = {
   'common.back': { en: 'Back', id: 'Kembali' },
   'common.save': { en: 'Save', id: 'Simpan' },
   'common.cancel': { en: 'Cancel', id: 'Batal' },
+
+  // ── Mentor (PRD_QORA_MENTOR) ──
+  'mentor.title': { en: 'My Mentor', id: 'Mentor Saya' },
+  'mentor.subtitle': { en: 'Tell Qora about your exam — it will build a structured learning journey, track your progress, and tell you when you are ready.', id: 'Ceritain ujian kamu ke Qora — dia susun rencana belajar terstruktur, ingetin progress, dan kasih tau kapan kamu siap.' },
+  'mentor.tell_qora': { en: 'Tell Qora', id: 'Ceritain ke Qora' },
+  'mentor.chat_placeholder': { en: 'Tell Qora: what exam, when, where you struggle…', id: 'Ceritain ke Qora: ujian apa, kapan, masih kurang di mana…' },
+  'mentor.send': { en: 'Send', id: 'Kirim' },
+  'mentor.your_journey': { en: 'Your Learning Journey', id: 'Rencana Belajar Kamu' },
+  'mentor.days': { en: '{d} days · ~{m} min/day', id: '{d} hari · ~{m} menit/hari' },
+  'mentor.target_readiness': { en: 'Target', id: 'Target' },
+  'mentor.readiness_start': { en: 'Estimated readiness now', id: 'Estimasi kesiapan sekarang' },
+  'mentor.locked': { en: 'Complete Day {d} to unlock', id: 'Selesaikan Hari {d} untuk membuka' },
+  'mentor.available_now': { en: 'Available now', id: 'Tersedia sekarang' },
+  'mentor.reasoning': { en: 'Why this plan', id: 'Alasan rencana ini' },
+  'mentor.accept': { en: 'Accept Journey', id: 'Mulai Journey' },
+  'mentor.customize': { en: 'Customize', id: 'Sesuaikan' },
+  'mentor.customize_feedback': { en: 'Feedback: e.g. "Day 3 → different case"', id: 'Feedback: mis. "hari 3 ganti kasus lain"' },
+  'mentor.changes': { en: 'Changes', id: 'Perubahan' },
+  'mentor.progress': { en: 'Day {d} of {n} ({p}%)', id: 'Hari {d} dari {n} ({p}%)' },
+  'mentor.readiness': { en: 'Readiness', id: 'Kesiapan' },
+  'mentor.today': { en: "Today's case", id: 'Kasus hari ini' },
+  'mentor.start_case': { en: 'Start Case', id: 'Mulai Kasus' },
+  'mentor.abandon': { en: 'Abandon journey', id: 'Hentikan journey' },
 };
 
 // Simple translation function. Usage: window.__t('dashboard.title')

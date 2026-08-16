@@ -32,6 +32,7 @@ const LOAD_ORDER = [
   'qora-v2.jsx',
   'qora-pf.jsx',
   'qora-enhancements.jsx',
+  'qora-mentor.jsx',
 ];
 
 const HTML_FILE = 'Virtual Patient Simulator.html';
