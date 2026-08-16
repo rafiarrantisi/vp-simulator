@@ -9,12 +9,17 @@ ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 DIST="$ROOT/sistemnya/dist"
 HERE="$(cd "$(dirname "$0")" && pwd)"
 
-if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
-  echo "ERROR: set CLOUDFLARE_API_TOKEN dan CLOUDFLARE_ACCOUNT_ID dulu"
+if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+  echo "ERROR: set CLOUDFLARE_API_TOKEN dulu"
   exit 1
 fi
+# Account ID default (public value, non-secret) — override via env bila perlu.
+CLOUDFLARE_ACCOUNT_ID="${CLOUDFLARE_ACCOUNT_ID:-dfb8dfad9b1f5822a996e99cc2c0e9da}"
 
 echo "==> Build frontend (Vite)"
+# Guard: dev-only .env.local (VITE_API_BASE=http://localhost:8010) must NOT be
+# baked into the production bundle — delete it if present (gitignored, dev-only).
+rm -f "$ROOT/sistemnya/.env.local"
 (cd "$ROOT/sistemnya" && npm run build)
 
 echo "==> Deploy ke Pages (project: qoramedical)"
