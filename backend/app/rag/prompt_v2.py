@@ -86,11 +86,14 @@ simple words rather than switching to English."""
 
 
 def build_patient_prompt(case: CaseV2, *, is_first_turn: bool = False,
-                         language: str = "en") -> str:
+                         language: str = "en",
+                         continuity_context: dict | None = None) -> str:
     """System prompt for the patient model. Part B (body) + restraint ONLY.
 
     Reads `case.body` and nothing from `case.frontmatter` — the structural P1
-    guarantee. The persona body already contains the disclosure rules section.
+    guarantee (except the explicit `continuity:` block, which is opt-in data
+    the case author declares for returning-patient cases, PRD §4.3.4/4.3.5).
+    The persona body already contains the disclosure rules section.
 
     When `language` is not "en", a multilingual instruction is appended so the
     patient responds in the target language.
@@ -104,12 +107,46 @@ def build_patient_prompt(case: CaseV2, *, is_first_turn: bool = False,
         "hi": "हिन्दी", "bn": "বাংলা",
     }
     lang_name = _LANG_NAMES.get(language, "English")
-    parts = [case.body.strip(), ANSWER_RESTRAINT, GUARDRAIL]
+    parts = []
+    if continuity_context:
+        block = _continuity_block(continuity_context)
+        if block:
+            parts.append(block)
+    parts += [case.body.strip(), ANSWER_RESTRAINT, GUARDRAIL]
     if language != "en":
         parts.append(LANGUAGE_INSTRUCTION.format(language=lang_name))
     if is_first_turn:
         parts.append(FIRST_TURN)
     return "\n\n".join(p for p in parts if p)
+
+
+def _continuity_block(ctx: dict) -> str:
+    """PRD §4.3.5 — returning-patient context injected above the persona body."""
+    if not ctx or not ctx.get("is_continuity"):
+        return ""
+    days = ctx.get("days_since_last", "a few")
+    prev_dx = ctx.get("previous_diagnosis") or "an earlier problem"
+    prev_tx = ctx.get("previous_treatment") or "obat dari kunjungan sebelumnya"
+    concern = ctx.get("current_concern") or "sesuatu memburuk"
+    symptoms = ctx.get("new_symptoms") or []
+    if isinstance(symptoms, list) and symptoms:
+        symptom_line = "New symptoms: " + ", ".join(str(s) for s in symptoms) + "."
+    else:
+        symptom_line = ""
+    visit = ctx.get("visit_number")
+    visit_line = f" This is your visit {visit} with this doctor." if visit else ""
+    return (
+        "===== CONTINUITY CONTEXT =====\n"
+        f"You are a RETURNING patient. You saw this doctor {days} days ago.\n"
+        f"Previous diagnosis: {prev_dx}.\n"
+        f"Previous treatment: {prev_tx}.\n"
+        f"Your current concern: {concern}.{visit_line}\n"
+        + (symptom_line + "\n" if symptom_line else "")
+        + "IMPORTANT: You remember the previous visit and can reference it "
+          "naturally (\"Dok, kemarin saya ke sini...\" / \"Obat yang kemarin "
+          "sudah habis...\"). But you don't know medical details — you only "
+          "know what you feel."
+    )
 
 
 def build_judge_ground_truth(case: CaseV2) -> dict:

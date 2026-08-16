@@ -18,6 +18,21 @@ source_refs:
   - "ESC 2019 Guidelines — acute pulmonary embolism"
 
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
+
+# Returning-patient continuity (PRD_QORA_MENTOR §4.3.4): visit 2 of the
+# Budi UTA→PE series — triggered when the student misses the PE red flag
+# ("sudden chest pain / difficulty breathing") in im_uta_001.
+continuity:
+  is_continuity: true
+  series_id: "budi_uta_series"
+  visit_number: 2
+  previous_case_id: "im_uta_001"
+  days_since_last: 5
+  previous_diagnosis: "deep vein thrombosis (kaki bengkak)"
+  previous_treatment: "antikoagulan oral"
+  current_concern: "tiba-tiba nyeri dada dan sesak napas"
+  new_symptoms: ["nyeri dada mendadak", "sesak napas", "batuk ringan"]
+
 chief_complaint: "I have sudden chest pain and can't catch my breath after a long flight."
 anamnesis_checklist:
   hpi_socrates:

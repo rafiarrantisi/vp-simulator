@@ -19,6 +19,21 @@ source_refs:
   - "ISPAD Clinical Practice Consensus Guidelines — diabetic ketoacidosis (2022)"
 
 authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
+
+# Returning-patient continuity (PRD_QORA_MENTOR §4.3.4): visit 2 of the
+# T2DM→DKA series — triggered when the student misses the DKA red flag
+# ("signs of diabetic ketoacidosis") in im_new_t2dm_001.
+continuity:
+  is_continuity: true
+  series_id: "joko_t2dm_series"
+  visit_number: 2
+  previous_case_id: "im_new_t2dm_001"
+  days_since_last: 14
+  previous_diagnosis: "diabetes melitus tipe 2"
+  previous_treatment: "metformin oral"
+  current_concern: "haus terus, mual, muntah, dan napas cepat"
+  new_symptoms: ["haus berlebihan", "mual muntah", "napas cepat dan dalam", "mengantuk"]
+
 chief_complaint: "I'm confused and breathing really fast, and my breath smells funny."
 anamnesis_checklist:
   hpi_socrates:

@@ -133,6 +133,34 @@ window.QORA_TRANSLATIONS = {
   'mentor.today': { en: "Today's case", id: 'Kasus hari ini' },
   'mentor.start_case': { en: 'Start Case', id: 'Mulai Kasus' },
   'mentor.abandon': { en: 'Abandon journey', id: 'Hentikan journey' },
+  'mentor.view_report': { en: 'Readiness Report', id: 'Laporan Kesiapan' },
+  'mentor.back_to_journey': { en: 'Back to journey', id: 'Kembali ke journey' },
+
+  // ── Mentor: autopsy (PRD §4.2) ──
+  'mentor.autopsy_title': { en: 'Clinical Reasoning Autopsy', id: 'Autopsi Penalaran Klinis' },
+  'mentor.autopsy_tab_pathway': { en: 'Your Pathway', id: 'Jalur Kamu' },
+  'mentor.autopsy_tab_expert': { en: 'Expert', id: 'Ahli' },
+  'mentor.autopsy_tab_errors': { en: 'Errors', id: 'Kesalahan' },
+  'mentor.autopsy_your_pathway': { en: 'Your reasoning pathway', id: 'Jalur penalaran kamu' },
+  'mentor.autopsy_expert_pathway': { en: 'Expert pathway (gold standard)', id: 'Jalur ahli (standar emas)' },
+  'mentor.autopsy_no_errors': { en: 'No reasoning errors detected — well structured!', id: 'Tidak ada kesalahan penalaran — struktur bagus!' },
+  'mentor.autopsy_pearl': { en: 'Clinical Pearl', id: 'Mutiara Klinis' },
+  'mentor.autopsy_readiness_impact': { en: 'Readiness impact', id: 'Dampak kesiapan' },
+
+  // ── Mentor: continuity (PRD §4.3) ──
+  'mentor.returning_patient': { en: 'Returning Patient', id: 'Pasien Kembali' },
+  'mentor.story_so_far': { en: 'Story so far', id: 'Cerita sejauh ini' },
+  'mentor.new_complaint': { en: 'New complaint', id: 'Keluhan baru' },
+  'mentor.start_visit': { en: 'Start Visit {n}', id: 'Mulai Kunjungan {n}' },
+
+  // ── Mentor: readiness (PRD §4.4) ──
+  'mentor.readiness_report': { en: 'Readiness Report', id: 'Laporan Kesiapan' },
+  'mentor.confidence': { en: 'Confidence', id: 'Tingkat keyakinan' },
+  'mentor.sessions': { en: 'sessions', id: 'sesi' },
+  'mentor.dimension_breakdown': { en: 'Dimension breakdown', id: 'Rincian dimensi' },
+  'mentor.weakest_area': { en: 'Critical: Weakest area', id: 'Kritis: Area terlemah' },
+  'mentor.weakest_text': { en: '{d} is your weakest dimension ({p}%). Focus here before your exam.', id: '{d} adalah dimensi terlemah kamu ({p}%). Fokus di sini sebelum ujian.' },
+  'mentor.recommended_actions': { en: 'Recommended actions', id: 'Aksi yang disarankan' },
 };
 
 // Simple translation function. Usage: window.__t('dashboard.title')

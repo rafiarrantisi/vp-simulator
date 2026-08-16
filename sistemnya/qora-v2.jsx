@@ -911,7 +911,7 @@ function QV2ItemRow({ item, status }) {
       (item && item.item ? item.item : item) + (item && item.critical ? '  •critical' : '')));
 }
 
-function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
+function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
   var _t = window.__t || function(k) { return k; };
@@ -922,6 +922,27 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
       window.confetti({ particleCount: score >= 80 ? 120 : score >= 60 ? 60 : 20, spread: score >= 80 ? 100 : 70, origin: { y: 0.6 } });
     }
   }, []);
+  // Reasoning autopsy (Qora Mentor §4.2): fetch, or generate post-score.
+  const [autopsy, setAutopsy] = React.useState(null);
+  React.useEffect(function () {
+    if (!sessionId) return;
+    var cancelled = false;
+    function loadAutopsy() {
+      qv2Fetch('/api/v2/mentor/sessions/' + sessionId + '/autopsy')
+        .then(function (d) {
+          if (cancelled) return;
+          if (d && d.autopsy) { setAutopsy(d.autopsy); }
+          else {
+            qv2Fetch('/api/v2/mentor/sessions/' + sessionId + '/autopsy', { method: 'POST' })
+              .then(function (r) { if (!cancelled && r && r.autopsy) setAutopsy(r.autopsy); })
+              .catch(function () {});
+          }
+        })
+        .catch(function () {});
+    }
+    loadAutopsy();
+    return function () { cancelled = true; };
+  }, [sessionId]);
   // map item text -> status from per_item (loose lowercase contains match)
   const statusFor = (text) => {
     const t = String(text || '').toLowerCase();
@@ -961,6 +982,8 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
     (ak.management && ((ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || [])).length) ? React.createElement('div', { key: 'mgmt', style: { marginTop: 12 } },
       React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '4px 0' } }, 'Management'),
       (ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || []).map((m, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '2px 0' } }, '• ' + m))) : null,
+    // Reasoning autopsy (Qora Mentor §4.2) — rendered when available
+    typeof QAutopsyCard === 'function' && autopsy && React.createElement(QAutopsyCard, { autopsy: autopsy }),
     // actions
     React.createElement('div', { style: { display: 'flex', gap: 10, marginTop: 22 } },
       React.createElement('button', { onClick: onAgain, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Try another case'),
@@ -1202,6 +1225,7 @@ function QoraV2Screen() {
   const [sessionLanguage, setSessionLanguage] = React.useState('en');
   const [report, setReport] = React.useState(null);
   const [initialSessionId, setInitialSessionId] = React.useState(null);
+  const [sessionId, setSessionId] = React.useState(null); // current session (for autopsy link)
   const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
   const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
@@ -1220,6 +1244,7 @@ function QoraV2Screen() {
       var meta = null;
       try { meta = JSON.parse(sessionStorage.getItem('qora_session_meta') || 'null'); } catch (e) {}
       setInitialSessionId(p1);
+      setSessionId(p1);
       var cid = (meta && meta.caseId) || null;
       var fetchCase = function (caseId, lang) {
         qv2Fetch('/api/v2/cases/' + caseId).then(function (d) { setPicked(d); if (lang) setSessionLanguage(lang); if (meta && meta.mode) setSessionMode(meta.mode); setView('session'); }).catch(function () { setView('catalogue'); setHash('cases'); });
@@ -1257,9 +1282,9 @@ function QoraV2Screen() {
   if (view === 'setup' && picked) {
     body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setReport(null); setInitialSessionId(null); setView('session'); }, onBack: () => { setView('catalogue'); setHash('cases'); } });
   } else if (view === 'session' && picked) {
-    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, initialSessionId: initialSessionId, onSessionReady: (sid) => setHash('session/' + sid), onScored: (r) => { setReport(r); try { sessionStorage.setItem('qora_last_report', JSON.stringify({ report: r, caseId: picked.id })); } catch (e) {} setView('result'); setHash('result'); }, onExit: () => { try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
+    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, initialSessionId: initialSessionId, onSessionReady: (sid) => { setSessionId(sid); setHash('session/' + sid); }, onScored: (r) => { setReport(r); try { sessionStorage.setItem('qora_last_report', JSON.stringify({ report: r, caseId: picked.id, sessionId: sessionId })); } catch (e) {} setView('result'); setHash('result'); }, onExit: () => { try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
   } else if (view === 'result' && report && picked) {
-    body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); }, onLibrary: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
+    body = React.createElement(QV2Result, { report, caseSummary: picked, sessionId: sessionId, onAgain: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); }, onLibrary: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
   } else if (view === 'progress') {
     body = React.createElement(QV2Progress, { onBack: () => { setView('catalogue'); setHash('cases'); } });
   } else {

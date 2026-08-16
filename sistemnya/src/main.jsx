@@ -1143,6 +1143,34 @@ window.QORA_TRANSLATIONS = {
   'mentor.today': { en: "Today's case", id: 'Kasus hari ini' },
   'mentor.start_case': { en: 'Start Case', id: 'Mulai Kasus' },
   'mentor.abandon': { en: 'Abandon journey', id: 'Hentikan journey' },
+  'mentor.view_report': { en: 'Readiness Report', id: 'Laporan Kesiapan' },
+  'mentor.back_to_journey': { en: 'Back to journey', id: 'Kembali ke journey' },
+
+  // ── Mentor: autopsy (PRD §4.2) ──
+  'mentor.autopsy_title': { en: 'Clinical Reasoning Autopsy', id: 'Autopsi Penalaran Klinis' },
+  'mentor.autopsy_tab_pathway': { en: 'Your Pathway', id: 'Jalur Kamu' },
+  'mentor.autopsy_tab_expert': { en: 'Expert', id: 'Ahli' },
+  'mentor.autopsy_tab_errors': { en: 'Errors', id: 'Kesalahan' },
+  'mentor.autopsy_your_pathway': { en: 'Your reasoning pathway', id: 'Jalur penalaran kamu' },
+  'mentor.autopsy_expert_pathway': { en: 'Expert pathway (gold standard)', id: 'Jalur ahli (standar emas)' },
+  'mentor.autopsy_no_errors': { en: 'No reasoning errors detected — well structured!', id: 'Tidak ada kesalahan penalaran — struktur bagus!' },
+  'mentor.autopsy_pearl': { en: 'Clinical Pearl', id: 'Mutiara Klinis' },
+  'mentor.autopsy_readiness_impact': { en: 'Readiness impact', id: 'Dampak kesiapan' },
+
+  // ── Mentor: continuity (PRD §4.3) ──
+  'mentor.returning_patient': { en: 'Returning Patient', id: 'Pasien Kembali' },
+  'mentor.story_so_far': { en: 'Story so far', id: 'Cerita sejauh ini' },
+  'mentor.new_complaint': { en: 'New complaint', id: 'Keluhan baru' },
+  'mentor.start_visit': { en: 'Start Visit {n}', id: 'Mulai Kunjungan {n}' },
+
+  // ── Mentor: readiness (PRD §4.4) ──
+  'mentor.readiness_report': { en: 'Readiness Report', id: 'Laporan Kesiapan' },
+  'mentor.confidence': { en: 'Confidence', id: 'Tingkat keyakinan' },
+  'mentor.sessions': { en: 'sessions', id: 'sesi' },
+  'mentor.dimension_breakdown': { en: 'Dimension breakdown', id: 'Rincian dimensi' },
+  'mentor.weakest_area': { en: 'Critical: Weakest area', id: 'Kritis: Area terlemah' },
+  'mentor.weakest_text': { en: '{d} is your weakest dimension ({p}%). Focus here before your exam.', id: '{d} adalah dimensi terlemah kamu ({p}%). Fokus di sini sebelum ujian.' },
+  'mentor.recommended_actions': { en: 'Recommended actions', id: 'Aksi yang disarankan' },
 };
 
 // Simple translation function. Usage: window.__t('dashboard.title')
@@ -2591,7 +2619,7 @@ function QV2ItemRow({ item, status }) {
       (item && item.item ? item.item : item) + (item && item.critical ? '  •critical' : '')));
 }
 
-function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
+function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
   var _t = window.__t || function(k) { return k; };
@@ -2602,6 +2630,27 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
       window.confetti({ particleCount: score >= 80 ? 120 : score >= 60 ? 60 : 20, spread: score >= 80 ? 100 : 70, origin: { y: 0.6 } });
     }
   }, []);
+  // Reasoning autopsy (Qora Mentor §4.2): fetch, or generate post-score.
+  const [autopsy, setAutopsy] = React.useState(null);
+  React.useEffect(function () {
+    if (!sessionId) return;
+    var cancelled = false;
+    function loadAutopsy() {
+      qv2Fetch('/api/v2/mentor/sessions/' + sessionId + '/autopsy')
+        .then(function (d) {
+          if (cancelled) return;
+          if (d && d.autopsy) { setAutopsy(d.autopsy); }
+          else {
+            qv2Fetch('/api/v2/mentor/sessions/' + sessionId + '/autopsy', { method: 'POST' })
+              .then(function (r) { if (!cancelled && r && r.autopsy) setAutopsy(r.autopsy); })
+              .catch(function () {});
+          }
+        })
+        .catch(function () {});
+    }
+    loadAutopsy();
+    return function () { cancelled = true; };
+  }, [sessionId]);
   // map item text -> status from per_item (loose lowercase contains match)
   const statusFor = (text) => {
     const t = String(text || '').toLowerCase();
@@ -2641,6 +2690,8 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary }) {
     (ak.management && ((ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || [])).length) ? React.createElement('div', { key: 'mgmt', style: { marginTop: 12 } },
       React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '4px 0' } }, 'Management'),
       (ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || []).map((m, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '2px 0' } }, '• ' + m))) : null,
+    // Reasoning autopsy (Qora Mentor §4.2) — rendered when available
+    typeof QAutopsyCard === 'function' && autopsy && React.createElement(QAutopsyCard, { autopsy: autopsy }),
     // actions
     React.createElement('div', { style: { display: 'flex', gap: 10, marginTop: 22 } },
       React.createElement('button', { onClick: onAgain, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Try another case'),
@@ -2882,6 +2933,7 @@ function QoraV2Screen() {
   const [sessionLanguage, setSessionLanguage] = React.useState('en');
   const [report, setReport] = React.useState(null);
   const [initialSessionId, setInitialSessionId] = React.useState(null);
+  const [sessionId, setSessionId] = React.useState(null); // current session (for autopsy link)
   const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
   const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
@@ -2900,6 +2952,7 @@ function QoraV2Screen() {
       var meta = null;
       try { meta = JSON.parse(sessionStorage.getItem('qora_session_meta') || 'null'); } catch (e) {}
       setInitialSessionId(p1);
+      setSessionId(p1);
       var cid = (meta && meta.caseId) || null;
       var fetchCase = function (caseId, lang) {
         qv2Fetch('/api/v2/cases/' + caseId).then(function (d) { setPicked(d); if (lang) setSessionLanguage(lang); if (meta && meta.mode) setSessionMode(meta.mode); setView('session'); }).catch(function () { setView('catalogue'); setHash('cases'); });
@@ -2937,9 +2990,9 @@ function QoraV2Screen() {
   if (view === 'setup' && picked) {
     body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setReport(null); setInitialSessionId(null); setView('session'); }, onBack: () => { setView('catalogue'); setHash('cases'); } });
   } else if (view === 'session' && picked) {
-    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, initialSessionId: initialSessionId, onSessionReady: (sid) => setHash('session/' + sid), onScored: (r) => { setReport(r); try { sessionStorage.setItem('qora_last_report', JSON.stringify({ report: r, caseId: picked.id })); } catch (e) {} setView('result'); setHash('result'); }, onExit: () => { try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
+    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, initialSessionId: initialSessionId, onSessionReady: (sid) => { setSessionId(sid); setHash('session/' + sid); }, onScored: (r) => { setReport(r); try { sessionStorage.setItem('qora_last_report', JSON.stringify({ report: r, caseId: picked.id, sessionId: sessionId })); } catch (e) {} setView('result'); setHash('result'); }, onExit: () => { try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
   } else if (view === 'result' && report && picked) {
-    body = React.createElement(QV2Result, { report, caseSummary: picked, onAgain: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); }, onLibrary: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
+    body = React.createElement(QV2Result, { report, caseSummary: picked, sessionId: sessionId, onAgain: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); }, onLibrary: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
   } else if (view === 'progress') {
     body = React.createElement(QV2Progress, { onBack: () => { setView('catalogue'); setHash('cases'); } });
   } else {
@@ -3685,15 +3738,151 @@ function QJourneyDashboard(props) {
             React.createElement('div', { style: { fontSize: 11, fontWeight: 700, color: color } },
               st === 'completed' ? (c.score != null ? c.score + '%' : '✓') : st === 'available' || st === 'in_progress' ? _mt('mentor.start_case') : '🔒'));
         })),
-      React.createElement('div', { style: { marginTop: 14, display: 'flex', justifyContent: 'flex-end' } },
+      React.createElement('div', { style: { marginTop: 14, display: 'flex', justifyContent: 'flex-end', gap: 8 } },
+        props.onReport && React.createElement('button', Object.assign({ onClick: props.onReport }, _mtBtn('ghost')), '📊 ' + _mt('mentor.view_report')),
         React.createElement('button', Object.assign({ onClick: props.onAbandon }, _mtBtn('danger')), _mt('mentor.abandon')))));
 }
 
-// ── QMentorScreen: top-level state machine ──────────────────────────────
+// ── QAutopsyCard: reasoning autopsy display (PRD §4.2.5) ────────────────
+function QAutopsyCard(props) {
+  var a = props.autopsy || {};
+  var errors = a.errors_detected || [];
+  var [tab, setTab] = React.useState('pathway');
+  var tabs = [['pathway', _mt('mentor.autopsy_tab_pathway')], ['expert', _mt('mentor.autopsy_tab_expert')], ['errors', _mt('mentor.autopsy_tab_errors')]];
+  var sevColor = { critical: 'var(--red)', moderate: 'var(--amber)', minor: 'var(--text-3)' };
+  var sevIcon = { critical: '🔴', moderate: '🟡', minor: '⚪' };
+
+  return React.createElement('div', { className: 'af', style: Object.assign({}, _mtCard, { padding: 18, marginTop: 16 }) },
+    React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10 } }, '🔬 ' + _mt('mentor.autopsy_title')),
+    React.createElement('div', { style: { display: 'flex', gap: 4, borderBottom: '1px solid var(--border)', marginBottom: 12 } },
+      tabs.map(function (t) {
+        return React.createElement('button', {
+          key: t[0], onClick: function () { setTab(t[0]); },
+          style: {
+            padding: '7px 14px', border: 'none', background: 'transparent', cursor: 'pointer',
+            fontSize: 12.5, fontWeight: tab === t[0] ? 700 : 500, fontFamily: 'Poppins',
+            color: tab === t[0] ? 'var(--primary)' : 'var(--text-2)',
+            borderBottom: tab === t[0] ? '2px solid var(--primary)' : '2px solid transparent',
+          },
+        }, t[1]);
+      })),
+    tab === 'pathway' && React.createElement('div', null,
+      React.createElement('div', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 } }, _mt('mentor.autopsy_your_pathway')),
+      React.createElement('ol', { style: { margin: 0, paddingLeft: 18, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.7 } },
+        (a.user_pathway || []).map(function (s, i) {
+          return React.createElement('li', { key: i }, s);
+        }))),
+    tab === 'expert' && React.createElement('div', null,
+      React.createElement('div', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 } }, _mt('mentor.autopsy_expert_pathway')),
+      React.createElement('ol', { style: { margin: 0, paddingLeft: 18, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.7 } },
+        (a.expert_pathway || []).map(function (s, i) {
+          return React.createElement('li', { key: i }, s);
+        }))),
+    tab === 'errors' && React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
+      errors.length === 0 && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '10px 14px', borderRadius: 10 } },
+        '✅ ' + _mt('mentor.autopsy_no_errors')),
+      errors.map(function (e, i) {
+        var c = sevColor[e.severity] || 'var(--text-3)';
+        return React.createElement('div', {
+          key: i,
+          style: {
+            padding: '10px 14px', borderRadius: 'var(--r-md)', fontSize: 12.5, color: 'var(--text-2)',
+            background: e.severity === 'critical' ? 'var(--red-l)' : e.severity === 'moderate' ? 'var(--amber-l)' : 'var(--surface-2)',
+            border: '1px solid ' + c,
+          },
+        },
+          React.createElement('div', { style: { fontWeight: 700, color: 'var(--text-1)', marginBottom: 2 } },
+            (sevIcon[e.severity] || '•') + ' ' + (e.type || '').replace(/_/g, ' ') + ' · ' + (e.severity || '')),
+          e.description && React.createElement('div', null, e.description),
+          e.evidence && React.createElement('div', { style: { marginTop: 4, fontSize: 11.5, fontStyle: 'italic', color: 'var(--text-3)' } }, '“' + e.evidence + '”'));
+      })),
+    a.pearl && React.createElement('div', { style: { marginTop: 12, padding: '10px 14px', borderRadius: 'var(--r-md)', background: 'var(--teal-l)', border: '1px solid var(--teal)', fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.6 } },
+      React.createElement('div', { style: { fontWeight: 800, color: 'var(--teal-d)', marginBottom: 2 } }, '💎 ' + _mt('mentor.autopsy_pearl')),
+      a.pearl),
+    React.createElement('div', { style: { marginTop: 10, fontSize: 11.5, color: 'var(--text-3)' } },
+      _mt('mentor.autopsy_readiness_impact') + ': ' + (a.readiness_impact > 0 ? '+' : '') + (a.readiness_impact || 0) + '%'));
+}
+
+// ── QContinuityBanner: returning patient (PRD §4.3.6) ───────────────────
+function QContinuityBanner(props) {
+  var p = props.pending;
+  if (!p) return null;
+  var story = p.story_so_far || {};
+  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '16px auto 0', padding: '0 16px' } },
+    React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--violet-l)', border: '1px solid var(--violet)', boxShadow: 'var(--sh-sm)' } },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 } },
+        React.createElement('span', { style: { fontSize: 18 } }, '🔄'),
+        React.createElement('span', { style: { fontSize: 14, fontWeight: 800, color: 'var(--text-1)' } }, _mt('mentor.returning_patient')),
+        React.createElement('span', { style: { marginLeft: 'auto', padding: '2px 10px', borderRadius: 999, background: 'var(--violet)', color: '#fff', fontSize: 11, fontWeight: 700 } },
+          'Visit ' + p.visit_number + ' of ' + p.total_visits)),
+      React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } },
+        '👤 ' + p.name + (p.age ? ', ' + p.age : '')),
+      React.createElement('div', { style: { fontSize: 12, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 10 } },
+        React.createElement('div', null, '📋 ' + _mt('mentor.story_so_far') + ': ' + (story.previous_diagnosis || '') + ' — ' + (story.reason || '')),
+        story.new_symptoms && story.new_symptoms.length > 0 &&
+          React.createElement('div', null, '🆕 ' + _mt('mentor.new_complaint') + ': ' + story.new_symptoms.join(', '))),
+      React.createElement('button', Object.assign({ onClick: function () {
+        try { window.location.hash = '#/cases/' + p.next_case_id; } catch (e) {}
+      } }, _mtBtn('primary')), '▶ ' + _mt('mentor.start_visit').replace('{n}', p.visit_number))));
+}
+
+// ── QReadinessGauge: circular readiness meter (PRD §4.4.3) ──────────────
+function QReadinessGauge(props) {
+  var score = props.score || 0;
+  var color = props.color || 'var(--primary)';
+  var r = 52, c = 2 * Math.PI * r;
+  var fill = Math.max(0, Math.min(100, score)) / 100 * c;
+  return React.createElement('div', { style: { position: 'relative', width: 130, height: 130 } },
+    React.createElement('svg', { width: 130, height: 130, viewBox: '0 0 130 130' },
+      React.createElement('circle', { cx: 65, cy: 65, r: r, fill: 'none', stroke: 'var(--surface-3)', strokeWidth: 12 }),
+      React.createElement('circle', { cx: 65, cy: 65, r: r, fill: 'none', stroke: color, strokeWidth: 12, strokeLinecap: 'round', strokeDasharray: c, strokeDashoffset: c - fill, transform: 'rotate(-90 65 65)', style: { transition: 'stroke-dashoffset 0.8s ease' } })),
+    React.createElement('div', { style: { position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' } },
+      React.createElement('div', { style: { fontSize: 38, fontWeight: 800, color: color, lineHeight: 1 } }, score),
+      React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', fontWeight: 600, marginTop: 2 } }, '%')));
+}
+
+// ── QReadinessReport: full readiness report (PRD §4.4.3) ────────────────
+function QReadinessReport(props) {
+  var r = props.data;
+  var readiness = r.readiness || {};
+  var dims = readiness.dimensions || {};
+  var interp = readiness.interpretation || {};
+  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '24px 16px' } },
+    React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
+      React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 14 } }, '📊 ' + _mt('mentor.readiness_report')),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginBottom: 14 } },
+        React.createElement(QReadinessGauge, { score: readiness.score || 0, color: interp.color || 'var(--primary)' }),
+        React.createElement('div', { style: { flex: 1 } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: interp.color || 'var(--text-1)', marginBottom: 4 } }, interp.label || ''),
+          React.createElement('div', { style: { fontSize: 12, color: 'var(--text-2)' } },
+            _mt('mentor.confidence') + ': ' + (readiness.confidence || '—') + ' · ' + _mt('mentor.sessions') + ': ' + (readiness.session_count || 0)))),
+      React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 } }, _mt('mentor.dimension_breakdown')),
+      React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 7 } },
+        Object.keys(dims).map(function (k) {
+          var pct = dims[k];
+          var col = pct >= 75 ? 'var(--green)' : pct >= 60 ? 'var(--amber)' : 'var(--red)';
+          return React.createElement('div', { key: k },
+            React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 12, color: 'var(--text-2)', marginBottom: 2 } },
+              React.createElement('span', { style: { fontWeight: 600, color: 'var(--text-1)' } }, k.replace(/_/g, ' ')),
+              React.createElement('span', { style: { fontWeight: 700, color: col } }, pct + '%')),
+            _mtBar(pct, 6));
+        })),
+      r.weakest && React.createElement('div', { style: { marginTop: 14, padding: '10px 14px', borderRadius: 'var(--r-md)', background: 'var(--red-l)', border: '1px solid var(--red)', fontSize: 12.5, color: 'var(--text-2)' } },
+        React.createElement('div', { style: { fontWeight: 800, color: 'var(--red-d)', marginBottom: 4 } }, '🔴 ' + _mt('mentor.weakest_area')),
+        _mt('mentor.weakest_text').replace('{d}', (r.weakest.dimension || '').replace(/_/g, ' ')).replace('{p}', r.weakest.pct)),
+      r.recommendations && r.recommendations.length > 0 && React.createElement('div', { style: { marginTop: 12, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.7 } },
+        React.createElement('div', { style: { fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, '📌 ' + _mt('mentor.recommended_actions')),
+        r.recommendations.map(function (rec, i) { return React.createElement('div', { key: i }, (i + 1) + '. ' + rec); })),
+      React.createElement('div', { style: { marginTop: 12, fontSize: 11, color: 'var(--text-3)', fontStyle: 'italic', lineHeight: 1.6 } }, '⚠️ ' + (r.disclaimer || ''))));
+}
+
+
 function QMentorScreen(props) {
   var [loading, setLoading] = React.useState(true);
   var [journey, setJourney] = React.useState(null);
-  var [view, setView] = React.useState('chat'); // chat | proposal | dashboard
+  var [view, setView] = React.useState('chat'); // chat | proposal | dashboard | report
+  var [pending, setPending] = React.useState(null);
+  var [report, setReport] = React.useState(null);
   var [err, setErr] = React.useState('');
 
   function load() {
@@ -3709,6 +3898,9 @@ function QMentorScreen(props) {
       })
       .catch(function () { setView('chat'); })
       .finally(function () { setLoading(false); });
+    qv2Fetch('/api/v2/mentor/continuity/pending')
+      .then(function (d) { setPending(d && d.pending ? d.pending : null); })
+      .catch(function () {});
   }
   React.useEffect(function () { load(); }, []);
 
@@ -3725,8 +3917,21 @@ function QMentorScreen(props) {
       .then(function () { setJourney(null); setView('chat'); })
       .catch(function (e) { setErr(e.message || 'Gagal menghentikan'); });
   }
+  function openReport() {
+    setLoading(true);
+    qv2Fetch('/api/v2/mentor/readiness/report')
+      .then(function (d) { setReport(d); setView('report'); })
+      .catch(function (e) { setErr(e.message || 'Gagal memuat laporan'); })
+      .finally(function () { setLoading(false); });
+  }
 
   if (loading) return React.createElement('div', { style: { padding: 60, textAlign: 'center', color: 'var(--text-3)', fontSize: 13 } }, _mt('common.loading'));
+  if (view === 'report' && report) {
+    return React.createElement(React.Fragment, null,
+      React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0' } },
+        React.createElement('button', Object.assign({ onClick: function () { setView('dashboard'); } }, _mtBtn('ghost')), '← ' + _mt('mentor.back_to_journey'))),
+      React.createElement(QReadinessReport, { data: report }));
+  }
   if (view === 'proposal' && journey) {
     return React.createElement(React.Fragment, null,
       err && React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
@@ -3735,9 +3940,12 @@ function QMentorScreen(props) {
   if (view === 'dashboard' && journey) {
     return React.createElement(React.Fragment, null,
       err && React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
-      React.createElement(QJourneyDashboard, { journey: journey, onNav: props.onNav, onAbandon: abandon }));
+      React.createElement(QContinuityBanner, { pending: pending }),
+      React.createElement(QJourneyDashboard, { journey: journey, onNav: props.onNav, onAbandon: abandon, onReport: openReport }));
   }
-  return React.createElement(QMentorChat, { onJourney: onJourney });
+  return React.createElement(React.Fragment, null,
+    React.createElement(QContinuityBanner, { pending: pending }),
+    React.createElement(QMentorChat, { onJourney: onJourney }));
 }
 
 // ===== END qora-mentor.jsx =====

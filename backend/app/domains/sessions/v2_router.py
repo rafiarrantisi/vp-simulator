@@ -351,6 +351,8 @@ def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_
     s.total_score = report.get("overall", 0)
     s.report = report
     s.status = "completed"
+    if s.ended_at is None:
+        s.ended_at = datetime.now(timezone.utc)
     _record_progress(user, case, report)
     db.commit()
     return ok(report)  # includes answer_key for the post-session reveal

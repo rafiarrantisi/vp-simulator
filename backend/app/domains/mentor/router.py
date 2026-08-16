@@ -86,3 +86,50 @@ def mentor_complete_case(journey_id: str, req: CompleteCaseRequest,
     data = service.complete_case(db, user.id, journey_id,
                                  req.case_id, req.session_id, req.score)
     return ok(data)
+
+
+# ---------------------------------------------------------------------------
+# Reasoning autopsy (PRD §4.2)
+# ---------------------------------------------------------------------------
+
+@router.post("/sessions/{session_id}/autopsy")
+def mentor_autopsy_generate(session_id: str, _: None = _ai_rl,
+                            user: User = Depends(get_current_user),
+                            db: Session = Depends(get_db)):
+    data = service.generate_autopsy_for_session(db, user.id, session_id)
+    return ok(data)
+
+
+@router.get("/sessions/{session_id}/autopsy")
+def mentor_autopsy_get(session_id: str, user: User = Depends(get_current_user),
+                       db: Session = Depends(get_db)):
+    data = service.get_autopsy(db, user.id, session_id)
+    return ok({"autopsy": data})
+
+
+# ---------------------------------------------------------------------------
+# Patient continuity (PRD §4.3)
+# ---------------------------------------------------------------------------
+
+@router.get("/continuity/pending")
+def mentor_continuity_pending(user: User = Depends(get_current_user),
+                              db: Session = Depends(get_db)):
+    return ok(service.pending_continuity(db, user.id))
+
+
+# ---------------------------------------------------------------------------
+# Readiness (PRD §4.4)
+# ---------------------------------------------------------------------------
+
+@router.get("/readiness")
+def mentor_readiness(journey_id: str | None = None,
+                     user: User = Depends(get_current_user),
+                     db: Session = Depends(get_db)):
+    return ok(service.get_readiness(db, user.id, journey_id))
+
+
+@router.get("/readiness/report")
+def mentor_readiness_report(journey_id: str | None = None,
+                            user: User = Depends(get_current_user),
+                            db: Session = Depends(get_db)):
+    return ok(service.readiness_report(db, user.id, journey_id))

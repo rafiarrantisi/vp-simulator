@@ -3,7 +3,7 @@
 > **Version:** 1.0  
 > **Date:** August 15, 2026  
 > **Author:** Hermes Agent (Ker)  
-> **Status:** Approved (Aug 16, 2026 — Arran) — Phase 1 shipped  
+> **Status:** Approved (Aug 16, 2026 — Arran) — Phase 1-3 shipped  
 > **Design Constraint:** MUST use existing design system (design.css tokens, no CSS changes)
 
 ---

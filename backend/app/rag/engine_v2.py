@@ -22,8 +22,11 @@ from app.rag.prompt_v2 import build_patient_prompt
 def _prepare(case_id: str, history: list[dict], user_message: str,
              language: str = "en"):
     case = load_v2_case(case_id)  # raises FileNotFoundError if absent
+    # Returning-patient cases declare `continuity:` frontmatter (PRD §4.3.4) —
+    # the only frontmatter the patient prompt is allowed to see.
+    continuity = case.frontmatter.get("continuity") if hasattr(case, "frontmatter") else None
     system = build_patient_prompt(case, is_first_turn=is_first_turn(history),
-                                  language=language)
+                                  language=language, continuity_context=continuity)
     messages = build_messages(history, user_message)
     return system, messages
 

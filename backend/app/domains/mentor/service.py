@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from app.domains.cases.v2_catalog import list_v2_cases
 from app.domains.mentor import journey_builder
 from app.domains.mentor.case_selector import select_cases
-from app.domains.mentor.models import JourneyCase, LearningJourney
+from app.domains.mentor.models import JourneyCase, LearningJourney, ReasoningAutopsy
 
 _log = logging.getLogger("mentor.service")
 
@@ -238,6 +238,148 @@ def _unlock_next(db: Session, journey: LearningJourney) -> JourneyCase | None:
     if jc:
         jc.status = "available"
     return jc
+
+
+# ---------------------------------------------------------------------------
+# Reasoning autopsy (PRD §4.2)
+# ---------------------------------------------------------------------------
+
+def generate_autopsy_for_session(db: Session, user_id: str, session_id: str) -> dict:
+    """Post-score: generate + store the autopsy, then check continuity trigger."""
+    from app.domains.cases.v2_catalog import load_v2_case
+    from app.domains.mentor.autopsy_generator import generate_autopsy
+    from app.domains.mentor.continuity_engine import check_continuity_trigger
+    from app.domains.sessions.models import SessionTurn
+    from app.domains.sessions.router import _owned
+
+    s = _owned(db, session_id, _fake_user(user_id))
+    if s.status != "completed" or not s.report:
+        raise HTTPException(status.HTTP_409_CONFLICT,
+                            "Autopsy hanya bisa dibuat setelah sesi selesai dinilai.")
+    try:
+        case = load_v2_case(s.case_id)
+    except FileNotFoundError:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Case tidak ditemukan.")
+
+    rows = db.scalars(select(SessionTurn).where(SessionTurn.session_id == session_id)
+                      .order_by(SessionTurn.turn_number)).all()
+    transcript = [{"role": r.role, "content": r.content} for r in rows]
+
+    data = generate_autopsy(case, transcript, s.report)
+
+    # Existing autopsy for this session → update in place (idempotent).
+    row = db.scalar(select(ReasoningAutopsy).where(
+        ReasoningAutopsy.session_id == session_id))
+    if row is None:
+        row = ReasoningAutopsy(session_id=session_id)
+        db.add(row)
+    # Link to journey if the session belongs to one.
+    jc = db.scalar(select(JourneyCase).where(JourneyCase.session_id == session_id))
+    if jc:
+        row.journey_id = jc.journey_id
+    row.user_pathway = data.get("user_pathway")
+    row.expert_pathway = data.get("expert_pathway")
+    row.divergence_points = data.get("divergence_points")
+    row.errors_detected = data.get("errors_detected")
+    row.pearl = data.get("pearl")
+    row.readiness_impact = data.get("readiness_impact", 0)
+
+    continuity = check_continuity_trigger(db, data, s.case_id, user_id, session_id)
+    db.commit()
+    db.refresh(row)
+
+    return {"autopsy": _autopsy_view(row), "continuity": continuity}
+
+
+def get_autopsy(db: Session, user_id: str, session_id: str) -> dict | None:
+    from app.domains.sessions.router import _owned
+    _owned(db, session_id, _fake_user(user_id))
+    row = db.scalar(select(ReasoningAutopsy).where(
+        ReasoningAutopsy.session_id == session_id))
+    return _autopsy_view(row) if row else None
+
+
+def _autopsy_view(row) -> dict:
+    return {
+        "id": row.id,
+        "session_id": row.session_id,
+        "journey_id": row.journey_id,
+        "user_pathway": row.user_pathway or [],
+        "expert_pathway": row.expert_pathway or [],
+        "divergence_points": row.divergence_points or [],
+        "errors_detected": row.errors_detected or [],
+        "pearl": row.pearl,
+        "readiness_impact": row.readiness_impact,
+        "created_at": row.created_at.isoformat() if row.created_at else None,
+    }
+
+
+def _fake_user(user_id: str):
+    """Minimal User-like object for sessions.router._owned ownership checks."""
+    from app.domains.auth.models import User
+    u = User(id=user_id)
+    return u
+
+
+# ---------------------------------------------------------------------------
+# Patient continuity (PRD §4.3)
+# ---------------------------------------------------------------------------
+
+def pending_continuity(db: Session, user_id: str) -> dict:
+    from app.domains.mentor.continuity_engine import pending_continuity as _pending
+    return {"pending": _pending(db, user_id)}
+
+
+# ---------------------------------------------------------------------------
+# Readiness (PRD §4.4)
+# ---------------------------------------------------------------------------
+
+def get_readiness(db: Session, user_id: str, journey_id: str | None = None) -> dict:
+    from app.domains.mentor.readiness_calculator import calculate_readiness
+    return calculate_readiness(db, user_id, journey_id)
+
+
+def readiness_report(db: Session, user_id: str, journey_id: str | None = None) -> dict:
+    """Full report: score + dimensions + weakest area + recommendations."""
+    from app.domains.mentor.readiness_calculator import (
+        _DIM_WEIGHTS, calculate_readiness, readiness_history)
+    r = calculate_readiness(db, user_id, journey_id)
+    if r.get("session_count", 0) == 0:
+        return {"readiness": r, "history": [], "weakest": None, "recommendations": [],
+                "disclaimer": _DISCLAIMER}
+
+    dims = r.get("dimensions") or {}
+    weakest = min(dims, key=dims.get) if dims else None
+    weakest_pct = dims.get(weakest) if weakest else None
+
+    recs: list[str] = []
+    if weakest:
+        recs.append(f"Fokus pada {weakest.replace('_', ' ')} — skor terendah ({weakest_pct}%).")
+    if (r.get("error_penalty") or 0) > 0:
+        recs.append("Kamu punya red flag kritis yang terlewat — ulangi skrining red flag.")
+    if (r.get("trajectory_bonus") or 1.0) < 1.0:
+        recs.append("Skor cenderung menurun — konsisten latihan, jangan skip hari.")
+    if (r.get("consistency_bonus") or 1.0) < 0.95:
+        recs.append("Latihan belum rutin — jadwalkan sesi harian.")
+    if not recs:
+        recs.append("Pertahankan konsistensi dan lanjut ke kasus yang lebih sulit.")
+    if weakest and weakest_pct is not None and weakest_pct < 60:
+        recs.append("Ulangi hari-hari yang membahas area terlemah di journey kamu.")
+
+    return {
+        "readiness": r,
+        "history": readiness_history(db, user_id, journey_id)[-10:],
+        "weakest": {"dimension": weakest, "pct": weakest_pct} if weakest else None,
+        "recommendations": recs[:4],
+        "disclaimer": _DISCLAIMER,
+    }
+
+
+_DISCLAIMER = (
+    "Readiness score adalah estimasi berdasarkan rubrik OSCE dan performa latihan. "
+    "Bukan guarantee kelulusan. Gunakan sebagai panduan, bukan pengganti persiapan "
+    "resmi. Selalu konsultasikan dengan pembimbing klinis Anda."
+)
 
 
 # ---------------------------------------------------------------------------
