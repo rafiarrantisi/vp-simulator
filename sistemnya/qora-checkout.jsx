@@ -119,7 +119,9 @@ function QoraCheckout(props) {
   // carries it (e.g. "/mo", "/yr").
   var hasPeriod = /\/\s*(mo|month|yr|year|bln|thn|bulan|tahun)/i.test(priceText);
   var intervalText = plan
-    ? (plan.interval === 'year' ? (isID ? '/thn' : '/year') : plan.interval === 'one_time' ? (isID ? 'sekali bayar' : 'one-off') : hasPeriod ? '' : (isID ? '/bln' : '/month'))
+    ? (plan.interval === 'year' ? (hasPeriod ? '' : (isID ? '/thn' : '/year'))
+       : plan.interval === 'one_time' ? (isID ? 'sekali bayar' : 'one-off')
+       : (hasPeriod ? '' : (isID ? '/bln' : '/month')))
     : '';
   var priceFull = priceText + (intervalText ? ' ' + intervalText : '');
   var sessionsText = isID ? 'Tak terbatas sesi' : 'Unlimited sessions';
