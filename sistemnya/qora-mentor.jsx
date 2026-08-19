@@ -90,7 +90,13 @@ function QDayCarousel(props) {
       scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'thin',
     } },
       ls.map(function (c) {
-        var st = c.status || (c.day > 1 ? 'locked' : 'available');
+        // Status: trust real statuses on an ACTIVE journey; for a proposed
+        // journey the cases carry a non-actionable status, so fall back to
+        // day-based progression (Day 1 available, the rest locked).
+        var st = c.status;
+        if (['completed', 'available', 'in_progress'].indexOf(st) < 0) {
+          st = (c.day > 1 ? 'locked' : 'available');
+        }
         var s = _dayCardState(st);
         var clickable = st === 'available' || st === 'in_progress';
         return React.createElement('button', {
@@ -184,7 +190,7 @@ function QJourneyProposal(props) {
           React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, _mt('mentor.your_journey')),
           React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--primary)', marginTop: 2 } }, proposal.package_name || j.package_name || ''))),
       React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 } },
-        React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 999 } }, '⏱ ' + _mt('mentor.days').replace('{d}', proposal.duration_days || '').replace('{m}', '45-60')),
+        React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 999 } }, '⏱ ' + _mt('mentor.days').replace('{d}', proposal.duration_days || cases.length || '').replace('{m}', '45-60')),
         React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 999 } }, '🎯 ' + _mt('mentor.target_readiness') + ': ' + (r.target || 80) + '%')),
       React.createElement('div', { style: { marginBottom: 14 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 } },

@@ -3701,7 +3701,13 @@ function QDayCarousel(props) {
       scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'thin',
     } },
       ls.map(function (c) {
-        var st = c.status || (c.day > 1 ? 'locked' : 'available');
+        // Status: trust real statuses on an ACTIVE journey; for a proposed
+        // journey the cases carry a non-actionable status, so fall back to
+        // day-based progression (Day 1 available, the rest locked).
+        var st = c.status;
+        if (['completed', 'available', 'in_progress'].indexOf(st) < 0) {
+          st = (c.day > 1 ? 'locked' : 'available');
+        }
         var s = _dayCardState(st);
         var clickable = st === 'available' || st === 'in_progress';
         return React.createElement('button', {
@@ -3795,7 +3801,7 @@ function QJourneyProposal(props) {
           React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, _mt('mentor.your_journey')),
           React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--primary)', marginTop: 2 } }, proposal.package_name || j.package_name || ''))),
       React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 } },
-        React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 999 } }, '⏱ ' + _mt('mentor.days').replace('{d}', proposal.duration_days || '').replace('{m}', '45-60')),
+        React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 999 } }, '⏱ ' + _mt('mentor.days').replace('{d}', proposal.duration_days || cases.length || '').replace('{m}', '45-60')),
         React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 999 } }, '🎯 ' + _mt('mentor.target_readiness') + ': ' + (r.target || 80) + '%')),
       React.createElement('div', { style: { marginBottom: 14 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 } },
@@ -4204,9 +4210,13 @@ function QoraCheckout(props) {
   }
 
   var priceText = plan ? (plan.display_price || ('$' + plan.price)) : '';
+  // Avoid a doubled period ("$14.99/mo /month") when display_price already
+  // carries it (e.g. "/mo", "/yr").
+  var hasPeriod = /\/\s*(mo|month|yr|year|bln|thn|bulan|tahun)/i.test(priceText);
   var intervalText = plan
-    ? (plan.interval === 'year' ? (isID ? '/thn' : '/year') : plan.interval === 'one_time' ? (isID ? 'sekali bayar' : 'one-off') : (isID ? '/bln' : '/month'))
+    ? (plan.interval === 'year' ? (isID ? '/thn' : '/year') : plan.interval === 'one_time' ? (isID ? 'sekali bayar' : 'one-off') : hasPeriod ? '' : (isID ? '/bln' : '/month'))
     : '';
+  var priceFull = priceText + (intervalText ? ' ' + intervalText : '');
   var sessionsText = isID ? 'Tak terbatas sesi' : 'Unlimited sessions';
   var features = QORA_PLAN_FEATURES[planId] || [];
   var featureFallback = plan && plan.features ? plan.features : [];
@@ -4229,7 +4239,7 @@ function QoraCheckout(props) {
           ? React.createElement('div', null,
               React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, marginBottom: 2 } },
                 React.createElement('div', { style: { fontSize: 17, fontWeight: 800, color: 'var(--text-1)' } }, plan.label || planId),
-                React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)' } }, priceText + ' ' + intervalText)),
+                React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)' } }, priceFull)),
               React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 14 } },
                 isID ? 'Paket ' + planId + ' · ' + sessionsText : planId + ' plan · ' + sessionsText),
               React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, padding: '14px 0', borderTop: '1px solid var(--border)' } },
@@ -4239,7 +4249,7 @@ function QoraCheckout(props) {
                 })),
               React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, borderTop: '1px solid var(--border)' } },
                 React.createElement('span', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' } }, isID ? 'Total' : 'Total'),
-                React.createElement('span', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, priceText + ' ' + intervalText)))
+                React.createElement('span', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, priceFull)))
           : React.createElement('div', { style: { fontSize: 13, color: 'var(--red-d)', padding: '10px 0' } },
               isID ? 'Paket "' + planId + '" tidak ditemukan.' : 'Plan "' + planId + '" not found.')),
 

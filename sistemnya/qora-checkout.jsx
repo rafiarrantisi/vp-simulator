@@ -115,9 +115,13 @@ function QoraCheckout(props) {
   }
 
   var priceText = plan ? (plan.display_price || ('$' + plan.price)) : '';
+  // Avoid a doubled period ("$14.99/mo /month") when display_price already
+  // carries it (e.g. "/mo", "/yr").
+  var hasPeriod = /\/\s*(mo|month|yr|year|bln|thn|bulan|tahun)/i.test(priceText);
   var intervalText = plan
-    ? (plan.interval === 'year' ? (isID ? '/thn' : '/year') : plan.interval === 'one_time' ? (isID ? 'sekali bayar' : 'one-off') : (isID ? '/bln' : '/month'))
+    ? (plan.interval === 'year' ? (isID ? '/thn' : '/year') : plan.interval === 'one_time' ? (isID ? 'sekali bayar' : 'one-off') : hasPeriod ? '' : (isID ? '/bln' : '/month'))
     : '';
+  var priceFull = priceText + (intervalText ? ' ' + intervalText : '');
   var sessionsText = isID ? 'Tak terbatas sesi' : 'Unlimited sessions';
   var features = QORA_PLAN_FEATURES[planId] || [];
   var featureFallback = plan && plan.features ? plan.features : [];
@@ -140,7 +144,7 @@ function QoraCheckout(props) {
           ? React.createElement('div', null,
               React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, marginBottom: 2 } },
                 React.createElement('div', { style: { fontSize: 17, fontWeight: 800, color: 'var(--text-1)' } }, plan.label || planId),
-                React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)' } }, priceText + ' ' + intervalText)),
+                React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)' } }, priceFull)),
               React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 14 } },
                 isID ? 'Paket ' + planId + ' · ' + sessionsText : planId + ' plan · ' + sessionsText),
               React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, padding: '14px 0', borderTop: '1px solid var(--border)' } },
@@ -150,7 +154,7 @@ function QoraCheckout(props) {
                 })),
               React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, borderTop: '1px solid var(--border)' } },
                 React.createElement('span', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' } }, isID ? 'Total' : 'Total'),
-                React.createElement('span', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, priceText + ' ' + intervalText)))
+                React.createElement('span', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, priceFull)))
           : React.createElement('div', { style: { fontSize: 13, color: 'var(--red-d)', padding: '10px 0' } },
               isID ? 'Paket "' + planId + '" tidak ditemukan.' : 'Plan "' + planId + '" not found.')),
 
