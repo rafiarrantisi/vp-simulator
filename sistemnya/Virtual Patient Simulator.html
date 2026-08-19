@@ -71,7 +71,7 @@
         var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
         var authed = loadAuth();
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
-        if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases'].indexOf(h) >= 0) return h;
+        if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
       });
       const [screenKey, setScreenKey] = React.useState(0);
@@ -105,7 +105,7 @@
           var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
           var next = null;
           if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
-          else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases'].indexOf(h) >= 0) next = h;
+          else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
@@ -115,7 +115,17 @@
 
       const handleLogin = React.useCallback((credentials) => {
         setAuth(credentials);
-        navigate('dashboard');
+        // Continue-to-checkout: if the user picked a plan while logged out,
+        // finish the flow instead of dropping them on the dashboard.
+        let pending = null;
+        try { pending = localStorage.getItem('qora_pending_checkout'); } catch (e) {}
+        if (pending) {
+          try { localStorage.removeItem('qora_pending_checkout'); } catch (e) {}
+          setScreen('checkout');
+          try { window.location.hash = '#/checkout/' + pending; } catch (e) {}
+        } else {
+          navigate('dashboard');
+        }
       }, [navigate]);
 
       const handleLogout = React.useCallback(() => {
@@ -189,8 +199,14 @@
             }, title: 'View profile' },
               auth && auth.email ? auth.email[0].toUpperCase() : '?'))),
 
+        // Decorative background layer (authenticated pages) — revision §6.1
+        isLoggedIn && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 0, overflow: 'hidden', pointerEvents: 'none' } },
+          React.createElement('div', { style: { position: 'absolute', width: 480, height: 480, borderRadius: '50%', top: -160, right: -120, background: 'radial-gradient(circle, rgba(88,101,242,0.16) 0%, rgba(88,101,242,0) 70%)' } }),
+          React.createElement('div', { style: { position: 'absolute', width: 380, height: 380, borderRadius: '50%', bottom: -120, left: -100, background: 'radial-gradient(circle, rgba(124,58,237,0.13) 0%, rgba(124,58,237,0) 70%)' } }),
+          React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: '38%', right: -70, border: '1.5px solid rgba(88,101,242,0.10)' } })),
+
         // Main content
-        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0 } },
+        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
@@ -200,7 +216,11 @@
           screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
           screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
           (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
+          screen === 'checkout' && React.createElement(QoraCheckout, { onNav: navigate }),
           screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
+
+        // Consistent company footer on all authenticated pages (revision §2.2/§6.2)
+        isLoggedIn && React.createElement(QLFooter, null),
 
         // Bottom tab bar (mobile only) — native mobile pattern, all 5 items always visible
         isLoggedIn && isMobile && React.createElement('nav', { style: {

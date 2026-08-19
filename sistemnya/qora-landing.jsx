@@ -165,26 +165,28 @@ function _detectRegion() {
 /* ── Pricing ── */
 function QLPricing(props) {
   var region = (props && props.region) || 'row';
+  var onFree = props.onFree;
+  var onPaid = props.onPaid;
   var prices, accentIdx;
   if (region === 'indo') {
     prices = [
-      { name: 'Free Trial', price: 'Rp0', period: '', sessions: '3', features: ['3 sesi gratis', 'Semua spesialisasi', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
-      { name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres'], cta: 'Langganan', accent: true },
-      { name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres', 'Hemat 30%'], cta: 'Langganan', accent: false },
+      { id: 'free', name: 'Free Trial', price: 'Rp0', period: '', sessions: '3', features: ['3 sesi gratis', 'Semua spesialisasi', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
+      { id: 'monthly', name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres'], cta: 'Langganan', accent: true },
+      { id: 'annual', name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres', 'Hemat 30%'], cta: 'Langganan', accent: false },
     ];
     accentIdx = 1;
   } else if (region === 'asean') {
     prices = [
-      { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-      { name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-      { name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
+      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { id: 'monthly', name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
+      { id: 'annual', name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
     ];
     accentIdx = 1;
   } else {
     prices = [
-      { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-      { name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-      { name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
+      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { id: 'monthly', name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
+      { id: 'annual', name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
     ];
     accentIdx = 1;
   }
@@ -219,13 +221,21 @@ function QLPricing(props) {
               React.createElement('span', { style: { color: isAccent ? '#fff' : 'var(--primary)', fontWeight: 700 } }, '✓'),
               f);
           })),
-        React.createElement('div', { style: {
-          width: '100%', padding: 12, borderRadius: 12, border: 'none',
-          background: isAccent ? '#fff' : 'var(--primary)',
-          color: isAccent ? 'var(--primary)' : '#fff',
-          fontSize: 13, fontWeight: 700, fontFamily: 'Poppins',
-          cursor: 'pointer', textAlign: 'center',
-        } }, p.cta));
+        React.createElement('button', {
+          onClick: function () {
+            if (p.id === 'free') { if (typeof onFree === 'function') onFree(); }
+            else if (typeof onPaid === 'function') onPaid(p.id);
+          },
+          style: {
+            width: '100%', padding: 12, borderRadius: 12, border: 'none',
+            background: isAccent ? '#fff' : 'var(--primary)',
+            color: isAccent ? 'var(--primary)' : '#fff',
+            fontSize: 13, fontWeight: 700, fontFamily: 'Poppins',
+            cursor: 'pointer', textAlign: 'center',
+            boxShadow: isAccent ? '0 4px 14px rgba(88,101,242,0.35)' : 'none',
+            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+          },
+        }, p.cta));
     }));
 }
 
@@ -422,7 +432,7 @@ function QLAuth({ mode, setMode, onLogin }) {
       React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
 }
 
-function QoraLanding({ onLogin }) {
+function QoraLanding({ onLogin, onSubscribe }) {
   const [view, setView] = React.useState('landing'); // landing | auth
   const [mode, setMode] = React.useState('login');
   const [region, setRegion] = React.useState('');
@@ -432,6 +442,13 @@ function QoraLanding({ onLogin }) {
     if (typeof window.__setLocale === 'function') window.__setLocale(r);
   }, []);
   const go = (m) => { setMode(m); setView('auth'); };
+  // Pricing CTA → checkout. Logged-out visitors pick the plan now; after
+  // login/signup the App's handleLogin resumes the checkout flow.
+  const pickPlan = (id) => {
+    if (typeof onSubscribe === 'function') onSubscribe(id);
+    try { localStorage.setItem('qora_pending_checkout', id); } catch (e) {}
+    go('signup');
+  };
 
   const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: 'min(1080px, calc(100% - 32px))', margin: '0 auto' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 8 } },
@@ -446,7 +463,13 @@ function QoraLanding({ onLogin }) {
       React.createElement(QLAuth, { mode, setMode, onLogin }));
   }
 
-  return React.createElement('div', { style: { minHeight: '100vh' } }, header,
+  return React.createElement('div', { style: { minHeight: '100vh', position: 'relative', overflow: 'hidden' } },
+    // Subtle decorative background (revision §1.3) — kept light & clean.
+    React.createElement('div', { style: { position: 'absolute', inset: 0, zIndex: -1, overflow: 'hidden', pointerEvents: 'none' } },
+      React.createElement('div', { style: { position: 'absolute', width: 520, height: 520, borderRadius: '50%', top: -180, right: -140, background: 'radial-gradient(circle, rgba(88,101,242,0.14) 0%, rgba(88,101,242,0) 70%)' } }),
+      React.createElement('div', { style: { position: 'absolute', width: 420, height: 420, borderRadius: '50%', top: '30%', left: -150, background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, rgba(124,58,237,0) 70%)' } }),
+      React.createElement('div', { style: { position: 'absolute', width: 260, height: 260, borderRadius: '50%', top: '62%', right: -80, border: '1.5px solid rgba(88,101,242,0.12)' } })),
+    header,
     // ── Hero ──
     React.createElement('section', { style: { padding: '60px 24px 20px' } },
       React.createElement('div', { style: { maxWidth: 'min(900px, 100%)', margin: '0 auto', textAlign: 'center' } },
@@ -482,8 +505,25 @@ function QoraLanding({ onLogin }) {
         React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.' }))),
 
     // ── Pricing ──
-    React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you\\u2019re ready to practise without limits.' },
-      React.createElement(QLPricing, { region: region })),
+    React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you’re ready to practise without limits.' },
+      React.createElement(QLPricing, { region: region, onFree: function () { go('signup'); }, onPaid: pickPlan })),
+
+    // ── What a subscription unlocks (revision §1.4) ──
+    React.createElement(QLSection, { title: 'Everything you unlock when you subscribe', subtitle: 'One subscription removes every limit, so you can practise until you are confident.', dark: true },
+      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 12 } },
+        [['♾️','Unlimited practice'],['🏥','All specialties & levels'],['📝','Full scoring + answer keys'],['📊','Skill radar & analytics'],['📈','Progress & readiness tracking'],['🎓','AI mentor learning journey']].map(function(b, i) {
+          return React.createElement('div', { key: b[1], className: 'as d' + i, style: { display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px', borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-xs)', fontSize: 13, fontWeight: 600, color: 'var(--text-1)' } },
+            React.createElement('span', { style: { fontSize: 18 } }, b[0]),
+            b[1]);
+        })),
+      React.createElement('p', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginTop: 14 } }, 'Start free with 3 sessions — upgrade when you’re ready to go all-in.')),
+
+    // ── Outcomes: feedback, modes, progress (revision §1.4) ──
+    React.createElement(QLSection, { title: 'Turn practice into progress', subtitle: 'Every session ends with the feedback, scores, and analytics you need to know exactly where you stand.' },
+      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, textAlign: 'left' } },
+        React.createElement(QLFeature, { icon: '📝', title: 'Detailed feedback after every case', body: 'Per-item hit/miss, red-flag screening, differentials and management reviewed against a hidden checklist — then the full model answer is revealed.' }),
+        React.createElement(QLFeature, { icon: '🧭', title: 'Two training modes', body: 'Anamnesis-only for focused history-taking, or the full OSCE arc (history, exam, investigations, differentials, management) with a live timer and task panel.' }),
+        React.createElement(QLFeature, { icon: '📈', title: 'Progress you can measure', body: 'XP, levels, streaks, per-specialty coverage, a skill radar across 10 dimensions, and a readiness report that tells you when you are exam-ready.' }))),
 
     // ── Testimonial ──
     React.createElement(QLSection, { dark: true, subtitle: 'What early users say' },

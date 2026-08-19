@@ -117,6 +117,8 @@ window.QORA_TRANSLATIONS = {
   'mentor.tell_qora': { en: 'Tell Qora', id: 'Ceritain ke Qora' },
   'mentor.chat_placeholder': { en: 'Tell Qora: what exam, when, where you struggle…', id: 'Ceritain ke Qora: ujian apa, kapan, masih kurang di mana…' },
   'mentor.send': { en: 'Send', id: 'Kirim' },
+  'mentor.thinking': { en: 'Mentor is building your journey…', id: 'Mentor sedang menyusun rencana belajarmu…' },
+  'mentor.cancel': { en: 'Cancel', id: 'Batal' },
   'mentor.your_journey': { en: 'Your Learning Journey', id: 'Rencana Belajar Kamu' },
   'mentor.days': { en: '{d} days · ~{m} min/day', id: '{d} hari · ~{m} menit/hari' },
   'mentor.target_readiness': { en: 'Target', id: 'Target' },

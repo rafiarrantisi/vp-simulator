@@ -1127,6 +1127,8 @@ window.QORA_TRANSLATIONS = {
   'mentor.tell_qora': { en: 'Tell Qora', id: 'Ceritain ke Qora' },
   'mentor.chat_placeholder': { en: 'Tell Qora: what exam, when, where you struggle…', id: 'Ceritain ke Qora: ujian apa, kapan, masih kurang di mana…' },
   'mentor.send': { en: 'Send', id: 'Kirim' },
+  'mentor.thinking': { en: 'Mentor is building your journey…', id: 'Mentor sedang menyusun rencana belajarmu…' },
+  'mentor.cancel': { en: 'Cancel', id: 'Batal' },
   'mentor.your_journey': { en: 'Your Learning Journey', id: 'Rencana Belajar Kamu' },
   'mentor.days': { en: '{d} days · ~{m} min/day', id: '{d} hari · ~{m} menit/hari' },
   'mentor.target_readiness': { en: 'Target', id: 'Target' },
@@ -1369,26 +1371,28 @@ function _detectRegion() {
 /* ── Pricing ── */
 function QLPricing(props) {
   var region = (props && props.region) || 'row';
+  var onFree = props.onFree;
+  var onPaid = props.onPaid;
   var prices, accentIdx;
   if (region === 'indo') {
     prices = [
-      { name: 'Free Trial', price: 'Rp0', period: '', sessions: '3', features: ['3 sesi gratis', 'Semua spesialisasi', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
-      { name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres'], cta: 'Langganan', accent: true },
-      { name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres', 'Hemat 30%'], cta: 'Langganan', accent: false },
+      { id: 'free', name: 'Free Trial', price: 'Rp0', period: '', sessions: '3', features: ['3 sesi gratis', 'Semua spesialisasi', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
+      { id: 'monthly', name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres'], cta: 'Langganan', accent: true },
+      { id: 'annual', name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres', 'Hemat 30%'], cta: 'Langganan', accent: false },
     ];
     accentIdx = 1;
   } else if (region === 'asean') {
     prices = [
-      { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-      { name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-      { name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
+      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { id: 'monthly', name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
+      { id: 'annual', name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
     ];
     accentIdx = 1;
   } else {
     prices = [
-      { name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-      { name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-      { name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
+      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { id: 'monthly', name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
+      { id: 'annual', name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
     ];
     accentIdx = 1;
   }
@@ -1423,13 +1427,21 @@ function QLPricing(props) {
               React.createElement('span', { style: { color: isAccent ? '#fff' : 'var(--primary)', fontWeight: 700 } }, '✓'),
               f);
           })),
-        React.createElement('div', { style: {
-          width: '100%', padding: 12, borderRadius: 12, border: 'none',
-          background: isAccent ? '#fff' : 'var(--primary)',
-          color: isAccent ? 'var(--primary)' : '#fff',
-          fontSize: 13, fontWeight: 700, fontFamily: 'Poppins',
-          cursor: 'pointer', textAlign: 'center',
-        } }, p.cta));
+        React.createElement('button', {
+          onClick: function () {
+            if (p.id === 'free') { if (typeof onFree === 'function') onFree(); }
+            else if (typeof onPaid === 'function') onPaid(p.id);
+          },
+          style: {
+            width: '100%', padding: 12, borderRadius: 12, border: 'none',
+            background: isAccent ? '#fff' : 'var(--primary)',
+            color: isAccent ? 'var(--primary)' : '#fff',
+            fontSize: 13, fontWeight: 700, fontFamily: 'Poppins',
+            cursor: 'pointer', textAlign: 'center',
+            boxShadow: isAccent ? '0 4px 14px rgba(88,101,242,0.35)' : 'none',
+            transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+          },
+        }, p.cta));
     }));
 }
 
@@ -1626,7 +1638,7 @@ function QLAuth({ mode, setMode, onLogin }) {
       React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
 }
 
-function QoraLanding({ onLogin }) {
+function QoraLanding({ onLogin, onSubscribe }) {
   const [view, setView] = React.useState('landing'); // landing | auth
   const [mode, setMode] = React.useState('login');
   const [region, setRegion] = React.useState('');
@@ -1636,6 +1648,13 @@ function QoraLanding({ onLogin }) {
     if (typeof window.__setLocale === 'function') window.__setLocale(r);
   }, []);
   const go = (m) => { setMode(m); setView('auth'); };
+  // Pricing CTA → checkout. Logged-out visitors pick the plan now; after
+  // login/signup the App's handleLogin resumes the checkout flow.
+  const pickPlan = (id) => {
+    if (typeof onSubscribe === 'function') onSubscribe(id);
+    try { localStorage.setItem('qora_pending_checkout', id); } catch (e) {}
+    go('signup');
+  };
 
   const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: 'min(1080px, calc(100% - 32px))', margin: '0 auto' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 8 } },
@@ -1650,7 +1669,13 @@ function QoraLanding({ onLogin }) {
       React.createElement(QLAuth, { mode, setMode, onLogin }));
   }
 
-  return React.createElement('div', { style: { minHeight: '100vh' } }, header,
+  return React.createElement('div', { style: { minHeight: '100vh', position: 'relative', overflow: 'hidden' } },
+    // Subtle decorative background (revision §1.3) — kept light & clean.
+    React.createElement('div', { style: { position: 'absolute', inset: 0, zIndex: -1, overflow: 'hidden', pointerEvents: 'none' } },
+      React.createElement('div', { style: { position: 'absolute', width: 520, height: 520, borderRadius: '50%', top: -180, right: -140, background: 'radial-gradient(circle, rgba(88,101,242,0.14) 0%, rgba(88,101,242,0) 70%)' } }),
+      React.createElement('div', { style: { position: 'absolute', width: 420, height: 420, borderRadius: '50%', top: '30%', left: -150, background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, rgba(124,58,237,0) 70%)' } }),
+      React.createElement('div', { style: { position: 'absolute', width: 260, height: 260, borderRadius: '50%', top: '62%', right: -80, border: '1.5px solid rgba(88,101,242,0.12)' } })),
+    header,
     // ── Hero ──
     React.createElement('section', { style: { padding: '60px 24px 20px' } },
       React.createElement('div', { style: { maxWidth: 'min(900px, 100%)', margin: '0 auto', textAlign: 'center' } },
@@ -1686,8 +1711,25 @@ function QoraLanding({ onLogin }) {
         React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.' }))),
 
     // ── Pricing ──
-    React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you\\u2019re ready to practise without limits.' },
-      React.createElement(QLPricing, { region: region })),
+    React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you’re ready to practise without limits.' },
+      React.createElement(QLPricing, { region: region, onFree: function () { go('signup'); }, onPaid: pickPlan })),
+
+    // ── What a subscription unlocks (revision §1.4) ──
+    React.createElement(QLSection, { title: 'Everything you unlock when you subscribe', subtitle: 'One subscription removes every limit, so you can practise until you are confident.', dark: true },
+      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 12 } },
+        [['♾️','Unlimited practice'],['🏥','All specialties & levels'],['📝','Full scoring + answer keys'],['📊','Skill radar & analytics'],['📈','Progress & readiness tracking'],['🎓','AI mentor learning journey']].map(function(b, i) {
+          return React.createElement('div', { key: b[1], className: 'as d' + i, style: { display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px', borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-xs)', fontSize: 13, fontWeight: 600, color: 'var(--text-1)' } },
+            React.createElement('span', { style: { fontSize: 18 } }, b[0]),
+            b[1]);
+        })),
+      React.createElement('p', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginTop: 14 } }, 'Start free with 3 sessions — upgrade when you’re ready to go all-in.')),
+
+    // ── Outcomes: feedback, modes, progress (revision §1.4) ──
+    React.createElement(QLSection, { title: 'Turn practice into progress', subtitle: 'Every session ends with the feedback, scores, and analytics you need to know exactly where you stand.' },
+      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, textAlign: 'left' } },
+        React.createElement(QLFeature, { icon: '📝', title: 'Detailed feedback after every case', body: 'Per-item hit/miss, red-flag screening, differentials and management reviewed against a hidden checklist — then the full model answer is revealed.' }),
+        React.createElement(QLFeature, { icon: '🧭', title: 'Two training modes', body: 'Anamnesis-only for focused history-taking, or the full OSCE arc (history, exam, investigations, differentials, management) with a live timer and task panel.' }),
+        React.createElement(QLFeature, { icon: '📈', title: 'Progress you can measure', body: 'XP, levels, streaks, per-specialty coverage, a skill radar across 10 dimensions, and a readiness report that tells you when you are exam-ready.' }))),
 
     // ── Testimonial ──
     React.createElement(QLSection, { dark: true, subtitle: 'What early users say' },
@@ -2883,9 +2925,24 @@ function QoraDashboard({ onNav, onStartCase }) {
               s.specialty === 'emergency' ? '🚑' : s.specialty === 'surgery' ? '🔪' : s.specialty === 'paediatrics' ? '👶' : s.specialty === 'psychiatry' ? '🧠' : s.specialty === 'ophthalmology' ? '👁' : '🩺'),
             React.createElement('div', { style: { flex: 1, minWidth: 0 } },
               React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2 } }, s.presentation || 'Case'),
-              React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress'))))))),
+              React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress')))))),
 
-      // Right column: specialties + dimensions + radar
+        // Skill breakdown — moved to the LEFT column so the desktop layout
+        // stays balanced (revision §2.1)
+        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 ' + _t('dashboard.skill_breakdown')),
+          Object.keys(dims).map(k => {
+            const dimLabel = QV2_DIM_LABEL;
+            const pct = dims[k];
+            return React.createElement('div', { key: k, style: { marginBottom: 8 } },
+              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
+                React.createElement('span', null, dimLabel[k] || k),
+                React.createElement('span', null, Math.round(pct) + '%')),
+              React.createElement('div', { style: { height: 5, borderRadius: 999, background: 'var(--surface-3)' } },
+                React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)', transition: 'width 0.6s ease' } })));
+          }))),
+
+      // Right column: radar + achievements + specialty coverage
       React.createElement('div', null,
         // Skill radar chart
         hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
@@ -2902,21 +2959,9 @@ function QoraDashboard({ onNav, onStartCase }) {
           specKeys.length === 0 && React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)' } }, 'No specialties practised yet.'),
           React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
             specKeys.map(s => React.createElement('span', { key: s, style: { fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } },
-              (specLabel[s] || s) + ' · ' + specs[s])))),
-        // Skill dimensions
-        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
-          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 Skill breakdown'),
-          Object.keys(dims).map(k => {
-            const dimLabel = QV2_DIM_LABEL;
-            const pct = dims[k];
-            return React.createElement('div', { key: k, style: { marginBottom: 8 } },
-              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
-                React.createElement('span', null, dimLabel[k] || k),
-                React.createElement('span', null, Math.round(pct) + '%')),
-              React.createElement('div', { style: { height: 5, borderRadius: 999, background: 'var(--surface-3)' } },
-                React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)', transition: 'width 0.6s ease' } })));
-          })))));
-}
+              (specLabel[s] || s) + ' · ' + specs[s])))))
+                    ));
+              }
 
 function QDStat({ label, value, icon, color, sub }) {
   return React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
@@ -3170,7 +3215,7 @@ function QoraPricing({ onNav }) {
             ? React.createElement('button', { disabled: true, style: { padding: 11, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'default' } }, 'Current plan')
             : isFree
               ? React.createElement('button', { disabled: true, style: { padding: 11, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'default' } }, 'Included')
-              : React.createElement('button', { onClick: () => upgrade(p.id), disabled: busy === p.id || !paymentsLive, title: paymentsLive ? '' : 'Payments coming soon', style: { padding: 11, borderRadius: 12, border: 'none', background: paymentsLive ? 'var(--primary)' : 'var(--surface-2)', color: paymentsLive ? '#fff' : 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: paymentsLive ? 'pointer' : 'default' } }, busy === p.id ? 'Redirecting…' : paymentsLive ? 'Upgrade' : 'Coming soon'));
+              : React.createElement('button', { onClick: () => { if (window.__goCheckout) window.__goCheckout(p.id); }, disabled: !paymentsLive, title: paymentsLive ? '' : 'Payments coming soon', style: { padding: 11, borderRadius: 12, border: 'none', background: paymentsLive ? 'var(--primary)' : 'var(--surface-2)', color: paymentsLive ? '#fff' : 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: paymentsLive ? 'pointer' : 'default' } }, paymentsLive ? 'Upgrade' : 'Coming soon'));
       })),
     err && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--red-d)', marginTop: 16 } }, err),
     React.createElement('div', { style: { textAlign: 'center', fontSize: 11, color: 'var(--text-3)', marginTop: 24 } }, 'Secure checkout via Xendit. A study aid, not a medical device.'));
@@ -3389,6 +3434,26 @@ function QoraSessions(props) {
     content);
 }
 
+// ── Billing plan card — visually consistent with landing QLPricing (§5.2) ──
+function QLBillingPlanCard(props) {
+  var isAccent = !!props.accent;
+  var isID = !!props.isID;
+  return React.createElement('div', { className: 'as', style: { padding: 24, borderRadius: 'var(--r-xl)', background: isAccent ? 'var(--primary)' : 'var(--surface)', border: isAccent ? 'none' : '1px solid var(--border)', boxShadow: isAccent ? 'var(--sh-lg)' : 'var(--sh-sm)', color: isAccent ? '#fff' : 'var(--text-1)', position: 'relative', display: 'flex', flexDirection: 'column' } },
+    isAccent && React.createElement('div', { style: { position: 'absolute', top: -10, left: '50%', transform: 'translateX(-50%)', background: 'var(--amber)', color: '#fff', fontSize: 10, fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', padding: '3px 14px', borderRadius: 999, whiteSpace: 'nowrap' } }, isID ? 'Paling diminati' : 'Most popular'),
+    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, marginBottom: 4, color: isAccent ? 'rgba(255,255,255,0.8)' : 'var(--text-2)' } }, props.name),
+    React.createElement('div', { style: { marginBottom: 14 } },
+      React.createElement('span', { style: { fontSize: 28, fontWeight: 800 } }, props.price)),
+    React.createElement('div', { style: { fontSize: 12, color: isAccent ? 'rgba(255,255,255,0.75)' : 'var(--text-3)', marginBottom: 14 } }, props.sessions),
+    React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18, flex: 1 } },
+      (props.features || []).map(function (f, i) {
+        return React.createElement('div', { key: i, style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: isAccent ? 'rgba(255,255,255,0.85)' : 'var(--text-2)' } },
+          React.createElement('span', { style: { color: isAccent ? '#fff' : 'var(--primary)', fontWeight: 700 } }, '✓'),
+          f);
+      })),
+    React.createElement('button', { onClick: props.onCta, style: { width: '100%', padding: 12, borderRadius: 12, border: 'none', background: isAccent ? '#fff' : 'var(--primary)', color: isAccent ? 'var(--primary)' : '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', textAlign: 'center', transition: 'transform 0.15s ease, box-shadow 0.15s ease' } },
+      isID ? 'Langganan' : 'Subscribe'));
+}
+
 // ── Billing / Payment History Page ──
 function QoraBilling(props) {
   var onNav = props.onNav;
@@ -3415,16 +3480,12 @@ function QoraBilling(props) {
     qv2Fetch('/api/billing/history').then(setData).catch(function (e) { setErr(String(e.message || e)); });
   }, []);
 
-  async function upgrade(planId) {
-    setBusy(planId); setErr('');
-    try {
-      var r = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
-      if (r && r.checkout_url) { window.location.href = r.checkout_url; return; }
-      setErr('Checkout is not available yet.');
-    } catch (e) {
-      setErr(/not configured|503/i.test(String(e.message || e)) ? 'Payments are not enabled yet — check back soon.' : String(e.message || e));
-    }
-    setBusy('');
+  // All plan CTAs share ONE checkout flow (revision §5.3):
+  // Billing → pilih paket → #/checkout/<plan> → payment.
+  function goCheckout(planId) {
+    setErr('');
+    if (window.__goCheckout) window.__goCheckout(planId);
+    else if (typeof onNav === 'function') onNav('checkout');
   }
 
   if (err && !data) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)', textAlign: 'center' } }, _t('common.error') + ': ' + err);
@@ -3455,29 +3516,16 @@ function QoraBilling(props) {
             React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 8 } }, usedSessions + ' of ' + limit + ' free sessions used this period'),
             React.createElement('div', { style: { height: 8, borderRadius: 999, background: 'var(--surface-3)', marginBottom: 16 } },
               React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: pct >= 80 ? 'var(--red)' : 'var(--primary)', transition: 'width 0.6s ease' } })),
-            React.createElement('button', { onClick: function () { upgrade('monthly'); }, disabled: !!busy, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
-              busy === 'monthly' ? 'Redirecting\u2026' : ('Upgrade to ' + (prices.monthly || '$14.99/mo')))),
+            React.createElement('button', { onClick: function () { goCheckout('monthly'); }, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } },
+              'Upgrade to ' + (prices.monthly || '$14.99/mo')),
       err && React.createElement('div', { style: { fontSize: 12.5, color: isPaid ? 'rgba(255,255,255,0.9)' : 'var(--red-d)', marginTop: 10 } }, err)),
-    // Plan options
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginBottom: 20 } },
-      React.createElement('button', { onClick: function () { upgrade('monthly'); }, disabled: !!busy, style: { textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'Poppins' } },
-        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, 'Monthly'),
-        React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--primary)', marginBottom: 2 } }, prices.monthly || '$14.99/mo'),
-        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Cancel anytime')),
-      React.createElement('button', { onClick: function () { upgrade('annual'); }, disabled: !!busy, style: { textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', border: '2px solid var(--primary)', background: 'var(--primary-l)', cursor: 'pointer', fontFamily: 'Poppins', position: 'relative' } },
-        React.createElement('span', { style: { position: 'absolute', top: -10, right: 12, background: 'var(--amber)', color: '#fff', fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', padding: '2px 10px', borderRadius: 999 } }, 'Best value'),
-        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, 'Annual'),
-        React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--primary)', marginBottom: 2 } }, prices.annual || '$119/yr'),
-        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Save ~34%'))),
-    // Recent sessions
-    React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
-      React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '\uD83D\uDCCB ' + (_t('dashboard.recent_sessions'))),
-      (!data.history || !data.history.length) && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', padding: '12px 0', textAlign: 'center' } }, _t('dashboard.no_sessions')),
-      (data.history || []).slice(0, 6).map(function (s, i) {
-        return React.createElement('div', { key: s.id || i, style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderTop: '1px solid var(--border)' } },
-          React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)' } }, s.caseId || 'Case'),
-          React.createElement('span', { style: { fontSize: 12, fontWeight: 700, color: s.totalScore != null ? 'var(--teal-d)' : 'var(--text-3)' } }, s.totalScore != null ? s.totalScore + '%' : (s.status || '—')));
-      })));
+    // Plan options — same pricing card style as the landing page (§5.2)
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 16, alignItems: 'stretch', marginBottom: 8 } },
+      React.createElement(QLBillingPlanCard, { name: region === 'indo' ? 'Bulanan' : 'Monthly', price: prices.monthly || (region === 'indo' ? 'Rp119.000/bln' : '$14.99/mo'), sessions: region === 'indo' ? 'Tak terbatas sesi' : 'Unlimited sessions', features: QORA_PLAN_FEATURES.monthly, accent: false, onCta: function () { goCheckout('monthly'); }, isID: region === 'indo' }),
+      React.createElement(QLBillingPlanCard, { name: region === 'indo' ? 'Tahunan' : 'Annual', price: prices.annual || (region === 'indo' ? 'Rp999.000/thn' : '$119/yr'), sessions: region === 'indo' ? 'Tak terbatas sesi' : 'Unlimited sessions', features: QORA_PLAN_FEATURES.annual, accent: true, onCta: function () { goCheckout('annual'); }, isID: region === 'indo' })),
+    // Pattern note: billing keeps the free-session progress + plan cards only.
+    // (Recent sessions were removed here — they live on the Sessions page.)
+  ));
 }
 
 // ── Billing Success / Failed redirect pages ──
@@ -3616,9 +3664,96 @@ function QMentorChat(props) {
         style: { width: '100%', boxSizing: 'border-box', resize: 'none', padding: '12px 14px', borderRadius: 16, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 14, fontFamily: 'Poppins', outline: 'none' },
       }),
       err && React.createElement('div', { style: { marginTop: 8, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, '⚠️ ' + err),
+      busy && React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 12.5, color: 'var(--primary)', fontWeight: 600, background: 'var(--primary-l)', padding: '9px 14px', borderRadius: 12 } },
+        React.createElement('span', { style: { width: 8, height: 8, borderRadius: '50%', background: 'var(--primary)', display: 'inline-block', animation: 'pulse 1.1s ease-in-out infinite' } }),
+        React.createElement('span', { style: { width: 8, height: 8, borderRadius: '50%', background: 'var(--primary)', display: 'inline-block', animation: 'pulse 1.1s ease-in-out 0.2s infinite' } }),
+        React.createElement('span', { style: { width: 8, height: 8, borderRadius: '50%', background: 'var(--primary)', display: 'inline-block', animation: 'pulse 1.1s ease-in-out 0.4s infinite' } }),
+        _mt('mentor.thinking')),
       React.createElement('div', { style: { display: 'flex', justifyContent: 'flex-end', marginTop: 10 } },
         React.createElement('button', Object.assign({ onClick: submit, disabled: busy || !story.trim() }, _mtBtn('primary'), { opacity: busy ? 0.6 : 1 }),
-          busy ? '…' : _mt('mentor.send')))));
+          busy
+            ? React.createElement('span', { style: { display: 'inline-flex', gap: 4, alignItems: 'center' } },
+                [0, 1, 2].map(function (i) {
+                  return React.createElement('span', { key: i, style: { width: 5, height: 5, borderRadius: '50%', background: '#fff', display: 'inline-block', animation: 'pulse 1.1s ease-in-out ' + (i * 0.2) + 's infinite' } });
+                }))
+            : _mt('mentor.send')))));
+}
+
+// ── Shared: horizontal day carousel (revision §4.3) ──────────
+function _dayCardState(st) {
+  if (st === 'completed') return { icon: '✅', fg: 'var(--teal-d)', border: 'var(--teal)', bg: 'var(--teal-l)' };
+  if (st === 'available' || st === 'in_progress') return { icon: '▶️', fg: 'var(--primary)', border: 'var(--primary)', bg: 'var(--primary-l)' };
+  return { icon: '🔒', fg: 'var(--text-3)', border: 'var(--border)', bg: 'var(--surface-2)' };
+}
+
+function QDayCarousel(props) {
+  var isTablet = (typeof useIsTablet === 'function') ? useIsTablet() : false;
+  var ref = React.useRef(null);
+  function scrollByDir(dir) {
+    var el = ref.current;
+    if (!el) return;
+    try { el.scrollBy({ left: dir * (el.clientWidth * 0.7), behavior: 'smooth' }); } catch (e) { el.scrollLeft += dir * 300; }
+  }
+  var ls = props.cases || [];
+  return React.createElement('div', { style: { position: 'relative' } },
+    React.createElement('div', { ref: ref, style: {
+      display: 'flex', gap: 12, overflowX: 'auto', padding: '4px 2px 14px',
+      scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'thin',
+    } },
+      ls.map(function (c) {
+        var st = c.status || (c.day > 1 ? 'locked' : 'available');
+        var s = _dayCardState(st);
+        var clickable = st === 'available' || st === 'in_progress';
+        return React.createElement('button', {
+          key: c.day + '-' + st, className: 'as',
+          onClick: function () { if (clickable && props.onStart) props.onStart(c); },
+          disabled: !clickable,
+          style: {
+            minWidth: 'min(250px, 82vw)', scrollSnapAlign: 'start', flexShrink: 0,
+            padding: 16, borderRadius: 'var(--r-lg)', textAlign: 'left',
+            background: s.bg, border: '1.5px solid ' + s.border,
+            boxShadow: clickable ? 'var(--sh-sm)' : 'none',
+            cursor: clickable ? 'pointer' : 'default', fontFamily: 'Poppins',
+            opacity: st === 'locked' ? 0.72 : 1,
+            transition: 'all 0.25s ease', display: 'flex', flexDirection: 'column', gap: 7,
+          },
+        },
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 } },
+            React.createElement('span', { style: { fontSize: 10.5, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: s.fg } },
+              s.icon + ' Day ' + c.day),
+            React.createElement('span', { style: { fontSize: 10.5, color: 'var(--text-3)', whiteSpace: 'nowrap' } },
+              '~' + (c.estimated_minutes || 15) + ' min')),
+          React.createElement('div', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.35 } },
+            c.focus_area || c.case_id),
+          React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', fontFamily: 'Poppins' } },
+            '🩺 ' + c.case_id),
+          React.createElement('div', { style: { marginTop: 2, fontSize: 11.5, fontWeight: 700, color: s.fg, fontFamily: 'Poppins' } },
+            st === 'completed'
+              ? (c.score != null ? 'Skor ' + c.score + '%' : '✓ ' + (props.doneLabel || 'Done'))
+              : clickable
+                ? '▶ ' + _mt('mentor.start_case')
+                : '🔒 ' + _mt('mentor.locked').replace('{d}', Math.max(1, (c.day || 2) - 1))));
+      })),
+    !isTablet && React.createElement('div', { style: { display: 'flex', gap: 8, justifyContent: 'center', marginTop: 2 } },
+      React.createElement('button', { onClick: function () { scrollByDir(-1); }, style: { width: 34, height: 34, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontSize: 14, fontFamily: 'Poppins', color: 'var(--text-2)' } }, '←'),
+      React.createElement('button', { onClick: function () { scrollByDir(1); }, style: { width: 34, height: 34, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontSize: 14, fontFamily: 'Poppins', color: 'var(--text-2)' } }, '→')));
+}
+
+// ── Shared: "why this plan" as scannable bullet cards (§4.5) ──
+function QReasonCard(props) {
+  var text = String(props.reasoning || '');
+  var raw = text.split(/\n|•|;/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 2; });
+  var points = raw.length > 1 ? raw
+    : text.split(/(?<=[.!?])\s+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 2; }).slice(0, 6);
+  if (!points.length) points = [text];
+  return React.createElement('div', { style: { marginTop: 14, padding: '14px 16px', borderRadius: 'var(--r-lg)', background: 'var(--violet-l)', border: '1px solid var(--violet)' } },
+    React.createElement('div', { style: { fontWeight: 800, color: 'var(--violet)', fontSize: 13, marginBottom: 10 } }, '💡 ' + _mt('mentor.reasoning')),
+    React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 7 } },
+      points.map(function (pt, i) {
+        return React.createElement('div', { key: i, style: { display: 'flex', gap: 9, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.55 } },
+          React.createElement('span', { style: { color: 'var(--violet)', fontWeight: 800, flexShrink: 0 } }, '•'),
+          pt);
+      })));
 }
 
 // ── QJourneyProposal ────────────────────────────────────────────────────
@@ -3644,51 +3779,48 @@ function QJourneyProposal(props) {
   }
 
   var r = j.readiness || {};
-  var startPct = r.target > 0 ? Math.round(100 * (r.start || 0) / r.target) : 0;
+  // Bar width must match the number shown — readiness is displayed as an
+  // absolute percentage, so the bar uses the same value (§4.2).
+  var startVal = Math.max(0, Math.min(100, r.start || 0));
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '24px 16px' } },
+  function startCase(c) {
+    try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
+  }
+
+  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
-      React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, '🎓 ' + _mt('mentor.your_journey')),
-      React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--primary)', marginBottom: 2 } }, '📋 ' + (proposal.package_name || j.package_name || '')),
-      React.createElement('div', { style: { fontSize: 12, color: 'var(--text-2)', marginBottom: 10 } },
-        '⏱ ' + _mt('mentor.days').replace('{d}', proposal.duration_days || '').replace('{m}', '45-60'),
-        ' · 🎯 ' + _mt('mentor.target_readiness') + ': ' + (r.target || 80) + '%'),
-      React.createElement('div', { style: { marginBottom: 4, fontSize: 11, color: 'var(--text-3)' } }, _mt('mentor.readiness_start') + ': ' + (r.start || 0) + '%'),
-      _mtBar(startPct, 10),
-      React.createElement('div', { style: { marginTop: 14, display: 'flex', flexDirection: 'column', gap: 8 } },
-        cases.map(function (c) {
-          var locked = c.day > 1;
-          var dayStyle = locked
-            ? { background: 'var(--surface-2)', border: '1px solid var(--border)', opacity: 0.6 }
-            : { background: 'var(--surface)', border: '1px solid var(--primary)', boxShadow: 'var(--sh-sm)' };
-          return React.createElement('div', { key: c.day, style: Object.assign({ padding: '10px 14px', borderRadius: 'var(--r-md)' }, dayStyle) },
-            React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 } },
-              React.createElement('div', { style: { fontWeight: 700, fontSize: 13, color: 'var(--text-1)' } },
-                'Day ' + c.day + ': ' + (c.focus_area || c.case_id)),
-              React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', whiteSpace: 'nowrap' } },
-                '~' + (c.estimated_minutes || 15) + ' min')),
-            React.createElement('div', { style: { marginTop: 4, fontSize: 11, color: 'var(--text-2)' } },
-              '🩺 ' + c.case_id + ' · ' + (locked ? '🔒 ' + _mt('mentor.locked').replace('{d}', c.day - 1) : '✅ ' + _mt('mentor.available_now'))));
-        })),
-      proposal.reasoning && React.createElement('div', { style: { marginTop: 14, padding: '12px 14px', borderRadius: 'var(--r-md)', background: 'var(--violet-l)', border: '1px solid var(--violet)', fontSize: 12, color: 'var(--text-2)', lineHeight: 1.6 } },
-        React.createElement('div', { style: { fontWeight: 700, color: 'var(--violet)', marginBottom: 4 } }, '💡 ' + _mt('mentor.reasoning')),
-        proposal.reasoning),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 14 } },
+        React.createElement('div', { style: { width: 44, height: 44, borderRadius: 14, background: 'var(--primary-l)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 } }, '🎓'),
+        React.createElement('div', null,
+          React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, _mt('mentor.your_journey')),
+          React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--primary)', marginTop: 2 } }, proposal.package_name || j.package_name || ''))),
+      React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 } },
+        React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 999 } }, '⏱ ' + _mt('mentor.days').replace('{d}', proposal.duration_days || '').replace('{m}', '45-60')),
+        React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', padding: '5px 12px', borderRadius: 999 } }, '🎯 ' + _mt('mentor.target_readiness') + ': ' + (r.target || 80) + '%')),
+      React.createElement('div', { style: { marginBottom: 14 } },
+        React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 } },
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } }, _mt('mentor.readiness_start')),
+          React.createElement('span', { style: { fontSize: 14, fontWeight: 800, color: 'var(--primary)' } }, startVal + '%')),
+        _mtBar(startVal, 10)),
+      React.createElement(QDayCarousel, { cases: cases, onStart: startCase, doneLabel: 'Selesai' }),
+      proposal.reasoning && React.createElement(QReasonCard, { reasoning: proposal.reasoning }),
       changes.length > 0 && React.createElement('div', { style: { marginTop: 10, fontSize: 11, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '8px 12px', borderRadius: 10 } },
         '🔄 ' + _mt('mentor.changes') + ': ' + changes.join(', ')),
       err && React.createElement('div', { style: { marginTop: 10, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, '⚠️ ' + err),
-      React.createElement('div', { style: { marginTop: 14, display: 'flex', gap: 8, flexWrap: 'wrap' } },
-        React.createElement('button', Object.assign({ onClick: props.onAccept }, _mtBtn('primary')), '🚀 ' + _mt('mentor.accept')),
-        React.createElement('button', Object.assign({ onClick: function () { props.onCancel(); } }, _mtBtn('ghost')), _mt('mentor.cancel')))),
-    React.createElement('div', Object.assign({}, _mtCard, { marginTop: 12, padding: 14 }),
+      React.createElement('div', { style: { marginTop: 16, display: 'flex', gap: 10, flexWrap: 'wrap' } },
+        React.createElement('button', Object.assign({ onClick: props.onAccept }, _mtBtn('primary'), { padding: '12px 24px', boxShadow: 'var(--sh-md)' }), '🚀 ' + _mt('mentor.accept')),
+        React.createElement('button', Object.assign({ onClick: function () { props.onCancel(); } }, _mtBtn('ghost'), { padding: '12px 24px' }), _mt('mentor.cancel')))),
+    React.createElement('div', Object.assign({}, _mtCard, { marginTop: 12, padding: 16 }),
       React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 } }, '✏️ ' + _mt('mentor.customize')),
-      React.createElement('div', { style: { display: 'flex', gap: 8 } },
+      React.createElement('div', { style: { display: 'flex', gap: 8, flexWrap: 'wrap' } },
         React.createElement('input', {
           value: fb, onChange: function (e) { setFb(e.target.value); },
           placeholder: _mt('mentor.customize_feedback'),
           onKeyDown: function (e) { if (e.key === 'Enter') customize(); },
-          style: { flex: 1, minWidth: 0, padding: '9px 12px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 13, fontFamily: 'Poppins', outline: 'none' },
+          style: { flex: 1, minWidth: 'min(220px, 100%)', padding: '10px 12px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 13, fontFamily: 'Poppins', outline: 'none' },
         }),
-        React.createElement('button', Object.assign({ onClick: customize, disabled: busy || !fb.trim() }, _mtBtn('ghost'), { whiteSpace: 'nowrap' }), busy ? '…' : '↻'))));
+        React.createElement('button', Object.assign({ onClick: customize, disabled: busy || !fb.trim() }, _mtBtn('primary'), { whiteSpace: 'nowrap', opacity: busy ? 0.6 : 1 }),
+          busy ? '…' : '↻ ' + _mt('mentor.customize')))));
 }
 
 // ── QJourneyDashboard: active journey tracking ──────────────────────────
@@ -3698,8 +3830,10 @@ function QJourneyDashboard(props) {
   var progress = j.progress || {};
   var r = j.readiness || {};
   var today = cases.filter(function (c) { return c.status === 'available' || c.status === 'in_progress'; })[0] || null;
-  var done = progress.completed || 0;
   var total = progress.total || 0;
+  // Bar width must match the number shown (§4.2) — readiness is displayed
+  // as an absolute percentage, so the bar uses the same value.
+  var currentVal = Math.max(0, Math.min(100, r.current != null ? r.current : (r.start || 0)));
 
   function startCase(c) {
     // Navigate via hash ONLY — the App's hashchange listener maps
@@ -3708,37 +3842,39 @@ function QJourneyDashboard(props) {
     try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
   }
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
-      React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 2 } }, '🎓 ' + _mt('mentor.title')),
-      React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, '📋 ' + (j.package_name || '')),
-      React.createElement('div', { style: { marginBottom: 4, fontSize: 12, color: 'var(--text-2)' } },
-        _mt('mentor.progress').replace('{d}', j.current_day || 1).replace('{n}', total).replace('{p}', progress.percent || 0)),
-      _mtBar(progress.percent || 0, 10),
-      React.createElement('div', { style: { marginTop: 14, marginBottom: 4, fontSize: 12, color: 'var(--text-2)' } },
-        _mt('mentor.readiness') + ': ' + (r.current != null ? r.current : r.start || 0) + '% → ' + _mt('mentor.target_readiness') + ' ' + (r.target || 80) + '%'),
-      _mtBar(r.target > 0 ? Math.round(100 * (r.current != null ? r.current : (r.start || 0)) / r.target) : 0, 10),
-      today && React.createElement('div', { style: { marginTop: 16, padding: '12px 14px', borderRadius: 'var(--r-md)', border: '1px solid var(--primary)', background: 'var(--primary-l)' } },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 16 } },
+        React.createElement('div', { style: { width: 44, height: 44, borderRadius: 14, background: 'var(--primary-l)', color: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 } }, '🎓'),
+        React.createElement('div', null,
+          React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, _mt('mentor.title')),
+          React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-2)', marginTop: 2 } }, '📋 ' + (j.package_name || '')))),
+      // Journey progress
+      React.createElement('div', { style: { marginBottom: 12 } },
+        React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 } },
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } },
+            _mt('mentor.progress').replace('{d}', j.current_day || 1).replace('{n}', total).replace('{p}', progress.percent || 0)),
+          React.createElement('span', { style: { fontSize: 13, fontWeight: 800, color: 'var(--primary)' } }, (progress.percent || 0) + '%')),
+        _mtBar(progress.percent || 0, 10)),
+      // Readiness (bar = displayed value)
+      React.createElement('div', { style: { marginBottom: 14 } },
+        React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 } },
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } },
+            _mt('mentor.readiness') + ': ' + currentVal + '%'),
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)' } },
+            '🎯 ' + _mt('mentor.target_readiness') + ' ' + (r.target || 80) + '%')),
+        _mtBar(currentVal, 10)),
+      // Today's case
+      today && React.createElement('div', { style: { marginBottom: 14, padding: '14px 16px', borderRadius: 'var(--r-lg)', border: '1px solid var(--primary)', background: 'var(--primary-l)' } },
         React.createElement('div', { style: { fontSize: 11, fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.06em' } }, '📌 ' + _mt('mentor.today')),
-        React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', margin: '4px 0 2px' } },
+        React.createElement('div', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', margin: '4px 0 2px' } },
           'Day ' + today.day + ': ' + (today.focus_area || today.case_id)),
-        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-2)', marginBottom: 10 } }, '🩺 ' + today.case_id + ' · ~' + (today.estimated_minutes || 15) + ' min'),
-        React.createElement('button', Object.assign({ onClick: function () { startCase(today); } }, _mtBtn('primary')), _mt('mentor.start_case'))),
-      React.createElement('div', { style: { marginTop: 14, display: 'flex', flexDirection: 'column', gap: 6 } },
-        cases.map(function (c) {
-          var st = c.status;
-          var icon = st === 'completed' ? '✅' : st === 'available' || st === 'in_progress' ? '▶️' : '🔒';
-          var color = st === 'completed' ? 'var(--teal)' : st === 'available' || st === 'in_progress' ? 'var(--primary)' : 'var(--text-3)';
-          return React.createElement('button', {
-            key: c.day,
-            onClick: function () { if (st === 'available' || st === 'in_progress') startCase(c); },
-            style: Object.assign({ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, padding: '8px 12px', borderRadius: 'var(--r-md)', background: 'var(--surface)', border: '1px solid var(--border)', fontFamily: 'Poppins', cursor: st === 'available' || st === 'in_progress' ? 'pointer' : 'default', width: '100%', textAlign: 'left' }),
-          },
-            React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-1)' } }, icon + ' Day ' + c.day + ': ' + (c.focus_area || c.case_id)),
-            React.createElement('div', { style: { fontSize: 11, fontWeight: 700, color: color } },
-              st === 'completed' ? (c.score != null ? c.score + '%' : '✓') : st === 'available' || st === 'in_progress' ? _mt('mentor.start_case') : '🔒'));
-        })),
-      React.createElement('div', { style: { marginTop: 14, display: 'flex', justifyContent: 'flex-end', gap: 8 } },
+        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-2)', marginBottom: 12 } }, '🩺 ' + today.case_id + ' · ~' + (today.estimated_minutes || 15) + ' min'),
+        React.createElement('button', Object.assign({ onClick: function () { startCase(today); } }, _mtBtn('primary'), { width: '100%' }), '▶ ' + _mt('mentor.start_case'))),
+      // All days — horizontal carousel
+      React.createElement(QDayCarousel, { cases: cases, onStart: startCase, doneLabel: 'Selesai' }),
+      // Actions — secondary (report) + destructive (abandon)
+      React.createElement('div', { style: { marginTop: 10, display: 'flex', justifyContent: 'flex-end', gap: 8, flexWrap: 'wrap' } },
         props.onReport && React.createElement('button', Object.assign({ onClick: props.onReport }, _mtBtn('ghost')), '📊 ' + _mt('mentor.view_report')),
         React.createElement('button', Object.assign({ onClick: props.onAbandon }, _mtBtn('danger')), _mt('mentor.abandon')))));
 }
@@ -3950,6 +4086,213 @@ function QMentorScreen(props) {
 
 // ===== END qora-mentor.jsx =====
 
+// ===== BEGIN qora-checkout.jsx =====
+// ============================================================
+// Qora — Checkout page (Website Revision Notes §1.2, §5.3)
+// ------------------------------------------------------------
+// Single checkout flow across the whole product:
+//   Landing / Billing → pilih paket → #/checkout/<plan> → payment
+// Plan-aware via the hash segment (#/checkout/monthly | annual).
+// The payment step executes the CURRENT gateway (Midtrans Snap
+// for IDR, Xendit hosted invoice fallback) through the existing
+// backend endpoints. The UI is provider-agnostic — swapping in
+// Sendit Payment Gateway after approval touches _coPay() only.
+// ADDITIVE: design.css tokens only. Loaded AFTER qora-v2.jsx
+// (reuses QORA_PLAN_FEATURES + _loadSnap globals).
+// ============================================================
+
+var _ct = window.__t || function (k) { return k; };
+
+// ── Payment execution (Midtrans Snap → Xendit fallback) ─────
+// Structure ready for Sendit: replace the body with Sendit calls
+// once approval + integration info lands.
+async function _coPay(planId, setBusy, setErr) {
+  setBusy(true); setErr('');
+  try {
+    // Primary: Midtrans Snap popup (Indonesia / IDR).
+    try {
+      const r = await qv2Fetch('/api/billing/midtrans/checkout/' + planId, { method: 'POST' });
+      if (r && r.snap_token) {
+        await _loadSnap();
+        if (window.snap && window.snap.pay) {
+          window.snap.pay(r.snap_token, {
+            onSuccess: function () { try { window.location.hash = '#/billing-success'; } catch (e) {} },
+            onPending: function () { setErr('Payment pending — complete it to activate your plan.'); setBusy(false); },
+            onError: function () { setErr('Payment failed — please try again.'); setBusy(false); },
+            onClose: function () { setBusy(false); },
+          });
+          return;
+        }
+        if (r.redirect_url) { window.location.href = r.redirect_url; return; }
+      }
+    } catch (e) {
+      if (!/not configured|503/i.test(String((e && e.message) || e))) throw e;
+    }
+    // Fallback: Xendit hosted invoice (USD / non-IDR).
+    const r2 = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
+    if (r2 && r2.checkout_url) { window.location.href = r2.checkout_url; return; }
+    setErr('Checkout is not available yet.');
+  } catch (e) {
+    setErr(/not configured|503/i.test(String(e.message || e)) ? 'Payments are not enabled yet — check back soon.' : String(e.message || e));
+  }
+  setBusy(false);
+}
+
+// ── Checkout screen ──────────────────────────────────────────
+function QoraCheckout(props) {
+  var onNav = props.onNav;
+  // Plan id from the hash: #/checkout/<plan>
+  var planId = 'monthly';
+  try {
+    var seg = (location.hash || '').replace(/^#\/?/, '').split('/');
+    if (seg[0] === 'checkout' && seg[1]) planId = seg[1];
+  } catch (e) {}
+  var region = 'row';
+  try { region = localStorage.getItem('qora_region') || 'row'; } catch (e) {}
+  var isID = region === 'indo';
+
+  var plansState = React.useState(null);
+  var plansData = plansState[0];
+  var setPlans = plansState[1];
+  var meState = React.useState(null);
+  var me = meState[0];
+  var setMe = meState[1];
+  var errState = React.useState('');
+  var err = errState[0];
+  var setErr = errState[1];
+  var busyState = React.useState(false);
+  var busy = busyState[0];
+  var setBusy = busyState[1];
+  var methodState = React.useState('');
+  var method = methodState[0];
+  var setMethod = methodState[1];
+
+  React.useEffect(function () {
+    qv2Fetch('/api/billing/plans').then(setPlans).catch(function (e) { setErr(String(e.message || e)); });
+    qv2Fetch('/api/billing/me').then(setMe).catch(function () {});
+  }, []);
+
+  var plan = null;
+  var plans = (plansData && plansData.plans) || [];
+  for (var i = 0; i < plans.length; i++) { if (plans[i].id === planId) { plan = plans[i]; break; } }
+  var paymentsLive = !!(plansData && plansData.provider);
+
+  var METHODS = isID
+    ? [
+        { id: 'qris', icon: '\uD83D\uDCF1', label: 'QRIS — GoPay, OVO, DANA, ShopeePay' },
+        { id: 'va', icon: '\uD83C\uDFE6', label: 'Virtual Account — BCA, Mandiri, BNI, BRI' },
+        { id: 'alfamart', icon: '\uD83C\uDFEA', label: 'Alfamart / Indomaret' },
+      ]
+    : [
+        { id: 'card', icon: '\uD83D\uDCB3', label: 'Credit / Debit Card — Visa, Mastercard' },
+      ];
+
+  function pay() {
+    if (!planId || busy) return;
+    _coPay(planId, setBusy, setErr);
+  }
+
+  function goBack() {
+    if (typeof onNav === 'function') onNav('billing');
+    else try { window.location.hash = '#/billing'; } catch (e) {}
+  }
+
+  // Loading / error states
+  if (!plansData) {
+    return React.createElement('div', { className: 'au', style: { maxWidth: 'min(860px, calc(100% - 16px))', margin: '0 auto', padding: '60px 20px', textAlign: 'center', color: 'var(--text-3)', fontSize: 13 } },
+      err ? (_ct('common.error') + ': ' + err) : _ct('common.loading'));
+  }
+
+  var priceText = plan ? (plan.display_price || ('$' + plan.price)) : '';
+  var intervalText = plan
+    ? (plan.interval === 'year' ? (isID ? '/thn' : '/year') : plan.interval === 'one_time' ? (isID ? 'sekali bayar' : 'one-off') : (isID ? '/bln' : '/month'))
+    : '';
+  var sessionsText = isID ? 'Tak terbatas sesi' : 'Unlimited sessions';
+  var features = QORA_PLAN_FEATURES[planId] || [];
+  var featureFallback = plan && plan.features ? plan.features : [];
+
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(900px, calc(100% - 16px))', margin: '0 auto', padding: '28px 16px 80px' } },
+    // Header
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 } },
+      React.createElement('button', { onClick: goBack, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _ct('common.back')),
+      React.createElement('div', null,
+        React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, isID ? 'Checkout' : 'Checkout'),
+        React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginTop: 2 } }, isID ? 'Langkah terakhir sebelum kamu mulai latihan tanpa batas.' : 'One step away from unlimited practice.'))),
+    !paymentsLive && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginBottom: 18, marginTop: 8 } },
+      isID ? 'Semua fitur sedang terbuka selama Qora masih beta.' : 'Everything is currently unlocked while Qora is in beta.'),
+
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, alignItems: 'start', marginTop: 18 } },
+      // ── Left: order summary ──
+      React.createElement('div', { className: 'as', style: { padding: 22, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-md)' } },
+        React.createElement('div', { style: { fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12 } }, '\uD83D\uDED2 ' + (isID ? 'Ringkasan pesanan' : 'Order summary')),
+        plan
+          ? React.createElement('div', null,
+              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, marginBottom: 2 } },
+                React.createElement('div', { style: { fontSize: 17, fontWeight: 800, color: 'var(--text-1)' } }, plan.label || planId),
+                React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)' } }, priceText + ' ' + intervalText)),
+              React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 14 } },
+                isID ? 'Paket ' + planId + ' · ' + sessionsText : planId + ' plan · ' + sessionsText),
+              React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, padding: '14px 0', borderTop: '1px solid var(--border)' } },
+                (features.length ? features : featureFallback).map(function (f, i) {
+                  return React.createElement('div', { key: i, style: { display: 'flex', alignItems: 'center', gap: 9, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.45 } },
+                    React.createElement('span', { style: { color: 'var(--primary)', fontWeight: 700, flexShrink: 0 } }, '\u2713'), f);
+                })),
+              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, borderTop: '1px solid var(--border)' } },
+                React.createElement('span', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' } }, isID ? 'Total' : 'Total'),
+                React.createElement('span', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, priceText + ' ' + intervalText)))
+          : React.createElement('div', { style: { fontSize: 13, color: 'var(--red-d)', padding: '10px 0' } },
+              isID ? 'Paket "' + planId + '" tidak ditemukan.' : 'Plan "' + planId + '" not found.')),
+
+      // ── Right: payment ──
+      React.createElement('div', { className: 'as', style: { padding: 22, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-md)' } },
+        React.createElement('div', { style: { fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 14 } }, '\uD83D\uDCB8 ' + (isID ? 'Metode pembayaran' : 'Payment method')),
+        React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 } },
+          METHODS.map(function (m) {
+            var active = method === m.id;
+            return React.createElement('button', {
+              key: m.id,
+              onClick: function () { setMethod(m.id); },
+              style: {
+                display: 'flex', alignItems: 'center', gap: 11, padding: '12px 14px', borderRadius: 14,
+                border: '1.5px solid ' + (active ? 'var(--primary)' : 'var(--border)'),
+                background: active ? 'var(--primary-l)' : 'var(--surface)',
+                cursor: 'pointer', fontFamily: 'Poppins', textAlign: 'left', width: '100%',
+                transition: 'all 0.18s ease',
+              },
+            },
+              React.createElement('span', { style: { fontSize: 20 } }, m.icon),
+              React.createElement('span', { style: { flex: 1, fontSize: 13, fontWeight: active ? 700 : 500, color: 'var(--text-1)' } }, m.label),
+              React.createElement('span', { style: { width: 18, height: 18, borderRadius: '50%', border: '2px solid ' + (active ? 'var(--primary)' : 'var(--border)'), display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 } },
+                active && React.createElement('span', { style: { width: 8, height: 8, borderRadius: '50%', background: 'var(--primary)' } })));
+          })),
+        React.createElement('button', {
+          onClick: pay,
+          disabled: busy || !plan || !method,
+          style: {
+            width: '100%', padding: '14px', borderRadius: 14, border: 'none',
+            background: busy || !plan || !method ? 'var(--surface-3)' : 'var(--primary)',
+            color: busy || !plan || !method ? 'var(--text-3)' : '#fff',
+            fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: busy || !plan || !method ? 'default' : 'pointer',
+            boxShadow: busy || !plan || !method ? 'none' : 'var(--sh-md)',
+            transition: 'all 0.18s ease',
+          },
+        },
+          busy
+            ? React.createElement('span', null, isID ? 'Memproses pembayaran\u2026' : 'Processing payment\u2026')
+            : (isID ? 'Bayar sekarang' : 'Pay now')),
+        err && React.createElement('div', { style: { marginTop: 12, fontSize: 12.5, color: 'var(--red-d)', background: 'var(--red-l)', padding: '9px 12px', borderRadius: 10, lineHeight: 1.5 } }, err),
+        React.createElement('div', { style: { marginTop: 14, fontSize: 11, color: 'var(--text-3)', lineHeight: 1.6, textAlign: 'center' } },
+          '\uD83D\uDD12 ' + (isID ? 'Pembayaran aman & terenkripsi. Aktivasi instan setelah pembayaran diverifikasi.' : 'Secure & encrypted checkout. Your plan activates instantly once payment is verified.')))));
+}
+
+window.QoraCheckout = QoraCheckout;
+
+// Global hook: any screen can jump straight to the checkout page.
+window.__goCheckout = function (planId) {
+  try { window.location.hash = '#/checkout/' + (planId || 'monthly'); } catch (e) {}
+};
+// ===== END qora-checkout.jsx =====
+
 // ===== BEGIN inline App (from Virtual Patient Simulator.html) =====
     // ============================================================
     // Qora — Standalone App with Dashboard + Cases
@@ -3977,7 +4320,7 @@ function QMentorScreen(props) {
         var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
         var authed = loadAuth();
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
-        if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases'].indexOf(h) >= 0) return h;
+        if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
       });
       const [screenKey, setScreenKey] = React.useState(0);
@@ -4011,7 +4354,7 @@ function QMentorScreen(props) {
           var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
           var next = null;
           if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
-          else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases'].indexOf(h) >= 0) next = h;
+          else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
@@ -4021,7 +4364,17 @@ function QMentorScreen(props) {
 
       const handleLogin = React.useCallback((credentials) => {
         setAuth(credentials);
-        navigate('dashboard');
+        // Continue-to-checkout: if the user picked a plan while logged out,
+        // finish the flow instead of dropping them on the dashboard.
+        let pending = null;
+        try { pending = localStorage.getItem('qora_pending_checkout'); } catch (e) {}
+        if (pending) {
+          try { localStorage.removeItem('qora_pending_checkout'); } catch (e) {}
+          setScreen('checkout');
+          try { window.location.hash = '#/checkout/' + pending; } catch (e) {}
+        } else {
+          navigate('dashboard');
+        }
       }, [navigate]);
 
       const handleLogout = React.useCallback(() => {
@@ -4095,8 +4448,14 @@ function QMentorScreen(props) {
             }, title: 'View profile' },
               auth && auth.email ? auth.email[0].toUpperCase() : '?'))),
 
+        // Decorative background layer (authenticated pages) — revision §6.1
+        isLoggedIn && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 0, overflow: 'hidden', pointerEvents: 'none' } },
+          React.createElement('div', { style: { position: 'absolute', width: 480, height: 480, borderRadius: '50%', top: -160, right: -120, background: 'radial-gradient(circle, rgba(88,101,242,0.16) 0%, rgba(88,101,242,0) 70%)' } }),
+          React.createElement('div', { style: { position: 'absolute', width: 380, height: 380, borderRadius: '50%', bottom: -120, left: -100, background: 'radial-gradient(circle, rgba(124,58,237,0.13) 0%, rgba(124,58,237,0) 70%)' } }),
+          React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: '38%', right: -70, border: '1.5px solid rgba(88,101,242,0.10)' } })),
+
         // Main content
-        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0 } },
+        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
@@ -4106,7 +4465,11 @@ function QMentorScreen(props) {
           screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
           screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
           (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
+          screen === 'checkout' && React.createElement(QoraCheckout, { onNav: navigate }),
           screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
+
+        // Consistent company footer on all authenticated pages (revision §2.2/§6.2)
+        isLoggedIn && React.createElement(QLFooter, null),
 
         // Bottom tab bar (mobile only) — native mobile pattern, all 5 items always visible
         isLoggedIn && isMobile && React.createElement('nav', { style: {

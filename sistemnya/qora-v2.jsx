@@ -1175,9 +1175,24 @@ function QoraDashboard({ onNav, onStartCase }) {
               s.specialty === 'emergency' ? '🚑' : s.specialty === 'surgery' ? '🔪' : s.specialty === 'paediatrics' ? '👶' : s.specialty === 'psychiatry' ? '🧠' : s.specialty === 'ophthalmology' ? '👁' : '🩺'),
             React.createElement('div', { style: { flex: 1, minWidth: 0 } },
               React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2 } }, s.presentation || 'Case'),
-              React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress'))))))),
+              React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress')))))),
 
-      // Right column: specialties + dimensions + radar
+        // Skill breakdown — moved to the LEFT column so the desktop layout
+        // stays balanced (revision §2.1)
+        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 ' + _t('dashboard.skill_breakdown')),
+          Object.keys(dims).map(k => {
+            const dimLabel = QV2_DIM_LABEL;
+            const pct = dims[k];
+            return React.createElement('div', { key: k, style: { marginBottom: 8 } },
+              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
+                React.createElement('span', null, dimLabel[k] || k),
+                React.createElement('span', null, Math.round(pct) + '%')),
+              React.createElement('div', { style: { height: 5, borderRadius: 999, background: 'var(--surface-3)' } },
+                React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)', transition: 'width 0.6s ease' } })));
+          }))),
+
+      // Right column: radar + achievements + specialty coverage
       React.createElement('div', null,
         // Skill radar chart
         hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
@@ -1194,21 +1209,9 @@ function QoraDashboard({ onNav, onStartCase }) {
           specKeys.length === 0 && React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)' } }, 'No specialties practised yet.'),
           React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
             specKeys.map(s => React.createElement('span', { key: s, style: { fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } },
-              (specLabel[s] || s) + ' · ' + specs[s])))),
-        // Skill dimensions
-        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
-          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 Skill breakdown'),
-          Object.keys(dims).map(k => {
-            const dimLabel = QV2_DIM_LABEL;
-            const pct = dims[k];
-            return React.createElement('div', { key: k, style: { marginBottom: 8 } },
-              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
-                React.createElement('span', null, dimLabel[k] || k),
-                React.createElement('span', null, Math.round(pct) + '%')),
-              React.createElement('div', { style: { height: 5, borderRadius: 999, background: 'var(--surface-3)' } },
-                React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)', transition: 'width 0.6s ease' } })));
-          })))));
-}
+              (specLabel[s] || s) + ' · ' + specs[s])))))
+                    ));
+              }
 
 function QDStat({ label, value, icon, color, sub }) {
   return React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
@@ -1462,7 +1465,7 @@ function QoraPricing({ onNav }) {
             ? React.createElement('button', { disabled: true, style: { padding: 11, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'default' } }, 'Current plan')
             : isFree
               ? React.createElement('button', { disabled: true, style: { padding: 11, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'default' } }, 'Included')
-              : React.createElement('button', { onClick: () => upgrade(p.id), disabled: busy === p.id || !paymentsLive, title: paymentsLive ? '' : 'Payments coming soon', style: { padding: 11, borderRadius: 12, border: 'none', background: paymentsLive ? 'var(--primary)' : 'var(--surface-2)', color: paymentsLive ? '#fff' : 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: paymentsLive ? 'pointer' : 'default' } }, busy === p.id ? 'Redirecting…' : paymentsLive ? 'Upgrade' : 'Coming soon'));
+              : React.createElement('button', { onClick: () => { if (window.__goCheckout) window.__goCheckout(p.id); }, disabled: !paymentsLive, title: paymentsLive ? '' : 'Payments coming soon', style: { padding: 11, borderRadius: 12, border: 'none', background: paymentsLive ? 'var(--primary)' : 'var(--surface-2)', color: paymentsLive ? '#fff' : 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: paymentsLive ? 'pointer' : 'default' } }, paymentsLive ? 'Upgrade' : 'Coming soon'));
       })),
     err && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--red-d)', marginTop: 16 } }, err),
     React.createElement('div', { style: { textAlign: 'center', fontSize: 11, color: 'var(--text-3)', marginTop: 24 } }, 'Secure checkout via Xendit. A study aid, not a medical device.'));

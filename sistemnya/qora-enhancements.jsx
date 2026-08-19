@@ -107,6 +107,26 @@ function QoraSessions(props) {
     content);
 }
 
+// ── Billing plan card — visually consistent with landing QLPricing (§5.2) ──
+function QLBillingPlanCard(props) {
+  var isAccent = !!props.accent;
+  var isID = !!props.isID;
+  return React.createElement('div', { className: 'as', style: { padding: 24, borderRadius: 'var(--r-xl)', background: isAccent ? 'var(--primary)' : 'var(--surface)', border: isAccent ? 'none' : '1px solid var(--border)', boxShadow: isAccent ? 'var(--sh-lg)' : 'var(--sh-sm)', color: isAccent ? '#fff' : 'var(--text-1)', position: 'relative', display: 'flex', flexDirection: 'column' } },
+    isAccent && React.createElement('div', { style: { position: 'absolute', top: -10, left: '50%', transform: 'translateX(-50%)', background: 'var(--amber)', color: '#fff', fontSize: 10, fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', padding: '3px 14px', borderRadius: 999, whiteSpace: 'nowrap' } }, isID ? 'Paling diminati' : 'Most popular'),
+    React.createElement('div', { style: { fontSize: 14, fontWeight: 700, marginBottom: 4, color: isAccent ? 'rgba(255,255,255,0.8)' : 'var(--text-2)' } }, props.name),
+    React.createElement('div', { style: { marginBottom: 14 } },
+      React.createElement('span', { style: { fontSize: 28, fontWeight: 800 } }, props.price)),
+    React.createElement('div', { style: { fontSize: 12, color: isAccent ? 'rgba(255,255,255,0.75)' : 'var(--text-3)', marginBottom: 14 } }, props.sessions),
+    React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 18, flex: 1 } },
+      (props.features || []).map(function (f, i) {
+        return React.createElement('div', { key: i, style: { display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, color: isAccent ? 'rgba(255,255,255,0.85)' : 'var(--text-2)' } },
+          React.createElement('span', { style: { color: isAccent ? '#fff' : 'var(--primary)', fontWeight: 700 } }, '✓'),
+          f);
+      })),
+    React.createElement('button', { onClick: props.onCta, style: { width: '100%', padding: 12, borderRadius: 12, border: 'none', background: isAccent ? '#fff' : 'var(--primary)', color: isAccent ? 'var(--primary)' : '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', textAlign: 'center', transition: 'transform 0.15s ease, box-shadow 0.15s ease' } },
+      isID ? 'Langganan' : 'Subscribe'));
+}
+
 // ── Billing / Payment History Page ──
 function QoraBilling(props) {
   var onNav = props.onNav;
@@ -133,16 +153,12 @@ function QoraBilling(props) {
     qv2Fetch('/api/billing/history').then(setData).catch(function (e) { setErr(String(e.message || e)); });
   }, []);
 
-  async function upgrade(planId) {
-    setBusy(planId); setErr('');
-    try {
-      var r = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
-      if (r && r.checkout_url) { window.location.href = r.checkout_url; return; }
-      setErr('Checkout is not available yet.');
-    } catch (e) {
-      setErr(/not configured|503/i.test(String(e.message || e)) ? 'Payments are not enabled yet — check back soon.' : String(e.message || e));
-    }
-    setBusy('');
+  // All plan CTAs share ONE checkout flow (revision §5.3):
+  // Billing → pilih paket → #/checkout/<plan> → payment.
+  function goCheckout(planId) {
+    setErr('');
+    if (window.__goCheckout) window.__goCheckout(planId);
+    else if (typeof onNav === 'function') onNav('checkout');
   }
 
   if (err && !data) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)', textAlign: 'center' } }, _t('common.error') + ': ' + err);
@@ -173,29 +189,16 @@ function QoraBilling(props) {
             React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 8 } }, usedSessions + ' of ' + limit + ' free sessions used this period'),
             React.createElement('div', { style: { height: 8, borderRadius: 999, background: 'var(--surface-3)', marginBottom: 16 } },
               React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: pct >= 80 ? 'var(--red)' : 'var(--primary)', transition: 'width 0.6s ease' } })),
-            React.createElement('button', { onClick: function () { upgrade('monthly'); }, disabled: !!busy, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
-              busy === 'monthly' ? 'Redirecting\u2026' : ('Upgrade to ' + (prices.monthly || '$14.99/mo')))),
+            React.createElement('button', { onClick: function () { goCheckout('monthly'); }, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } },
+              'Upgrade to ' + (prices.monthly || '$14.99/mo')),
       err && React.createElement('div', { style: { fontSize: 12.5, color: isPaid ? 'rgba(255,255,255,0.9)' : 'var(--red-d)', marginTop: 10 } }, err)),
-    // Plan options
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginBottom: 20 } },
-      React.createElement('button', { onClick: function () { upgrade('monthly'); }, disabled: !!busy, style: { textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontFamily: 'Poppins' } },
-        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, 'Monthly'),
-        React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--primary)', marginBottom: 2 } }, prices.monthly || '$14.99/mo'),
-        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Cancel anytime')),
-      React.createElement('button', { onClick: function () { upgrade('annual'); }, disabled: !!busy, style: { textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', border: '2px solid var(--primary)', background: 'var(--primary-l)', cursor: 'pointer', fontFamily: 'Poppins', position: 'relative' } },
-        React.createElement('span', { style: { position: 'absolute', top: -10, right: 12, background: 'var(--amber)', color: '#fff', fontSize: 9, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', padding: '2px 10px', borderRadius: 999 } }, 'Best value'),
-        React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, 'Annual'),
-        React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--primary)', marginBottom: 2 } }, prices.annual || '$119/yr'),
-        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Save ~34%'))),
-    // Recent sessions
-    React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
-      React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '\uD83D\uDCCB ' + (_t('dashboard.recent_sessions'))),
-      (!data.history || !data.history.length) && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', padding: '12px 0', textAlign: 'center' } }, _t('dashboard.no_sessions')),
-      (data.history || []).slice(0, 6).map(function (s, i) {
-        return React.createElement('div', { key: s.id || i, style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderTop: '1px solid var(--border)' } },
-          React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)' } }, s.caseId || 'Case'),
-          React.createElement('span', { style: { fontSize: 12, fontWeight: 700, color: s.totalScore != null ? 'var(--teal-d)' : 'var(--text-3)' } }, s.totalScore != null ? s.totalScore + '%' : (s.status || '—')));
-      })));
+    // Plan options — same pricing card style as the landing page (§5.2)
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 16, alignItems: 'stretch', marginBottom: 8 } },
+      React.createElement(QLBillingPlanCard, { name: region === 'indo' ? 'Bulanan' : 'Monthly', price: prices.monthly || (region === 'indo' ? 'Rp119.000/bln' : '$14.99/mo'), sessions: region === 'indo' ? 'Tak terbatas sesi' : 'Unlimited sessions', features: QORA_PLAN_FEATURES.monthly, accent: false, onCta: function () { goCheckout('monthly'); }, isID: region === 'indo' }),
+      React.createElement(QLBillingPlanCard, { name: region === 'indo' ? 'Tahunan' : 'Annual', price: prices.annual || (region === 'indo' ? 'Rp999.000/thn' : '$119/yr'), sessions: region === 'indo' ? 'Tak terbatas sesi' : 'Unlimited sessions', features: QORA_PLAN_FEATURES.annual, accent: true, onCta: function () { goCheckout('annual'); }, isID: region === 'indo' })),
+    // Pattern note: billing keeps the free-session progress + plan cards only.
+    // (Recent sessions were removed here — they live on the Sessions page.)
+  ));
 }
 
 // ── Billing Success / Failed redirect pages ──
