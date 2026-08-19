@@ -2661,17 +2661,45 @@ function QV2ItemRow({ item, status }) {
       (item && item.item ? item.item : item) + (item && item.critical ? '  •critical' : '')));
 }
 
+// ── Rolling number (progress juice, cheap rAF; respects reduced motion) ──
+function useReducedMotion() {
+  var m = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
+  return !!(m && m.matches);
+}
+function QNumeric({ value, ms, style }) {
+  var [n, setN] = React.useState(0);
+  var reduce = useReducedMotion();
+  React.useEffect(function () {
+    if (reduce) { setN(value); return undefined; }
+    var dur = ms || 700, from = 0, raf;
+    var start = performance.now();
+    function step(t) {
+      var k = Math.min(1, (t - start) / dur);
+      var eased = 1 - Math.pow(1 - k, 3);
+      setN(Math.round(from + (value - from) * eased));
+      if (k < 1) raf = requestAnimationFrame(step);
+    }
+    raf = requestAnimationFrame(step);
+    return function () { cancelAnimationFrame(raf); };
+  }, [value, reduce, ms]);
+  return React.createElement('span', { style: style || {} }, n);
+}
+
 function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
   var _t = window.__t || function(k) { return k; };
-  // Confetti on mount
+  // Confetti ONLY for a meaningful milestone (high score) — routine
+  // completion gets a quieter visual. §10 of the playfulness doc: don't
+  // confetti every case. Branded palette, respects reduced-motion.
+  var reduce = useReducedMotion();
   React.useEffect(function () {
-    if (typeof window.confetti === 'function') {
-      var score = report.overall || 0;
-      window.confetti({ particleCount: score >= 80 ? 120 : score >= 60 ? 60 : 20, spread: score >= 80 ? 100 : 70, origin: { y: 0.6 } });
+    if (typeof window.confetti !== 'function' || reduce) return;
+    var score = report.overall || 0;
+    if (score >= 80) {
+      window.confetti({ particleCount: 90, spread: 75, startVelocity: 42, origin: { y: 0.6 }, colors: ['#5865F2', '#8b5cf6', '#22d3a7', '#f0b429'], shapes: ['circle', 'square', 'star'] });
     }
-  }, []);
+  }, [reduce]);
   // Reasoning autopsy (Qora Mentor §4.2): fetch, or generate post-score.
   const [autopsy, setAutopsy] = React.useState(null);
   React.useEffect(function () {
@@ -2699,12 +2727,18 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
     const hit = (report.per_item || []).find(p => t && (t.includes(String(p.item || '').toLowerCase()) || String(p.item || '').toLowerCase().includes(t)));
     return hit ? hit.status : null;
   };
+  // Strongest / focus-next chips, from the scored dimensions (skill mastery,
+  // §12). Only meaningful once 2+ dimensions have been scored.
+  const dimList = Object.keys(dims).map(k => ({ label: QV2_DIM_LABEL[k] || k.replace(/_/g, ' '), pct: dims[k].max ? Math.round((dims[k].score / dims[k].max) * 100) : 0 }));
+  const sortedDims = dimList.slice().sort((a, b) => b.pct - a.pct);
+  const strongest = sortedDims[0];
+  const weakest = sortedDims.length > 1 ? sortedDims[sortedDims.length - 1] : null;
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(820px, calc(100% - 16px))', margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Debrief'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18 } }, caseSummary.presentation),
     // overall + dimensions
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 18, padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
-      React.createElement('div', { style: { fontSize: 38, fontWeight: 800, color: 'var(--primary)', minWidth: 56, textAlign: 'center' } }, (report.overall != null ? report.overall : 0)),
+    React.createElement('div', { className: 'as', style: { display: 'flex', alignItems: 'center', gap: 18, padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
+      React.createElement('div', { className: 'as', style: { fontSize: 38, fontWeight: 800, color: 'var(--primary)', minWidth: 56, textAlign: 'center' } }, React.createElement(QNumeric, { value: (report.overall != null ? report.overall : 0), ms: 800 })),
       React.createElement('div', { style: { flex: 1 } },
         Object.keys(dims).map(k => {
           const d = dims[k]; const pct = d.max ? Math.round((d.score / d.max) * 100) : 0;
@@ -2715,7 +2749,10 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
             React.createElement('div', { style: { height: 6, borderRadius: 999, background: 'var(--surface-3)' } },
               React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)' } })));
         }))),
-    report.summary && React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, padding: 14, borderRadius: 'var(--r-md)', background: 'var(--primary-ll)', marginBottom: 18 } }, report.summary),
+    (strongest || weakest) && React.createElement('div', { className: 'as d1', style: { display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 16 } },
+      strongest && React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 700, padding: '8px 14px', borderRadius: 999, background: 'var(--teal-l)', color: 'var(--teal-d)' } }, 'Strongest: ' + strongest.label + ' · ' + strongest.pct + '%'),
+      weakest && React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 700, padding: '8px 14px', borderRadius: 999, background: 'var(--violet-l)', color: 'var(--violet)' } }, 'Focus next: ' + weakest.label)),
+    report.summary && React.createElement('div', { className: 'as d2', style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, padding: 14, borderRadius: 'var(--r-md)', background: 'var(--primary-ll)', marginBottom: 18 } }, report.summary),
     // answer key
     React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', margin: '6px 0 10px' } }, '🗝 Model answer (what a complete workup includes)'),
     (ak.anamnesis_checklist || []).map(g => React.createElement('div', { key: g.group, style: { marginBottom: 12 } },
@@ -2862,9 +2899,15 @@ function QoraDashboard({ onNav, onStartCase }) {
   const levelProgress = ((p.xp || 0) % 200) / 200 * 100;
   const levelNames = ['Student','Intern','Resident','Senior Resident','Consultant','Specialist','Senior Specialist','Professor'];
   const levelName = levelNames[Math.min(level - 1, levelNames.length - 1)] || 'Student';
+  // Explicit XP progression (#2): X / 200 this level, plus "to next".
+  const xpInLevel = (p.xp || 0) % 200;
+  const toNext = 200 - xpInLevel;
   const totalSessions = p.totalSessions || 0;
   const completedCases = p.completedCases || 0;
   const dims = p.dimensionAverages || {};
+  // Skill mastery (#3): surface the strongest dimension from scaled scores.
+  const dimArr = Object.keys(dims).map(k => ({ label: QV2_DIM_LABEL[k] || k.replace(/_/g, ' '), pct: dims[k] || 0 }));
+  const strongestDim = dimArr.length ? dimArr.slice().sort((a, b) => b.pct - a.pct)[0] : null;
   const hasDims = Object.keys(dims).length > 0;
   const specs = p.specialtyCounts || {};
   const specKeys = Object.keys(specs);
@@ -2896,12 +2939,12 @@ function QoraDashboard({ onNav, onStartCase }) {
             completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Continue practising'))),
         // XP card
         React.createElement('div', { style: { background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', borderRadius: 20, padding: '18px 22px', minWidth: isMobile ? 0 : 200, width: isMobile ? '100%' : 'auto', border: '1px solid rgba(255,255,255,0.2)' } },
-          React.createElement('div', { style: { fontSize: 11, opacity: 0.7, fontWeight: 600, marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.07em' } }, 'Your Progress'),
-          React.createElement('div', { style: { fontSize: 28, fontWeight: 800, lineHeight: 1 } }, 'Lv ' + level),
-          React.createElement('div', { style: { fontSize: 12, opacity: 0.75, marginBottom: 14 } }, levelName),
-          React.createElement('div', { style: { background: 'rgba(255,255,255,0.2)', borderRadius: 999, height: 6, marginBottom: 6 } },
+          React.createElement('div', { style: { fontSize: 11, opacity: 0.7, fontWeight: 600, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.07em' } }, 'Your Progress'),
+          React.createElement('div', { style: { fontSize: 20, fontWeight: 800, lineHeight: 1.2 } }, 'Lv ' + level + ' · ' + levelName),
+          React.createElement('div', { style: { fontSize: 15, fontWeight: 700, opacity: 0.9, marginBottom: 12 } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' / 200 XP'),
+          React.createElement('div', { style: { background: 'rgba(255,255,255,0.2)', borderRadius: 999, height: 6, marginBottom: 8 } },
             React.createElement('div', { style: { height: '100%', borderRadius: 999, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease-panel)' } })),
-          React.createElement('div', { style: { fontSize: 11, opacity: 0.65, textAlign: 'right' } }, (p.xp || 0) + ' XP')))),
+          React.createElement('div', { style: { fontSize: 10.5, opacity: 0.85, textAlign: 'right' } }, toNext + ' XP to next level'))),
 
     // Stats Row
     React.createElement('div', { className: 'au', style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 12, marginBottom: 24 } },
@@ -2930,7 +2973,10 @@ function QoraDashboard({ onNav, onStartCase }) {
         // Skill breakdown — moved to the LEFT column so the desktop layout
         // stays balanced (revision §2.1)
         hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
-          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '📊 ' + _t('dashboard.skill_breakdown')),
+          React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 } },
+            React.createElement('span', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' } }, 'Skill mastery'),
+            strongestDim && React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '3px 10px', borderRadius: 999 } }, 'Strong: ' + strongestDim.label)),
+          React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginBottom: 12 } }, 'How your interview skills stack up across dimensions.'),
           Object.keys(dims).map(k => {
             const dimLabel = QV2_DIM_LABEL;
             const pct = dims[k];
@@ -2960,7 +3006,7 @@ function QoraDashboard({ onNav, onStartCase }) {
           React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
             specKeys.map(s => React.createElement('span', { key: s, style: { fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } },
               (specLabel[s] || s) + ' · ' + specs[s])))))
-                    ));
+                    )));
               }
 
 function QDStat({ label, value, icon, color, sub }) {
