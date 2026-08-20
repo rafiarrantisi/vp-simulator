@@ -113,7 +113,7 @@ def _add_fields(path: Path, client, model: str, dry_run: bool) -> tuple[bool, st
     for attempt in range(3):
         try:
             raw = client.generate(_SYSTEM, [{"role": "user", "content": prompt}],
-                                  model=model, max_tokens=200, temperature=0.3)
+                                  model=model, max_tokens=512, temperature=0.3)
         except RuntimeError:
             raw = ""
         out = _parse_json(raw) if raw else None

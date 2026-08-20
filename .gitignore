@@ -44,3 +44,9 @@ Thumbs.db
 
 # Vite local env (dev-only, never committed)
 **/.env.local
+
+# Backup env (SECRET) — never commit
+**/.env.bak*
+
+# Wrangler local state/cache (deploy tooling, can hold creds) — never commit
+deploy/cloudflare/.wrangler/
