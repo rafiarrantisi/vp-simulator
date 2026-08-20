@@ -2916,106 +2916,124 @@ function QoraDashboard({ onNav, onStartCase }) {
   // Recent sessions helper
   const specLabel = { internal_medicine: 'Internal medicine', surgery: 'Surgery', paediatrics: 'Paediatrics', obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology', ent: 'ENT', dermatology: 'Dermatology', ophthalmology: 'Ophthalmology', emergency: 'Emergency' };
 
+  // Uniform panel + heading styles shared across every content section
+  // (keeps the existing look — surface, border, radius — but enforces
+  //  one consistent spec so cards align on a clean grid).
+  const panel = { padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' };
+  const secTitle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, gap: 10 };
+  const secHead = { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' };
+
   return React.createElement('div', { style: { maxWidth: 'min(1100px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '20px 10px 60px' : '32px 24px 60px' } },
-    // Hero
+
+    // ── Hero: welcome + progress with clear, fixed proportions ──
     React.createElement('div', { className: 'au', style: {
       background: 'linear-gradient(135deg, var(--primary) 0%, #7C3AED 100%)',
-      borderRadius: 24, padding: isMobile ? '26px 20px' : '36px 40px', marginBottom: 28,
+      borderRadius: 24, padding: isMobile ? '26px 20px' : '36px 44px', marginBottom: 24,
       position: 'relative', overflow: 'hidden', color: '#fff',
-    }},
+      display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.6fr) minmax(0, 1fr)',
+      gap: isMobile ? 20 : 44, alignItems: 'center',
+    } },
       React.createElement('div', { style: { position: 'absolute', right: -60, top: -60, width: 320, height: 320, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)' } }),
       React.createElement('div', { style: { position: 'absolute', right: -20, top: -20, width: 220, height: 220, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.12)' } }),
       React.createElement('div', { style: { position: 'absolute', right: 40, top: 20, width: 140, height: 140, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.15)' } }),
-      React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative', flexDirection: isMobile ? 'column' : 'row', gap: 18 } },
-        React.createElement('div', { style: { maxWidth: 520, minWidth: 0 } },
-          React.createElement('div', { style: { display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 16, backdropFilter: 'blur(8px)' } },
-            React.createElement('span', { style: { fontSize: 13 } }, '👨‍⚕️'), ' Clinical Interview Trainer'),
-          React.createElement('h1', { style: { fontSize: 'clamp(24px, 7vw, 30px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 10 } },
-            'Welcome back' + (firstName ? ', ' + firstName : '') + '! 👋'),
-          React.createElement('p', { style: { fontSize: 14, opacity: 0.82, marginBottom: 28, lineHeight: 1.6 } },
-            'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.'),
-          React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap' } },
-            React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--primary)', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' } }, '▶ Start new case'),
-            completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Continue practising'))),
-        // XP card
-        React.createElement('div', { style: { background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', borderRadius: 20, padding: '18px 22px', minWidth: isMobile ? 0 : 200, width: isMobile ? '100%' : 'auto', border: '1px solid rgba(255,255,255,0.2)' } },
-          React.createElement('div', { style: { fontSize: 11, opacity: 0.7, fontWeight: 600, marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.07em' } }, 'Your Progress'),
-          React.createElement('div', { style: { fontSize: 20, fontWeight: 800, lineHeight: 1.2 } }, 'Lv ' + level + ' · ' + levelName),
-          React.createElement('div', { style: { fontSize: 15, fontWeight: 700, opacity: 0.9, marginBottom: 12 } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' / 200 XP'),
-          React.createElement('div', { style: { background: 'rgba(255,255,255,0.2)', borderRadius: 999, height: 6, marginBottom: 8 } },
-            React.createElement('div', { style: { height: '100%', borderRadius: 999, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease-panel)' } })),
-          React.createElement('div', { style: { fontSize: 10.5, opacity: 0.85, textAlign: 'right' } }, toNext + ' XP to next level'))),
+      // Left: greeting + CTAs
+      React.createElement('div', { style: { position: 'relative', minWidth: 0 } },
+        React.createElement('div', { style: { display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 16, backdropFilter: 'blur(8px)' } },
+          React.createElement('span', { style: { fontSize: 13 } }, '👨‍⚕️'), ' Clinical Interview Trainer'),
+        React.createElement('h1', { style: { fontSize: 'clamp(24px, 7vw, 30px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 10 } },
+          'Welcome back' + (firstName ? ', ' + firstName : '') + '! 👋'),
+        React.createElement('p', { style: { fontSize: 14, opacity: 0.82, marginBottom: 26, lineHeight: 1.6, maxWidth: 460 } },
+          'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.'),
+        React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap' } },
+          React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--primary)', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' } }, '▶ Start new case'),
+          completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Continue practising'))),
+      // Right: progress card (vertically centred, fills its grid track)
+      React.createElement('div', { style: { background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', borderRadius: 20, padding: '20px 24px', border: '1px solid rgba(255,255,255,0.2)', alignSelf: 'center' } },
+        React.createElement('div', { style: { fontSize: 11, opacity: 0.7, fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.07em' } }, 'Your Progress'),
+        React.createElement('div', { style: { fontSize: 21, fontWeight: 800, lineHeight: 1.2 } }, 'Lv ' + level + ' · ' + levelName),
+        React.createElement('div', { style: { fontSize: 15, fontWeight: 700, opacity: 0.95, margin: '10px 0 12px' } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' / 200 XP'),
+        React.createElement('div', { style: { background: 'rgba(255,255,255,0.2)', borderRadius: 999, height: 8, marginBottom: 8 } },
+          React.createElement('div', { style: { height: '100%', borderRadius: 999, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease-panel)' } })),
+        React.createElement('div', { style: { fontSize: 10.5, opacity: 0.85, textAlign: 'right' } }, toNext + ' XP to next level'))),
 
-    // Stats Row
-    React.createElement('div', { className: 'au', style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(150px, 100%), 1fr))', gap: 12, marginBottom: 24 } },
+    // ── Summary stats: uniform cards, equal height & spacing ──
+    React.createElement('div', { className: 'au', style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: 14, marginBottom: 24 } },
       React.createElement(QDStat, { label: 'Cases completed', value: completedCases, icon: '📋', color: 'var(--primary)', sub: 'across ' + specKeys.length + ' specialties' }),
       React.createElement(QDStat, { label: 'Total sessions', value: totalSessions, icon: '🔥', color: 'var(--amber)', sub: 'practice encounters' }),
       React.createElement(QDStat, { label: 'Avg score', value: avgScore + '%', icon: '📈', color: 'var(--teal)', sub: hasDims ? 'across all dimensions' : 'complete a case to see' }),
       React.createElement(QDStat, { label: 'Streak', value: p.streak ? p.streak + 'd' : '0d', icon: '🏅', color: 'var(--gold)', sub: p.streak ? 'days in a row' : 'start your streak' })),
 
-    // Two-column: Recent + Specialties
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 20 } },
-      // Recent Activity
-      React.createElement('div', null,
-        React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
-          React.createElement('span', null, '\uD83D\uDCCB ' + _t('dashboard.recent_sessions')),
-          recent.length > 0 && React.createElement('button', { onClick: () => onNav('sessions'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600 } }, _t('dashboard.browse_cases'))),
-        recent.length === 0 && React.createElement('div', { style: { padding: '28px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 16, border: '1px dashed var(--border)' } },
-          'Complete your first case to see activity here.'),
-        React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8 } },
-          recent.slice(0, 5).map((s, i) => React.createElement('div', { key: s.sessionId || i, className: 'as', style: { display: 'flex', alignItems: 'center', gap: 14, padding: 14, borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-xs)' } },
-            React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: 'var(--primary-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 } },
-              s.specialty === 'emergency' ? '🚑' : s.specialty === 'surgery' ? '🔪' : s.specialty === 'paediatrics' ? '👶' : s.specialty === 'psychiatry' ? '🧠' : s.specialty === 'ophthalmology' ? '👁' : '🩺'),
-            React.createElement('div', { style: { flex: 1, minWidth: 0 } },
-              React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2 } }, s.presentation || 'Case'),
-              React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress')))))),
+    // ── Content: balanced two-column grid (stacks on mobile) ──
+    // Fixed tracks (minmax(0, x)) instead of auto-fit so the columns stay
+    // stable, cards align on shared rows, and nothing overlaps or clips.
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.35fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' } },
 
-        // Skill breakdown — moved to the LEFT column so the desktop layout
-        // stays balanced (revision §2.1)
-        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
-          React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 } },
-            React.createElement('span', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' } }, 'Skill mastery'),
+      // ---- Left column: Sesi terbaru + Skill mastery ----
+      React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 20, minWidth: 0 } },
+        // Recent activity
+        React.createElement('div', { className: 'as', style: panel },
+          React.createElement('div', { style: secTitle },
+            React.createElement('span', { style: secHead }, '📋 ' + _t('dashboard.recent_sessions')),
+            recent.length > 0 && React.createElement('button', { onClick: () => onNav('sessions'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600 } }, _t('dashboard.browse_cases'))),
+          recent.length === 0 && React.createElement('div', { style: { padding: '28px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 12, border: '1px dashed var(--border)' } },
+            'Complete your first case to see activity here.'),
+          React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } },
+            recent.slice(0, 5).map((s, i) => React.createElement('div', { key: s.sessionId || i, style: { display: 'flex', alignItems: 'center', gap: 14, padding: 13, borderRadius: 12, background: 'var(--surface-2)', border: '1px solid var(--border)' } },
+              React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: 'var(--primary-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 } },
+                s.specialty === 'emergency' ? '🚑' : s.specialty === 'surgery' ? '🔪' : s.specialty === 'paediatrics' ? '👶' : s.specialty === 'psychiatry' ? '🧠' : s.specialty === 'ophthalmology' ? '👁' : '🩺'),
+              React.createElement('div', { style: { flex: 1, minWidth: 0 } },
+                React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, s.presentation || 'Case'),
+                React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress'))))))),
+
+        // Skill breakdown ("Skill mastery") — bars
+        hasDims && React.createElement('div', { className: 'as', style: panel },
+          React.createElement('div', { style: secTitle },
+            React.createElement('span', { style: secHead }, 'Skill mastery'),
             strongestDim && React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '3px 10px', borderRadius: 999 } }, 'Strong: ' + strongestDim.label)),
-          React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginBottom: 12 } }, 'How your interview skills stack up across dimensions.'),
+          React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginBottom: 14 } }, 'How your interview skills stack up across dimensions.'),
           Object.keys(dims).map(k => {
             const dimLabel = QV2_DIM_LABEL;
             const pct = dims[k];
-            return React.createElement('div', { key: k, style: { marginBottom: 8 } },
-              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 2 } },
+            return React.createElement('div', { key: k, style: { marginBottom: 10 } },
+              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 3 } },
                 React.createElement('span', null, dimLabel[k] || k),
                 React.createElement('span', null, Math.round(pct) + '%')),
-              React.createElement('div', { style: { height: 5, borderRadius: 999, background: 'var(--surface-3)' } },
+              React.createElement('div', { style: { height: 6, borderRadius: 999, background: 'var(--surface-3)' } },
                 React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)', transition: 'width 0.6s ease' } })));
           }))),
 
-      // Right column: radar + achievements + specialty coverage
-      React.createElement('div', null,
-        // Skill radar chart
-        hasDims && React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
-          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, textAlign: 'center' } }, '\uD83D\uDCCA ' + _t('dashboard.skill_breakdown')),
+      // ---- Right column: radar + achievements + specialty coverage ----
+      React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 20, minWidth: 0 } },
+        // Skill radar ("Rincian kemampuan")
+        hasDims && React.createElement('div', { className: 'as', style: panel },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10, textAlign: 'center' } }, '📊 ' + _t('dashboard.skill_breakdown')),
           React.createElement(QSkillRadar, { dims: dims, size: 200 })),
+
         // Achievements
-        (p.badges && p.badges.some((b) => b.earned)) ? React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 16 } },
+        (p.badges && p.badges.some((b) => b.earned)) ? React.createElement('div', { className: 'as', style: panel },
           React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🏅 Achievements'),
-          React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
-            p.badges.filter((b) => b.earned).slice(0, 10).map((b) => React.createElement('span', { key: b.id, title: b.name, style: { fontSize: 20 } }, b.icon)))) : null,
+          React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' } },
+            p.badges.filter((b) => b.earned).slice(0, 10).map((b) => React.createElement('span', { key: b.id, title: b.name, style: { fontSize: 22, padding: 6, borderRadius: 10, background: 'var(--surface-2)', border: '1px solid var(--border)' } }, b.icon)))) : null,
+
         // Specialty coverage
-        React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 16 } },
+        React.createElement('div', { className: 'as', style: panel },
           React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🎯 Specialty coverage'),
           specKeys.length === 0 && React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)' } }, 'No specialties practised yet.'),
           React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
             specKeys.map(s => React.createElement('span', { key: s, style: { fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } },
-              (specLabel[s] || s) + ' · ' + specs[s])))))
-                    )));
-              }
+              (specLabel[s] || s) + ' · ' + specs[s])))))));
+
+}
 
 function QDStat({ label, value, icon, color, sub }) {
-  return React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
-    React.createElement('div', { style: { fontSize: 22, marginBottom: 6 } }, icon),
-    React.createElement('div', { style: { fontSize: 24, fontWeight: 800, color } }, value),
-    React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-1)', marginTop: 1 } }, label),
-    React.createElement('div', { style: { fontSize: 10, color: 'var(--text-3)', marginTop: 2 } }, sub));
+  // Uniform stat card: fixed structure so all four align on one row.
+  return React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', display: 'flex', flexDirection: 'column', minHeight: 136 } },
+    React.createElement('div', { style: { fontSize: 20, lineHeight: 1, marginBottom: 10 } }, icon),
+    React.createElement('div', { style: { fontSize: 26, fontWeight: 800, color, lineHeight: 1.1 } }, value),
+    React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-1)', marginTop: 10 } }, label),
+    React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', marginTop: 3, lineHeight: 1.4 } }, sub));
 }
+
 
 function QoraV2Screen() {
   const [view, setView] = React.useState('catalogue'); // catalogue | setup | session | result | progress
