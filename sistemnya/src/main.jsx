@@ -2670,12 +2670,12 @@ function QV2ItemRow({ item, status }) {
 
 // Answer-key group card: one box per checklist group, with an answered-count
 // badge in the header (e.g. "3/5") that turns green when the whole group's done.
-function QV2AnswerCard({ title, badge, badgeDone, children, style }) {
-  return React.createElement('div', { className: 'as', style: Object.assign({ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', padding: '14px 16px', boxShadow: 'var(--sh-xs)', display: 'flex', flexDirection: 'column', height: '100%' }, style || {}) },
-    React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, marginBottom: 6 } },
+function QV2AnswerCard({ title, badge, badgeDone, children, style, center }) {
+  return React.createElement('div', { className: 'as', style: Object.assign({ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', padding: '14px 16px', boxShadow: 'var(--sh-xs)', display: 'flex', flexDirection: 'column' }, style || {}) },
+    React.createElement('div', { style: { display: 'flex', justifyContent: center ? 'center' : 'space-between', alignItems: 'center', gap: 8, marginBottom: 6, textAlign: center ? 'center' : 'left' } },
       React.createElement('span', { style: { fontSize: 11.5, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em' } }, title),
       badge != null && React.createElement('span', { style: { fontSize: 10.5, fontWeight: 800, color: badgeDone ? 'var(--teal-d)' : 'var(--text-3)', background: badgeDone ? 'var(--teal-l)' : 'var(--surface-2)', padding: '2px 8px', borderRadius: 999, border: '1px solid ' + (badgeDone ? 'var(--teal)' : 'var(--border)') } }, badge)),
-    React.createElement('div', { style: { display: 'flex', flexDirection: 'column' } }, children));
+    React.createElement('div', { style: { display: 'flex', flexDirection: 'column', textAlign: center ? 'center' : 'left' } }, children));
 }
 
 // ── Rolling number (progress juice, cheap rAF; respects reduced motion) ──
@@ -2780,7 +2780,7 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
       React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5 } }, React.createElement('span', { style: { width: 13, height: 13, borderRadius: 999, background: 'var(--surface-3)', color: 'var(--text-3)', fontSize: 9, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' } }, '○'), ' Not asked'),
       React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5, color: '#8a5d00' } }, '⚑ Important item')),
     React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', margin: '0 0 12px' } }, '🗝 Model answer (what a complete workup includes)'),
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: 12 } },
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: 12, alignItems: 'start' } },
       (ak.anamnesis_checklist || []).map(g => {
         const items = g.items || [];
         const done = items.filter(it => { const st = statusFor(it.item); return st === 'hit' || st === 'partial'; }).length;
@@ -2792,16 +2792,16 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
         return React.createElement(QV2AnswerCard, { title: 'Red flags to screen', badge: n + '/' + rf.length, badgeDone: n === rf.length },
           rf.map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })));
       })(ak.red_flags) : null),
-    React.createElement('div', { className: 'as', style: { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', padding: '18px 20px', boxShadow: 'var(--sh-xs)', textAlign: 'center', marginTop: 2 } },
-      React.createElement('div', { style: { fontSize: 11.5, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 } }, 'Working diagnosis & differentials'),
-      React.createElement('div', { style: { fontSize: 15, color: 'var(--text-1)', fontWeight: 800, marginBottom: 4 } }, (ak.expected_ddx && ak.expected_ddx.working_diagnosis) || '–'),
-      React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.5 } }, ((ak.expected_ddx && ak.expected_ddx.differentials) || []).join(' · '))),
-    (ak.investigations && (ak.investigations.appropriate || []).length) ? React.createElement('div', { key: 'inv', style: { marginTop: 12 } },
-      React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '4px 0' } }, 'Appropriate investigations'),
-      (ak.investigations.appropriate || []).map((iv, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '2px 0' } }, '• ' + iv.name + (iv.expected ? ' → ' + iv.expected : '')))) : null,
-    (ak.management && ((ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || [])).length) ? React.createElement('div', { key: 'mgmt', style: { marginTop: 12 } },
-      React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '4px 0' } }, 'Management'),
-      (ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || []).map((m, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '2px 0' } }, '• ' + m))) : null,
+    // Bottom row: Investigations · Working diagnosis & differentials (center) · Management
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12, alignItems: 'start', marginTop: 12 } },
+      (ak.investigations && (ak.investigations.appropriate || []).length) ? React.createElement(QV2AnswerCard, { title: 'Investigations' },
+        (ak.investigations.appropriate || []).map((iv, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '3px 0', lineHeight: 1.4 } }, '• ' + iv.name + (iv.expected ? ' → ' + iv.expected : '')))) : null,
+      React.createElement(QV2AnswerCard, { title: 'Working diagnosis & differentials', center: true,
+        style: { justifyContent: 'center' } },
+        React.createElement('div', { style: { fontSize: 15, color: 'var(--text-1)', fontWeight: 800, margin: '12px 0 4px' } }, (ak.expected_ddx && ak.expected_ddx.working_diagnosis) || '–'),
+        React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.5 } }, ((ak.expected_ddx && ak.expected_ddx.differentials) || []).join(' · '))),
+      (ak.management && ((ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || [])).length) ? React.createElement(QV2AnswerCard, { title: 'Management' },
+        (ak.management.pharmacological || []).concat(ak.management.non_pharmacological || [], ak.management.education_safety_netting || []).map((m, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '3px 0', lineHeight: 1.4 } }, '• ' + m))) : null),
     // Reasoning autopsy (Qora Mentor §4.2) — rendered when available
     typeof QAutopsyCard === 'function' && autopsy && React.createElement(QAutopsyCard, { autopsy: autopsy }),
     // actions
