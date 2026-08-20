@@ -86,11 +86,19 @@ async function _apiFetch(path, opts, _retried) {
   var headers = { 'Content-Type': 'application/json' };
   var auth = _readApiAuth();
   if (auth && auth.token) headers['Authorization'] = 'Bearer ' + auth.token;
-  var res = await fetch(_apiBase() + path, {
-    method: opts.method || 'GET',
-    headers: headers,
-    body: opts.body ? JSON.stringify(opts.body) : undefined,
-  });
+  var controller = new AbortController();
+  var timeout = setTimeout(function () { controller.abort(); }, 30000);
+  var res;
+  try {
+    res = await fetch(_apiBase() + path, {
+      method: opts.method || 'GET',
+      headers: headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
   if (res.status === 401 && !_retried && path.indexOf('/api/auth/') !== 0) {
     var nt = await _qoraRefreshToken();
     if (nt) return _apiFetch(path, opts, true);
@@ -1774,10 +1782,18 @@ async function qv2Fetch(path, opts, _retried) {
   const headers = { 'Content-Type': 'application/json' };
   const tok = _qv2Token();
   if (tok) headers['Authorization'] = 'Bearer ' + tok;
-  const res = await fetch(_qv2Base() + path, {
-    method: opts.method || 'GET', headers,
-    body: opts.body ? JSON.stringify(opts.body) : undefined,
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  let res;
+  try {
+    res = await fetch(_qv2Base() + path, {
+      method: opts.method || 'GET', headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
   if (res.status === 401 && !_retried && typeof window !== 'undefined' && window._qoraRefreshToken) {
     const nt = await window._qoraRefreshToken();
     if (nt) return qv2Fetch(path, opts, true);
@@ -2459,11 +2475,19 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
         try {
           const tok = _qv2Token();
-          const res = await fetch(_qv2Base() + '/api/ai/transcribe', {
-            method: 'POST',
-            headers: tok ? { Authorization: 'Bearer ' + tok } : {},
-            body: formData,
-          });
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 30000);
+          let res;
+          try {
+            res = await fetch(_qv2Base() + '/api/ai/transcribe', {
+              method: 'POST',
+              headers: tok ? { Authorization: 'Bearer ' + tok } : {},
+              body: formData,
+              signal: controller.signal,
+            });
+          } finally {
+            clearTimeout(timeout);
+          }
 
           const json = await res.json();
           if (res.ok && json.data && json.data.transcript) {
@@ -2547,13 +2571,21 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
     setInput(''); setBusy(true);
     setMessages(m => m.concat([{ role: 'user', text }, { role: 'patient', text: '', streaming: true }]));
     try {
-      const doStream = async (retried) => {
+        const doStream = async (retried) => {
         const tok = _qv2Token();
-        const r = await fetch(_qv2Base() + '/api/v2/sessions/' + sessionId + '/turns/stream', {
-          method: 'POST',
-          headers: Object.assign({ 'Content-Type': 'application/json' }, tok ? { Authorization: 'Bearer ' + tok } : {}),
-          body: JSON.stringify({ text }),
-        });
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 150000);
+        let r;
+        try {
+          r = await fetch(_qv2Base() + '/api/v2/sessions/' + sessionId + '/turns/stream', {
+            method: 'POST',
+            headers: Object.assign({ 'Content-Type': 'application/json' }, tok ? { Authorization: 'Bearer ' + tok } : {}),
+            body: JSON.stringify({ text }),
+            signal: controller.signal,
+          });
+        } finally {
+          clearTimeout(timeout);
+        }
         if (r.status === 401 && !retried && typeof window !== 'undefined' && window._qoraRefreshToken) {
           const nt = await window._qoraRefreshToken();
           if (nt) return doStream(true);
@@ -3265,7 +3297,7 @@ function QoraPricing({ onNav }) {
           await _loadSnap();
           if (window.snap && window.snap.pay) {
             window.snap.pay(r.snap_token, {
-              onSuccess: function () { window.location.href = '/billing/success'; },
+              onSuccess: function () { window.location.hash = '#/billing-success'; },
               onPending: function () { setErr('Payment pending — complete it to activate your plan.'); setBusy(''); },
               onError: function () { setErr('Payment failed — please try again.'); setBusy(''); },
               onClose: function () { setBusy(''); },
@@ -4499,6 +4531,8 @@ window.__goCheckout = function (planId) {
       const [screen, setScreen] = React.useState(() => {
         var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
         var authed = loadAuth();
+        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
+        if (!authed && protectedHash) return 'qora-landing';
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
         if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
@@ -4533,7 +4567,9 @@ window.__goCheckout = function (planId) {
         var fn = function () {
           var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
           var next = null;
-          if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
+          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
+          if (protectedHash && !loadAuth()) next = 'qora-landing';
+          else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
           else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
