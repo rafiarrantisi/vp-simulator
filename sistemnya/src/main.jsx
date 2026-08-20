@@ -2656,14 +2656,15 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 function QV2ItemRow({ item, status }) {
   // Clear per-item status: hit=✓ green / partial=~ amber / miss=✕ red /
   // none (not matched) =○ grey. Makes "sudah dijawab vs belum" obvious.
-  const v = status === 'hit' ? { bg: 'var(--teal-l)', c: 'var(--teal-d)', icon: '✓', label: 'Done', dot: 'var(--teal)' }
-    : status === 'partial' ? { bg: 'rgba(240,180,41,0.18)', c: '#8a5d00', icon: '~', label: 'Partial', dot: 'var(--amber)' }
-    : status === 'miss' ? { bg: 'rgba(239,68,68,0.12)', c: 'var(--red-d)', icon: '✕', label: 'Miss', dot: 'var(--red-d)' }
-    : { bg: 'var(--surface-3)', c: 'var(--text-3)', icon: '○', label: '', dot: 'var(--text-3)' };
+  const v = status === 'hit' ? { bg: 'var(--teal-l)', c: 'var(--teal-d)', icon: '✓', label: 'Done' }
+    : status === 'partial' ? { bg: 'rgba(240,180,41,0.18)', c: '#8a5d00', icon: '~', label: 'Partial' }
+    : status === 'miss' ? { bg: 'rgba(239,68,68,0.12)', c: 'var(--red-d)', icon: '✕', label: 'Miss' }
+    : { bg: 'var(--surface-3)', c: 'var(--text-3)', icon: '○', label: '' };
+  const txt = (item && item.item) ? item.item : item;
   return React.createElement('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, color: 'var(--text-2)', padding: '4px 0' } },
     React.createElement('span', { style: { width: 16, height: 16, borderRadius: 999, background: v.bg, color: v.c, fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 } }, v.icon),
-    React.createElement('span', { style: { flex: 1, minWidth: 0, lineHeight: 1.4, color: item && item.critical ? 'var(--text-1)' : 'var(--text-2)', fontWeight: item && item.critical ? 600 : 400 } },
-      (item && item.item ? item.item : item) + (item && item.critical ? '  •critical' : '')),
+    React.createElement('span', { style: { flex: 1, minWidth: 0, lineHeight: 1.4, color: 'var(--text-2)' } }, txt),
+    item && item.critical && React.createElement('span', { title: 'Important — high-yield / must hit', style: { fontSize: 9.5, fontWeight: 800, color: '#8a5d00', background: 'rgba(240,180,41,0.20)', padding: '2px 7px', borderRadius: 999, flexShrink: 0, marginTop: 2, border: '1px solid rgba(240,180,41,0.35)' } }, '⚑ Important'),
     v.label && React.createElement('span', { style: { fontSize: 9.5, fontWeight: 700, color: v.c, background: v.bg, padding: '2px 7px', borderRadius: 999, flexShrink: 0, marginTop: 2 } }, v.label));
 }
 
@@ -2771,8 +2772,15 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
       weakest && React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 700, padding: '8px 14px', borderRadius: 999, background: 'var(--violet-l)', color: 'var(--violet)' } }, 'Focus next: ' + weakest.label)),
     report.summary && React.createElement('div', { className: 'as d2', style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, padding: 14, borderRadius: 'var(--r-md)', background: 'var(--primary-ll)', marginBottom: 18 } }, report.summary),
     // answer key
-    React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', margin: '6px 0 12px' } }, '🗝 Model answer (what a complete workup includes)'),
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12, marginBottom: 12 } },
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '6px 12px', alignItems: 'center', marginBottom: 10, fontSize: 11, color: 'var(--text-3)' } },
+      React.createElement('span', { style: { marginRight: 2 } }, 'Status:'),
+      React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5 } }, React.createElement('span', { style: { width: 13, height: 13, borderRadius: 999, background: 'var(--teal-l)', color: 'var(--teal-d)', fontSize: 9, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' } }, '✓'), ' Done'),
+      React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5 } }, React.createElement('span', { style: { width: 13, height: 13, borderRadius: 999, background: 'rgba(240,180,41,0.18)', color: '#8a5d00', fontSize: 9, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' } }, '~'), ' Partial'),
+      React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5 } }, React.createElement('span', { style: { width: 13, height: 13, borderRadius: 999, background: 'rgba(239,68,68,0.12)', color: 'var(--red-d)', fontSize: 9, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' } }, '✕'), ' Miss'),
+      React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5 } }, React.createElement('span', { style: { width: 13, height: 13, borderRadius: 999, background: 'var(--surface-3)', color: 'var(--text-3)', fontSize: 9, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' } }, '○'), ' Not asked'),
+      React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5, color: '#8a5d00' } }, '⚑ Important item')),
+    React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', margin: '0 0 12px' } }, '🗝 Model answer (what a complete workup includes)'),
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: 12 } },
       (ak.anamnesis_checklist || []).map(g => {
         const items = g.items || [];
         const done = items.filter(it => { const st = statusFor(it.item); return st === 'hit' || st === 'partial'; }).length;
@@ -2784,9 +2792,10 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
         return React.createElement(QV2AnswerCard, { title: 'Red flags to screen', badge: n + '/' + rf.length, badgeDone: n === rf.length },
           rf.map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })));
       })(ak.red_flags) : null),
-    React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '6px 0 4px' } }, 'Working diagnosis & differentials'),
-    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-1)', fontWeight: 700 } }, (ak.expected_ddx && ak.expected_ddx.working_diagnosis) || '–'),
-    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)' } }, ((ak.expected_ddx && ak.expected_ddx.differentials) || []).join(' · ')),
+    React.createElement('div', { className: 'as', style: { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', padding: '18px 20px', boxShadow: 'var(--sh-xs)', textAlign: 'center', marginTop: 2 } },
+      React.createElement('div', { style: { fontSize: 11.5, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 } }, 'Working diagnosis & differentials'),
+      React.createElement('div', { style: { fontSize: 15, color: 'var(--text-1)', fontWeight: 800, marginBottom: 4 } }, (ak.expected_ddx && ak.expected_ddx.working_diagnosis) || '–'),
+      React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.5 } }, ((ak.expected_ddx && ak.expected_ddx.differentials) || []).join(' · '))),
     (ak.investigations && (ak.investigations.appropriate || []).length) ? React.createElement('div', { key: 'inv', style: { marginTop: 12 } },
       React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '4px 0' } }, 'Appropriate investigations'),
       (ak.investigations.appropriate || []).map((iv, i) => React.createElement('div', { key: i, style: { fontSize: 12.5, color: 'var(--text-2)', padding: '2px 0' } }, '• ' + iv.name + (iv.expected ? ' → ' + iv.expected : '')))) : null,
