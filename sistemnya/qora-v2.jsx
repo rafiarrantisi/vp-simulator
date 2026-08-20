@@ -1515,7 +1515,7 @@ function QoraPricing({ onNav }) {
           await _loadSnap();
           if (window.snap && window.snap.pay) {
             window.snap.pay(r.snap_token, {
-              onSuccess: function () { window.location.href = '/billing/success'; },
+              onSuccess: function () { window.location.hash = '#/billing-success'; },
               onPending: function () { setErr('Payment pending — complete it to activate your plan.'); setBusy(''); },
               onError: function () { setErr('Payment failed — please try again.'); setBusy(''); },
               onClose: function () { setBusy(''); },

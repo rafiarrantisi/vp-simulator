@@ -13,7 +13,7 @@ import re
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -161,7 +161,7 @@ def v2_start_session(req: V2StartReq, user: User = Depends(get_current_user),
 
 
 class V2TurnReq(BaseModel):
-    text: str
+    text: str = Field(min_length=1, max_length=4000)
 
 
 @router.get("/sessions/{session_id}/turns")
@@ -254,13 +254,13 @@ class V2ScoreReq(BaseModel):
     management: dict | None = None
     mode: str | None = None       # UI session mode: "practice" | "osce"
     overtime: bool = False        # continued past the OSCE timer -> score penalty
-    pf_notes: str | None = None   # free-text physical exam the student performed
-    pf_areas: list[str] | None = None  # areas examined (general/skin/head_neck/chest/abdomen/limbs/neuro)
+    pf_notes: str | None = Field(default=None, max_length=4000)   # free-text physical exam the student performed
+    pf_areas: list[str] | None = Field(default=None, max_length=20)  # areas examined (general/skin/head_neck/chest/abdomen/limbs/neuro)
 
 
 class V2PFReq(BaseModel):
-    notes: str = ""               # what the student examined / expected to find
-    areas: list[str] = []         # examined areas; only these get revealed (isolation rule)
+    notes: str = Field(default="", max_length=4000)               # what the student examined / expected to find
+    areas: list[str] = Field(default_factory=list, max_length=20)         # examined areas; only these get revealed
 
 
 # Part B `## Physical findings` bullet labels -> canonical area keys.
@@ -371,6 +371,10 @@ def _record_progress(user: User, case, report: dict) -> None:
 def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_user),
              db: Session = Depends(get_db)):
     s = _owned(db, session_id, user)
+    # Scoring may be retried by the browser/network after a slow judge call.
+    # Return the stored report instead of awarding XP/progress twice.
+    if s.status == "completed" and s.report:
+        return ok(s.report)
     try:
         case = load_v2_case(s.case_id)
     except FileNotFoundError:

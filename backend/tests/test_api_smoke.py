@@ -38,6 +38,7 @@ def test_full_flow():
     for k in ("id", "specialty", "presentation", "difficulty"):
         assert k in c0
     assert "anamnesis_checklist" not in c0  # Part A TIDAK bocor ke katalog
+    assert "target_condition" not in c0
 
     st = client.post("/api/v2/sessions", json={"case_id": c0["id"]}, headers=H).json()
     sid = st["data"]["sessionId"]

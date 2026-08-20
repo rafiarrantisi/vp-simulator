@@ -70,6 +70,8 @@
       const [screen, setScreen] = React.useState(() => {
         var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
         var authed = loadAuth();
+        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
+        if (!authed && protectedHash) return 'qora-landing';
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
         if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
@@ -104,7 +106,9 @@
         var fn = function () {
           var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
           var next = null;
-          if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
+          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
+          if (protectedHash && !loadAuth()) next = 'qora-landing';
+          else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
           else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);

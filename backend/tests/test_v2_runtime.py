@@ -41,7 +41,7 @@ def test_v2_cases_filter_specialty():
 def test_v2_case_detail_and_404():
     H = _auth()
     r = client.get("/api/v2/cases/oph_dry_eye_001", headers=H).json()
-    assert r["data"]["target_condition"].lower().startswith("dry eye")
+    assert "target_condition" not in r["data"]
     assert client.get("/api/v2/cases/nope_999", headers=H).status_code == 404
 
 
@@ -66,6 +66,21 @@ def test_v2_turn_and_score_with_stub(monkeypatch):
     assert d["mode"] == "anamnesis" and "answer_key" in d
     assert d["answer_key"]["expected_ddx"]["working_diagnosis"].lower().startswith("dry eye")
     assert d["answer_key"]["red_flags"]  # model answer present for the reveal
+
+
+def test_v2_score_is_idempotent(monkeypatch):
+    from app.rag.llm import StubLlmClient
+    monkeypatch.setattr("app.rag.engine_v2.get_llm_client", lambda: StubLlmClient())
+    monkeypatch.setattr("app.rag.judge_v2.is_stub", lambda: True)
+    H = _auth()
+    sid = client.post("/api/v2/sessions", json={"case_id": "oph_dry_eye_001"}, headers=H).json()["data"]["sessionId"]
+    first = client.post(f"/api/v2/sessions/{sid}/score", json={}, headers=H).json()["data"]
+    p1 = client.get("/api/v2/progress", headers=H).json()["data"]
+    second = client.post(f"/api/v2/sessions/{sid}/score", json={"overtime": True}, headers=H).json()["data"]
+    p2 = client.get("/api/v2/progress", headers=H).json()["data"]
+    assert second == first
+    assert p2["totalSessions"] == p1["totalSessions"]
+    assert p2["xp"] == p1["xp"]
 
 
 def test_v2_case_media_requires_auth():
