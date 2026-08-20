@@ -136,9 +136,16 @@ def test_full_journey_flow():
     r = client.get(f"/api/v2/mentor/journeys/{jid}/next-case", headers=H).json()
     assert r["data"]["case"]["case_id"] == first["case_id"]
 
+    # 3b. Create a REAL v2 session for this case so journey_cases.session_id
+    # FK (-> sessions.id) is valid — a fake "sess_x" violates the constraint.
+    sess = client.post("/api/v2/sessions",
+                       json={"case_id": first["case_id"]}, headers=H).json()
+    assert sess["success"], sess
+    sid = sess["data"]["sessionId"]
+
     # 4. Complete first case → next unlocks
     r = client.post(f"/api/v2/mentor/journeys/{jid}/complete-case",
-                    json={"case_id": first["case_id"], "session_id": "sess_x",
+                    json={"case_id": first["case_id"], "session_id": sid,
                           "score": 75}, headers=H).json()
     d = r["data"]
     assert d["progress"]["completed"] == 1
