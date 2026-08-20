@@ -1,0 +1,15 @@
+/*
+  Strict browser security defaults for the Cloudflare Pages frontend.
+  The app currently uses inline React styles and approved CDN-loaded runtime
+  dependencies, so those origins are explicitly listed below.
+  Do not add arbitrary third-party origins here.
+  
+  Note: HSTS is intentionally sent only on the production HTTPS host via
+  Cloudflare; this Pages asset rule is safe for preview deployments too.
+*/
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(self), geolocation=()
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://app.midtrans.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https:; frame-src https://app.midtrans.com https://app.sandbox.midtrans.com

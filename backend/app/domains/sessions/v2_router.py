@@ -9,11 +9,12 @@ calibrated v2 judge, and reuses the billing gate/metering/cost guardrail.
   POST /api/v2/sessions/{id}/score       evaluate_v2 -> report + answer key (post-session reveal)
 """
 from datetime import datetime, timedelta, timezone
+import json
 import re
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -256,6 +257,13 @@ class V2ScoreReq(BaseModel):
     overtime: bool = False        # continued past the OSCE timer -> score penalty
     pf_notes: str | None = Field(default=None, max_length=4000)   # free-text physical exam the student performed
     pf_areas: list[str] | None = Field(default=None, max_length=20)  # areas examined (general/skin/head_neck/chest/abdomen/limbs/neuro)
+
+    @field_validator("ddx", "management")
+    @classmethod
+    def _bound_structured_payload(cls, value):
+        if value is not None and len(json.dumps(value, ensure_ascii=False)) > 12000:
+            raise ValueError("structured assessment payload is too large")
+        return value
 
 
 class V2PFReq(BaseModel):
