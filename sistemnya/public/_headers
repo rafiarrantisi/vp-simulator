@@ -1,12 +1,4 @@
 /*
-  Strict browser security defaults for the Cloudflare Pages frontend.
-  The app currently uses inline React styles and approved CDN-loaded runtime
-  dependencies, so those origins are explicitly listed below.
-  Do not add arbitrary third-party origins here.
-  
-  Note: HSTS is intentionally sent only on the production HTTPS host via
-  Cloudflare; this Pages asset rule is safe for preview deployments too.
-*/
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
