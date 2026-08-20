@@ -2654,11 +2654,27 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
 // ---- Result + answer-key reveal ----
 function QV2ItemRow({ item, status }) {
-  const icon = status === 'hit' ? '✅' : status === 'partial' ? '🟡' : status === 'miss' ? '⬜' : '·';
-  return React.createElement('div', { style: { display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 12.5, color: 'var(--text-2)', padding: '3px 0' } },
-    React.createElement('span', null, icon),
-    React.createElement('span', { style: item && item.critical ? { fontWeight: 600, color: 'var(--text-1)' } : null },
-      (item && item.item ? item.item : item) + (item && item.critical ? '  •critical' : '')));
+  // Clear per-item status: hit=✓ green / partial=~ amber / miss=✕ red /
+  // none (not matched) =○ grey. Makes "sudah dijawab vs belum" obvious.
+  const v = status === 'hit' ? { bg: 'var(--teal-l)', c: 'var(--teal-d)', icon: '✓', label: 'Done', dot: 'var(--teal)' }
+    : status === 'partial' ? { bg: 'rgba(240,180,41,0.18)', c: '#8a5d00', icon: '~', label: 'Partial', dot: 'var(--amber)' }
+    : status === 'miss' ? { bg: 'rgba(239,68,68,0.12)', c: 'var(--red-d)', icon: '✕', label: 'Miss', dot: 'var(--red-d)' }
+    : { bg: 'var(--surface-3)', c: 'var(--text-3)', icon: '○', label: '', dot: 'var(--text-3)' };
+  return React.createElement('div', { style: { display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12.5, color: 'var(--text-2)', padding: '4px 0' } },
+    React.createElement('span', { style: { width: 16, height: 16, borderRadius: 999, background: v.bg, color: v.c, fontSize: 10, fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 1 } }, v.icon),
+    React.createElement('span', { style: { flex: 1, minWidth: 0, lineHeight: 1.4, color: item && item.critical ? 'var(--text-1)' : 'var(--text-2)', fontWeight: item && item.critical ? 600 : 400 } },
+      (item && item.item ? item.item : item) + (item && item.critical ? '  •critical' : '')),
+    v.label && React.createElement('span', { style: { fontSize: 9.5, fontWeight: 700, color: v.c, background: v.bg, padding: '2px 7px', borderRadius: 999, flexShrink: 0, marginTop: 2 } }, v.label));
+}
+
+// Answer-key group card: one box per checklist group, with an answered-count
+// badge in the header (e.g. "3/5") that turns green when the whole group's done.
+function QV2AnswerCard({ title, badge, badgeDone, children, style }) {
+  return React.createElement('div', { className: 'as', style: Object.assign({ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', padding: '14px 16px', boxShadow: 'var(--sh-xs)', display: 'flex', flexDirection: 'column', height: '100%' }, style || {}) },
+    React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8, marginBottom: 6 } },
+      React.createElement('span', { style: { fontSize: 11.5, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em' } }, title),
+      badge != null && React.createElement('span', { style: { fontSize: 10.5, fontWeight: 800, color: badgeDone ? 'var(--teal-d)' : 'var(--text-3)', background: badgeDone ? 'var(--teal-l)' : 'var(--surface-2)', padding: '2px 8px', borderRadius: 999, border: '1px solid ' + (badgeDone ? 'var(--teal)' : 'var(--border)') } }, badge)),
+    React.createElement('div', { style: { display: 'flex', flexDirection: 'column' } }, children));
 }
 
 // ── Rolling number (progress juice, cheap rAF; respects reduced motion) ──
@@ -2689,6 +2705,7 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
   var _t = window.__t || function(k) { return k; };
+  const isMobile = useIsMobile();
   // Confetti ONLY for a meaningful milestone (high score) — routine
   // completion gets a quieter visual. §10 of the playfulness doc: don't
   // confetti every case. Branded palette, respects reduced-motion.
@@ -2754,13 +2771,20 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
       weakest && React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 700, padding: '8px 14px', borderRadius: 999, background: 'var(--violet-l)', color: 'var(--violet)' } }, 'Focus next: ' + weakest.label)),
     report.summary && React.createElement('div', { className: 'as d2', style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, padding: 14, borderRadius: 'var(--r-md)', background: 'var(--primary-ll)', marginBottom: 18 } }, report.summary),
     // answer key
-    React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', margin: '6px 0 10px' } }, '🗝 Model answer (what a complete workup includes)'),
-    (ak.anamnesis_checklist || []).map(g => React.createElement('div', { key: g.group, style: { marginBottom: 12 } },
-      React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 } }, g.group.replace(/_/g, ' ')),
-      (g.items || []).map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })))),
-    React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--red-d)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '8px 0 4px' } }, 'Red flags to screen'),
-    (ak.red_flags || []).map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })),
-    React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '12px 0 4px' } }, 'Working diagnosis & differentials'),
+    React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', margin: '6px 0 12px' } }, '🗝 Model answer (what a complete workup includes)'),
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(2, minmax(0, 1fr))', gap: 12, marginBottom: 12 } },
+      (ak.anamnesis_checklist || []).map(g => {
+        const items = g.items || [];
+        const done = items.filter(it => { const st = statusFor(it.item); return st === 'hit' || st === 'partial'; }).length;
+        return React.createElement(QV2AnswerCard, { key: g.group, title: g.group.replace(/_/g, ' '), badge: done + '/' + items.length, badgeDone: done === items.length && items.length > 0 },
+          items.map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })));
+      }),
+      (ak.red_flags || []).length ? ((rf) => {
+        const n = rf.filter(it => { const st = statusFor(it.item); return st === 'hit' || st === 'partial'; }).length;
+        return React.createElement(QV2AnswerCard, { title: 'Red flags to screen', badge: n + '/' + rf.length, badgeDone: n === rf.length },
+          rf.map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })));
+      })(ak.red_flags) : null),
+    React.createElement('div', { style: { fontSize: 12, fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '6px 0 4px' } }, 'Working diagnosis & differentials'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-1)', fontWeight: 700 } }, (ak.expected_ddx && ak.expected_ddx.working_diagnosis) || '–'),
     React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)' } }, ((ak.expected_ddx && ak.expected_ddx.differentials) || []).join(' · ')),
     (ak.investigations && (ak.investigations.appropriate || []).length) ? React.createElement('div', { key: 'inv', style: { marginTop: 12 } },
