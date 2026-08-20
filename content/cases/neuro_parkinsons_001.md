@@ -94,6 +94,8 @@ I walk into the room slowly, with a slight shuffle. My posture is a bit stooped.
 - I worked as a carpenter for 40 years. I was around wood dust and some paints and solvents, but I always wore a mask.
 - I haven't had any head injuries or strokes.
 - I've never had thyroid problems.
+- I've wondered if this is just me getting old, or maybe the same shaking my father had. I didn't think much of it — my wife is the one who pushed me to come in today, and I wouldn't have bothered on my own.
+- What worries me most is whether my hands will get too shaky to keep doing things around the house, and I don't want to end up a burden to my wife. That's why I try not to complain — I don't want to seem like I'm making a fuss.
 
 ## Communication profile
 

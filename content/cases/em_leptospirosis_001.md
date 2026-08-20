@@ -169,6 +169,8 @@ I look tired and weak. My skin and the whites of my eyes are yellowish. I'm sitt
 - I have no allergies that I know of.
 - I don't have diabetes or high blood pressure. I rarely drink alcohol, and I don't smoke.
 - I haven't traveled anywhere recently.
+- At first I didn't think much of it – I figured it was just a bad fever, maybe the malaria I've had before, from working so hard in the fields. I only decided to come in once my eyes turned yellow.
+- I'm worried the yellow eyes might mean something serious. I'm also worried about being laid up – the fields need looking after and I don't want to be a burden to my wife while I'm sick.
 
 ## Communication profile
 

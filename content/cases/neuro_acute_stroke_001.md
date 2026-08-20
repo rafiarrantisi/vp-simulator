@@ -125,6 +125,7 @@ I am sitting in a wheelchair that a nurse brought me in. My right arm is limp on
 - I do not smoke or drink alcohol. I never have.
 - My father died of a heart attack at 70, but no one in my family had a stroke.
 - I am worried this might be a stroke. My neighbour had one and never walked again. I hope you can give me medicine to make it better.
+- I do not take aspirin or any blood-thinning medicine — no blood thinners.
 
 ## Communication profile
 

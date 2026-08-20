@@ -88,6 +88,8 @@ I'm hunched over, holding my left side, and I can't sit still. I'm pacing around
 - My dad had kidney stones once.
 - I'm not on any regular medications, just an occasional ibuprofen for back pain.
 - I don't have a fever, but I feel a bit warm.
+- I'm not sure what it is, but I saw a little blood in my pee, so I'm guessing it's something in my kidney area.
+- I'm scared it might be something serious — this pain is unlike anything I've ever felt before.
 
 ## Communication profile
 

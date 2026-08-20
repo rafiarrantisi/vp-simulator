@@ -97,6 +97,7 @@ I'm sitting forward a bit, and I keep rubbing my arms and the back of my legs. I
 - I work from home – I sit at a desk all day.
 - I'm worried it might be something serious or that it could spread to my daughter.
 - I hope you can give me a prescription cream that will stop the itch and clear up the rash.
+- I've been wondering if it might be the same eczema I had as a kid coming back, since it's in the same kind of spots on my arms and legs, but I'm not sure.
 
 ## Communication profile
 

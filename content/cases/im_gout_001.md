@@ -87,9 +87,12 @@ Doctor, my big toe started hurting out of nowhere last night and now it's red an
 
 I’m limping and trying not to put any weight on my right foot. The pain is sharp and constant. The joint looks angry—red, shiny, and hot. I’m irritable because even the bedsheet touching it hurts.
 
+I keep telling myself it's probably the same thing as last year and will blow over on its own, but it feels worse this time and I truly don't know what's triggering it.
+
 ## What I know
 
 I woke up around 2 AM with a stabbing pain in my right big toe. It has gotten worse since then. The area is red, swollen, and warm to the touch. Any pressure or movement makes it much worse. Resting and keeping my foot still helps a little. I have had this exact same pain about a year ago, same toe, and it went away on its own after a few days. No fever, chills, or other joint pain. I haven’t injured it. I take a water pill for my blood pressure. I usually drink two or three bottles of beer three times a week. I eat red meat most days.
+- My father used to get the same kind of attacks in his big toe.
 
 ## Communication profile
 

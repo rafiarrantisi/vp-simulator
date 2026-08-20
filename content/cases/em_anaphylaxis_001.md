@@ -116,6 +116,7 @@ I'm sitting up straight on the edge of the bed, leaning forward a little. My bre
 - I don't smoke and I rarely drink alcohol.
 - My mom has hay fever, but no one in my family has had a reaction like this.
 - I haven't been stung by anything today.
+- I'm really scared that my throat is going to close up completely and I won't be able to breathe.
 
 ## Communication profile
 

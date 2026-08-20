@@ -110,6 +110,7 @@ I'm sitting hunched forward in the chair, holding my right side with my hand. My
 - I've never had surgery before, and I don't have diabetes or high blood pressure.
 - My mother had her gallbladder removed when she was about my age.
 - I drink maybe one glass of wine a week, no smoking.
+- I keep wondering if it's my gallbladder — my mom had hers removed for pains just like this after eating — but I'm not sure, and I'm scared it's something serious that's going to need surgery.
 
 ## Communication profile
 

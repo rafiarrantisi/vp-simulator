@@ -92,6 +92,7 @@ I’m sitting forward in my chair, squinting a little. I keep rubbing my right e
 - I think it might be an eyelash that got turned inward, or maybe a scratch on my eye.
 - I’m worried it could damage my vision or that I’ll need some kind of procedure.
 - I hope you can just flush it out or give me some drops to make it feel better.
+- I don't have any skin conditions like eczema or rosacea.
 
 ## Communication profile
 

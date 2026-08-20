@@ -93,6 +93,7 @@ I'm sitting on the edge of the chair, not really relaxed. My hands are fidgeting
 - I'm worried I might be losing my mind, and I'm scared people will think I'm weird.
 - I hope you can give me something to stop these thoughts so I can live normally again.
 - I have no thoughts of hurting myself or anyone else.
+- I don't take any medications right now, not even over-the-counter ones.
 
 ## Communication profile
 

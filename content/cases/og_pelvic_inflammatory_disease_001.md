@@ -103,6 +103,8 @@ I'm sitting hunched over a bit, holding my lower stomach. I look tired and a lit
 - I'm not on any medications right now, except for birth control pills.
 - I haven't had any surgeries.
 - I don't smoke or drink much.
+- I have a feeling it might be some kind of infection down there, because of the discharge, but I'm not really sure.
+- I'm worried it's something serious, and I'm scared that whatever this is could mess with me having kids someday.
 
 ## Communication profile
 

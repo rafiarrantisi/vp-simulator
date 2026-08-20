@@ -94,6 +94,7 @@ I’m sitting on the edge of the chair, holding Raka closely. He’s in my arms,
 - Raka doesn’t go to daycare; it’s just me, my husband, and the baby.
 - He hasn’t had any breathing pauses that I’ve noticed, but I’ve been checking. His lips are pink.
 - I’m worried it might be asthma or something serious. I hope the doctor can give him something to help him breathe easier.
+- Even when he's fussy, he's still alert — when I hold him he makes eye contact and looks up at me, and he isn't limp or hard to wake, he just gets tired faster than usual.
 
 ## Communication profile
 

@@ -125,6 +125,7 @@ I’m sitting on the edge of the exam chair, fidgeting with my hands. I speak qu
 - I have not been sick recently. I don’t take any prescription medications or supplements. I don’t smoke or drink alcohol.
 - There is no history of radiation to my neck.
 - I’m very worried that I might have a serious heart problem or cancer.
+- I’ve never been told I have a thyroid problem, and I’ve never had a goiter or any lumps or nodules in my neck.
 
 ## Communication profile
 

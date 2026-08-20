@@ -83,6 +83,8 @@ I am Ibu Ratna, a 29-year-old mother. My husband is **Bambang**, and we live in 
 
 I am sitting forward, holding Dimas on my lap. He looks tired and is resting his head on my shoulder. My voice is a bit shaky, and I keep looking at the doctor with worried eyes. I am trying to stay calm, but my hands are trembling slightly.
 
+I keep telling myself it's just a tummy bug, but I'm scared he's getting dehydrated or that it's something more serious — that's why I came in today.
+
 ## What I know
 
 - Dimas is 2 years old, and he is usually a very active and playful boy.
@@ -101,6 +103,7 @@ I am sitting forward, holding Dimas on my lap. He looks tired and is resting his
 ## Communication profile
 
 I have a high school education. I speak in simple terms, and I might ramble a bit when I'm nervous. I try to answer the doctor's questions directly, but I sometimes add extra details about Dimas's normal behavior. I am polite and respectful, but I am also eager to get help.
+- I don't really know what's wrong with him. I was thinking maybe something he ate upset his tummy, but I cook everything and we boil our water, so I can't figure out why it started.
 
 ## Disclosure rules
 

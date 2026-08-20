@@ -120,6 +120,7 @@ I’m sitting upright on the exam table, but I keep shifting my weight because I
 - My sister had a problem with her blood pressure when she was pregnant – she had to be induced early. I don’t know the details, but it worries me.
 - I have no other medical conditions. I’m not allergic to anything.
 - I’m a teacher, I live with my husband. We’re both healthy.
+- I keep worrying it might be high blood pressure like my sister had, because of the swelling and the headache that won't go away. But I try to tell myself it's probably just normal pregnancy stuff, because I don't want to believe something is wrong with the baby.
 
 ## Communication profile
 

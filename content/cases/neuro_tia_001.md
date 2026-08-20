@@ -112,6 +112,7 @@ I’m sitting forward in the chair, clutching my handbag. My voice is a bit shak
 - **Ideas about what’s wrong**: I think it might have been a “mini-stroke” – I’ve heard that term. But I’m not sure.
 - **Concerns**: I’m scared that this is a warning sign of a big stroke. I’m worried about becoming disabled and not being able to care for myself or my husband.
 - **Expectations**: I want to find out what caused it and make sure it never happens again. I’m hoping medication or lifestyle changes can prevent it.
+- I've never been told I have an irregular heartbeat or atrial fibrillation.
 
 ## Communication profile
 

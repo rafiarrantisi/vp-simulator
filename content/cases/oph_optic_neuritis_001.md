@@ -89,6 +89,7 @@ I’m sitting upright in the chair, leaning forward a little. I’m looking at y
 - No one in my family has had eye problems like this, and as far as I know, no one has multiple sclerosis.
 - I’m very worried this could be a stroke or a brain tumor. I’m also scared that my vision might not come back, and I’m afraid of what it might mean for my future.
 - I want to know exactly what’s wrong, and I’m hoping for treatment that will bring my sight back.
+- At first, the colors in my right eye looked washed out and faded—everything seemed pale and dull—but over the next few hours it turned into the blur and the fog I have now.
 
 ## Communication profile
 

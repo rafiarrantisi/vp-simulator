@@ -107,6 +107,7 @@ I'm sitting hunched over, looking tired. I have a persistent, dry-sounding cough
 - I haven't traveled outside the country in years. I live in a small apartment with my family.
 - I've never been tested for HIV, and I don't think I have it.
 - I don't have diabetes or any other health problems.
+- I worry this cough isn't going to go away on its own. I can't keep missing energy at work — I have a family to support, and that scares me more than the cough itself.
 
 ## Communication profile
 

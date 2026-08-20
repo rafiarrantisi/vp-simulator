@@ -104,6 +104,7 @@ I'm sitting upright in the chair, but I'm tense. My hands are clasped together, 
 - I haven't had any dizziness, weakness, or trouble speaking.
 - I've never had this happen before.
 - I can still see fine out of my left eye.
+- I'm scared it's something serious — like a stroke. My father had one, and when the curtain dropped over my eye all at once I figured it had to be a clot or a problem in my head. I don't believe it's my blood pressure or sugar pills, because I've been on those for years without anything like this.
 
 ## Communication profile
 

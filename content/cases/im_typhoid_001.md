@@ -98,6 +98,7 @@ I'm sitting hunched forward on the examination bed, looking tired and pale. My v
 - My husband and children are all healthy — none of them have a fever.
 - I haven't noticed any rash or spots on my skin.
 - I haven't seen any blood in my stool, and my stool isn't black.
+- I'm not sure what's causing this. I think it might just be a bad fever from something I ate — maybe the street food from the vendor near my work, or the water.
 
 ## Communication profile
 

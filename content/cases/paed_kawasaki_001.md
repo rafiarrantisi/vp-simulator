@@ -119,6 +119,7 @@ I'm sitting on the edge of the chair, holding my son on my lap. He's fussy and k
 - **Medications:** I've been giving him acetaminophen (Tylenol) every 4-6 hours and ibuprofen (Motrin) every 6-8 hours, but I'm careful not to overlap them too much.
 - **Medical history:** He was born full-term, no complications. He's had a few colds but nothing serious. He's up to date on his vaccines. No known allergies.
 - **Family:** No one else at home is sick. He doesn't go to daycare. We haven't traveled recently.
+- **What I think is wrong:** I honestly don't know. At first I figured it was just a bad fever or a virus, you know, kids get those. But now with the rash, his eyes being so red, and the puffiness in his hands and feet, I'm starting to worry it's something more serious than a regular bug.
 
 ## Communication profile
 
