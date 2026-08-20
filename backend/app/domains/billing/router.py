@@ -1,6 +1,7 @@
 """Billing API (BUILD_PLAN_pivot_v4 §7.2/§7.3).
 
-  POST /api/billing/webhooks/lemonsqueezy  — MoR webhook (signature-verified)
+  POST /api/billing/webhooks/xendit       — Xendit callback (token-verified)
+  POST /api/billing/midtrans/notifications — Midtrans notification (signature-verified)
   GET  /api/billing/me                     — current entitlement + usage
   GET  /api/billing/plans                  — public plan catalogue (region-aware)
   POST /api/billing/xendit/checkout/{plan} — Xendit hosted invoice (region-aware)
@@ -18,7 +19,6 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.database import get_db
 from app.domains.auth.models import User
-from app.domains.billing import lemonsqueezy as ls
 from app.domains.billing import midtrans
 from app.domains.billing import plans, service, xendit
 from app.shared.dependencies import get_current_user
@@ -34,13 +34,7 @@ def list_plans(region: str = "row"):
     to show localised prices. Unauthenticated callers should pass region
     detected client-side."""
     s = get_settings()
-    provider = None
-    if midtrans.is_configured(s):
-        provider = "midtrans"
-    elif xendit.is_configured(s):
-        provider = "xendit"
-    elif s.lemonsqueezy_api_key:
-        provider = "lemonsqueezy"
+    provider = "midtrans" if midtrans.is_configured(s) else ("xendit" if xendit.is_configured(s) else None)
     return ok({
         "plans": plans.plan_catalog(s, region),
         "provider": provider,
@@ -220,46 +214,3 @@ def payment_history(user: User = Depends(get_current_user), db: Session = Depend
     })
 
 
-@router.get("/checkout/{plan}")
-def checkout(plan: str, user: User = Depends(get_current_user)):
-    s = get_settings()
-    if plan not in plans.PAID_PLANS:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Unknown plan")
-    url = plans.checkout_url(s, plan)
-    if not url:
-        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Checkout not configured")
-    # Pass user_id as Lemon Squeezy custom data so the webhook can reconcile.
-    sep = "&" if "?" in url else "?"
-    url = f"{url}{sep}checkout[custom][user_id]={user.id}"
-    return ok({"checkout_url": url, "plan": plan})
-
-
-@router.get("/portal")
-def portal(user: User = Depends(get_current_user)):
-    url = get_settings().lemonsqueezy_portal_url
-    if not url:
-        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, "Portal not configured")
-    return ok({"portal_url": url})
-
-
-@router.post("/webhooks/lemonsqueezy")
-async def lemonsqueezy_webhook(request: Request, db: Session = Depends(get_db)):
-    raw = await request.body()
-    signature = request.headers.get("X-Signature")
-    if not ls.verify_signature(raw, signature):
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Invalid signature")
-    try:
-        body = json.loads(raw)
-    except json.JSONDecodeError:
-        raise HTTPException(status.HTTP_400_BAD_REQUEST, "Malformed body")
-
-    parsed = ls.parse_event(body)
-    ent = service.apply_mor_event(db, parsed)
-    if ent is None:
-        # Acknowledge so the MoR doesn't retry forever; log for investigation.
-        _log.warning("[billing] webhook %s could not resolve a user", parsed.get("event"))
-        return ok({"handled": False, "event": parsed.get("event")})
-    db.commit()
-    _log.info("[billing] %s -> user %s plan=%s status=%s",
-              parsed.get("event"), ent.user_id, ent.plan, ent.status)
-    return ok({"handled": True, "event": parsed.get("event"), "plan": ent.plan, "status": ent.status})

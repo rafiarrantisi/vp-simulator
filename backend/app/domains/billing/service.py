@@ -1,7 +1,7 @@
 """Entitlement / gating / metering / cost-guardrail service (§7.3).
 
-Server-side ONLY — never trust the client for gating. Entitlement changes only
-via a verified MoR webhook (`apply_mor_event`).
+Server-side ONLY — never trust the client. Entitlement changes only
+via verified Midtrans/Xendit callbacks.
 """
 from __future__ import annotations
 
@@ -12,7 +12,6 @@ from sqlalchemy.orm import Session
 
 from app.config import Settings, get_settings
 from app.domains.auth.models import User
-from app.domains.billing import lemonsqueezy as ls
 from app.domains.billing import plans
 from app.domains.billing.models import Entitlement, SessionCost, UsageEvent
 
@@ -130,33 +129,6 @@ def _parse_dt(value) -> datetime | None:
         return None
 
 
-def apply_mor_event(db: Session, parsed: dict) -> Entitlement | None:
-    """Map a verified MoR webhook event to entitlement state. Returns the
-    Entitlement (added to the session) or None if the user can't be resolved."""
-    custom = parsed.get("custom") or {}
-    user_id = str(custom.get("user_id") or "").strip()
-    if not user_id and parsed.get("user_email"):
-        user_id = db.scalar(select(User.id).where(User.email == parsed["user_email"])) or ""
-    if not user_id:
-        return None
-
-    ent = db.get(Entitlement, user_id) or Entitlement(user_id=user_id)
-    plan = ls.map_plan(parsed)
-    if plan:
-        ent.plan = plan
-    ent.status = ls.map_status(parsed)
-    period_end = _parse_dt(parsed.get("renews_at"))
-    if period_end:
-        ent.current_period_end = period_end
-    if parsed.get("event") == "subscription_expired":
-        ent.plan = "free"
-    ent.mor_customer_id = parsed.get("customer_id") or ent.mor_customer_id
-    ent.mor_subscription_id = parsed.get("subscription_id") or ent.mor_subscription_id
-    ent.updated_at = _now()
-    db.add(ent)
-    return ent
-
-
 _XENDIT_PLAN_DAYS = {"monthly": 30, "annual": 365, "exam_pass": 30}
 _MIDTRANS_PLAN_DAYS = {"monthly": 30, "annual": 365, "exam_pass": 30}
 
@@ -171,11 +143,16 @@ def apply_xendit_event(db: Session, parsed: dict) -> Entitlement | None:
         return None
     if parsed.get("status") != "PAID":
         return None
+    xendit_id = str(parsed.get("xendit_id") or "").strip()
     ent = db.get(Entitlement, user_id) or Entitlement(user_id=user_id)
+    # Provider callbacks can be retried. The same paid invoice must not extend
+    # the entitlement repeatedly; a new invoice has a new provider id.
+    if xendit_id and ent.mor_subscription_id == xendit_id and ent.status == "active":
+        return ent
     ent.plan = plan
     ent.status = "active"
     ent.current_period_end = _now() + timedelta(days=_XENDIT_PLAN_DAYS.get(plan, 30))
-    ent.mor_subscription_id = str(parsed.get("xendit_id") or ent.mor_subscription_id)
+    ent.mor_subscription_id = xendit_id or ent.mor_subscription_id
     ent.updated_at = _now()
     db.add(ent)
     return ent
@@ -196,10 +173,13 @@ def apply_midtrans_event(db: Session, parsed: dict) -> Entitlement | None:
     ent = db.get(Entitlement, user_id) or Entitlement(user_id=user_id)
 
     if status in ("settlement", "capture"):
+        transaction_id = str(parsed.get("transaction_id") or "").strip()
+        if transaction_id and ent.mor_subscription_id == transaction_id and ent.status == "active":
+            return ent
         ent.plan = plan
         ent.status = "active"
         ent.current_period_end = _now() + timedelta(days=_MIDTRANS_PLAN_DAYS.get(plan, 30))
-        ent.mor_subscription_id = str(parsed.get("transaction_id") or ent.mor_subscription_id)
+        ent.mor_subscription_id = transaction_id or ent.mor_subscription_id
         ent.updated_at = _now()
         db.add(ent)
         return ent

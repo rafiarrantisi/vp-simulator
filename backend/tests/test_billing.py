@@ -10,7 +10,6 @@ from sqlalchemy import select
 from app.config import Settings
 from app.database import SessionLocal, init_db
 from app.domains.auth.models import User, UserProfile
-from app.domains.billing import lemonsqueezy as ls
 from app.domains.billing import plans, service
 from app.domains.billing.models import Entitlement
 from app.main import app
@@ -34,32 +33,6 @@ def test_plan_catalog_and_helpers():
     assert {p["id"] for p in cat} == {"free", "monthly", "annual", "exam_pass"}
     assert plans.is_unlimited("monthly") and not plans.is_unlimited("free")
     assert plans.plan_price(s, "annual") == s.price_annual_row
-
-
-# ── Lemon Squeezy signature + mapping ──
-def test_signature_verification():
-    secret, body = "whsec_test", b'{"a":1}'
-    good = hmac.new(secret.encode(), body, hashlib.sha256).hexdigest()
-    assert ls.verify_signature(body, good, secret)
-    assert not ls.verify_signature(body, "deadbeef", secret)
-    assert not ls.verify_signature(body, None, secret)
-    assert not ls.verify_signature(body, good, "")  # no secret configured -> reject
-
-
-def test_event_parse_and_mapping():
-    body = {
-        "meta": {"event_name": "subscription_created", "custom_data": {"user_id": "u1"}},
-        "data": {"id": "sub_1", "attributes": {
-            "customer_id": 42, "status": "active", "variant_name": "Monthly plan",
-            "renews_at": "2026-07-20T00:00:00Z", "user_email": "a@b.co"}},
-    }
-    p = ls.parse_event(body)
-    assert p["event"] == "subscription_created" and p["custom"]["user_id"] == "u1"
-    assert ls.map_plan(p) == "monthly"
-    assert ls.map_status(p) == "active"
-    assert ls.map_status({"event": "subscription_payment_failed", "ls_status": ""}) == "grace"
-    assert ls.map_status({"event": "x", "ls_status": "cancelled"}) == "canceled"
-    assert ls.map_plan({"variant_name": "Annual membership"}) == "annual"
 
 
 # ── Gating / metering (server-side) ──
@@ -116,29 +89,6 @@ def test_cost_guardrail_alert():
         db.rollback(); db.close()
 
 
-# ── Webhook -> entitlement ──
-def test_apply_event_creates_entitlement():
-    db = SessionLocal()
-    try:
-        u = _mk_user(db)
-        parsed = {"event": "subscription_created", "subscription_id": "sub9",
-                  "customer_id": "99", "ls_status": "active", "variant_name": "Annual",
-                  "renews_at": "2027-01-01T00:00:00Z", "user_email": "", "custom": {"user_id": u.id}}
-        ent = service.apply_mor_event(db, parsed)
-        assert ent and ent.plan == "annual" and ent.status == "active"
-        assert service.is_active_paid(ent)
-    finally:
-        db.rollback(); db.close()
-
-
-def test_apply_event_unknown_user_returns_none():
-    db = SessionLocal()
-    try:
-        assert service.apply_mor_event(db, {"event": "x", "custom": {}, "user_email": ""}) is None
-    finally:
-        db.rollback(); db.close()
-
-
 # ── Endpoints ──
 def test_plans_endpoint_is_public():
     r = client.get("/api/billing/plans").json()
@@ -160,28 +110,6 @@ def test_session_start_gated_when_over_limit(monkeypatch):
     r = client.post("/api/sessions", json={"case_id": "kasus-101", "mode": "normal"},
                     headers={"Authorization": f"Bearer {tok}"})
     assert r.status_code == 402
-
-
-def test_webhook_rejects_bad_signature():
-    r = client.post("/api/billing/webhooks/lemonsqueezy", content=b"{}",
-                    headers={"X-Signature": "bad"})
-    assert r.status_code == 401
-
-
-def test_webhook_applies_valid_event(monkeypatch):
-    email = f"wh_{uuid.uuid4().hex[:8]}@t.co"
-    client.post("/api/auth/signup", json={"email": email, "password": "secret12", "full_name": "W"})
-    db = SessionLocal()
-    uid = db.scalar(select(User.id).where(User.email == email))
-    db.close()
-    # Signature path is unit-tested above; here we exercise the endpoint wiring.
-    monkeypatch.setattr("app.domains.billing.router.ls.verify_signature", lambda *a, **k: True)
-    body = {"meta": {"event_name": "subscription_created", "custom_data": {"user_id": uid}},
-            "data": {"id": "subX", "attributes": {"customer_id": 1, "status": "active",
-                     "variant_name": "Monthly", "renews_at": "2027-01-01T00:00:00Z"}}}
-    r = client.post("/api/billing/webhooks/lemonsqueezy", content=json.dumps(body).encode(),
-                    headers={"X-Signature": "x"})
-    assert r.status_code == 200 and r.json()["data"]["plan"] == "monthly"
 
 
 # ── Midtrans (Indonesia primary gateway) ──
@@ -236,6 +164,11 @@ def test_midtrans_webhook_grants_entitlement(monkeypatch):
         assert ent is not None
         assert ent.plan == "monthly" and ent.status == "active"
         assert ent.mor_subscription_id == "tx1"
+        first_end = ent.current_period_end
+        r2 = client.post("/api/billing/midtrans/notifications", content=json.dumps(body).encode())
+        assert r2.status_code == 200
+        db.refresh(ent)
+        assert ent.current_period_end == first_end
     finally:
         db.close()
 

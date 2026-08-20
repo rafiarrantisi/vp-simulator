@@ -94,7 +94,7 @@ class Settings(BaseSettings):
     # `/opt/ophtha/uploads`; dev override ke `./uploads` lewat .env.
     upload_dir: str = "./uploads"
 
-    # ── Billing / entitlements (pivot-v4 §7; Merchant-of-Record = Lemon Squeezy) ──
+    # ── Billing / entitlements (Midtrans primary + Xendit fallback) ──
     # Enforcement is OFF by default so the live product is unchanged until cutover.
     billing_enforced: bool = False
     free_session_limit: int = 5     # sessions per rolling 30 days for free users
@@ -105,14 +105,9 @@ class Settings(BaseSettings):
     # Cost guardrail (margin protection, §7.3): blended est. $/1k tokens + alert ratio.
     cost_per_1k_tokens_usd: float = 0.001
     cost_alert_ratio: float = 0.8   # warn if a user's 30-day spend > ratio * plan price
-    # Lemon Squeezy. Keys via env/secret store; empty -> checkout/webhook disabled.
-    lemonsqueezy_api_key: str = ""
-    lemonsqueezy_store_id: str = ""
-    lemonsqueezy_webhook_secret: str = ""
-    lemonsqueezy_checkout_monthly: str = ""
-    lemonsqueezy_checkout_annual: str = ""
-    lemonsqueezy_checkout_exam_pass: str = ""
-    lemonsqueezy_portal_url: str = ""
+    # Midtrans is the Indonesia-primary gateway; Xendit is the fallback for
+    # hosted invoices/international regions. Billing remains beta-open until
+    # billing_enforced is intentionally enabled.
 
     # ── Xendit payment gateway (instruksi §8) — env-driven; empty key -> disabled.
     # Xendit hosts the checkout (an invoice URL) so we never touch card data.

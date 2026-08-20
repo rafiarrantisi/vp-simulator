@@ -48,14 +48,6 @@ def plan_price(s: Settings, plan: str) -> float:
     return region_price(s, "row", plan)
 
 
-def checkout_url(s: Settings, plan: str) -> str:
-    return {
-        "monthly": s.lemonsqueezy_checkout_monthly,
-        "annual": s.lemonsqueezy_checkout_annual,
-        "exam_pass": s.lemonsqueezy_checkout_exam_pass,
-    }.get(plan, "")
-
-
 def plan_catalog(s: Settings, region: str | None = None) -> list[dict]:
     """Public plan list for the pricing UI.
 
