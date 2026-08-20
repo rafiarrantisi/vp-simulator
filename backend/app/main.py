@@ -141,19 +141,6 @@ app.mount(
     name="eye_photos_static",
 )
 
-# TEMPORARY (responsive test harness — REMOVE after verification): serves
-# /mobiletest/mobiletest.html so the cloud browser can iframe the app at
-# phone/tablet widths. Port 8080 is firewall-blocked; 8000 is open.
-_mt = Path("/tmp/mobiletest")
-if _mt.exists():
-    app.mount("/mobiletest", StaticFiles(directory=str(_mt), html=True), name="mobiletest")
-# TEMPORARY same-origin test build of the frontend (/app/...) so the harness
-# can drive the app via JS (cross-origin iframes are read-only in the cloud
-# browser). REMOVE together with the mobiletest mount.
-_dist = Path("/home/ubuntu/vp-simulator/sistemnya/dist")
-if _dist.exists():
-    app.mount("/app", StaticFiles(directory=str(_dist), html=True), name="app_test")
-
 
 @app.get("/health")
 def health():
