@@ -2751,6 +2751,25 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   const sortedDims = dimList.slice().sort((a, b) => b.pct - a.pct);
   const strongest = sortedDims[0];
   const weakest = sortedDims.length > 1 ? sortedDims[sortedDims.length - 1] : null;
+  // Answer-key cards packed into balanced columns (proxy = item count) so both
+  // sides end near-equal height: avoids the "huge empty stretch" of equal-height
+  // cards AND the "uneven bottoms / background gaps" of a raw 3-col when group
+  // sizes don't divide evenly into a tidy grid. Mobile renders a single column.
+  const akCards = [];
+  (ak.anamnesis_checklist || []).forEach(g => {
+    const items = g.items || [];
+    const done = items.filter(it => { const st = statusFor(it.item); return st === 'hit' || st === 'partial'; }).length;
+    akCards.push({ title: g.group.replace(/_/g, ' '), badge: done + '/' + items.length, badgeDone: done === items.length && items.length > 0, items: items, weight: items.length + 1 });
+  });
+  if ((ak.red_flags || []).length) {
+    const rf = ak.red_flags || [];
+    const n = rf.filter(it => { const st = statusFor(it.item); return st === 'hit' || st === 'partial'; }).length;
+    akCards.push({ title: 'Red flags to screen', badge: n + '/' + rf.length, badgeDone: n === rf.length, items: rf, weight: rf.length + 1 });
+  }
+  const colSum = [0, 0]; const colCards = [[], []];
+  akCards.forEach(cd => { const i = colSum[0] <= colSum[1] ? 0 : 1; colCards[i].push(cd); colSum[i] += cd.weight; });
+  const renderAKCard = (cd) => React.createElement(QV2AnswerCard, { key: cd.title, title: cd.title, badge: cd.badge, badgeDone: cd.badgeDone },
+    cd.items.map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })));
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(820px, calc(100% - 16px))', margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Debrief'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18 } }, caseSummary.presentation),
@@ -2780,18 +2799,10 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
       React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5 } }, React.createElement('span', { style: { width: 13, height: 13, borderRadius: 999, background: 'var(--surface-3)', color: 'var(--text-3)', fontSize: 9, fontWeight: 800, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' } }, '○'), ' Not asked'),
       React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 5, color: '#8a5d00' } }, '⚑ Important item')),
     React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', margin: '0 0 12px' } }, '🗝 Model answer (what a complete workup includes)'),
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12, marginBottom: 12, alignItems: 'start' } },
-      (ak.anamnesis_checklist || []).map(g => {
-        const items = g.items || [];
-        const done = items.filter(it => { const st = statusFor(it.item); return st === 'hit' || st === 'partial'; }).length;
-        return React.createElement(QV2AnswerCard, { key: g.group, title: g.group.replace(/_/g, ' '), badge: done + '/' + items.length, badgeDone: done === items.length && items.length > 0 },
-          items.map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })));
-      }),
-      (ak.red_flags || []).length ? ((rf) => {
-        const n = rf.filter(it => { const st = statusFor(it.item); return st === 'hit' || st === 'partial'; }).length;
-        return React.createElement(QV2AnswerCard, { title: 'Red flags to screen', badge: n + '/' + rf.length, badgeDone: n === rf.length },
-          rf.map((it, i) => React.createElement(QV2ItemRow, { key: i, item: it, status: statusFor(it.item) })));
-      })(ak.red_flags) : null),
+    (isMobile
+      ? React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 12 } }, akCards.map(renderAKCard))
+      : React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 12, alignItems: 'start', marginBottom: 12 } },
+          colCards.map((col, ci) => React.createElement('div', { key: ci, style: { display: 'flex', flexDirection: 'column', gap: 12 } }, col.map(renderAKCard))))),
     // Bottom row: Investigations · Working diagnosis & differentials (center) · Management
     React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, minmax(0, 1fr))', gap: 12, alignItems: 'start', marginTop: 12 } },
       (ak.investigations && (ak.investigations.appropriate || []).length) ? React.createElement(QV2AnswerCard, { title: 'Investigations' },
