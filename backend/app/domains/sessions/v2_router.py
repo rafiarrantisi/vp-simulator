@@ -14,6 +14,7 @@ import re
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal, get_db
@@ -91,6 +92,43 @@ def v2_case_media(case_id: str, user: User = Depends(get_current_user)):
 class V2StartReq(BaseModel):
     case_id: str
     language: str = "en"  # en | id | ms | tl | vi | th | ...
+
+
+@router.get("/sessions")
+def v2_list_sessions(limit: int = 50, user: User = Depends(get_current_user),
+                     db: Session = Depends(get_db)):
+    """Session history list (most-recent first). Feeds the dashboard "Recent
+    sessions" and the /sessions page. Shape expected by the frontend:
+    {sessions: [{sessionId, caseId, mode, status, score, specialty,
+    presentation, startedAt}]}. score is null until the session is assessed.
+    """
+    rows = db.scalars(
+        select(SessionRow)
+        .where(SessionRow.user_id == user.id)
+        .order_by(SessionRow.started_at.desc())
+        .limit(max(1, min(limit, 200)))
+    ).all()
+    sessions = []
+    for r in rows:
+        spec = None
+        pres = None
+        try:
+            c = load_v2_case(r.case_id)
+            spec = c.frontmatter.get("specialty")
+            pres = c.frontmatter.get("presentation_id") or c.frontmatter.get("presentation")
+        except Exception:
+            pass
+        sessions.append({
+            "sessionId": r.id,
+            "caseId": r.case_id,
+            "mode": r.mode,
+            "status": r.status,
+            "score": r.total_score,
+            "specialty": spec,
+            "presentation": pres,
+            "startedAt": r.started_at.isoformat() if r.started_at else None,
+        })
+    return ok({"sessions": sessions, "total": len(sessions)})
 
 
 @router.post("/sessions")

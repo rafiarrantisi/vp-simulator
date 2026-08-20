@@ -71,10 +71,15 @@ function QoraSessions(props) {
   var sessionsState = React.useState(null);
   var sessions = sessionsState[0];
   var setSessions = sessionsState[1];
+  var errState = React.useState('');
+  var err = errState[0];
+  var setErr = errState[1];
   var specLabel = { internal_medicine: 'Internal Medicine', surgery: 'Surgery', paediatrics: 'Paediatrics', obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology', ent: 'ENT', dermatology: 'Dermatology', ophthalmology: 'Ophthalmology', emergency: 'Emergency' };
 
   React.useEffect(function () {
-    qv2Fetch('/api/v2/sessions?limit=50').then(function (d) { setSessions((d && d.sessions) || []); }).catch(function () {});
+    qv2Fetch('/api/v2/sessions?limit=50')
+      .then(function (d) { setSessions((d && d.sessions) || []); })
+      .catch(function (e) { setErr(String((e && e.message) || e)); });
   }, []);
 
   function renderSession(s, i) {
@@ -92,8 +97,10 @@ function QoraSessions(props) {
   }
 
   var content;
-  if (sessions === null) {
+  if (sessions === null && !err) {
     content = React.createElement('div', { style: { padding: 40, textAlign: 'center', color: 'var(--text-3)' } }, _t('common.loading'));
+  } else if (err) {
+    content = React.createElement('div', { style: { padding: 28, textAlign: 'center', color: 'var(--red-d)', background: 'var(--surface)', borderRadius: 16, border: '1px solid var(--border)' } }, 'Could not load your sessions. Please try again.');
   } else if (sessions.length === 0) {
     content = React.createElement('div', { style: { padding: 40, textAlign: 'center', color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 16, border: '1px dashed var(--border)' } }, _t('dashboard.no_sessions'));
   } else {
