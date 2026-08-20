@@ -130,16 +130,9 @@ async def _db_pool_timeout_handler(_request, _exc):
     )
 
 
-# v0.15.0: serve binary foto via FastAPI StaticFiles, mounted di bawah /api/*
-# supaya nginx existing proxy `^/(api|health)` route otomatis ke uvicorn —
-# zero nginx config change. Folder dibuat saat lifespan startup (idempoten).
-_upload_base = Path(_settings.upload_dir).resolve()
-(_upload_base / "eye-photos").mkdir(parents=True, exist_ok=True)
-app.mount(
-    "/api/uploads/eye-photos",
-    StaticFiles(directory=str(_upload_base / "eye-photos"), check_dir=False),
-    name="eye_photos_static",
-)
+# Eye-photo files are served by the authenticated route in
+# `domains.eye_photos.router`; do not mount StaticFiles here, because that
+# would bypass auth for anyone who knows a UUID filename.
 
 
 @app.get("/health")

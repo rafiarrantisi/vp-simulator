@@ -15,9 +15,12 @@ _hits: dict[tuple[str, str], list[float]] = defaultdict(list)
 
 
 def _client_ip(request: Request) -> str:
-    fwd = request.headers.get("x-forwarded-for")
-    if fwd:
-        return fwd.split(",")[0].strip()
+    # Cloudflare Tunnel supplies the canonical client address. Do not trust
+    # X-Forwarded-For from the public request body: clients can spoof it and
+    # otherwise bypass the per-IP auth/AI buckets.
+    cf_ip = request.headers.get("cf-connecting-ip")
+    if cf_ip:
+        return cf_ip.strip()
     return request.client.host if request.client else "unknown"
 
 

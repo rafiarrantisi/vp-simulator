@@ -249,7 +249,7 @@ def test_eye_photo_upload_admin_only(student_h):
     assert r.status_code == 403, r.text
 
 
-def test_eye_photo_upload_and_list(admin_h):
+def test_eye_photo_upload_and_list(admin_h, student_h):
     files = {"file": ("test1.png", io.BytesIO(_PNG_1X1), "image/png")}
     r = client.post(
         "/api/admin/eye-photos", headers=admin_h,
@@ -262,8 +262,9 @@ def test_eye_photo_upload_and_list(admin_h):
     assert photo["src"].startswith("/api/uploads/eye-photos/")
     photo_id = photo["id"]
 
-    # Public list (no auth)
-    r2 = client.get(f"/api/cases/{_NEW_CASE_ID}/eye-photos").json()
+    # Viewer and binary assets require authentication; photos are not public.
+    assert client.get(f"/api/cases/{_NEW_CASE_ID}/eye-photos").status_code == 401
+    r2 = client.get(f"/api/cases/{_NEW_CASE_ID}/eye-photos", headers=student_h).json()
     assert r2["success"]
     assert any(p["id"] == photo_id for p in r2["data"])
 
@@ -276,7 +277,7 @@ def test_eye_photo_upload_and_list(admin_h):
     r4 = client.delete(f"/api/admin/eye-photos/{photo_id}", headers=admin_h)
     assert r4.status_code == 200
     # Verify gone
-    r5 = client.get(f"/api/cases/{_NEW_CASE_ID}/eye-photos").json()
+    r5 = client.get(f"/api/cases/{_NEW_CASE_ID}/eye-photos", headers=student_h).json()
     assert not any(p["id"] == photo_id for p in r5["data"])
 
 

@@ -12,24 +12,42 @@ Admin (require_admin):
 Binary file di-serve via StaticFiles mount di main.py:
   GET /api/uploads/eye-photos/{filename}
 """
-from fastapi import APIRouter, Depends, File, Form, UploadFile
+from pathlib import Path
+
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
+from app.config import get_settings
 from app.database import get_db
 from app.domains.auth.models import User
 from app.domains.eye_photos import service
 from app.domains.eye_photos.schemas import EyePhotoUpdate
-from app.shared.dependencies import require_admin
+from app.shared.dependencies import get_current_user, require_admin
 from app.shared.envelope import ok
 
 router = APIRouter(tags=["eye_photos"])
 
 
-# ── Public (dipakai eye-photo.jsx viewer) ──────────────────────────────────
+# ── Authenticated viewer ───────────────────────────────────────────────────
 @router.get("/api/cases/{case_id}/eye-photos")
-def list_eye_photos_public(case_id: str, db: Session = Depends(get_db)):
+def list_eye_photos_public(case_id: str, db: Session = Depends(get_db),
+                           _user: User = Depends(get_current_user)):
     photos = service.list_for_case(db, case_id)
     return ok([p.model_dump() for p in photos], meta={"total": len(photos), "page": 0, "limit": len(photos)})
+
+
+@router.get("/api/uploads/eye-photos/{filename}")
+def get_eye_photo_file(filename: str, _user: User = Depends(get_current_user)):
+    # StaticFiles previously made every UUID filename public. Resolve and
+    # constrain the path even though uploads use generated UUID names.
+    safe = Path(filename).name
+    if safe != filename or safe != Path(safe).stem + Path(safe).suffix:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Photo not found")
+    path = Path(get_settings().upload_dir).resolve() / "eye-photos" / safe
+    if not path.is_file():
+        raise HTTPException(status.HTTP_404_NOT_FOUND, "Photo not found")
+    return FileResponse(path)
 
 
 # ── Admin ─────────────────────────────────────────────────────────────────

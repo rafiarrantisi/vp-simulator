@@ -24,10 +24,18 @@ async function qv2Fetch(path, opts, _retried) {
   const headers = { 'Content-Type': 'application/json' };
   const tok = _qv2Token();
   if (tok) headers['Authorization'] = 'Bearer ' + tok;
-  const res = await fetch(_qv2Base() + path, {
-    method: opts.method || 'GET', headers,
-    body: opts.body ? JSON.stringify(opts.body) : undefined,
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  let res;
+  try {
+    res = await fetch(_qv2Base() + path, {
+      method: opts.method || 'GET', headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
   if (res.status === 401 && !_retried && typeof window !== 'undefined' && window._qoraRefreshToken) {
     const nt = await window._qoraRefreshToken();
     if (nt) return qv2Fetch(path, opts, true);
@@ -709,11 +717,19 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
         try {
           const tok = _qv2Token();
-          const res = await fetch(_qv2Base() + '/api/ai/transcribe', {
-            method: 'POST',
-            headers: tok ? { Authorization: 'Bearer ' + tok } : {},
-            body: formData,
-          });
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 30000);
+          let res;
+          try {
+            res = await fetch(_qv2Base() + '/api/ai/transcribe', {
+              method: 'POST',
+              headers: tok ? { Authorization: 'Bearer ' + tok } : {},
+              body: formData,
+              signal: controller.signal,
+            });
+          } finally {
+            clearTimeout(timeout);
+          }
 
           const json = await res.json();
           if (res.ok && json.data && json.data.transcript) {
@@ -797,13 +813,21 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
     setInput(''); setBusy(true);
     setMessages(m => m.concat([{ role: 'user', text }, { role: 'patient', text: '', streaming: true }]));
     try {
-      const doStream = async (retried) => {
+        const doStream = async (retried) => {
         const tok = _qv2Token();
-        const r = await fetch(_qv2Base() + '/api/v2/sessions/' + sessionId + '/turns/stream', {
-          method: 'POST',
-          headers: Object.assign({ 'Content-Type': 'application/json' }, tok ? { Authorization: 'Bearer ' + tok } : {}),
-          body: JSON.stringify({ text }),
-        });
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 150000);
+        let r;
+        try {
+          r = await fetch(_qv2Base() + '/api/v2/sessions/' + sessionId + '/turns/stream', {
+            method: 'POST',
+            headers: Object.assign({ 'Content-Type': 'application/json' }, tok ? { Authorization: 'Bearer ' + tok } : {}),
+            body: JSON.stringify({ text }),
+            signal: controller.signal,
+          });
+        } finally {
+          clearTimeout(timeout);
+        }
         if (r.status === 401 && !retried && typeof window !== 'undefined' && window._qoraRefreshToken) {
           const nt = await window._qoraRefreshToken();
           if (nt) return doStream(true);

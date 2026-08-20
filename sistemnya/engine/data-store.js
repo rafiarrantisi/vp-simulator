@@ -66,11 +66,19 @@ async function _apiFetch(path, opts, _retried) {
   var headers = { 'Content-Type': 'application/json' };
   var auth = _readApiAuth();
   if (auth && auth.token) headers['Authorization'] = 'Bearer ' + auth.token;
-  var res = await fetch(_apiBase() + path, {
-    method: opts.method || 'GET',
-    headers: headers,
-    body: opts.body ? JSON.stringify(opts.body) : undefined,
-  });
+  var controller = new AbortController();
+  var timeout = setTimeout(function () { controller.abort(); }, 30000);
+  var res;
+  try {
+    res = await fetch(_apiBase() + path, {
+      method: opts.method || 'GET',
+      headers: headers,
+      body: opts.body ? JSON.stringify(opts.body) : undefined,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
   if (res.status === 401 && !_retried && path.indexOf('/api/auth/') !== 0) {
     var nt = await _qoraRefreshToken();
     if (nt) return _apiFetch(path, opts, true);
