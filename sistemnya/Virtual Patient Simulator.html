@@ -44,10 +44,10 @@
       const [screen, setScreen] = React.useState(() => {
         var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
         var authed = loadAuth();
-        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
+        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
         if (!authed && protectedHash) return 'qora-landing';
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
-        if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
+        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
       });
       const [screenKey, setScreenKey] = React.useState(0);
@@ -80,10 +80,10 @@
         var fn = function () {
           var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
           var next = null;
-          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
+          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
           if (protectedHash && !loadAuth()) next = 'qora-landing';
           else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
-          else if (['dashboard', 'sessions', 'profile', 'billing', 'pricing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
+          else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
@@ -194,8 +194,7 @@
           screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
           screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
           (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
-          screen === 'checkout' && React.createElement(QoraCheckout, { onNav: navigate }),
-          screen === 'pricing' && React.createElement(QoraPricing, { onNav: navigate })),
+          screen === 'checkout' && React.createElement(QoraCheckout, { onNav: navigate })),
 
         // Consistent company footer on all authenticated pages (revision §2.2/§6.2)
         isLoggedIn && React.createElement(QLFooter, null),
@@ -233,7 +232,7 @@
               React.createElement('p', null, 'Role: ', (auth && auth.role) || '–'),
               React.createElement('p', { style: { marginTop: 20, fontSize: 11, color: 'var(--text-3)' } }, 'Qora \u2014 Clinical Interview Trainer v0.16.0')),
             React.createElement('div', { style: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 } },
-              React.createElement('button', { onClick: function() { closeSettings(); navigate('pricing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, '✨ Upgrade plan'),
+              React.createElement('button', { onClick: function() { closeSettings(); navigate('billing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, '✨ Upgrade plan'),
               React.createElement('button', { onClick: handleLogout, style: { width: '100%', padding: 11, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Log out')))));
     }
 

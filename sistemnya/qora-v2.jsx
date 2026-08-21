@@ -1499,7 +1499,6 @@ const QORA_PLAN_FEATURES = {
   annual: ['Everything in Monthly', 'Best value vs paying monthly', 'Priority access to new cases'],
   exam_pass: ['Unlimited practice for one month', 'Built for exam season', 'Full OSCE arc + answer keys'],
 };
-const QORA_PLAN_BADGE = { annual: 'Best value', exam_pass: 'Exam season' };
 
 // Load Midtrans Snap.js once (sandbox or production depends on the client key origin).
 function _loadSnap() {
@@ -1522,90 +1521,7 @@ function _loadSnap() {
   });
 }
 
-function QoraPricing({ onNav }) {
-  const [data, setData] = React.useState(null); // {plans, provider, billing_enforced}
-  const [me, setMe] = React.useState(null);
-  const [err, setErr] = React.useState('');
-  const [busy, setBusy] = React.useState('');
-  React.useEffect(() => {
-    qv2Fetch('/api/billing/plans').then(setData).catch((e) => setErr(String(e.message || e)));
-    qv2Fetch('/api/billing/me').then(setMe).catch(() => {});
-  }, []);
-  async function upgrade(planId) {
-    setBusy(planId); setErr('');
-    try {
-      // Primary: Midtrans Snap popup (Indonesia).
-      try {
-        const r = await qv2Fetch('/api/billing/midtrans/checkout/' + planId, { method: 'POST' });
-        if (r && r.snap_token) {
-          await _loadSnap();
-          if (window.snap && window.snap.pay) {
-            window.snap.pay(r.snap_token, {
-              onSuccess: function () { window.location.hash = '#/billing-success'; },
-              onPending: function () { setErr('Payment pending — complete it to activate your plan.'); setBusy(''); },
-              onError: function () { setErr('Payment failed — please try again.'); setBusy(''); },
-              onClose: function () { setBusy(''); },
-            });
-            return;
-          }
-          // No Snap (blocked?) -> fall through to redirect_url
-          if (r.redirect_url) { window.location.href = r.redirect_url; return; }
-        }
-      } catch (e) {
-        if (!/not configured|503/i.test(String((e && e.message) || e))) throw e;
-        // Midtrans not configured -> fall back to Xendit below.
-      }
-      // Fallback: Xendit hosted invoice.
-      const r2 = await qv2Fetch('/api/billing/xendit/checkout/' + planId, { method: 'POST' });
-      if (r2 && r2.checkout_url) { window.location.href = r2.checkout_url; return; }
-      setErr('Checkout is not available yet.');
-    } catch (e) {
-      setErr(/not configured|503/i.test(String(e.message || e)) ? 'Payments are not enabled yet — check back soon.' : String(e.message || e));
-    }
-    setBusy('');
-  }
-  if (err && !data) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Could not load plans: ' + err);
-  if (!data) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, 'Loading plans…');
-  const plans = data.plans || [];
-  const paymentsLive = !!data.provider;
-  const currentPlan = (me && me.plan) || 'free';
-  return React.createElement('div', { className: 'au', style: { maxWidth: 980, margin: '0 auto', padding: '28px 20px 60px' } },
-    onNav && React.createElement('button', { onClick: () => onNav('dashboard'), style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back'),
-    React.createElement('div', { style: { textAlign: 'center', marginBottom: 6 } },
-      React.createElement('div', { style: { fontSize: 26, fontWeight: 800, color: 'var(--text-1)' } }, 'Practise without limits'),
-      React.createElement('div', { style: { fontSize: 14, color: 'var(--text-2)', marginTop: 6 } }, 'Upgrade for unlimited cases across every specialty.')),
-    !data.billing_enforced && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginBottom: 18 } }, 'Everything is currently unlocked while Qora is in beta.'),
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: 16, marginTop: 22 } },
-      plans.map((p) => {
-        const isCurrent = p.id === currentPlan;
-        const isFree = p.id === 'free';
-        const badge = QORA_PLAN_BADGE[p.id];
-        const feats = QORA_PLAN_FEATURES[p.id] || [];
-        const featured = p.id === 'annual';
-        return React.createElement('div', { key: p.id, className: 'as', style: {
-          position: 'relative', display: 'flex', flexDirection: 'column', padding: 22, borderRadius: 'var(--r-xl)',
-          background: 'var(--surface)', boxShadow: featured ? 'var(--sh-lg)' : 'var(--sh-sm)',
-          border: '2px solid ' + (featured ? 'var(--primary)' : 'var(--border)'),
-        } },
-          badge && React.createElement('div', { style: { position: 'absolute', top: -11, left: 22, fontSize: 10, fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', color: '#fff', background: 'var(--primary)', padding: '3px 10px', borderRadius: 999 } }, badge),
-          React.createElement('div', { style: { fontSize: 15, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } }, p.label),
-          React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 } },
-            React.createElement('span', { style: { fontSize: 30, fontWeight: 800, color: 'var(--text-1)' } }, isFree ? 'Free' : (p.display_price || ('$' + p.price))),
-            !isFree && React.createElement('span', { style: { fontSize: 12, color: 'var(--text-3)' } }, p.interval === 'year' ? '/ year' : p.interval === 'one_time' ? 'one-off' : '/ month')),
-          React.createElement('div', { style: { flex: 1, margin: '12px 0' } },
-            feats.map((f, i) => React.createElement('div', { key: i, style: { display: 'flex', gap: 8, fontSize: 12.5, color: 'var(--text-2)', padding: '3px 0', lineHeight: 1.4 } },
-              React.createElement('span', { style: { color: 'var(--primary)', fontWeight: 700 } }, '✓'), f))),
-          isCurrent
-            ? React.createElement('button', { disabled: true, style: { padding: 11, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'default' } }, 'Current plan')
-            : isFree
-              ? React.createElement('button', { disabled: true, style: { padding: 11, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'default' } }, 'Included')
-              : React.createElement('button', { onClick: () => { if (window.__goCheckout) window.__goCheckout(p.id); }, disabled: !paymentsLive, title: paymentsLive ? '' : 'Payments coming soon', style: { padding: 11, borderRadius: 12, border: 'none', background: paymentsLive ? 'var(--primary)' : 'var(--surface-2)', color: paymentsLive ? '#fff' : 'var(--text-3)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: paymentsLive ? 'pointer' : 'default' } }, paymentsLive ? 'Upgrade' : 'Coming soon'));
-      })),
-    err && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--red-d)', marginTop: 16 } }, err),
-    React.createElement('div', { style: { textAlign: 'center', fontSize: 11, color: 'var(--text-3)', marginTop: 24 } }, 'Secure checkout via Xendit. A study aid, not a medical device.'));
-}
 
 window.QoraV2Screen = QoraV2Screen;
 window.QoraDashboard = QoraDashboard;
 window.QoraProfile = QoraProfile;
-window.QoraPricing = QoraPricing;
