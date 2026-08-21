@@ -34,6 +34,16 @@ from app.rag.prompt_v2 import build_judge_ground_truth
 from pipeline.case_v2 import CaseV2
 
 _JUDGE_TEMPERATURE = 0.1  # low temp for stable, repeatable scoring
+# Judge latency is variable on OpenRouter (measured 47-86s for a normal case).
+# We do NOT hard-cut it here — a too-low timeout would destroy a valid score.
+# This `timeout` is passed to the OpenAI SDK as a socket/connect+read bound (best
+# effort, not a hard total cap on streaming), set high enough to never truncate a
+# legitimate run. The REAL user-facing guard is the frontend's 150s /score timeout
+# plus the surfaced error on the assess screen. We still cut the retry storm
+# (3 -> 1) so a genuinely down provider degrades to the empty-report fallback
+# instead of holding the session for several minutes.
+_JUDGE_TIMEOUT_S = 110.0
+_JUDGE_MAX_RETRIES = 1
 
 
 def _ground_truth_block(gt: dict, dims: list[str]) -> str:
@@ -423,6 +433,8 @@ def evaluate_v2(case: CaseV2, transcript: list[dict], *,
                 model=get_settings().llm_judge_model,
                 max_tokens=get_settings().llm_judge_max_tokens,
                 temperature=_JUDGE_TEMPERATURE,
+                timeout=_JUDGE_TIMEOUT_S,
+                max_retries=_JUDGE_MAX_RETRIES,
             )
             obj = _extract_json(raw_text)
             report = _normalize(obj, resolved_mode, weights) if obj is not None else \

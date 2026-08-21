@@ -20,9 +20,10 @@ from app.config import get_settings
 _RETRY = 3  # backoff utk 5xx/timeout (free tier sering flaky)
 
 
-def _with_retry(fn):
+def _with_retry(fn, retries: int | None = None):
     last = None
-    for i in range(_RETRY):
+    n = _RETRY if retries is None else max(1, retries)
+    for i in range(n):
         try:
             return fn()
         except Exception as e:  # noqa: BLE001 - retry transient apa pun
@@ -31,7 +32,7 @@ def _with_retry(fn):
             transient = any(
                 k in msg for k in ("timeout", "502", "503", "504", "rate", "overload")
             )
-            if not transient or i == _RETRY - 1:
+            if not transient or i == n - 1:
                 raise
             time.sleep(1.5 * (i + 1))
     raise last  # pragma: no cover
@@ -45,7 +46,9 @@ class LlmClient(Protocol):
     def generate(self, system: str, messages: list[dict],
                  model: str | None = None,
                  max_tokens: int | None = None,
-                 temperature: float | None = None) -> str: ...
+                 temperature: float | None = None,
+                 timeout: float | None = None,
+                 max_retries: int | None = None) -> str: ...
 
 
 class StubLlmClient:
@@ -57,7 +60,9 @@ class StubLlmClient:
     def generate(self, system: str, messages: list[dict],
                  model: str | None = None,
                  max_tokens: int | None = None,
-                 temperature: float | None = None) -> str:
+                 temperature: float | None = None,
+                 timeout: float | None = None,
+                 max_retries: int | None = None) -> str:
         last_user = ""
         for m in reversed(messages):
             if m.get("role") == "user":
@@ -118,7 +123,8 @@ def _openai_compatible(base_url: str | None):
                 pass
             return None
 
-        def generate(self, system, messages, model=None, max_tokens=None, temperature=None):
+        def generate(self, system, messages, model=None, max_tokens=None, temperature=None,
+                     timeout=None, max_retries=None):
             def _call():
                 kwargs = {
                     "model": model or s.llm_model,
@@ -127,6 +133,8 @@ def _openai_compatible(base_url: str | None):
                 }
                 if max_tokens is not None:
                     kwargs["max_tokens"] = max_tokens
+                if timeout is not None:
+                    kwargs["timeout"] = timeout
                 extra = self._extra()
                 if extra:
                     kwargs["extra_body"] = extra
@@ -149,7 +157,7 @@ def _openai_compatible(base_url: str | None):
                     raise RuntimeError("LLM kembalikan konten kosong (overload/truncated?)")
                 return content
 
-            return _with_retry(_call)
+            return _with_retry(_call, retries=max_retries)
 
         def stream(self, system, messages, model=None, max_tokens=None):
             kwargs = {
@@ -183,12 +191,16 @@ def _anthropic():  # pragma: no cover - butuh SDK + key
     client = Anthropic(api_key=s.llm_api_key)
 
     class _Anth:
-        def generate(self, system, messages, model=None, max_tokens=None, temperature=None):
-            r = client.messages.create(
+        def generate(self, system, messages, model=None, max_tokens=None, temperature=None,
+                     timeout=None, max_retries=None):
+            kwargs = dict(
                 model=model or s.llm_model, system=system,
                 max_tokens=max_tokens or 1024,
                 messages=messages, temperature=0.5 if temperature is None else temperature,
             )
+            if timeout is not None:
+                kwargs["timeout"] = timeout
+            r = client.messages.create(**kwargs)
             return "".join(b.text for b in r.content if b.type == "text")
 
         def stream(self, system, messages, model=None, max_tokens=None):
