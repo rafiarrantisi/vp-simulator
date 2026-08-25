@@ -4,67 +4,130 @@ schema_version: 2
 status: in_review
 specialty: internal_medicine
 system: gastrointestinal
-presentation: "Sustained fever and abdominal discomfort for 5 days"
-presentation_id: "Demam menetap dan nyeri perut selama 5 hari"
-first_impression: "Patient looks flushed, restless, and slightly slumped, with a tired, uncomfortable expression."
-first_impression_id: "Pasien tampak kemerahan, gelisah, dan sedikit merosot, dengan ekspresi lelah dan tidak nyaman."
-target_condition: "Typhoid fever"
+presentation: Sustained fever and abdominal discomfort for 5 days
+presentation_id: Demam menetap dan nyeri perut selama 5 hari
+first_impression: Patient looks flushed, restless, and slightly slumped, with a tired,
+  uncomfortable expression.
+first_impression_id: Pasien tampak kemerahan, gelisah, dan sedikit merosot, dengan
+  ekspresi lelah dan tidak nyaman.
+target_condition: Typhoid fever
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: [ "PPK Kemenkes (Panduan Praktik Klinis) for Typhoid fever — Pedoman Pengendalian Demam Tifoid KMK 364/2006; WHO typhoid guidelines" ]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I've had a fever that won't go away for almost a week, and my stomach feels uncomfortable."
+languages:
+- en
+source_refs:
+- PPK Kemenkes (Panduan Praktik Klinis) for Typhoid fever — Pedoman Pengendalian Demam
+  Tifoid KMK 364/2006; WHO typhoid guidelines
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I've had a fever that won't go away for almost a week, and my stomach
+  feels uncomfortable.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset and duration of fever", critical: true }
-    - { item: "Fever pattern (continuous vs intermittent, step-ladder rise)", critical: true }
-    - { item: "Severity of fever (measured temperature)", critical: false }
-    - { item: "Abdominal pain location and character", critical: true }
-    - { item: "Changes in bowel habits (constipation or diarrhea)", critical: false }
-    - { item: "Appetite changes", critical: false }
+  - item: Onset and duration of fever
+    critical: true
+  - item: Fever pattern (continuous vs intermittent, step-ladder rise)
+    critical: true
+  - item: Severity of fever (measured temperature)
+    critical: false
+  - item: Abdominal pain location and character
+    critical: true
+  - item: Changes in bowel habits (constipation or diarrhea)
+    critical: false
+  - item: Appetite changes
+    critical: false
   associated_symptoms:
-    - { item: "Headache", critical: false }
-    - { item: "Nausea or vomiting", critical: false }
-    - { item: "Cough or sore throat", critical: false }
-    - { item: "Skin rash or spots", critical: false }
+  - item: Headache
+    critical: false
+  - item: Nausea or vomiting
+    critical: false
+  - item: Cough or sore throat
+    critical: false
+  - item: Skin rash or spots
+    critical: false
   pmh:
-    - { item: "Previous history of typhoid fever", critical: false }
-    - { item: "Chronic illnesses (diabetes, hypertension, etc.)", critical: false }
+  - item: Previous history of typhoid fever
+    critical: false
+  - item: Chronic illnesses (diabetes, hypertension, etc.)
+    critical: false
   medications:
-    - { item: "Medications taken for the fever (paracetamol, antibiotics)", critical: true }
-    - { item: "Regular medications for chronic conditions", critical: false }
+  - item: Medications taken for the fever (paracetamol, antibiotics)
+    critical: true
+  - item: Regular medications for chronic conditions
+    critical: false
   family_social:
-    - { item: "Recent travel history", critical: false }
-    - { item: "Food and water sources (street food, untreated water)", critical: true }
-    - { item: "Other family members with similar symptoms", critical: false }
+  - item: Recent travel history
+    critical: false
+  - item: Food and water sources (street food, untreated water)
+    critical: true
+  - item: Other family members with similar symptoms
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Severe abdominal pain or abdominal rigidity (possible perforation)", critical: true }
-  - { item: "Blood in stool or black tarry stool (possible intestinal bleeding)", critical: true }
-  - { item: "Altered mental status or confusion", critical: false }
+- item: Severe abdominal pain or abdominal rigidity (possible perforation)
+  critical: true
+- item: Blood in stool or black tarry stool (possible intestinal bleeding)
+  critical: true
+- item: Altered mental status or confusion
+  critical: false
 expected_ddx:
-  working_diagnosis: "Typhoid fever"
-  differentials: [ "Dengue fever", "Malaria", "Influenza" ]
+  working_diagnosis: Typhoid fever
+  differentials:
+  - Dengue fever
+  - Malaria
+  - Influenza
 investigations:
   appropriate:
-    - { name: "Blood culture", expected: "Positive for Salmonella typhi (gold standard)" }
-    - { name: "Widal test", expected: "Elevated O and H agglutinin titers (low specificity)" }
-    - { name: "Complete blood count", expected: "Leukopenia, mild anemia, relative lymphocytosis" }
-    - { name: "Liver function tests", expected: "Mildly elevated transaminases" }
-  inappropriate: [ "Abdominal CT scan" ]
+  - name: Blood culture
+    expected: Positive for Salmonella typhi (gold standard)
+  - name: Widal test
+    expected: Elevated O and H agglutinin titers (low specificity)
+  - name: Complete blood count
+    expected: Leukopenia, mild anemia, relative lymphocytosis
+  - name: Liver function tests
+    expected: Mildly elevated transaminases
+  inappropriate:
+  - Abdominal CT scan
 physical_exam_findings:
-  general: "Febrile, appears tired but not toxic; alert and oriented"
-  vitals: { temperature: "39.2°C", blood_pressure: "110/70 mmHg", heart_rate: "88 bpm (relative bradycardia)", respiratory_rate: "18/min", oxygen_saturation: "98% on room air" }
+  general: Febrile, appears tired but not toxic; alert and oriented
+  vitals:
+    temperature: 39.2°C
+    blood_pressure: 110/70 mmHg
+    heart_rate: 88 bpm (relative bradycardia)
+    respiratory_rate: 18/min
+    oxygen_saturation: 98% on room air
 management:
-  pharmacological: [ "Ceftriaxone 2g IV daily for 10-14 days", "Paracetamol for fever" ]
-  non_pharmacological: [ "Adequate hydration", "Bed rest", "Soft, easily digestible diet" ]
-  education_safety_netting: [ "Return immediately if severe abdominal pain, black stools, or confusion develops", "Complete the full antibiotic course", "Hand hygiene and safe food/water practices to prevent spread" ]
+  pharmacological:
+  - Ceftriaxone 2g IV daily for 10-14 days
+  - Paracetamol for fever
+  non_pharmacological:
+  - Adequate hydration
+  - Bed rest
+  - Soft, easily digestible diet
+  education_safety_netting:
+  - Return immediately if severe abdominal pain, black stools, or confusion develops
+  - Complete the full antibiotic course
+  - Hand hygiene and safe food/water practices to prevent spread
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

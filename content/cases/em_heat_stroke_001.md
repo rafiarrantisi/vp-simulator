@@ -1,55 +1,83 @@
 ---
 id: em_heat_stroke_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: emergency
 system: thermoregulatory
-presentation: "Collapse during a marathon — hot red and confused"
-presentation_id: "Pingsan saat lari maraton — kulit panas merah dan bingung"
-first_impression: "A person appears confused, flushed skin, hot to touch."
-first_impression_id: "Seseorang tampak bingung, kulit memerah, panas saat disentuh."
-target_condition: "Exertional heat stroke"
+presentation: Collapse during a marathon — hot red and confused
+presentation_id: Pingsan saat lari maraton — kulit panas merah dan bingung
+first_impression: A person appears confused, flushed skin, hot to touch.
+first_impression_id: Seseorang tampak bingung, kulit memerah, panas saat disentuh.
+target_condition: Exertional heat stroke
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "ACEP Clinical Policy for Heat Stroke"
-  - "Bouchama A, Knochel JP. Heat stroke. N Engl J Med 2002"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I collapsed during a marathon and feel really hot and confused."
+- ACEP Clinical Policy for Heat Stroke
+- Bouchama A, Knochel JP. Heat stroke. N Engl J Med 2002
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I collapsed during a marathon and feel really hot and confused.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "When did you collapse?", critical: true }
-    - { item: "How long were you running before collapsing?", critical: false }
-    - { item: "Did you have any warning signs like dizziness or headache?", critical: true }
-    - { item: "Have you been drinking water or sports drinks?", critical: true }
-    - { item: "What was the weather like today?", critical: false }
+  - item: When did you collapse?
+    critical: true
+  - item: How long were you running before collapsing?
+    critical: false
+  - item: Did you have any warning signs like dizziness or headache?
+    critical: true
+  - item: Have you been drinking water or sports drinks?
+    critical: true
+  - item: What was the weather like today?
+    critical: false
   associated_symptoms:
-    - { item: "Do you feel nauseous or have you vomited?", critical: true }
-    - { item: "Do you have any muscle cramps or weakness?", critical: false }
-    - { item: "Have you had any chest pain or palpitations?", critical: true }
-    - { item: "Are you having trouble breathing?", critical: false }
+  - item: Do you feel nauseous or have you vomited?
+    critical: true
+  - item: Do you have any muscle cramps or weakness?
+    critical: false
+  - item: Have you had any chest pain or palpitations?
+    critical: true
+  - item: Are you having trouble breathing?
+    critical: false
   pmh:
-    - { item: "Do you have any medical conditions like diabetes or heart disease?", critical: true }
-    - { item: "Have you ever had heat stroke before?", critical: false }
+  - item: Do you have any medical conditions like diabetes or heart disease?
+    critical: true
+  - item: Have you ever had heat stroke before?
+    critical: false
   medications:
-    - { item: "Are you taking any medications or supplements?", critical: true }
+  - item: Are you taking any medications or supplements?
+    critical: true
   family_social:
-    - { item: "Do you drink alcohol or use any drugs?", critical: false }
+  - item: Do you drink alcohol or use any drugs?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Altered mental status or confusion", critical: true }
-  - { item: "Hot, red, dry skin or excessive sweating", critical: true }
-  - { item: "Core temperature > 104°F (40°C) suspected", critical: true }
-  - { item: "Collapse during exertion", critical: true }
+- item: Altered mental status or confusion
+  critical: true
+- item: Hot, red, dry skin or excessive sweating
+  critical: true
+- item: Core temperature > 104°F (40°C) suspected
+  critical: true
+- item: Collapse during exertion
+  critical: true
 expected_ddx:
-  working_diagnosis: "Exertional heat stroke"
-  differentials: ["Exertional hyponatremia", "Hypoglycemia", "Cardiac arrhythmia"]
+  working_diagnosis: Exertional heat stroke
+  differentials:
+  - Exertional hyponatremia
+  - Hypoglycemia
+  - Cardiac arrhythmia
 investigations: null
 physical_exam_findings: null
 management: null

@@ -4,69 +4,113 @@ schema_version: 2
 status: in_review
 specialty: paediatrics
 system: respiratory
-presentation: "Wheeze in an infant"
-presentation_id: "Mengi dan batuk pada bayi selama dua hari"
-first_impression: "A child appears unwell."
-first_impression_id: "Seorang anak tampak tidak sehat."
-target_condition: "Bronchiolitis"
+presentation: Wheeze in an infant
+presentation_id: Mengi dan batuk pada bayi selama dua hari
+first_impression: A child appears unwell.
+first_impression_id: Seorang anak tampak tidak sehat.
+target_condition: Bronchiolitis
 difficulty: 2
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Academy of Pediatrics. Clinical Practice Guideline: Diagnosis and Management of Bronchiolitis. Pediatrics. 2014;134(5):e1474-e1502."
-  - "AAP clinical practice guideline — bronchiolitis (2014)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My baby has been wheezing and coughing for two days."
+- 'American Academy of Pediatrics. Clinical Practice Guideline: Diagnosis and Management
+  of Bronchiolitis. Pediatrics. 2014;134(5):e1474-e1502.'
+- AAP clinical practice guideline — bronchiolitis (2014)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: My baby has been wheezing and coughing for two days.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset – when did symptoms start?", critical: true }
-    - { item: "Duration – how long has the wheeze been present?", critical: false }
-    - { item: "Severity – how bad is the breathing difficulty?", critical: true }
-    - { item: "Character of cough – dry or wet?", critical: false }
-    - { item: "Fever – has the baby had a temperature?", critical: false }
-    - { item: "Feeding – has the baby been feeding less than usual?", critical: true }
-    - { item: "Nasal congestion – does the baby have a runny nose?", critical: false }
-    - { item: "Exposure – has the baby been around anyone with cold symptoms?", critical: false }
+  - item: Onset – when did symptoms start?
+    critical: true
+  - item: Duration – how long has the wheeze been present?
+    critical: false
+  - item: Severity – how bad is the breathing difficulty?
+    critical: true
+  - item: Character of cough – dry or wet?
+    critical: false
+  - item: Fever – has the baby had a temperature?
+    critical: false
+  - item: Feeding – has the baby been feeding less than usual?
+    critical: true
+  - item: Nasal congestion – does the baby have a runny nose?
+    critical: false
+  - item: Exposure – has the baby been around anyone with cold symptoms?
+    critical: false
   associated_symptoms:
-    - { item: "Vomiting after coughing", critical: false }
-    - { item: "Irritability or lethargy", critical: true }
-    - { item: "Apnea or pauses in breathing", critical: true }
+  - item: Vomiting after coughing
+    critical: false
+  - item: Irritability or lethargy
+    critical: true
+  - item: Apnea or pauses in breathing
+    critical: true
   pmh:
-    - { item: "History of prematurity (born before 37 weeks)", critical: true }
-    - { item: "History of congenital heart disease or lung disease", critical: true }
-    - { item: "Immunization status (especially RSV prophylaxis if eligible)", critical: false }
+  - item: History of prematurity (born before 37 weeks)
+    critical: true
+  - item: History of congenital heart disease or lung disease
+    critical: true
+  - item: Immunization status (especially RSV prophylaxis if eligible)
+    critical: false
   medications:
-    - { item: "Any medications given for the symptoms (e.g., paracetamol, ibuprofen, inhalers)", critical: false }
-    - { item: "Any regular medications or supplements", critical: false }
+  - item: Any medications given for the symptoms (e.g., paracetamol, ibuprofen, inhalers)
+    critical: false
+  - item: Any regular medications or supplements
+    critical: false
   family_social:
-    - { item: "Exposure to tobacco smoke at home", critical: true }
-    - { item: "Family history of asthma or allergies", critical: false }
-    - { item: "Daycare attendance or other young children at home", critical: false }
+  - item: Exposure to tobacco smoke at home
+    critical: true
+  - item: Family history of asthma or allergies
+    critical: false
+  - item: Daycare attendance or other young children at home
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Apnea (pauses in breathing)", critical: true }
-  - { item: "Cyanosis (bluish lips or skin)", critical: true }
-  - { item: "Severe respiratory distress (grunting, nasal flaring, chest retractions)", critical: true }
-  - { item: "Dehydration (dry mouth, no wet diapers for 6 hours)", critical: true }
+- item: Apnea (pauses in breathing)
+  critical: true
+- item: Cyanosis (bluish lips or skin)
+  critical: true
+- item: Severe respiratory distress (grunting, nasal flaring, chest retractions)
+  critical: true
+- item: Dehydration (dry mouth, no wet diapers for 6 hours)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Bronchiolitis"
-  differentials: [ "Asthma (first episode of wheeze)", "Pneumonia", "Foreign body aspiration", "Gastroesophageal reflux with aspiration" ]
+  working_diagnosis: Bronchiolitis
+  differentials:
+  - Asthma (first episode of wheeze)
+  - Pneumonia
+  - Foreign body aspiration
+  - Gastroesophageal reflux with aspiration
 investigations:
   appropriate: []
   inappropriate: []
 physical_exam_findings:
-  general: "Not applicable in anamnesis mode."
+  general: Not applicable in anamnesis mode.
   vitals: {}
 management:
   pharmacological: []
   non_pharmacological: []
   education_safety_netting: []
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

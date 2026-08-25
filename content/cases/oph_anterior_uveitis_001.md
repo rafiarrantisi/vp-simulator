@@ -1,66 +1,97 @@
 ---
 id: oph_anterior_uveitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: eye
-presentation: "Painful red eye with photophobia"
-presentation_id: "Mata merah dan nyeri disertai silau terhadap cahaya"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Anterior uveitis"
+presentation: Painful red eye with photophobia
+presentation_id: Mata merah dan nyeri disertai silau terhadap cahaya
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Anterior uveitis
 difficulty: 2
 estimated_minutes: 12
 mode_default: anamnesis
-languages: [en]
-source_refs: [ "AAO Preferred Practice Pattern: Anterior Uveitis (2020)" ]
+languages:
+- en
+source_refs:
+- 'AAO Preferred Practice Pattern: Anterior Uveitis (2020)'
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "My eye is red and hurts, and I can't stand bright light."
+chief_complaint: My eye is red and hurts, and I can't stand bright light.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did the pain/redness start?", critical: false }
-    - { item: "Location - is it one eye or both?", critical: true }
-    - { item: "Quality - describe the pain (aching, sharp, burning)", critical: false }
-    - { item: "Severity - rate pain on a scale of 0-10", critical: false }
-    - { item: "Timing - is the pain constant or comes and goes?", critical: false }
-    - { item: "Context - any injury, surgery, or contact lens use?", critical: true }
-    - { item: "Exacerbating factors - does light make it worse?", critical: true }
-    - { item: "Relieving factors - does anything help (dark room, sunglasses)?", critical: false }
+  - item: Onset - when did the pain/redness start?
+    critical: false
+  - item: Location - is it one eye or both?
+    critical: true
+  - item: Quality - describe the pain (aching, sharp, burning)
+    critical: false
+  - item: Severity - rate pain on a scale of 0-10
+    critical: false
+  - item: Timing - is the pain constant or comes and goes?
+    critical: false
+  - item: Context - any injury, surgery, or contact lens use?
+    critical: true
+  - item: Exacerbating factors - does light make it worse?
+    critical: true
+  - item: Relieving factors - does anything help (dark room, sunglasses)?
+    critical: false
   associated_symptoms:
-    - { item: "Blurred vision or vision loss", critical: true }
-    - { item: "Tearing or discharge", critical: false }
-    - { item: "Sensitivity to light (photophobia)", critical: true }
-    - { item: "Headache or eye ache", critical: false }
+  - item: Blurred vision or vision loss
+    critical: true
+  - item: Tearing or discharge
+    critical: false
+  - item: Sensitivity to light (photophobia)
+    critical: true
+  - item: Headache or eye ache
+    critical: false
   pmh:
-    - { item: "Previous episodes of red eye or uveitis", critical: true }
-    - { item: "Autoimmune conditions (e.g., ankylosing spondylitis, sarcoidosis, IBD)", critical: true }
-    - { item: "HLA-B27 positivity", critical: false }
-    - { item: "Recent infections (e.g., flu, cold sores)", critical: false }
+  - item: Previous episodes of red eye or uveitis
+    critical: true
+  - item: Autoimmune conditions (e.g., ankylosing spondylitis, sarcoidosis, IBD)
+    critical: true
+  - item: HLA-B27 positivity
+    critical: false
+  - item: Recent infections (e.g., flu, cold sores)
+    critical: false
   medications:
-    - { item: "Current eye drops (prescription or OTC)", critical: false }
-    - { item: "Oral medications (NSAIDs, steroids, immunosuppressants)", critical: false }
+  - item: Current eye drops (prescription or OTC)
+    critical: false
+  - item: Oral medications (NSAIDs, steroids, immunosuppressants)
+    critical: false
   family_social:
-    - { item: "Family history of autoimmune disease or uveitis", critical: false }
-    - { item: "Smoking or alcohol use", critical: false }
+  - item: Family history of autoimmune disease or uveitis
+    critical: false
+  - item: Smoking or alcohol use
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Severe eye pain or sudden vision loss", critical: true }
-  - { item: "Recent eye surgery or trauma", critical: true }
-  - { item: "Contact lens use with pain and photophobia", critical: false }
+- item: Severe eye pain or sudden vision loss
+  critical: true
+- item: Recent eye surgery or trauma
+  critical: true
+- item: Contact lens use with pain and photophobia
+  critical: false
 expected_ddx:
-  working_diagnosis: "Anterior uveitis"
-  differentials: [ "Acute angle-closure glaucoma", "Infectious keratitis", "Conjunctivitis" ]
+  working_diagnosis: Anterior uveitis
+  differentials:
+  - Acute angle-closure glaucoma
+  - Infectious keratitis
+  - Conjunctivitis
 investigations: []
 physical_exam_findings:
-  general: ""
+  general: ''
   vitals: {}
 management:
   pharmacological: []

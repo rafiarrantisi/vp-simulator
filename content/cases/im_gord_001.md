@@ -1,81 +1,123 @@
 ---
 id: im_gord_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: digestive
-presentation: "Heartburn"
-presentation_id: "Rasa panas atau terbakar di dada setelah makan"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Gastro-oesophageal reflux disease"
+presentation: Heartburn
+presentation_id: Rasa panas atau terbakar di dada setelah makan
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Gastro-oesophageal reflux disease
 difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline NG87: Gastro-oesophageal reflux disease and dyspepsia in adults"
-  - "ACG clinical guideline — gastroesophageal reflux disease (2022)"
-
+- 'NICE guideline NG87: Gastro-oesophageal reflux disease and dyspepsia in adults'
+- ACG clinical guideline — gastroesophageal reflux disease (2022)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I have a burning feeling in my chest after eating."
+chief_complaint: I have a burning feeling in my chest after eating.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did it start?", critical: true }
-    - { item: "Location - where exactly is the burning?", critical: true }
-    - { item: "Character - describe the sensation", critical: true }
-    - { item: "Aggravating factors - what makes it worse?", critical: true }
-    - { item: "Relieving factors - what makes it better?", critical: true }
-    - { item: "Timing - after meals? at night?", critical: false }
-    - { item: "Severity - how bad is it on a scale?", critical: false }
-    - { item: "Duration - how long does it last?", critical: false }
+  - item: Onset - when did it start?
+    critical: true
+  - item: Location - where exactly is the burning?
+    critical: true
+  - item: Character - describe the sensation
+    critical: true
+  - item: Aggravating factors - what makes it worse?
+    critical: true
+  - item: Relieving factors - what makes it better?
+    critical: true
+  - item: Timing - after meals? at night?
+    critical: false
+  - item: Severity - how bad is it on a scale?
+    critical: false
+  - item: Duration - how long does it last?
+    critical: false
   associated_symptoms:
-    - { item: "Regurgitation or sour taste in mouth", critical: true }
-    - { item: "Cough or hoarseness", critical: false }
-    - { item: "Dysphagia - difficulty swallowing", critical: true }
-    - { item: "Nausea or bloating", critical: false }
+  - item: Regurgitation or sour taste in mouth
+    critical: true
+  - item: Cough or hoarseness
+    critical: false
+  - item: Dysphagia - difficulty swallowing
+    critical: true
+  - item: Nausea or bloating
+    critical: false
   pmh:
-    - { item: "Previous similar episodes", critical: false }
-    - { item: "Known medical conditions (e.g., asthma, diabetes)", critical: false }
-    - { item: "Obesity or weight changes", critical: false }
+  - item: Previous similar episodes
+    critical: false
+  - item: Known medical conditions (e.g., asthma, diabetes)
+    critical: false
+  - item: Obesity or weight changes
+    critical: false
   medications:
-    - { item: "Antacids or acid-reducing medications", critical: true }
-    - { item: "NSAIDs or aspirin", critical: false }
+  - item: Antacids or acid-reducing medications
+    critical: true
+  - item: NSAIDs or aspirin
+    critical: false
   family_social:
-    - { item: "Smoking history", critical: true }
-    - { item: "Alcohol consumption", critical: false }
-    - { item: "Dietary habits (spicy, fatty foods)", critical: false }
-    - { item: "Family history of GERD or esophageal cancer", critical: true }
+  - item: Smoking history
+    critical: true
+  - item: Alcohol consumption
+    critical: false
+  - item: Dietary habits (spicy, fatty foods)
+    critical: false
+  - item: Family history of GERD or esophageal cancer
+    critical: true
   ice_fife:
-    - { item: "Ideas - what do you think is causing this?", critical: true }
-    - { item: "Concerns - what worries you most?", critical: true }
-    - { item: "Expectations - what do you hope we can do?", critical: false }
+  - item: Ideas - what do you think is causing this?
+    critical: true
+  - item: Concerns - what worries you most?
+    critical: true
+  - item: Expectations - what do you hope we can do?
+    critical: false
 red_flags:
-  - { item: "Dysphagia - difficulty swallowing", critical: true }
-  - { item: "Unexplained weight loss", critical: true }
-  - { item: "Hematemesis or melena (vomiting blood or black stools)", critical: true }
-  - { item: "Age >55 with persistent symptoms", critical: false }
-  - { item: "Family history of esophageal cancer", critical: true }
+- item: Dysphagia - difficulty swallowing
+  critical: true
+- item: Unexplained weight loss
+  critical: true
+- item: Hematemesis or melena (vomiting blood or black stools)
+  critical: true
+- item: Age >55 with persistent symptoms
+  critical: false
+- item: Family history of esophageal cancer
+  critical: true
 expected_ddx:
-  working_diagnosis: "Gastro-oesophageal reflux disease"
-  differentials: ["Peptic ulcer disease", "Functional dyspepsia"]
+  working_diagnosis: Gastro-oesophageal reflux disease
+  differentials:
+  - Peptic ulcer disease
+  - Functional dyspepsia
 investigations:
   appropriate:
-    - { name: "Upper endoscopy", expected: "May show erosive esophagitis or normal" }
-    - { name: "Trial of PPI", expected: "Symptom improvement" }
-  inappropriate: ["Barium swallow", "Abdominal ultrasound"]
+  - name: Upper endoscopy
+    expected: May show erosive esophagitis or normal
+  - name: Trial of PPI
+    expected: Symptom improvement
+  inappropriate:
+  - Barium swallow
+  - Abdominal ultrasound
 physical_exam_findings:
-  general: "Overweight, anxious appearance"
+  general: Overweight, anxious appearance
   vitals: {}
 management:
-  pharmacological: ["Proton pump inhibitor (e.g., omeprazole)", "Antacids as needed"]
-  non_pharmacological: ["Weight loss", "Dietary modifications (avoid triggers)", "Elevate head of bed"]
-  education_safety_netting: ["Advise to return if symptoms worsen or develop red flags", "Lifestyle measures"]
+  pharmacological:
+  - Proton pump inhibitor (e.g., omeprazole)
+  - Antacids as needed
+  non_pharmacological:
+  - Weight loss
+  - Dietary modifications (avoid triggers)
+  - Elevate head of bed
+  education_safety_netting:
+  - Advise to return if symptoms worsen or develop red flags
+  - Lifestyle measures
 scoring_weights_override: null
 ---
 ## Identity

@@ -1,104 +1,130 @@
 ---
 id: oph_hyphaema_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: trauma
-presentation: "Blood in the front of the eye after blunt trauma"
-presentation_id: "Darah di dalam mata kanan setelah terkena kok bulu tangkis 4 jam yang lalu"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Traumatic hyphaema"
+presentation: Blood in the front of the eye after blunt trauma
+presentation_id: Darah di dalam mata kanan setelah terkena kok bulu tangkis 4 jam
+  yang lalu
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Traumatic hyphaema
 difficulty: 3
 estimated_minutes: 12
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "Royal College of Ophthalmologists / EyeWiki: Hyphema management"
-  - "Migrated from legacy kasus-109 (PPK Kemenkes — Hifema, ICD-10 H21.0)"
-  - "AAO Preferred Practice Pattern — ocular trauma (hyphaema)"
+- 'Royal College of Ophthalmologists / EyeWiki: Hyphema management'
+- Migrated from legacy kasus-109 (PPK Kemenkes — Hifema, ICD-10 H21.0)
+- AAO Preferred Practice Pattern — ocular trauma (hyphaema)
 authoring:
   drafted_by: migrated_from_kasus-109
   model: human+ai
   reviewed_by: null
   reviewed_at: null
-  review_notes: "Restructured + translated to English schema v2. Trauma presentation. Study-aid draft pending ophthalmology sign-off."
-
-chief_complaint: "Blood inside the right eye after being hit by a shuttlecock 4 hours ago"
-
+  review_notes: Restructured + translated to English schema v2. Trauma presentation.
+    Study-aid draft pending ophthalmology sign-off.
+chief_complaint: Blood inside the right eye after being hit by a shuttlecock 4 hours
+  ago
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Mechanism of injury (blunt, high-velocity shuttlecock to the eye)", critical: true }
-    - { item: "Onset / timing (about 4 hours ago during training)", critical: true }
-    - { item: "Site (right eye only)", critical: false }
-    - { item: "Character (visible pooled blood in front of the eye; blurred, glare)", critical: true }
-    - { item: "Severity of pain and visual loss", critical: false }
+  - item: Mechanism of injury (blunt, high-velocity shuttlecock to the eye)
+    critical: true
+  - item: Onset / timing (about 4 hours ago during training)
+    critical: true
+  - item: Site (right eye only)
+    critical: false
+  - item: Character (visible pooled blood in front of the eye; blurred, glare)
+    critical: true
+  - item: Severity of pain and visual loss
+    critical: false
   associated_symptoms:
-    - { item: "Pain, especially on eye movement", critical: true }
-    - { item: "Reduced or blurred vision", critical: true }
-    - { item: "Nausea or vomiting (may signal raised eye pressure)", critical: true }
-    - { item: "Photophobia / watering", critical: false }
-    - { item: "Any sense of something penetrating the eye (screen for rupture)", critical: true }
+  - item: Pain, especially on eye movement
+    critical: true
+  - item: Reduced or blurred vision
+    critical: true
+  - item: Nausea or vomiting (may signal raised eye pressure)
+    critical: true
+  - item: Photophobia / watering
+    critical: false
+  - item: Any sense of something penetrating the eye (screen for rupture)
+    critical: true
   pmh:
-    - { item: "Previous eye injury or surgery", critical: false }
-    - { item: "Sickle cell trait/disease or a bleeding disorder", critical: true }
+  - item: Previous eye injury or surgery
+    critical: false
+  - item: Sickle cell trait/disease or a bleeding disorder
+    critical: true
   medications:
-    - { item: "Anticoagulants, aspirin, or NSAIDs (rebleed risk)", critical: true }
-    - { item: "Drug allergies", critical: false }
+  - item: Anticoagulants, aspirin, or NSAIDs (rebleed risk)
+    critical: true
+  - item: Drug allergies
+    critical: false
   family_social:
-    - { item: "Sport and protective eyewear use", critical: true }
-    - { item: "Family history of bleeding or sickle cell disorder", critical: true }
+  - item: Sport and protective eyewear use
+    critical: true
+  - item: Family history of bleeding or sickle cell disorder
+    critical: true
   ice_fife:
-    - { item: "Ideas - what they think happened", critical: false }
-    - { item: "Concerns - worries (permanent damage)", critical: true }
-    - { item: "Expectations - return to sport / full recovery", critical: true }
-    - { item: "Function - impact (cannot train, tournament next week)", critical: false }
-
+  - item: Ideas - what they think happened
+    critical: false
+  - item: Concerns - worries (permanent damage)
+    critical: true
+  - item: Expectations - return to sport / full recovery
+    critical: true
+  - item: Function - impact (cannot train, tournament next week)
+    critical: false
 red_flags:
-  - { item: "Suspected globe rupture or penetrating injury", critical: true }
-  - { item: "Severe pain with nausea/vomiting (raised intraocular pressure)", critical: true }
-  - { item: "Marked loss of vision", critical: true }
-  - { item: "Sickle cell trait or disease (high rebleed and pressure risk)", critical: true }
-
+- item: Suspected globe rupture or penetrating injury
+  critical: true
+- item: Severe pain with nausea/vomiting (raised intraocular pressure)
+  critical: true
+- item: Marked loss of vision
+  critical: true
+- item: Sickle cell trait or disease (high rebleed and pressure risk)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Traumatic hyphaema, right eye"
+  working_diagnosis: Traumatic hyphaema, right eye
   differentials:
-    - "Globe rupture"
-    - "Traumatic iritis"
-    - "Orbital (blowout) fracture"
-    - "Lens dislocation"
-    - "Commotio retinae / retinal detachment"
-    - "Secondary (traumatic) glaucoma"
-
+  - Globe rupture
+  - Traumatic iritis
+  - Orbital (blowout) fracture
+  - Lens dislocation
+  - Commotio retinae / retinal detachment
+  - Secondary (traumatic) glaucoma
 investigations:
   appropriate:
-    - { name: "Visual acuity", expected: "Reduced, depending on the amount of blood" }
-    - { name: "Slit-lamp examination with grading of the blood level", expected: "Layered red blood in the inferior anterior chamber" }
-    - { name: "Intraocular pressure", expected: "May be raised" }
-    - { name: "Sickle cell screen (if at-risk background)", expected: "Identify sickle status before certain treatments" }
+  - name: Visual acuity
+    expected: Reduced, depending on the amount of blood
+  - name: Slit-lamp examination with grading of the blood level
+    expected: Layered red blood in the inferior anterior chamber
+  - name: Intraocular pressure
+    expected: May be raised
+  - name: Sickle cell screen (if at-risk background)
+    expected: Identify sickle status before certain treatments
   inappropriate:
-    - "Forcefully prising the eye open / dilating without specialist input"
-    - "MRI as the first-line trauma investigation"
-
+  - Forcefully prising the eye open / dilating without specialist input
+  - MRI as the first-line trauma investigation
 physical_exam_findings:
-  general: "Anxious, was briefly nauseated"
-  eyes: "Right eye: reduced acuity; a visible layer of blood in the lower anterior chamber; conjunctival injection from trauma; cornea usually clear; pupil may be irregular; intraocular pressure may be raised"
+  general: Anxious, was briefly nauseated
+  eyes: 'Right eye: reduced acuity; a visible layer of blood in the lower anterior
+    chamber; conjunctival injection from trauma; cornea usually clear; pupil may be
+    irregular; intraocular pressure may be raised'
   vitals: {}
   media: []
-
 management:
   pharmacological:
-    - "Analgesia with paracetamol; AVOID aspirin/NSAIDs (rebleed risk)"
-    - "Specialist may add topical steroid/cycloplegic and pressure-lowering drops"
+  - Analgesia with paracetamol; AVOID aspirin/NSAIDs (rebleed risk)
+  - Specialist may add topical steroid/cycloplegic and pressure-lowering drops
   non_pharmacological:
-    - "Rigid eye shield (not a pad); strict rest; head elevated 30-45 degrees"
-    - "Avoid bending, straining, and rubbing the eye"
-    - "Urgent same-day ophthalmology referral"
+  - Rigid eye shield (not a pad); strict rest; head elevated 30-45 degrees
+  - Avoid bending, straining, and rubbing the eye
+  - Urgent same-day ophthalmology referral
   education_safety_netting:
-    - "Explain the main risk is a rebleed (typically days 2-5) and a rise in eye pressure"
-    - "Return immediately if pain worsens, vision drops, or vomiting starts"
-    - "No sport until cleared; wear protective eyewear in future"
-
+  - Explain the main risk is a rebleed (typically days 2-5) and a rise in eye pressure
+  - Return immediately if pain worsens, vision drops, or vomiting starts
+  - No sport until cleared; wear protective eyewear in future
 scoring_weights_override: null
 ---
 

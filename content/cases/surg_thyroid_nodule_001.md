@@ -1,70 +1,130 @@
 ---
 id: surg_thyroid_nodule_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: surgery
 system: endocrine
-presentation: "Anterior neck lump"
-presentation_id: "Benjolan di leher depan yang teraba sejak beberapa minggu lalu"
-first_impression: "Patient appears in pain."
-first_impression_id: "Pasien tampak kesakitan."
-target_condition: "Solitary thyroid nodule"
+presentation: Anterior neck lump
+presentation_id: Benjolan di leher depan yang teraba sejak beberapa minggu lalu
+first_impression: Patient appears in pain.
+first_impression_id: Pasien tampak kesakitan.
+target_condition: Solitary thyroid nodule
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Thyroid Association guidelines for thyroid nodule evaluation"
-  - "ATA — thyroid nodule management (2015)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have a lump on the front of my neck that I noticed a few weeks ago."
+- American Thyroid Association guidelines for thyroid nodule evaluation
+- ATA — thyroid nodule management (2015)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have a lump on the front of my neck that I noticed a few weeks
+  ago.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "When did you first notice the lump?", critical: true }
-    - { item: "Has the lump changed in size since you noticed it?", critical: true }
-    - { item: "Do you have any pain or tenderness in the lump?", critical: false }
-    - { item: "Have you had any trouble swallowing or a feeling of something stuck in your throat?", critical: true }
-    - { item: "Have you noticed any change in your voice, like hoarseness?", critical: true }
-    - { item: "Do you have any difficulty breathing, especially when lying down?", critical: false }
+  - item: When did you first notice the lump?
+    critical: true
+  - item: Has the lump changed in size since you noticed it?
+    critical: true
+  - item: Do you have any pain or tenderness in the lump?
+    critical: false
+  - item: Have you had any trouble swallowing or a feeling of something stuck in your
+      throat?
+    critical: true
+  - item: Have you noticed any change in your voice, like hoarseness?
+    critical: true
+  - item: Do you have any difficulty breathing, especially when lying down?
+    critical: false
   associated_symptoms:
-    - { item: "Have you had any unexplained weight loss or weight gain?", critical: false }
-    - { item: "Have you felt unusually hot or cold when others are comfortable?", critical: false }
-    - { item: "Have you noticed any palpitations or a racing heart?", critical: false }
-    - { item: "Have you felt more tired or sluggish than usual?", critical: false }
-    - { item: "Have you had any neck pain that radiates to your ear or jaw?", critical: false }
+  - item: Have you had any unexplained weight loss or weight gain?
+    critical: false
+  - item: Have you felt unusually hot or cold when others are comfortable?
+    critical: false
+  - item: Have you noticed any palpitations or a racing heart?
+    critical: false
+  - item: Have you felt more tired or sluggish than usual?
+    critical: false
+  - item: Have you had any neck pain that radiates to your ear or jaw?
+    critical: false
   pmh:
-    - { item: "Have you ever had any radiation to your neck or head area, for any reason?", critical: true }
-    - { item: "Do you have any history of thyroid problems, like an underactive or overactive thyroid?", critical: true }
-    - { item: "Have you ever had any surgery on your neck?", critical: false }
+  - item: Have you ever had any radiation to your neck or head area, for any reason?
+    critical: true
+  - item: Do you have any history of thyroid problems, like an underactive or overactive
+      thyroid?
+    critical: true
+  - item: Have you ever had any surgery on your neck?
+    critical: false
   medications:
-    - { item: "Are you currently taking any medications, including over-the-counter or supplements?", critical: false }
-    - { item: "Have you ever taken any medications for your thyroid?", critical: false }
+  - item: Are you currently taking any medications, including over-the-counter or
+      supplements?
+    critical: false
+  - item: Have you ever taken any medications for your thyroid?
+    critical: false
   family_social:
-    - { item: "Does anyone in your immediate family (parents, siblings, children) have a history of thyroid problems or thyroid cancer?", critical: true }
-    - { item: "Do you smoke or use any tobacco products?", critical: false }
-    - { item: "How much alcohol do you drink, if any?", critical: false }
+  - item: Does anyone in your immediate family (parents, siblings, children) have
+      a history of thyroid problems or thyroid cancer?
+    critical: true
+  - item: Do you smoke or use any tobacco products?
+    critical: false
+  - item: How much alcohol do you drink, if any?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Hoarseness or voice change", critical: true }
-  - { item: "Difficulty swallowing (dysphagia)", critical: true }
-  - { item: "Rapid growth of the lump", critical: true }
-  - { item: "Family history of thyroid cancer", critical: true }
-  - { item: "History of neck radiation", critical: true }
+- item: Hoarseness or voice change
+  critical: true
+- item: Difficulty swallowing (dysphagia)
+  critical: true
+- item: Rapid growth of the lump
+  critical: true
+- item: Family history of thyroid cancer
+  critical: true
+- item: History of neck radiation
+  critical: true
 expected_ddx:
-  working_diagnosis: "Solitary thyroid nodule"
-  differentials: [ "Multinodular goiter", "Thyroid cyst", "Thyroiditis" ]
+  working_diagnosis: Solitary thyroid nodule
+  differentials:
+  - Multinodular goiter
+  - Thyroid cyst
+  - Thyroiditis
 investigations:
-  appropriate: [ { name: "Thyroid function tests (TSH, free T4)", expected: "Normal" }, { name: "Thyroid ultrasound", expected: "Solid, hypoechoic nodule with irregular margins" }, { name: "Fine needle aspiration biopsy", expected: "Bethesda category III or IV" } ]
-  inappropriate: [ "CT scan of neck without contrast" ]
-physical_exam_findings: { general: "Well-appearing, anxious", vitals: { bp: "125/80", hr: 78, rr: 14, temp: 37.0, bmi: 26 } }
+  appropriate:
+  - name: Thyroid function tests (TSH, free T4)
+    expected: Normal
+  - name: Thyroid ultrasound
+    expected: Solid, hypoechoic nodule with irregular margins
+  - name: Fine needle aspiration biopsy
+    expected: Bethesda category III or IV
+  inappropriate:
+  - CT scan of neck without contrast
+physical_exam_findings:
+  general: Well-appearing, anxious
+  vitals:
+    bp: 125/80
+    hr: 78
+    rr: 14
+    temp: 37.0
+    bmi: 26
 management:
-  pharmacological: [ "No specific medication for the nodule itself" ]
-  non_pharmacological: [ "Referral to endocrinology or endocrine surgery", "Ultrasound-guided fine needle aspiration biopsy" ]
-  education_safety_netting: [ "Explain that most thyroid nodules are benign", "Instruct to return if the lump grows, or if new symptoms like hoarseness or trouble swallowing develop" ]
+  pharmacological:
+  - No specific medication for the nodule itself
+  non_pharmacological:
+  - Referral to endocrinology or endocrine surgery
+  - Ultrasound-guided fine needle aspiration biopsy
+  education_safety_netting:
+  - Explain that most thyroid nodules are benign
+  - Instruct to return if the lump grows, or if new symptoms like hoarseness or trouble
+    swallowing develop
 scoring_weights_override: null
 ---
 

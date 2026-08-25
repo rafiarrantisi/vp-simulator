@@ -1,62 +1,98 @@
 ---
 id: oph_strabismus_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: visual
-presentation: "Crossed eye since childhood"
-presentation_id: "Mata kanan juling ke dalam sejak kecil dan semakin memberat"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Strabismus"
+presentation: Crossed eye since childhood
+presentation_id: Mata kanan juling ke dalam sejak kecil dan semakin memberat
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Strabismus
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Academy of Ophthalmology Preferred Practice Pattern: Esotropia"
-  - "AAO Preferred Practice Pattern — strabismus"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My right eye has been turning in since I was little, and now it's getting worse."
+- 'American Academy of Ophthalmology Preferred Practice Pattern: Esotropia'
+- AAO Preferred Practice Pattern — strabismus
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My right eye has been turning in since I was little, and now it's
+  getting worse.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did you first notice the eye turning?", critical: true }
-    - { item: "Location - which eye turns?", critical: true }
-    - { item: "Duration - is it constant or does it come and go?", critical: true }
-    - { item: "Character - does the eye turn all the time or only when looking at things?", critical: false }
-    - { item: "Aggravators - does it happen more when you are tired or looking at close objects?", critical: false }
-    - { item: "Relievers - does blinking or rubbing your eye help?", critical: false }
-    - { item: "Timing - has it changed recently?", critical: true }
-    - { item: "Severity - does it cause double vision or blurry vision?", critical: true }
+  - item: Onset - when did you first notice the eye turning?
+    critical: true
+  - item: Location - which eye turns?
+    critical: true
+  - item: Duration - is it constant or does it come and go?
+    critical: true
+  - item: Character - does the eye turn all the time or only when looking at things?
+    critical: false
+  - item: Aggravators - does it happen more when you are tired or looking at close
+      objects?
+    critical: false
+  - item: Relievers - does blinking or rubbing your eye help?
+    critical: false
+  - item: Timing - has it changed recently?
+    critical: true
+  - item: Severity - does it cause double vision or blurry vision?
+    critical: true
   associated_symptoms:
-    - { item: "Do you have double vision?", critical: true }
-    - { item: "Do you have headaches or eye pain?", critical: true }
-    - { item: "Do you have any trouble with depth perception (e.g., catching a ball)?", critical: false }
-    - { item: "Have you noticed any drooping of the eyelid or squinting?", critical: false }
+  - item: Do you have double vision?
+    critical: true
+  - item: Do you have headaches or eye pain?
+    critical: true
+  - item: Do you have any trouble with depth perception (e.g., catching a ball)?
+    critical: false
+  - item: Have you noticed any drooping of the eyelid or squinting?
+    critical: false
   pmh:
-    - { item: "Have you ever had any eye surgeries or treatments?", critical: true }
-    - { item: "Do you have any medical conditions like thyroid problems, diabetes, or high blood pressure?", critical: false }
-    - { item: "Were you born prematurely or had any birth injuries?", critical: false }
+  - item: Have you ever had any eye surgeries or treatments?
+    critical: true
+  - item: Do you have any medical conditions like thyroid problems, diabetes, or high
+      blood pressure?
+    critical: false
+  - item: Were you born prematurely or had any birth injuries?
+    critical: false
   medications:
-    - { item: "Are you taking any medications or eye drops?", critical: false }
+  - item: Are you taking any medications or eye drops?
+    critical: false
   family_social:
-    - { item: "Does anyone in your family have a crossed eye or lazy eye?", critical: true }
-    - { item: "Do you smoke or drink alcohol?", critical: false }
+  - item: Does anyone in your family have a crossed eye or lazy eye?
+    critical: true
+  - item: Do you smoke or drink alcohol?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what do you think is causing the eye turning?", critical: true }
-    - { item: "Concerns - are you worried about your vision getting worse or about how it looks?", critical: true }
-    - { item: "Expectations - what do you hope the doctor can do to help?", critical: false }
+  - item: Ideas - what do you think is causing the eye turning?
+    critical: true
+  - item: Concerns - are you worried about your vision getting worse or about how
+      it looks?
+    critical: true
+  - item: Expectations - what do you hope the doctor can do to help?
+    critical: false
 red_flags:
-  - { item: "New onset double vision with headache or neurological symptoms", critical: true }
-  - { item: "Sudden change in eye alignment or vision loss", critical: true }
+- item: New onset double vision with headache or neurological symptoms
+  critical: true
+- item: Sudden change in eye alignment or vision loss
+  critical: true
 expected_ddx:
-  working_diagnosis: "Strabismus (esotropia)"
-  differentials: [ "Accommodative esotropia", "Sixth nerve palsy" ]
+  working_diagnosis: Strabismus (esotropia)
+  differentials:
+  - Accommodative esotropia
+  - Sixth nerve palsy
 investigations:
   appropriate: []
   inappropriate: []
-physical_exam_findings: { general: "", vitals: {} }
+physical_exam_findings:
+  general: ''
+  vitals: {}
 management:
   pharmacological: []
   non_pharmacological: []

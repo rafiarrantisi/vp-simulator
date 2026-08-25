@@ -1,72 +1,103 @@
 ---
 id: im_gout_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: musculoskeletal
-presentation: "Acute joint pain"
-presentation_id: "Nyeri sendi akut pada jempol kaki yang tiba-tiba merah, bengkak, dan sangat nyeri"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Gout"
+presentation: Acute joint pain
+presentation_id: Nyeri sendi akut pada jempol kaki yang tiba-tiba merah, bengkak,
+  dan sangat nyeri
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Gout
 difficulty: 2
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American College of Rheumatology guideline for gout management"
-  - "ACR gout treatment guideline (2020)"
-
+- American College of Rheumatology guideline for gout management
+- ACR gout treatment guideline (2020)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "My big toe suddenly became red, swollen, and very painful."
+chief_complaint: My big toe suddenly became red, swollen, and very painful.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - big toe (right)", critical: true }
-    - { item: "Onset - sudden, overnight", critical: false }
-    - { item: "Character - throbbing, aching, pressure", critical: false }
-    - { item: "Radiation - none", critical: false }
-    - { item: "Associations - swelling, redness, warmth", critical: true }
-    - { item: "Time course - started 12 hours ago, worse over time", critical: false }
-    - { item: "Exacerbating factors - any movement or touch", critical: true }
-    - { item: "Relieving factors - rest, avoiding pressure", critical: false }
-    - { item: "Severity - 8 out of 10, worst pain ever", critical: false }
+  - item: Site - big toe (right)
+    critical: true
+  - item: Onset - sudden, overnight
+    critical: false
+  - item: Character - throbbing, aching, pressure
+    critical: false
+  - item: Radiation - none
+    critical: false
+  - item: Associations - swelling, redness, warmth
+    critical: true
+  - item: Time course - started 12 hours ago, worse over time
+    critical: false
+  - item: Exacerbating factors - any movement or touch
+    critical: true
+  - item: Relieving factors - rest, avoiding pressure
+    critical: false
+  - item: Severity - 8 out of 10, worst pain ever
+    critical: false
   associated_symptoms:
-    - { item: "Fever or chills", critical: true }
-    - { item: "Other joint pain", critical: false }
+  - item: Fever or chills
+    critical: true
+  - item: Other joint pain
+    critical: false
   pmh:
-    - { item: "Previous similar episode in same joint", critical: true }
-    - { item: "Hypertension", critical: false }
-    - { item: "Diabetes", critical: false }
-    - { item: "Kidney stones", critical: false }
+  - item: Previous similar episode in same joint
+    critical: true
+  - item: Hypertension
+    critical: false
+  - item: Diabetes
+    critical: false
+  - item: Kidney stones
+    critical: false
   medications:
-    - { item: "Current medications - thiazide diuretic", critical: true }
-    - { item: "Aspirin use", critical: false }
-    - { item: "Allopurinol or similar", critical: false }
+  - item: Current medications - thiazide diuretic
+    critical: true
+  - item: Aspirin use
+    critical: false
+  - item: Allopurinol or similar
+    critical: false
   family_social:
-    - { item: "Family history of gout", critical: true }
-    - { item: "Alcohol intake - beer, 3 times/week", critical: true }
-    - { item: "Diet high in purines (red meat, shellfish)", critical: false }
+  - item: Family history of gout
+    critical: true
+  - item: Alcohol intake - beer, 3 times/week
+    critical: true
+  - item: Diet high in purines (red meat, shellfish)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Fever or chills", critical: true }
-  - { item: "Inability to bear weight", critical: false }
-  - { item: "Rapid spreading erythema beyond joint", critical: true }
+- item: Fever or chills
+  critical: true
+- item: Inability to bear weight
+  critical: false
+- item: Rapid spreading erythema beyond joint
+  critical: true
 expected_ddx:
-  working_diagnosis: "Gout"
-  differentials: [ "Pseudogout", "Septic arthritis", "Cellulitis" ]
+  working_diagnosis: Gout
+  differentials:
+  - Pseudogout
+  - Septic arthritis
+  - Cellulitis
 investigations:
   appropriate: []
   inappropriate: []
 physical_exam_findings:
-  general: "No acute distress at rest, but avoids moving foot."
+  general: No acute distress at rest, but avoids moving foot.
   vitals: {}
 management:
   pharmacological: []

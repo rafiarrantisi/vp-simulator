@@ -1,70 +1,129 @@
 ---
 id: psych_generalised_anxiety_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: psychiatry
 system: nervous system
-presentation: "Worry and restlessness"
-presentation_id: "Cemas dan gelisah terus-menerus selama berbulan-bulan"
-first_impression: "Patient appears anxious or sad."
-first_impression_id: "Pasien tampak cemas atau sedih."
-target_condition: "Generalised anxiety disorder"
+presentation: Worry and restlessness
+presentation_id: Cemas dan gelisah terus-menerus selama berbulan-bulan
+first_impression: Patient appears anxious or sad.
+first_impression_id: Pasien tampak cemas atau sedih.
+target_condition: Generalised anxiety disorder
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
-source_refs: [ "DSM-5-TR", "NICE guideline CG113" ]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I’ve been feeling wound up and worried all the time for months, and it’s getting worse."
+languages:
+- en
+source_refs:
+- DSM-5-TR
+- NICE guideline CG113
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I’ve been feeling wound up and worried all the time for months, and
+  it’s getting worse.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of worry — what specifically do you worry about?", critical: false }
-    - { item: "Onset — when did this start?", critical: true }
-    - { item: "Character — describe the feeling of worry", critical: false }
-    - { item: "Radiation — does worry spread to other thoughts?", critical: false }
-    - { item: "Associations — what triggers it?", critical: false }
-    - { item: "Time course — constant or comes and goes?", critical: true }
-    - { item: "Exacerbating factors — what makes it worse?", critical: false }
-    - { item: "Relieving factors — what helps?", critical: false }
-    - { item: "Severity — how bad is it on a scale 0-10?", critical: true }
+  - item: Site of worry — what specifically do you worry about?
+    critical: false
+  - item: Onset — when did this start?
+    critical: true
+  - item: Character — describe the feeling of worry
+    critical: false
+  - item: Radiation — does worry spread to other thoughts?
+    critical: false
+  - item: Associations — what triggers it?
+    critical: false
+  - item: Time course — constant or comes and goes?
+    critical: true
+  - item: Exacerbating factors — what makes it worse?
+    critical: false
+  - item: Relieving factors — what helps?
+    critical: false
+  - item: Severity — how bad is it on a scale 0-10?
+    critical: true
   associated_symptoms:
-    - { item: "Restlessness or feeling keyed up", critical: true }
-    - { item: "Fatigue", critical: false }
-    - { item: "Difficulty concentrating or mind going blank", critical: true }
-    - { item: "Irritability", critical: false }
-    - { item: "Muscle tension", critical: true }
-    - { item: "Sleep disturbance (trouble falling/staying asleep)", critical: false }
-    - { item: "Physical symptoms: racing heart, sweating, trembling, shortness of breath, nausea, dizziness", critical: false }
+  - item: Restlessness or feeling keyed up
+    critical: true
+  - item: Fatigue
+    critical: false
+  - item: Difficulty concentrating or mind going blank
+    critical: true
+  - item: Irritability
+    critical: false
+  - item: Muscle tension
+    critical: true
+  - item: Sleep disturbance (trouble falling/staying asleep)
+    critical: false
+  - item: 'Physical symptoms: racing heart, sweating, trembling, shortness of breath,
+      nausea, dizziness'
+    critical: false
   pmh:
-    - { item: "Current medical conditions (e.g., thyroid, heart, asthma)", critical: false }
-    - { item: "Previous mental health conditions", critical: true }
-    - { item: "Substance use (alcohol, caffeine, recreational drugs)", critical: true }
-    - { item: "Allergies", critical: false }
+  - item: Current medical conditions (e.g., thyroid, heart, asthma)
+    critical: false
+  - item: Previous mental health conditions
+    critical: true
+  - item: Substance use (alcohol, caffeine, recreational drugs)
+    critical: true
+  - item: Allergies
+    critical: false
   medications:
-    - { item: "Current medications (any)", critical: false }
-    - { item: "Past mental health treatments", critical: true }
+  - item: Current medications (any)
+    critical: false
+  - item: Past mental health treatments
+    critical: true
   family_social:
-    - { item: "Family mental health history", critical: true }
-    - { item: "Social situation: living, work, relationships", critical: false }
-    - { item: "Recent life stressors", critical: true }
+  - item: Family mental health history
+    critical: true
+  - item: 'Social situation: living, work, relationships'
+    critical: false
+  - item: Recent life stressors
+    critical: true
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Passive or active suicidal ideation", critical: true }
-  - { item: "Recent self-harm or plans", critical: true }
-  - { item: "Psychotic symptoms (hallucinations, delusions)", critical: true }
-  - { item: "Rapid weight loss or significant change in appetite", critical: false }
+- item: Passive or active suicidal ideation
+  critical: true
+- item: Recent self-harm or plans
+  critical: true
+- item: Psychotic symptoms (hallucinations, delusions)
+  critical: true
+- item: Rapid weight loss or significant change in appetite
+  critical: false
 expected_ddx:
-  working_diagnosis: "Generalised anxiety disorder"
-  differentials: [ "Panic disorder", "Major depressive disorder" ]
+  working_diagnosis: Generalised anxiety disorder
+  differentials:
+  - Panic disorder
+  - Major depressive disorder
 investigations: null
-physical_exam_findings: { general: "Appears tense, fidgeting with hands, avoids direct eye contact initially.", vitals: { bp: "128/78", hr: "92", rr: "16", temp: "36.8°C" } }
+physical_exam_findings:
+  general: Appears tense, fidgeting with hands, avoids direct eye contact initially.
+  vitals:
+    bp: 128/78
+    hr: '92'
+    rr: '16'
+    temp: 36.8°C
 management:
-  pharmacological: [ "SSRI (e.g., sertraline or escitalopram)", "SNRI (e.g., duloxetine) as second-line" ]
-  non_pharmacological: [ "Cognitive-behavioural therapy (CBT)", "Relaxation techniques / mindfulness", "Regular exercise and sleep hygiene" ]
-  education_safety_netting: [ "Explain GAD is treatable, not dangerous", "Advise on realistic medication timeline (4–6 weeks onset)", "Provide crisis line numbers (e.g., Samaritans) and instruct on seeking help if worsening or development of suicidal thoughts" ]
+  pharmacological:
+  - SSRI (e.g., sertraline or escitalopram)
+  - SNRI (e.g., duloxetine) as second-line
+  non_pharmacological:
+  - Cognitive-behavioural therapy (CBT)
+  - Relaxation techniques / mindfulness
+  - Regular exercise and sleep hygiene
+  education_safety_netting:
+  - Explain GAD is treatable, not dangerous
+  - Advise on realistic medication timeline (4–6 weeks onset)
+  - Provide crisis line numbers (e.g., Samaritans) and instruct on seeking help if
+    worsening or development of suicidal thoughts
 scoring_weights_override: null
 ---
 ## Identity

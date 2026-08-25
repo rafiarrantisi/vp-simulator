@@ -4,79 +4,130 @@ schema_version: 2
 status: in_review
 specialty: internal_medicine
 system: respiratory
-presentation: "Cough and breathlessness"
-presentation_id: "Batuk dan sesak napas selama beberapa hari"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Community-acquired pneumonia"
+presentation: Cough and breathlessness
+presentation_id: Batuk dan sesak napas selama beberapa hari
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Community-acquired pneumonia
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "British Thoracic Society guidelines for community-acquired pneumonia"
-  - "ATS/IDSA community-acquired pneumonia guideline (2019)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I've had a bad cough and feel short of breath for the past few days."
+- British Thoracic Society guidelines for community-acquired pneumonia
+- ATS/IDSA community-acquired pneumonia guideline (2019)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I've had a bad cough and feel short of breath for the past few days.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - where is the discomfort", critical: false }
-    - { item: "Onset - when did it start", critical: false }
-    - { item: "Character - what does the cough feel like", critical: false }
-    - { item: "Radiation - does pain spread", critical: false }
-    - { item: "Associated symptoms - fever, chills, sputum", critical: true }
-    - { item: "Time course - has it gotten worse", critical: false }
-    - { item: "Exacerbating/relieving factors - what makes it better or worse", critical: false }
-    - { item: "Severity - how bad is the breathlessness", critical: true }
+  - item: Site - where is the discomfort
+    critical: false
+  - item: Onset - when did it start
+    critical: false
+  - item: Character - what does the cough feel like
+    critical: false
+  - item: Radiation - does pain spread
+    critical: false
+  - item: Associated symptoms - fever, chills, sputum
+    critical: true
+  - item: Time course - has it gotten worse
+    critical: false
+  - item: Exacerbating/relieving factors - what makes it better or worse
+    critical: false
+  - item: Severity - how bad is the breathlessness
+    critical: true
   associated_symptoms:
-    - { item: "Fever or chills", critical: true }
-    - { item: "Cough with phlegm", critical: true }
-    - { item: "Chest pain when breathing", critical: false }
-    - { item: "Fatigue or weakness", critical: false }
+  - item: Fever or chills
+    critical: true
+  - item: Cough with phlegm
+    critical: true
+  - item: Chest pain when breathing
+    critical: false
+  - item: Fatigue or weakness
+    critical: false
   pmh:
-    - { item: "Any chronic lung conditions like asthma or COPD", critical: false }
-    - { item: "Diabetes", critical: false }
-    - { item: "Recent hospitalisation or surgery", critical: false }
+  - item: Any chronic lung conditions like asthma or COPD
+    critical: false
+  - item: Diabetes
+    critical: false
+  - item: Recent hospitalisation or surgery
+    critical: false
   medications:
-    - { item: "Current medications", critical: false }
-    - { item: "Any antibiotics recently", critical: false }
+  - item: Current medications
+    critical: false
+  - item: Any antibiotics recently
+    critical: false
   family_social:
-    - { item: "Smoking history", critical: true }
-    - { item: "Alcohol use", critical: false }
-    - { item: "Recent travel or sick contacts", critical: false }
+  - item: Smoking history
+    critical: true
+  - item: Alcohol use
+    critical: false
+  - item: Recent travel or sick contacts
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Chest pain or difficulty breathing at rest", critical: true }
-  - { item: "Confusion or drowsiness", critical: true }
-  - { item: "Coughing up blood", critical: true }
+- item: Chest pain or difficulty breathing at rest
+  critical: true
+- item: Confusion or drowsiness
+  critical: true
+- item: Coughing up blood
+  critical: true
 expected_ddx:
-  working_diagnosis: "Community-acquired pneumonia"
-  differentials: [ "Acute bronchitis", "Influenza" ]
+  working_diagnosis: Community-acquired pneumonia
+  differentials:
+  - Acute bronchitis
+  - Influenza
 investigations:
   appropriate:
-    - { name: "Chest X-ray", expected: "Consolidation in the right lower lobe" }
-    - { name: "Full blood count", expected: "Elevated white cell count with neutrophilia" }
-    - { name: "C-reactive protein", expected: "Elevated" }
-    - { name: "Sputum culture", expected: "Streptococcus pneumoniae" }
-  inappropriate: [ "CT chest without contrast" ]
+  - name: Chest X-ray
+    expected: Consolidation in the right lower lobe
+  - name: Full blood count
+    expected: Elevated white cell count with neutrophilia
+  - name: C-reactive protein
+    expected: Elevated
+  - name: Sputum culture
+    expected: Streptococcus pneumoniae
+  inappropriate:
+  - CT chest without contrast
 physical_exam_findings:
-  general: "Patient appears unwell, flushed, and slightly tachypnoeic."
-  vitals: { temperature: 38.5, heart_rate: 100, respiratory_rate: 22, blood_pressure: "120/80", oxygen_saturation: 94 }
+  general: Patient appears unwell, flushed, and slightly tachypnoeic.
+  vitals:
+    temperature: 38.5
+    heart_rate: 100
+    respiratory_rate: 22
+    blood_pressure: 120/80
+    oxygen_saturation: 94
 management:
   pharmacological:
-    - "Amoxicillin 500 mg three times daily for 7 days"
-    - "Paracetamol 1 g four times daily as needed for fever"
+  - Amoxicillin 500 mg three times daily for 7 days
+  - Paracetamol 1 g four times daily as needed for fever
   non_pharmacological:
-    - "Rest and increase fluid intake"
-    - "Monitor temperature and breathing"
+  - Rest and increase fluid intake
+  - Monitor temperature and breathing
   education_safety_netting:
-    - "Return if breathlessness worsens or fever persists after 48 hours"
-    - "Avoid smoking and second-hand smoke"
+  - Return if breathlessness worsens or fever persists after 48 hours
+  - Avoid smoking and second-hand smoke
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

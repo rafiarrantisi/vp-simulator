@@ -4,71 +4,138 @@ schema_version: 2
 status: in_review
 specialty: neurology
 system: nervous
-presentation: "First seizure"
-presentation_id: "Kejang pertama kali dan takut akan kambuh lagi"
-first_impression: "Patient appears to have neurological concerns."
-first_impression_id: "Pasien tampak mengalami masalah neurologis."
-target_condition: "First unprovoked seizure"
+presentation: First seizure
+presentation_id: Kejang pertama kali dan takut akan kambuh lagi
+first_impression: Patient appears to have neurological concerns.
+first_impression_id: Pasien tampak mengalami masalah neurologis.
+target_condition: First unprovoked seizure
 difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: [ "NICE guideline NG127: Epilepsies in children, young people and adults" ]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I had a fit or something and I'm scared it might happen again."
+languages:
+- en
+source_refs:
+- 'NICE guideline NG127: Epilepsies in children, young people and adults'
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I had a fit or something and I'm scared it might happen again.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Circumstances preceding the event (e.g., location, activity, sleep, alcohol)", critical: true }
-    - { item: "Description of the event from witnesses", critical: true }
-    - { item: "Duration of the episode", critical: true }
-    - { item: "Post-ictal symptoms (e.g., confusion, fatigue, headache)", critical: true }
-    - { item: "Any history of similar episodes", critical: true }
-    - { item: "Any provoking factors (e.g., sleep deprivation, alcohol, fever, stress)", critical: true }
+  - item: Circumstances preceding the event (e.g., location, activity, sleep, alcohol)
+    critical: true
+  - item: Description of the event from witnesses
+    critical: true
+  - item: Duration of the episode
+    critical: true
+  - item: Post-ictal symptoms (e.g., confusion, fatigue, headache)
+    critical: true
+  - item: Any history of similar episodes
+    critical: true
+  - item: Any provoking factors (e.g., sleep deprivation, alcohol, fever, stress)
+    critical: true
   associated_symptoms:
-    - { item: "Headache after the event", critical: false }
-    - { item: "Muscle soreness", critical: false }
-    - { item: "Tongue biting or injury", critical: true }
-    - { item: "Incontinence", critical: false }
-    - { item: "Confusion", critical: true }
+  - item: Headache after the event
+    critical: false
+  - item: Muscle soreness
+    critical: false
+  - item: Tongue biting or injury
+    critical: true
+  - item: Incontinence
+    critical: false
+  - item: Confusion
+    critical: true
   pmh:
-    - { item: "No previous seizures", critical: true }
-    - { item: "No head injuries", critical: false }
-    - { item: "No known neurological conditions", critical: false }
-    - { item: "No diabetes or hypertension", critical: false }
-    - { item: "Migraines in past (not recently)", critical: false }
+  - item: No previous seizures
+    critical: true
+  - item: No head injuries
+    critical: false
+  - item: No known neurological conditions
+    critical: false
+  - item: No diabetes or hypertension
+    critical: false
+  - item: Migraines in past (not recently)
+    critical: false
   medications:
-    - { item: "None regularly", critical: false }
-    - { item: "Occasional ibuprofen for headaches", critical: false }
+  - item: None regularly
+    critical: false
+  - item: Occasional ibuprofen for headaches
+    critical: false
   family_social:
-    - { item: "No family history of epilepsy", critical: true }
-    - { item: "Works as a construction worker", critical: false }
-    - { item: "Drinks alcohol socially, 2-3 beers per week, no drugs", critical: false }
-    - { item: "Married, two children", critical: false }
+  - item: No family history of epilepsy
+    critical: true
+  - item: Works as a construction worker
+    critical: false
+  - item: Drinks alcohol socially, 2-3 beers per week, no drugs
+    critical: false
+  - item: Married, two children
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong: maybe a stroke or brain tumor", critical: true }
-    - { item: "Concerns - what worries them: having another seizure while driving or at work, and about brain damage", critical: true }
-    - { item: "Expectations - what they hope for: expects to get a brain scan and be told it's nothing serious", critical: false }
+  - item: 'Ideas - what they think is wrong: maybe a stroke or brain tumor'
+    critical: true
+  - item: 'Concerns - what worries them: having another seizure while driving or at
+      work, and about brain damage'
+    critical: true
+  - item: 'Expectations - what they hope for: expects to get a brain scan and be told
+      it''s nothing serious'
+    critical: false
 red_flags:
-  - { item: "Head injury during seizure", critical: true }
-  - { item: "New focal neurological signs on exam", critical: true }
-  - { item: "Prolonged post-ictal confusion (>30 minutes)", critical: true }
+- item: Head injury during seizure
+  critical: true
+- item: New focal neurological signs on exam
+  critical: true
+- item: Prolonged post-ictal confusion (>30 minutes)
+  critical: true
 expected_ddx:
-  working_diagnosis: "First unprovoked seizure"
-  differentials: [ "Syncope", "Psychogenic nonepileptic seizure", "Migraine with aura", "Transient ischemic attack" ]
+  working_diagnosis: First unprovoked seizure
+  differentials:
+  - Syncope
+  - Psychogenic nonepileptic seizure
+  - Migraine with aura
+  - Transient ischemic attack
 investigations:
   appropriate:
-    - { name: "Electrocardiogram (ECG)", expected: "Normal sinus rhythm" }
-    - { name: "Brain MRI", expected: "Normal, no structural lesion" }
-    - { name: "Electroencephalogram (EEG)", expected: "Possible interictal epileptiform discharges" }
-  inappropriate: [ "CT head without contrast" ]
+  - name: Electrocardiogram (ECG)
+    expected: Normal sinus rhythm
+  - name: Brain MRI
+    expected: Normal, no structural lesion
+  - name: Electroencephalogram (EEG)
+    expected: Possible interictal epileptiform discharges
+  inappropriate:
+  - CT head without contrast
 physical_exam_findings:
-  general: "Alert, oriented, anxious but cooperative. Neurological exam: normal cranial nerves, motor, sensory, coordination, gait. No focal deficits. Small laceration on lateral tongue."
-  vitals: { BP: "120/80", HR: "78", RR: "14", Temp: "36.8°C", O2_sat: "98%" }
+  general: 'Alert, oriented, anxious but cooperative. Neurological exam: normal cranial
+    nerves, motor, sensory, coordination, gait. No focal deficits. Small laceration
+    on lateral tongue.'
+  vitals:
+    BP: 120/80
+    HR: '78'
+    RR: '14'
+    Temp: 36.8°C
+    O2_sat: 98%
 management:
-  pharmacological: [ "No long-term antiepileptic drug therapy unless seizure recurs or EEG shows high risk" ]
-  non_pharmacological: [ "Advise driving restrictions per local law (e.g., 6 months seizure-free)", "Avoid sleep deprivation and excessive alcohol" ]
-  education_safety_netting: [ "Seek medical attention if seizure recurs, prolonged seizure (>5 min), or new symptoms", "Inform family and workplace about seizure first aid", "Call 911 if seizure lasting >5 minutes or multiple seizures in 24 hours" ]
+  pharmacological:
+  - No long-term antiepileptic drug therapy unless seizure recurs or EEG shows high
+    risk
+  non_pharmacological:
+  - Advise driving restrictions per local law (e.g., 6 months seizure-free)
+  - Avoid sleep deprivation and excessive alcohol
+  education_safety_netting:
+  - Seek medical attention if seizure recurs, prolonged seizure (>5 min), or new symptoms
+  - Inform family and workplace about seizure first aid
+  - Call 911 if seizure lasting >5 minutes or multiple seizures in 24 hours
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

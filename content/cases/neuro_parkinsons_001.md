@@ -1,69 +1,129 @@
 ---
 id: neuro_parkinsons_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: neurology
 system: nervous
-presentation: "Trembling hands and slow movement"
-presentation_id: "Tangan gemetar dan gerakan melambat secara bertahap"
-first_impression: "Patient appears to have neurological concerns."
-first_impression_id: "Pasien tampak mengalami masalah neurologis."
-target_condition: "Parkinson disease"
+presentation: Trembling hands and slow movement
+presentation_id: Tangan gemetar dan gerakan melambat secara bertahap
+first_impression: Patient appears to have neurological concerns.
+first_impression_id: Pasien tampak mengalami masalah neurologis.
+target_condition: Parkinson disease
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
-source_refs: [ "NICE guideline NG71: Parkinson's disease in adults" ]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My hands have been shaking and I feel like I'm moving in slow motion."
+languages:
+- en
+source_refs:
+- 'NICE guideline NG71: Parkinson''s disease in adults'
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My hands have been shaking and I feel like I'm moving in slow motion.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - which body parts are affected by the tremor", critical: true }
-    - { item: "Onset - when did the shaking and slowness start", critical: true }
-    - { item: "Character - describe the shaking (e.g., pill-rolling, resting tremor)", critical: true }
-    - { item: "Radiation - does the tremor spread to other areas", critical: false }
-    - { item: "Associated symptoms - any stiffness, balance problems, or changes in walking", critical: true }
-    - { item: "Time course - is it constant or does it come and go", critical: false }
-    - { item: "Exacerbating factors - what makes it worse (e.g., stress, fatigue)", critical: false }
-    - { item: "Severity - does it interfere with daily activities", critical: true }
+  - item: Site - which body parts are affected by the tremor
+    critical: true
+  - item: Onset - when did the shaking and slowness start
+    critical: true
+  - item: Character - describe the shaking (e.g., pill-rolling, resting tremor)
+    critical: true
+  - item: Radiation - does the tremor spread to other areas
+    critical: false
+  - item: Associated symptoms - any stiffness, balance problems, or changes in walking
+    critical: true
+  - item: Time course - is it constant or does it come and go
+    critical: false
+  - item: Exacerbating factors - what makes it worse (e.g., stress, fatigue)
+    critical: false
+  - item: Severity - does it interfere with daily activities
+    critical: true
   associated_symptoms:
-    - { item: "Difficulty with fine motor tasks (e.g., buttoning, writing)", critical: true }
-    - { item: "Changes in voice (softer, monotone)", critical: false }
-    - { item: "Loss of smell", critical: false }
-    - { item: "Constipation", critical: false }
-    - { item: "Sleep disturbances (e.g., acting out dreams)", critical: false }
-    - { item: "Mood changes (e.g., depression, anxiety)", critical: false }
+  - item: Difficulty with fine motor tasks (e.g., buttoning, writing)
+    critical: true
+  - item: Changes in voice (softer, monotone)
+    critical: false
+  - item: Loss of smell
+    critical: false
+  - item: Constipation
+    critical: false
+  - item: Sleep disturbances (e.g., acting out dreams)
+    critical: false
+  - item: Mood changes (e.g., depression, anxiety)
+    critical: false
   pmh:
-    - { item: "Any history of head injury", critical: false }
-    - { item: "Any history of stroke or neurological conditions", critical: true }
-    - { item: "Any history of thyroid problems", critical: false }
-    - { item: "Any history of tremor or movement disorders in the family", critical: true }
+  - item: Any history of head injury
+    critical: false
+  - item: Any history of stroke or neurological conditions
+    critical: true
+  - item: Any history of thyroid problems
+    critical: false
+  - item: Any history of tremor or movement disorders in the family
+    critical: true
   medications:
-    - { item: "Current medications (prescription, over-the-counter, supplements)", critical: true }
-    - { item: "Any recent medication changes", critical: false }
+  - item: Current medications (prescription, over-the-counter, supplements)
+    critical: true
+  - item: Any recent medication changes
+    critical: false
   family_social:
-    - { item: "Family history of Parkinson disease or similar tremor", critical: true }
-    - { item: "Occupation and hobbies (exposure to toxins, repetitive movements)", critical: false }
-    - { item: "Smoking and alcohol use", critical: false }
+  - item: Family history of Parkinson disease or similar tremor
+    critical: true
+  - item: Occupation and hobbies (exposure to toxins, repetitive movements)
+    critical: false
+  - item: Smoking and alcohol use
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Sudden onset of tremor or movement problems (suggests stroke or other acute cause)", critical: true }
-  - { item: "Headache, vomiting, or vision changes with tremor (suggests increased intracranial pressure)", critical: true }
-  - { item: "Fever or stiff neck with tremor (suggests meningitis or encephalitis)", critical: true }
+- item: Sudden onset of tremor or movement problems (suggests stroke or other acute
+    cause)
+  critical: true
+- item: Headache, vomiting, or vision changes with tremor (suggests increased intracranial
+    pressure)
+  critical: true
+- item: Fever or stiff neck with tremor (suggests meningitis or encephalitis)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Parkinson disease"
-  differentials: [ "Essential tremor", "Drug-induced parkinsonism" ]
+  working_diagnosis: Parkinson disease
+  differentials:
+  - Essential tremor
+  - Drug-induced parkinsonism
 investigations:
-  appropriate: [ { name: "Clinical diagnosis based on UK Parkinson's Disease Society Brain Bank criteria", expected: "Supportive" } ]
-  inappropriate: [ "CT head without contrast" ]
-physical_exam_findings: { general: "Patient appears well, but movements are slow and deliberate. Slight stooped posture. Facial expression is somewhat reduced (hypomimia).", vitals: { bp: 130/80, hr: 72, rr: 14, temp: 37.0 } }
+  appropriate:
+  - name: Clinical diagnosis based on UK Parkinson's Disease Society Brain Bank criteria
+    expected: Supportive
+  inappropriate:
+  - CT head without contrast
+physical_exam_findings:
+  general: Patient appears well, but movements are slow and deliberate. Slight stooped
+    posture. Facial expression is somewhat reduced (hypomimia).
+  vitals:
+    bp: 130/80
+    hr: 72
+    rr: 14
+    temp: 37.0
 management:
-  pharmacological: [ "Levodopa/carbidopa", "Dopamine agonists (e.g., pramipexole)" ]
-  non_pharmacological: [ "Physical therapy", "Occupational therapy", "Speech therapy" ]
-  education_safety_netting: [ "Explain the progressive nature of Parkinson disease", "Advise on fall prevention", "Provide contact for Parkinson's UK support group", "Advise to seek urgent care if sudden worsening or new symptoms like confusion or hallucinations" ]
+  pharmacological:
+  - Levodopa/carbidopa
+  - Dopamine agonists (e.g., pramipexole)
+  non_pharmacological:
+  - Physical therapy
+  - Occupational therapy
+  - Speech therapy
+  education_safety_netting:
+  - Explain the progressive nature of Parkinson disease
+  - Advise on fall prevention
+  - Provide contact for Parkinson's UK support group
+  - Advise to seek urgent care if sudden worsening or new symptoms like confusion
+    or hallucinations
 scoring_weights_override: null
 ---
 ## Identity

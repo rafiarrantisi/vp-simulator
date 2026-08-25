@@ -4,67 +4,118 @@ schema_version: 2
 status: in_review
 specialty: emergency
 system: respiratory
-presentation: "Worsening shortness of breath unresponsive to inhalers"
-presentation_id: "Sesak napas yang semakin berat dan tidak membaik meski sudah menggunakan inhaler"
-first_impression: "A person appears severely breathless, unable to speak in full sentences, wheezing."
-first_impression_id: "Seseorang tampak sesak berat, tidak bisa bicara kalimat utuh, napas berbunyi."
-target_condition: "Acute severe asthma"
+presentation: Worsening shortness of breath unresponsive to inhalers
+presentation_id: Sesak napas yang semakin berat dan tidak membaik meski sudah menggunakan
+  inhaler
+first_impression: A person appears severely breathless, unable to speak in full sentences,
+  wheezing.
+first_impression_id: Seseorang tampak sesak berat, tidak bisa bicara kalimat utuh,
+  napas berbunyi.
+target_condition: Acute severe asthma
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: ["GINA 2024 guidelines for acute asthma"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I can't catch my breath even after using my puffer."
+languages:
+- en
+source_refs:
+- GINA 2024 guidelines for acute asthma
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I can't catch my breath even after using my puffer.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset – when did it start?", critical: true }
-    - { item: "Location – where is the discomfort?", critical: false }
-    - { item: "Quality – what does it feel like?", critical: false }
-    - { item: "Severity – how bad is it on a scale of 0–10?", critical: true }
-    - { item: "Timing – constant or comes and goes?", critical: false }
-    - { item: "Context – what were you doing when it started?", critical: false }
-    - { item: "Alleviating factors – anything that makes it better?", critical: true }
-    - { item: "Associated symptoms – do you have cough, wheeze, chest tightness?", critical: false }
+  - item: Onset – when did it start?
+    critical: true
+  - item: Location – where is the discomfort?
+    critical: false
+  - item: Quality – what does it feel like?
+    critical: false
+  - item: Severity – how bad is it on a scale of 0–10?
+    critical: true
+  - item: Timing – constant or comes and goes?
+    critical: false
+  - item: Context – what were you doing when it started?
+    critical: false
+  - item: Alleviating factors – anything that makes it better?
+    critical: true
+  - item: Associated symptoms – do you have cough, wheeze, chest tightness?
+    critical: false
   associated_symptoms:
-    - { item: "Cough – dry or productive?", critical: false }
-    - { item: "Wheezing – audible or only when you breathe out?", critical: false }
-    - { item: "Difficulty speaking – can you finish a sentence?", critical: true }
-    - { item: "Chest tightness – feeling of pressure?", critical: false }
-    - { item: "Anxiety or fear – feeling panicked?", critical: false }
+  - item: Cough – dry or productive?
+    critical: false
+  - item: Wheezing – audible or only when you breathe out?
+    critical: false
+  - item: Difficulty speaking – can you finish a sentence?
+    critical: true
+  - item: Chest tightness – feeling of pressure?
+    critical: false
+  - item: Anxiety or fear – feeling panicked?
+    critical: false
   pmh:
-    - { item: "Asthma history – when diagnosed, how controlled?", critical: true }
-    - { item: "Previous hospitalizations for breathing problems?", critical: true }
-    - { item: "Other chronic conditions (e.g., allergies, heart disease, diabetes)?", critical: false }
+  - item: Asthma history – when diagnosed, how controlled?
+    critical: true
+  - item: Previous hospitalizations for breathing problems?
+    critical: true
+  - item: Other chronic conditions (e.g., allergies, heart disease, diabetes)?
+    critical: false
   medications:
-    - { item: "Current asthma medications (inhalers, pills)?", critical: true }
-    - { item: "How often do you use your rescue inhaler?", critical: false }
-    - { item: "Any other prescription or over-the-counter medicines?", critical: false }
+  - item: Current asthma medications (inhalers, pills)?
+    critical: true
+  - item: How often do you use your rescue inhaler?
+    critical: false
+  - item: Any other prescription or over-the-counter medicines?
+    critical: false
   family_social:
-    - { item: "Family history of asthma or allergies?", critical: false }
-    - { item: "Smoking history (yourself or others at home)?", critical: true }
-    - { item: "Occupation and living situation?", critical: false }
-    - { item: "Recent exposure to triggers (dust, pets, cold, exercise)?", critical: false }
+  - item: Family history of asthma or allergies?
+    critical: false
+  - item: Smoking history (yourself or others at home)?
+    critical: true
+  - item: Occupation and living situation?
+    critical: false
+  - item: Recent exposure to triggers (dust, pets, cold, exercise)?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Unable to speak in full sentences", critical: true }
-  - { item: "Using neck muscles to breathe (accessory muscles)", critical: true }
-  - { item: "Sweating and heart racing", critical: false }
-  - { item: "Cyanosis (blue lips or fingers)", critical: true }
+- item: Unable to speak in full sentences
+  critical: true
+- item: Using neck muscles to breathe (accessory muscles)
+  critical: true
+- item: Sweating and heart racing
+  critical: false
+- item: Cyanosis (blue lips or fingers)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acute severe asthma"
-  differentials: ["Acute exacerbation of COPD", "Anaphylaxis", "Foreign body aspiration"]
+  working_diagnosis: Acute severe asthma
+  differentials:
+  - Acute exacerbation of COPD
+  - Anaphylaxis
+  - Foreign body aspiration
 investigations:
   appropriate:
-    - { name: "Peak expiratory flow (PEF) measurement", expected: "PEF < 50% of predicted" }
-    - { name: "Chest X-ray", expected: "Hyperinflation, no infiltrate, no pneumothorax" }
-    - { name: "Arterial blood gas (ABG)", expected: "Respiratory alkalosis, mild hypoxemia (PaO2 60-80 mmHg), possible hypercapnia if severe" }
-  inappropriate: ["CT chest", "Spirometry (cannot be performed in acute setting)"]
+  - name: Peak expiratory flow (PEF) measurement
+    expected: PEF < 50% of predicted
+  - name: Chest X-ray
+    expected: Hyperinflation, no infiltrate, no pneumothorax
+  - name: Arterial blood gas (ABG)
+    expected: Respiratory alkalosis, mild hypoxemia (PaO2 60-80 mmHg), possible hypercapnia
+      if severe
+  inappropriate:
+  - CT chest
+  - Spirometry (cannot be performed in acute setting)
 physical_exam_findings:
-  general: "Anxious, sitting upright in tripod position, using accessory muscles (sternocleidomastoid, intercostals), diaphoretic. Nasal flaring. Unable to speak full sentences."
+  general: Anxious, sitting upright in tripod position, using accessory muscles (sternocleidomastoid,
+    intercostals), diaphoretic. Nasal flaring. Unable to speak full sentences.
   vitals:
     RR: 32
     HR: 120
@@ -73,21 +124,29 @@ physical_exam_findings:
     Temp: 37.0°C
 management:
   pharmacological:
-    - "Oxygen via nasal cannula or mask to target SpO2 94-98%"
-    - "Nebulized salbutamol (5 mg) with oxygen"
-    - "Nebulized ipratropium bromide (0.5 mg)"
-    - "Systemic corticosteroids: prednisone 40-50 mg PO or IV methylprednisolone 40-80 mg"
-    - "Consider IV magnesium sulfate (2 g over 20 min) if poor response"
+  - Oxygen via nasal cannula or mask to target SpO2 94-98%
+  - Nebulized salbutamol (5 mg) with oxygen
+  - Nebulized ipratropium bromide (0.5 mg)
+  - 'Systemic corticosteroids: prednisone 40-50 mg PO or IV methylprednisolone 40-80
+    mg'
+  - Consider IV magnesium sulfate (2 g over 20 min) if poor response
   non_pharmacological:
-    - "Position upright, reassure and calm patient"
-    - "Continuous monitoring of SpO2, heart rate, respiratory rate"
-    - "Prepare for possible intubation if deteriorating"
+  - Position upright, reassure and calm patient
+  - Continuous monitoring of SpO2, heart rate, respiratory rate
+  - Prepare for possible intubation if deteriorating
   education_safety_netting:
-    - "Instruct to use inhaler with spacer at home"
-    - "Seek emergency care if symptoms worsen despite treatment"
-    - "Follow up with asthma specialist or GP within 48 hours"
-    - "Review inhaler technique and daily controller medication adherence"
+  - Instruct to use inhaler with spacer at home
+  - Seek emergency care if symptoms worsen despite treatment
+  - Follow up with asthma specialist or GP within 48 hours
+  - Review inhaler technique and daily controller medication adherence
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

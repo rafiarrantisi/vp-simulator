@@ -1,80 +1,122 @@
 ---
 id: surg_varicose_veins_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: surgery
 system: cardiovascular
-presentation: "Painful bulging veins in both legs"
-presentation_id: "Nyeri dan tonjolan pembuluh darah di kedua tungkai"
-first_impression: "Patient appears in pain."
-first_impression_id: "Pasien tampak kesakitan."
-target_condition: "Chronic venous insufficiency"
+presentation: Painful bulging veins in both legs
+presentation_id: Nyeri dan tonjolan pembuluh darah di kedua tungkai
+first_impression: Patient appears in pain.
+first_impression_id: Pasien tampak kesakitan.
+target_condition: Chronic venous insufficiency
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "Chronic Venous Insufficiency Clinical Practice Guidelines, Society for Vascular Surgery"
-  - "NICE CG168 — Varicose veins"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have bulging, painful veins in both my legs."
+- Chronic Venous Insufficiency Clinical Practice Guidelines, Society for Vascular
+  Surgery
+- NICE CG168 — Varicose veins
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have bulging, painful veins in both my legs.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Location – both legs, specifically calves", critical: false }
-    - { item: "Quality – bulging, rope-like, aching", critical: false }
-    - { item: "Severity – pain 6/10 at worst", critical: false }
-    - { item: "Timing – started 5 years ago, gradually worsening", critical: false }
-    - { item: "Context – after long periods of standing", critical: false }
-    - { item: "Aggravating factors – standing, end of day, hot weather", critical: false }
-    - { item: "Relieving factors – leg elevation, walking", critical: false }
-    - { item: "Associated symptoms – leg swelling, itching, skin discoloration", critical: true }
+  - item: Location – both legs, specifically calves
+    critical: false
+  - item: Quality – bulging, rope-like, aching
+    critical: false
+  - item: Severity – pain 6/10 at worst
+    critical: false
+  - item: Timing – started 5 years ago, gradually worsening
+    critical: false
+  - item: Context – after long periods of standing
+    critical: false
+  - item: Aggravating factors – standing, end of day, hot weather
+    critical: false
+  - item: Relieving factors – leg elevation, walking
+    critical: false
+  - item: Associated symptoms – leg swelling, itching, skin discoloration
+    critical: true
   associated_symptoms:
-    - { item: "Leg swelling (edema) – worse after standing", critical: false }
-    - { item: "Itching over bulging veins", critical: false }
-    - { item: "Skin darkening around ankles", critical: false }
-    - { item: "Heaviness or fatigue in legs", critical: false }
+  - item: Leg swelling (edema) – worse after standing
+    critical: false
+  - item: Itching over bulging veins
+    critical: false
+  - item: Skin darkening around ankles
+    critical: false
+  - item: Heaviness or fatigue in legs
+    critical: false
   pmh:
-    - { item: "Pregnancies – two, both full-term", critical: false }
-    - { item: "Prolonged standing at work", critical: false }
-    - { item: "Overweight (BMI 30)", critical: false }
-    - { item: "No prior DVT or leg trauma", critical: false }
+  - item: Pregnancies – two, both full-term
+    critical: false
+  - item: Prolonged standing at work
+    critical: false
+  - item: Overweight (BMI 30)
+    critical: false
+  - item: No prior DVT or leg trauma
+    critical: false
   medications:
-    - { item: "Oral contraceptives (taken for 10 years)", critical: false }
-    - { item: "Occasional ibuprofen for leg pain", critical: false }
+  - item: Oral contraceptives (taken for 10 years)
+    critical: false
+  - item: Occasional ibuprofen for leg pain
+    critical: false
   family_social:
-    - { item: "Mother and grandmother had varicose veins", critical: false }
-    - { item: "Occupation – receptionist, stands 8+ hours/day", critical: false }
+  - item: Mother and grandmother had varicose veins
+    critical: false
+  - item: Occupation – receptionist, stands 8+ hours/day
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong: 'I think it's just varicose veins from standing all day.'", critical: true }
-    - { item: "Concerns - what worries them: 'I'm afraid they might burst or cause a blood clot.'", critical: true }
-    - { item: "Expectations - what they hope for: 'I want something to relieve the pain, maybe remove them.'", critical: false }
+  - item: 'Ideas - what they think is wrong: ''I think it''s just varicose veins from
+      standing all day.'''
+    critical: true
+  - item: 'Concerns - what worries them: ''I''m afraid they might burst or cause a
+      blood clot.'''
+    critical: true
+  - item: 'Expectations - what they hope for: ''I want something to relieve the pain,
+      maybe remove them.'''
+    critical: false
 red_flags:
-  - { item: "Non-healing leg ulcer", critical: true }
-  - { item: "Sudden swelling of one leg", critical: true }
-  - { item: "Chest pain or shortness of breath", critical: false }
+- item: Non-healing leg ulcer
+  critical: true
+- item: Sudden swelling of one leg
+  critical: true
+- item: Chest pain or shortness of breath
+  critical: false
 expected_ddx:
-  working_diagnosis: "Chronic venous insufficiency"
-  differentials: [ "Deep vein thrombosis", "Lymphedema", "Peripheral artery disease" ]
+  working_diagnosis: Chronic venous insufficiency
+  differentials:
+  - Deep vein thrombosis
+  - Lymphedema
+  - Peripheral artery disease
 investigations:
   appropriate:
-    - { name: "Venous duplex ultrasound (with reflux testing)", expected: "Reflux >0.5 seconds in saphenous veins" }
-  inappropriate: [ "Arterial duplex ultrasound", "X-ray of leg" ]
+  - name: Venous duplex ultrasound (with reflux testing)
+    expected: Reflux >0.5 seconds in saphenous veins
+  inappropriate:
+  - Arterial duplex ultrasound
+  - X-ray of leg
 physical_exam_findings:
-  general: "Visible tortuous varicose veins bilaterally, mild ankle edema, hyperpigmentation over medial malleoli, no ulceration or cord-like veins."
+  general: Visible tortuous varicose veins bilaterally, mild ankle edema, hyperpigmentation
+    over medial malleoli, no ulceration or cord-like veins.
   vitals: {}
 management:
   pharmacological:
-    - "Compression stockings (20-30 mmHg below-knee, daytime use)"
-    - "Oral venotonics (e.g., diosmin-hesperidin) if symptoms persist"
+  - Compression stockings (20-30 mmHg below-knee, daytime use)
+  - Oral venotonics (e.g., diosmin-hesperidin) if symptoms persist
   non_pharmacological:
-    - "Leg elevation above heart level for 30 minutes 3 times daily"
-    - "Regular walking exercise"
-    - "Weight loss if overweight"
+  - Leg elevation above heart level for 30 minutes 3 times daily
+  - Regular walking exercise
+  - Weight loss if overweight
   education_safety_netting:
-    - "Seek urgent care if sudden leg swelling or pain (possible DVT)"
-    - "Report any skin breakdown or ulcer formation"
-    - "Avoid prolonged standing without breaks"
+  - Seek urgent care if sudden leg swelling or pain (possible DVT)
+  - Report any skin breakdown or ulcer formation
+  - Avoid prolonged standing without breaks
 scoring_weights_override: null
 ---
 

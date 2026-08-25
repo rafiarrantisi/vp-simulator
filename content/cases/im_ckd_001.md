@@ -4,132 +4,145 @@ schema_version: 2
 status: in_review
 specialty: internal_medicine
 system: renal
-presentation: "Swollen ankles and foamy urine"
-presentation_id: "Pergelangan kaki bengkak dan urine berbusa"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Chronic kidney disease stage 4"
+presentation: Swollen ankles and foamy urine
+presentation_id: Pergelangan kaki bengkak dan urine berbusa
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Chronic kidney disease stage 4
 difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "PNPK Tata Laksana Hipertensi Dewasa (KMK 4634/2021) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes46342021"
-  - "KDIGO 2024 Clinical Practice Guideline — CKD"
-
+- PNPK Tata Laksana Hipertensi Dewasa (KMK 4634/2021) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes46342021
+- KDIGO 2024 Clinical Practice Guideline — CKD
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
-  review_notes: null
-chief_complaint: "My ankles are swollen and my urine looks frothy."
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: My ankles are swollen and my urine looks frothy.
 anamnesis_checklist:
   hpi_socrates:
-    - item: "Onset – when did the swelling and foamy urine start?"
-      critical: true
-    - item: "Location – is the swelling only in the ankles or elsewhere?"
-      critical: false
-    - item: "Duration – constant or intermittent?"
-      critical: false
-    - item: "Character – is the urine consistently foamy or only sometimes?"
-      critical: false
-    - item: "Aggravating factors – does standing worsen the swelling?"
-      critical: false
-    - item: "Relieving factors – does elevating legs help?"
-      critical: false
-    - item: "Temporal pattern – worse in the morning or evening?"
-      critical: false
-    - item: "Severity – how much has the swelling increased?"
-      critical: false
+  - item: Onset – when did the swelling and foamy urine start?
+    critical: true
+  - item: Location – is the swelling only in the ankles or elsewhere?
+    critical: false
+  - item: Duration – constant or intermittent?
+    critical: false
+  - item: Character – is the urine consistently foamy or only sometimes?
+    critical: false
+  - item: Aggravating factors – does standing worsen the swelling?
+    critical: false
+  - item: Relieving factors – does elevating legs help?
+    critical: false
+  - item: Temporal pattern – worse in the morning or evening?
+    critical: false
+  - item: Severity – how much has the swelling increased?
+    critical: false
   associated_symptoms:
-    - item: "Fatigue or low energy"
-      critical: true
-    - item: "Shortness of breath"
-      critical: false
-    - item: "Decreased urine output"
-      critical: true
-    - item: "Nausea or poor appetite"
-      critical: false
-    - item: "Muscle cramps"
-      critical: false
+  - item: Fatigue or low energy
+    critical: true
+  - item: Shortness of breath
+    critical: false
+  - item: Decreased urine output
+    critical: true
+  - item: Nausea or poor appetite
+    critical: false
+  - item: Muscle cramps
+    critical: false
   pmh:
-    - item: "Hypertension"
-      critical: true
-    - item: "Type 2 diabetes mellitus"
-      critical: true
-    - item: "Previous kidney problems"
-      critical: false
+  - item: Hypertension
+    critical: true
+  - item: Type 2 diabetes mellitus
+    critical: true
+  - item: Previous kidney problems
+    critical: false
   medications:
-    - item: "Current medications (including over-the-counter and supplements)"
-      critical: true
-    - item: "Any recent changes to medication"
-      critical: false
+  - item: Current medications (including over-the-counter and supplements)
+    critical: true
+  - item: Any recent changes to medication
+    critical: false
   family_social:
-    - item: "Family history of kidney disease or kidney failure"
-      critical: true
-    - item: "Family history of high blood pressure or diabetes"
-      critical: false
-    - item: "Smoking history"
-      critical: false
-    - item: "Alcohol use"
-      critical: false
+  - item: Family history of kidney disease or kidney failure
+    critical: true
+  - item: Family history of high blood pressure or diabetes
+    critical: false
+  - item: Smoking history
+    critical: false
+  - item: Alcohol use
+    critical: false
   ice_fife:
-    - item: "Ideas - what they think is wrong"
-      critical: true
-    - item: "Concerns - what worries them"
-      critical: true
-    - item: "Expectations - what they hope for"
-      critical: false
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - item: "Hyperkalemia risk (e.g., recent high potassium foods, symptoms of weakness/palpitations)"
-    critical: true
-  - item: "Uremic symptoms (confusion, hiccups, pruritus, easy bruising)"
-    critical: true
-  - item: "Rapidly worsening edema or shortness of breath (possible fluid overload)"
-    critical: true
+- item: Hyperkalemia risk (e.g., recent high potassium foods, symptoms of weakness/palpitations)
+  critical: true
+- item: Uremic symptoms (confusion, hiccups, pruritus, easy bruising)
+  critical: true
+- item: Rapidly worsening edema or shortness of breath (possible fluid overload)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Chronic kidney disease stage 4"
+  working_diagnosis: Chronic kidney disease stage 4
   differentials:
-    - "Nephrotic syndrome (minimal change disease, membranous nephropathy)"
-    - "Acute kidney injury (prerenal or intrinsic)"
-    - "Diabetic nephropathy (as etiology of CKD)"
+  - Nephrotic syndrome (minimal change disease, membranous nephropathy)
+  - Acute kidney injury (prerenal or intrinsic)
+  - Diabetic nephropathy (as etiology of CKD)
 investigations:
   appropriate:
-    - name: "Serum creatinine and estimated GFR"
-      expected: "eGFR 15-29 ml/min/1.73m², creatinine elevated (e.g., 3.5 mg/dL)"
-    - name: "Urinalysis with microscopy"
-      expected: "Proteinuria (3+), few granular casts, no active sediment"
-    - name: "Urine albumin-to-creatinine ratio (UACR)"
-      expected: ">300 mg/g (macroalbuminuria)"
-    - name: "Renal ultrasound"
-      expected: "Bilateral small, echogenic kidneys with reduced cortical thickness"
+  - name: Serum creatinine and estimated GFR
+    expected: eGFR 15-29 ml/min/1.73m², creatinine elevated (e.g., 3.5 mg/dL)
+  - name: Urinalysis with microscopy
+    expected: Proteinuria (3+), few granular casts, no active sediment
+  - name: Urine albumin-to-creatinine ratio (UACR)
+    expected: '>300 mg/g (macroalbuminuria)'
+  - name: Renal ultrasound
+    expected: Bilateral small, echogenic kidneys with reduced cortical thickness
   inappropriate:
-    - "CT abdomen with intravenous contrast (risk of contrast-induced nephropathy)"
+  - CT abdomen with intravenous contrast (risk of contrast-induced nephropathy)
 physical_exam_findings:
-  general: "Alert but fatigued-appearing; pitting edema bilateral lower extremities to mid-calf; no jugular venous distension."
+  general: Alert but fatigued-appearing; pitting edema bilateral lower extremities
+    to mid-calf; no jugular venous distension.
   vitals:
-    BP: "155/92 mmHg"
-    HR: "78 bpm"
-    RR: "16 breaths/min"
-    Temp: "36.8°C"
-    O2_sat: "97% on room air"
+    BP: 155/92 mmHg
+    HR: 78 bpm
+    RR: 16 breaths/min
+    Temp: 36.8°C
+    O2_sat: 97% on room air
 management:
   pharmacological:
-    - "Continue ACE inhibitor (lisinopril) for renoprotection, monitor potassium and creatinine"
-    - "Add loop diuretic (furosemide) for edema control if needed"
-    - "Consider statin for cardiovascular risk reduction"
-    - "Adjust diabetes medications (stop metformin if eGFR <30, consider SGLT2 inhibitor if appropriate)"
+  - Continue ACE inhibitor (lisinopril) for renoprotection, monitor potassium and
+    creatinine
+  - Add loop diuretic (furosemide) for edema control if needed
+  - Consider statin for cardiovascular risk reduction
+  - Adjust diabetes medications (stop metformin if eGFR <30, consider SGLT2 inhibitor
+    if appropriate)
   non_pharmacological:
-    - "Low sodium diet (<2g/day), moderate fluid restriction (1.5 L/day)"
-    - "Weight monitoring daily"
-    - "Avoid NSAIDs and nephrotoxic agents"
-    - "Referral to nephrology for CKD stage 4 management and preparation for kidney replacement therapy"
+  - Low sodium diet (<2g/day), moderate fluid restriction (1.5 L/day)
+  - Weight monitoring daily
+  - Avoid NSAIDs and nephrotoxic agents
+  - Referral to nephrology for CKD stage 4 management and preparation for kidney replacement
+    therapy
   education_safety_netting:
-    - "Explain CKD progression and need for regular follow-up with labs every 3 months"
-    - "Red flags to report: sudden weight gain >2 kg in 2 days, shortness of breath, confusion, or significantly decreased urine output"
-    - "Importance of blood pressure control and blood sugar management"
+  - Explain CKD progression and need for regular follow-up with labs every 3 months
+  - 'Red flags to report: sudden weight gain >2 kg in 2 days, shortness of breath,
+    confusion, or significantly decreased urine output'
+  - Importance of blood pressure control and blood sugar management
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 ## Identity
 

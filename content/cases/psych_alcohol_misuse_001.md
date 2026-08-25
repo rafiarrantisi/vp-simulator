@@ -1,68 +1,119 @@
 ---
 id: psych_alcohol_misuse_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: psychiatry
 system: psychiatric
-presentation: "Wanting to cut down drinking"
-presentation_id: "Ingin mengurangi minum alkohol tetapi tidak bisa berhenti"
-first_impression: "Patient appears anxious or sad."
-first_impression_id: "Pasien tampak cemas atau sedih."
-target_condition: "Alcohol dependence"
+presentation: Wanting to cut down drinking
+presentation_id: Ingin mengurangi minum alkohol tetapi tidak bisa berhenti
+first_impression: Patient appears anxious or sad.
+first_impression_id: Pasien tampak cemas atau sedih.
+target_condition: Alcohol dependence
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "DSM-5-TR"
-  - "NICE CG115 — Alcohol-use disorders"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I want to cut down on my drinking but I can't seem to stop."
+- DSM-5-TR
+- NICE CG115 — Alcohol-use disorders
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I want to cut down on my drinking but I can't seem to stop.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did drinking become a problem?", critical: true }
-    - { item: "Quantity - how much do you drink per day?", critical: true }
-    - { item: "Frequency - how often do you drink?", critical: false }
-    - { item: "Context - do you drink alone or with others?", critical: false }
-    - { item: "Attempts to cut down - have you tried to reduce?", critical: true }
-    - { item: "Withdrawal symptoms - do you experience shaking, sweating, or nausea when not drinking?", critical: true }
-    - { item: "Cravings - do you have strong urges to drink?", critical: false }
+  - item: Onset - when did drinking become a problem?
+    critical: true
+  - item: Quantity - how much do you drink per day?
+    critical: true
+  - item: Frequency - how often do you drink?
+    critical: false
+  - item: Context - do you drink alone or with others?
+    critical: false
+  - item: Attempts to cut down - have you tried to reduce?
+    critical: true
+  - item: Withdrawal symptoms - do you experience shaking, sweating, or nausea when
+      not drinking?
+    critical: true
+  - item: Cravings - do you have strong urges to drink?
+    critical: false
   associated_symptoms:
-    - { item: "Mood changes - feeling depressed or anxious", critical: false }
-    - { item: "Sleep problems", critical: false }
-    - { item: "Memory blackouts", critical: true }
+  - item: Mood changes - feeling depressed or anxious
+    critical: false
+  - item: Sleep problems
+    critical: false
+  - item: Memory blackouts
+    critical: true
   pmh:
-    - { item: "Any past medical conditions (e.g., liver disease, hypertension)", critical: false }
-    - { item: "Past psychiatric history (e.g., depression, anxiety)", critical: false }
-    - { item: "Previous treatments for alcohol use", critical: true }
+  - item: Any past medical conditions (e.g., liver disease, hypertension)
+    critical: false
+  - item: Past psychiatric history (e.g., depression, anxiety)
+    critical: false
+  - item: Previous treatments for alcohol use
+    critical: true
   medications:
-    - { item: "Current medications (prescription, over-the-counter, supplements)", critical: false }
-    - { item: "Any medication for alcohol dependence (e.g., naltrexone, disulfiram)", critical: true }
+  - item: Current medications (prescription, over-the-counter, supplements)
+    critical: false
+  - item: Any medication for alcohol dependence (e.g., naltrexone, disulfiram)
+    critical: true
   family_social:
-    - { item: "Family history of alcohol or substance use problems", critical: true }
-    - { item: "Living situation and social support", critical: false }
-    - { item: "Occupational impact (e.g., missed work, job loss)", critical: true }
-    - { item: "Legal issues (e.g., DUI)", critical: false }
+  - item: Family history of alcohol or substance use problems
+    critical: true
+  - item: Living situation and social support
+    critical: false
+  - item: Occupational impact (e.g., missed work, job loss)
+    critical: true
+  - item: Legal issues (e.g., DUI)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what do you think is causing your drinking problem?", critical: true }
-    - { item: "Concerns - what worries you most about your drinking?", critical: true }
-    - { item: "Expectations - what do you hope to get from this visit?", critical: false }
+  - item: Ideas - what do you think is causing your drinking problem?
+    critical: true
+  - item: Concerns - what worries you most about your drinking?
+    critical: true
+  - item: Expectations - what do you hope to get from this visit?
+    critical: false
 red_flags:
-  - { item: "History of withdrawal seizures or delirium tremens", critical: true }
-  - { item: "Suicidal ideation", critical: true }
-  - { item: "Severe medical complications (e.g., liver failure, pancreatitis)", critical: false }
+- item: History of withdrawal seizures or delirium tremens
+  critical: true
+- item: Suicidal ideation
+  critical: true
+- item: Severe medical complications (e.g., liver failure, pancreatitis)
+  critical: false
 expected_ddx:
-  working_diagnosis: "Alcohol dependence"
-  differentials: ["Alcohol use disorder (moderate)", "Bipolar disorder with substance use", "Adjustment disorder with alcohol misuse"]
+  working_diagnosis: Alcohol dependence
+  differentials:
+  - Alcohol use disorder (moderate)
+  - Bipolar disorder with substance use
+  - Adjustment disorder with alcohol misuse
 investigations:
-  appropriate: [ { name: "CAGE questionnaire", expected: "Positive" } ]
-  inappropriate: [ "Routine blood tests for all patients" ]
-physical_exam_findings: { general: "Appears well-nourished but slightly flushed. Mild tremor in hands.", vitals: { bp: "130/85", hr: "92", temp: "37.0", rr: "16" } }
+  appropriate:
+  - name: CAGE questionnaire
+    expected: Positive
+  inappropriate:
+  - Routine blood tests for all patients
+physical_exam_findings:
+  general: Appears well-nourished but slightly flushed. Mild tremor in hands.
+  vitals:
+    bp: 130/85
+    hr: '92'
+    temp: '37.0'
+    rr: '16'
 management:
-  pharmacological: [ "Consider naltrexone or acamprosate", "Benzodiazepines for withdrawal management if needed" ]
-  non_pharmacological: [ "Motivational interviewing", "Cognitive behavioral therapy", "Referral to addiction specialist" ]
-  education_safety_netting: [ "Explain alcohol withdrawal syndrome signs", "Advise to avoid abrupt cessation without medical supervision", "Provide helpline numbers" ]
+  pharmacological:
+  - Consider naltrexone or acamprosate
+  - Benzodiazepines for withdrawal management if needed
+  non_pharmacological:
+  - Motivational interviewing
+  - Cognitive behavioral therapy
+  - Referral to addiction specialist
+  education_safety_netting:
+  - Explain alcohol withdrawal syndrome signs
+  - Advise to avoid abrupt cessation without medical supervision
+  - Provide helpline numbers
 scoring_weights_override: null
 ---
 ## Identity

@@ -1,68 +1,113 @@
 ---
 id: derm_rosacea_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: dermatology
 system: integumentary
-presentation: "Facial redness and flushing"
-presentation_id: "Wajah merah dan memerah terus, serta muncul bintil yang tidak kunjung hilang"
-first_impression: "Patient appears to have skin concerns."
-first_impression_id: "Pasien tampak memiliki masalah kulit."
-target_condition: "Acne rosacea"
+presentation: Facial redness and flushing
+presentation_id: Wajah merah dan memerah terus, serta muncul bintil yang tidak kunjung
+  hilang
+first_impression: Patient appears to have skin concerns.
+first_impression_id: Pasien tampak memiliki masalah kulit.
+target_condition: Acne rosacea
 difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Academy of Dermatology guidelines for rosacea"
-  - "National Rosacea Society / AAD rosacea guidelines (2017)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My face keeps getting red and flushing, and I have bumps that won't go away."
+- American Academy of Dermatology guidelines for rosacea
+- National Rosacea Society / AAD rosacea guidelines (2017)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My face keeps getting red and flushing, and I have bumps that won't
+  go away.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset: when did this start?", critical: true }
-    - { item: "Triggers: what makes the redness worse (e.g., sun, heat, spicy food, alcohol)?", critical: false }
-    - { item: "Location: which parts of the face are affected?", critical: false }
-    - { item: "Quality: is the redness constant or does it come and go?", critical: false }
-    - { item: "Severity: how bothersome is it on a scale of 1-10?", critical: false }
-    - { item: "Timing: does it happen at certain times of day or season?", critical: false }
-    - { item: "Context: what were you doing when it first appeared?", critical: false }
-    - { item: "Exacerbating factors: anything that makes it worse?", critical: false }
-    - { item: "Relieving factors: anything that helps?", critical: false }
+  - item: 'Onset: when did this start?'
+    critical: true
+  - item: 'Triggers: what makes the redness worse (e.g., sun, heat, spicy food, alcohol)?'
+    critical: false
+  - item: 'Location: which parts of the face are affected?'
+    critical: false
+  - item: 'Quality: is the redness constant or does it come and go?'
+    critical: false
+  - item: 'Severity: how bothersome is it on a scale of 1-10?'
+    critical: false
+  - item: 'Timing: does it happen at certain times of day or season?'
+    critical: false
+  - item: 'Context: what were you doing when it first appeared?'
+    critical: false
+  - item: 'Exacerbating factors: anything that makes it worse?'
+    critical: false
+  - item: 'Relieving factors: anything that helps?'
+    critical: false
   associated_symptoms:
-    - { item: "Burning or stinging sensation", critical: false }
-    - { item: "Dryness or flaking", critical: false }
-    - { item: "Bumps (papules, pustules) - are they present?", critical: true }
-    - { item: "Eye irritation (grittiness, redness, blurred vision)", critical: true }
+  - item: Burning or stinging sensation
+    critical: false
+  - item: Dryness or flaking
+    critical: false
+  - item: Bumps (papules, pustules) - are they present?
+    critical: true
+  - item: Eye irritation (grittiness, redness, blurred vision)
+    critical: true
   pmh:
-    - { item: "History of acne or other skin conditions", critical: false }
-    - { item: "History of sunburns or frequent sun exposure", critical: false }
-    - { item: "Known allergies", critical: false }
+  - item: History of acne or other skin conditions
+    critical: false
+  - item: History of sunburns or frequent sun exposure
+    critical: false
+  - item: Known allergies
+    critical: false
   medications:
-    - { item: "Current skin care products (cleansers, moisturizers, prescription creams)", critical: false }
-    - { item: "Any topical steroids or antibiotics used on face", critical: false }
+  - item: Current skin care products (cleansers, moisturizers, prescription creams)
+    critical: false
+  - item: Any topical steroids or antibiotics used on face
+    critical: false
   family_social:
-    - { item: "Family history of rosacea or acne", critical: false }
-    - { item: "Alcohol consumption", critical: false }
-    - { item: "Dietary habits (spicy foods, hot drinks)", critical: false }
+  - item: Family history of rosacea or acne
+    critical: false
+  - item: Alcohol consumption
+    critical: false
+  - item: Dietary habits (spicy foods, hot drinks)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Eye symptoms like gritty feeling, redness, blurred vision", critical: true }
+- item: Eye symptoms like gritty feeling, redness, blurred vision
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acne rosacea"
-  differentials: [ "Acne vulgaris", "Seborrheic dermatitis", "Contact dermatitis" ]
+  working_diagnosis: Acne rosacea
+  differentials:
+  - Acne vulgaris
+  - Seborrheic dermatitis
+  - Contact dermatitis
 investigations: null
 physical_exam_findings:
-  general: "Facial erythema with telangiectasias, papules and pustules on cheeks, nose, forehead, chin. No comedones."
+  general: Facial erythema with telangiectasias, papules and pustules on cheeks, nose,
+    forehead, chin. No comedones.
   vitals: {}
 management:
-  pharmacological: [ "Topical metronidazole", "Topical ivermectin", "Oral doxycycline if moderate-severe" ]
-  non_pharmacological: [ "Sun protection (SPF 30+ broad-spectrum)", "Gentle skincare routine", "Avoiding triggers (sun, heat, alcohol, spicy foods)" ]
-  education_safety_netting: [ "Use sunscreen daily", "Avoid harsh scrubs or exfoliants", "See dermatologist if facial swelling, eye symptoms, or worsening" ]
+  pharmacological:
+  - Topical metronidazole
+  - Topical ivermectin
+  - Oral doxycycline if moderate-severe
+  non_pharmacological:
+  - Sun protection (SPF 30+ broad-spectrum)
+  - Gentle skincare routine
+  - Avoiding triggers (sun, heat, alcohol, spicy foods)
+  education_safety_netting:
+  - Use sunscreen daily
+  - Avoid harsh scrubs or exfoliants
+  - See dermatologist if facial swelling, eye symptoms, or worsening
 scoring_weights_override: null
 ---
 

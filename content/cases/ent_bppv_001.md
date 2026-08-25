@@ -1,70 +1,122 @@
 ---
 id: ent_bppv_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ent
 system: vestibular
-presentation: "Dizziness"
-presentation_id: "Pusing berat saat membolak-balikkan badan di tempat tidur"
-first_impression: "Patient appears to have ear, nose, or throat discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
-target_condition: "Benign paroxysmal positional vertigo"
+presentation: Dizziness
+presentation_id: Pusing berat saat membolak-balikkan badan di tempat tidur
+first_impression: Patient appears to have ear, nose, or throat discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau
+  tenggorokan.
+target_condition: Benign paroxysmal positional vertigo
 difficulty: 2
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "AAO-HNS Clinical Practice Guideline: Benign Paroxysmal Positional Vertigo (Update), 2017"
-  - "Bárány Society — BPPV diagnostic criteria and treatment (2017)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I get really dizzy when I turn over in bed."
+- 'AAO-HNS Clinical Practice Guideline: Benign Paroxysmal Positional Vertigo (Update),
+  2017'
+- Bárány Society — BPPV diagnostic criteria and treatment (2017)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I get really dizzy when I turn over in bed.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did the dizziness start?", critical: true }
-    - { item: "Triggers - what brings on the dizziness?", critical: true }
-    - { item: "Quality - describe the dizziness (spinning vs lightheaded)", critical: true }
-    - { item: "Duration - how long does each episode last?", critical: true }
-    - { item: "Severity - how bad is it on a scale of 1-10?", critical: false }
-    - { item: "Timing - is it constant or comes and goes?", critical: false }
-    - { item: "Aggravating factors - does anything make it worse?", critical: false }
-    - { item: "Relieving factors - does anything make it better?", critical: false }
+  - item: Onset - when did the dizziness start?
+    critical: true
+  - item: Triggers - what brings on the dizziness?
+    critical: true
+  - item: Quality - describe the dizziness (spinning vs lightheaded)
+    critical: true
+  - item: Duration - how long does each episode last?
+    critical: true
+  - item: Severity - how bad is it on a scale of 1-10?
+    critical: false
+  - item: Timing - is it constant or comes and goes?
+    critical: false
+  - item: Aggravating factors - does anything make it worse?
+    critical: false
+  - item: Relieving factors - does anything make it better?
+    critical: false
   associated_symptoms:
-    - { item: "Nausea or vomiting with the dizziness", critical: false }
-    - { item: "Hearing loss or ringing in the ears", critical: true }
-    - { item: "Headache or neck pain", critical: false }
-    - { item: "Double vision or trouble speaking", critical: true }
-    - { item: "Feeling of fullness in the ear", critical: false }
+  - item: Nausea or vomiting with the dizziness
+    critical: false
+  - item: Hearing loss or ringing in the ears
+    critical: true
+  - item: Headache or neck pain
+    critical: false
+  - item: Double vision or trouble speaking
+    critical: true
+  - item: Feeling of fullness in the ear
+    critical: false
   pmh:
-    - { item: "History of head injury or whiplash", critical: true }
-    - { item: "History of migraines", critical: false }
-    - { item: "History of ear infections or ear surgery", critical: false }
-    - { item: "History of stroke or heart disease", critical: true }
+  - item: History of head injury or whiplash
+    critical: true
+  - item: History of migraines
+    critical: false
+  - item: History of ear infections or ear surgery
+    critical: false
+  - item: History of stroke or heart disease
+    critical: true
   medications:
-    - { item: "Current medications (prescription, OTC, supplements)", critical: false }
+  - item: Current medications (prescription, OTC, supplements)
+    critical: false
   family_social:
-    - { item: "Family history of dizziness or balance problems", critical: false }
-    - { item: "Occupation and daily activities", critical: false }
+  - item: Family history of dizziness or balance problems
+    critical: false
+  - item: Occupation and daily activities
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Sudden severe headache or neck stiffness", critical: true }
-  - { item: "Slurred speech, facial droop, or arm weakness", critical: true }
-  - { item: "Double vision or trouble walking", critical: true }
-  - { item: "New hearing loss in one ear", critical: true }
+- item: Sudden severe headache or neck stiffness
+  critical: true
+- item: Slurred speech, facial droop, or arm weakness
+  critical: true
+- item: Double vision or trouble walking
+  critical: true
+- item: New hearing loss in one ear
+  critical: true
 expected_ddx:
-  working_diagnosis: "Benign paroxysmal positional vertigo"
-  differentials: [ "Vestibular neuritis", "Meniere's disease", "Central vertigo (e.g., TIA/stroke)" ]
+  working_diagnosis: Benign paroxysmal positional vertigo
+  differentials:
+  - Vestibular neuritis
+  - Meniere's disease
+  - Central vertigo (e.g., TIA/stroke)
 investigations:
-  appropriate: [ { name: "Dix-Hallpike maneuver", expected: "Positive for nystagmus and vertigo" } ]
-  inappropriate: [ "CT scan of the head" ]
-physical_exam_findings: { general: "Alert, oriented, no focal neurological deficits. Nystagmus elicited with Dix-Hallpike maneuver on the right side.", vitals: { bp: "120/80", hr: 72, temp: 37.0 } }
+  appropriate:
+  - name: Dix-Hallpike maneuver
+    expected: Positive for nystagmus and vertigo
+  inappropriate:
+  - CT scan of the head
+physical_exam_findings:
+  general: Alert, oriented, no focal neurological deficits. Nystagmus elicited with
+    Dix-Hallpike maneuver on the right side.
+  vitals:
+    bp: 120/80
+    hr: 72
+    temp: 37.0
 management:
-  pharmacological: [ "Antiemetics if needed (e.g., ondansetron) for nausea" ]
-  non_pharmacological: [ "Epley maneuver (canalith repositioning) for posterior canal BPPV", "Avoid rapid head movements for 24 hours after maneuver" ]
-  education_safety_netting: [ "Explain that BPPV is benign and not dangerous", "Advise to sleep with head elevated on two pillows for 48 hours after repositioning", "Return if symptoms worsen or new neurological symptoms develop" ]
+  pharmacological:
+  - Antiemetics if needed (e.g., ondansetron) for nausea
+  non_pharmacological:
+  - Epley maneuver (canalith repositioning) for posterior canal BPPV
+  - Avoid rapid head movements for 24 hours after maneuver
+  education_safety_netting:
+  - Explain that BPPV is benign and not dangerous
+  - Advise to sleep with head elevated on two pillows for 48 hours after repositioning
+  - Return if symptoms worsen or new neurological symptoms develop
 scoring_weights_override: null
 ---
 ## Identity

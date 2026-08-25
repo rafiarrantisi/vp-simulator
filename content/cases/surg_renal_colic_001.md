@@ -4,64 +4,114 @@ schema_version: 2
 status: in_review
 specialty: surgery
 system: urinary
-presentation: "Loin pain"
-presentation_id: "Nyeri pinggang kiri yang hilang timbul"
-first_impression: "Patient appears in pain."
-first_impression_id: "Pasien tampak kesakitan."
-target_condition: "Ureteric (renal) colic"
+presentation: Loin pain
+presentation_id: Nyeri pinggang kiri yang hilang timbul
+first_impression: Patient appears in pain.
+first_impression_id: Pasien tampak kesakitan.
+target_condition: Ureteric (renal) colic
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "PNPK Tata Laksana Batu Saluran Kemih (KMK 1560/2022) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes15602022"
-  - "EAU guidelines — urolithiasis (2024)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have a terrible pain in my left side that comes and goes."
+- PNPK Tata Laksana Batu Saluran Kemih (KMK 1560/2022) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes15602022
+- EAU guidelines — urolithiasis (2024)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have a terrible pain in my left side that comes and goes.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain", critical: true }
-    - { item: "Onset of pain", critical: true }
-    - { item: "Character of pain", critical: true }
-    - { item: "Radiation of pain", critical: true }
-    - { item: "Associated nausea or vomiting", critical: true }
-    - { item: "Timing / duration of episodes", critical: false }
-    - { item: "Exacerbating or relieving factors", critical: false }
-    - { item: "Severity of pain (scale 0-10)", critical: false }
+  - item: Site of pain
+    critical: true
+  - item: Onset of pain
+    critical: true
+  - item: Character of pain
+    critical: true
+  - item: Radiation of pain
+    critical: true
+  - item: Associated nausea or vomiting
+    critical: true
+  - item: Timing / duration of episodes
+    critical: false
+  - item: Exacerbating or relieving factors
+    critical: false
+  - item: Severity of pain (scale 0-10)
+    critical: false
   associated_symptoms:
-    - { item: "Blood in urine", critical: true }
-    - { item: "Fever or chills", critical: true }
-    - { item: "Dysuria or frequency", critical: false }
+  - item: Blood in urine
+    critical: true
+  - item: Fever or chills
+    critical: true
+  - item: Dysuria or frequency
+    critical: false
   pmh:
-    - { item: "Previous kidney stones", critical: true }
-    - { item: "Dehydration history", critical: false }
+  - item: Previous kidney stones
+    critical: true
+  - item: Dehydration history
+    critical: false
   medications:
-    - { item: "Current medications", critical: false }
+  - item: Current medications
+    critical: false
   family_social:
-    - { item: "Family history of kidney stones", critical: false }
-    - { item: "Dietary habits (high salt, oxalate)", critical: false }
+  - item: Family history of kidney stones
+    critical: false
+  - item: Dietary habits (high salt, oxalate)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Fever or chills suggesting infection", critical: true }
-  - { item: "Anuria or inability to pass urine", critical: true }
+- item: Fever or chills suggesting infection
+  critical: true
+- item: Anuria or inability to pass urine
+  critical: true
 expected_ddx:
-  working_diagnosis: "Ureteric (renal) colic"
-  differentials: [ "Acute pyelonephritis", "Ruptured abdominal aortic aneurysm" ]
+  working_diagnosis: Ureteric (renal) colic
+  differentials:
+  - Acute pyelonephritis
+  - Ruptured abdominal aortic aneurysm
 investigations:
   appropriate:
-    - { name: "Non-contrast CT KUB", expected: "Stone in left ureter" }
-    - { name: "Urinalysis", expected: "Hematuria" }
-  inappropriate: [ "Abdominal X-ray" ]
-physical_exam_findings: { general: "Patient in distress, writhing on bed", vitals: { bp: "140/90", hr: "95", temp: "37.2°C" } }
+  - name: Non-contrast CT KUB
+    expected: Stone in left ureter
+  - name: Urinalysis
+    expected: Hematuria
+  inappropriate:
+  - Abdominal X-ray
+physical_exam_findings:
+  general: Patient in distress, writhing on bed
+  vitals:
+    bp: 140/90
+    hr: '95'
+    temp: 37.2°C
 management:
-  pharmacological: [ "NSAIDs (e.g., diclofenac)", "Tamsulosin for stone passage" ]
-  non_pharmacological: [ "IV fluids", "Strain urine for stone" ]
-  education_safety_netting: [ "Return if fever or unable to pass urine", "Follow-up imaging in 2 weeks" ]
+  pharmacological:
+  - NSAIDs (e.g., diclofenac)
+  - Tamsulosin for stone passage
+  non_pharmacological:
+  - IV fluids
+  - Strain urine for stone
+  education_safety_netting:
+  - Return if fever or unable to pass urine
+  - Follow-up imaging in 2 weeks
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

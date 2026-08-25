@@ -4,101 +4,154 @@ schema_version: 2
 status: in_review
 specialty: neurology
 system: nervous
-presentation: "Sudden weakness of the right side of the body"
-presentation_id: "Kelemahan mendadak pada lengan dan kaki kanan sejak pagi"
-first_impression: "Elderly man sitting slumped in wheelchair, right arm limp and face slightly drooping."
-first_impression_id: "Pasien tampak duduk letih di kursi roda, lengan kanan lemas dan wajah sedikit mencong."
-target_condition: "Acute ischaemic stroke in thrombolysis window"
+presentation: Sudden weakness of the right side of the body
+presentation_id: Kelemahan mendadak pada lengan dan kaki kanan sejak pagi
+first_impression: Elderly man sitting slumped in wheelchair, right arm limp and face
+  slightly drooping.
+first_impression_id: Pasien tampak duduk letih di kursi roda, lengan kanan lemas dan
+  wajah sedikit mencong.
+target_condition: Acute ischaemic stroke in thrombolysis window
 difficulty: 3
 estimated_minutes: 25
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "PPK Kemenkes (Panduan Praktik Klinis) untuk Stroke Iskemik — 2021"
-  - "PNPK Tata Laksana Stroke (KMK 304/2026) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes3042026"
-  - "AHA/ASA acute ischaemic stroke guidelines (2019)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I suddenly couldn't move my right arm and leg this morning."
+- PPK Kemenkes (Panduan Praktik Klinis) untuk Stroke Iskemik — 2021
+- PNPK Tata Laksana Stroke (KMK 304/2026) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes3042026
+- AHA/ASA acute ischaemic stroke guidelines (2019)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I suddenly couldn't move my right arm and leg this morning.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset — when did it start?", critical: true }
-    - { item: "Location — which body parts are affected?", critical: true }
-    - { item: "Duration — how long has it been going on?", critical: true }
-    - { item: "Character — describe the weakness (e.g., complete, partial)", critical: false }
-    - { item: "Aggravating/relieving factors — anything that makes it better or worse?", critical: false }
-    - { item: "Timing — constant or comes and goes?", critical: false }
-    - { item: "Severity — how bad is it on a scale of 1-10?", critical: false }
-    - { item: "Context — what were you doing when it started?", critical: false }
+  - item: Onset — when did it start?
+    critical: true
+  - item: Location — which body parts are affected?
+    critical: true
+  - item: Duration — how long has it been going on?
+    critical: true
+  - item: Character — describe the weakness (e.g., complete, partial)
+    critical: false
+  - item: Aggravating/relieving factors — anything that makes it better or worse?
+    critical: false
+  - item: Timing — constant or comes and goes?
+    critical: false
+  - item: Severity — how bad is it on a scale of 1-10?
+    critical: false
+  - item: Context — what were you doing when it started?
+    critical: false
   associated_symptoms:
-    - { item: "Headache", critical: true }
-    - { item: "Vomiting", critical: false }
-    - { item: "Loss of consciousness", critical: true }
-    - { item: "Difficulty speaking or understanding speech", critical: true }
-    - { item: "Facial droop", critical: true }
-    - { item: "Visual disturbance (blurred vision, double vision, loss of vision)", critical: false }
-    - { item: "Chest pain or palpitations", critical: false }
+  - item: Headache
+    critical: true
+  - item: Vomiting
+    critical: false
+  - item: Loss of consciousness
+    critical: true
+  - item: Difficulty speaking or understanding speech
+    critical: true
+  - item: Facial droop
+    critical: true
+  - item: Visual disturbance (blurred vision, double vision, loss of vision)
+    critical: false
+  - item: Chest pain or palpitations
+    critical: false
   pmh:
-    - { item: "Hypertension", critical: true }
-    - { item: "Diabetes mellitus", critical: true }
-    - { item: "Atrial fibrillation or other heart disease", critical: true }
-    - { item: "Previous stroke or transient ischaemic attack (TIA)", critical: true }
-    - { item: "Smoking history", critical: false }
+  - item: Hypertension
+    critical: true
+  - item: Diabetes mellitus
+    critical: true
+  - item: Atrial fibrillation or other heart disease
+    critical: true
+  - item: Previous stroke or transient ischaemic attack (TIA)
+    critical: true
+  - item: Smoking history
+    critical: false
   medications:
-    - { item: "Antihypertensives (e.g., amlodipine, captopril)", critical: true }
-    - { item: "Antidiabetics (e.g., metformin, insulin)", critical: true }
-    - { item: "Antiplatelets (e.g., aspirin, clopidogrel) or anticoagulants (e.g., warfarin)", critical: true }
-    - { item: "Statins", critical: false }
+  - item: Antihypertensives (e.g., amlodipine, captopril)
+    critical: true
+  - item: Antidiabetics (e.g., metformin, insulin)
+    critical: true
+  - item: Antiplatelets (e.g., aspirin, clopidogrel) or anticoagulants (e.g., warfarin)
+    critical: true
+  - item: Statins
+    critical: false
   family_social:
-    - { item: "Family history of stroke or heart disease", critical: false }
-    - { item: "Smoking or alcohol use", critical: false }
+  - item: Family history of stroke or heart disease
+    critical: false
+  - item: Smoking or alcohol use
+    critical: false
   ice_fife:
-    - { item: "Ideas — what do you think is wrong?", critical: true }
-    - { item: "Concerns — what worries you most?", critical: true }
-    - { item: "Expectations — what do you hope we can do for you?", critical: false }
+  - item: Ideas — what do you think is wrong?
+    critical: true
+  - item: Concerns — what worries you most?
+    critical: true
+  - item: Expectations — what do you hope we can do for you?
+    critical: false
 red_flags:
-  - { item: "Sudden onset of focal neurological deficit (unilateral weakness)", critical: true }
-  - { item: "Time of onset known and within 4.5 hours (thrombolysis window)", critical: true }
-  - { item: "No clear contraindications to thrombolysis (e.g., recent surgery, bleeding)", critical: true }
+- item: Sudden onset of focal neurological deficit (unilateral weakness)
+  critical: true
+- item: Time of onset known and within 4.5 hours (thrombolysis window)
+  critical: true
+- item: No clear contraindications to thrombolysis (e.g., recent surgery, bleeding)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acute ischaemic stroke in thrombolysis window"
+  working_diagnosis: Acute ischaemic stroke in thrombolysis window
   differentials:
-    - "Intracerebral haemorrhage"
-    - "Subarachnoid haemorrhage"
-    - "Seizure with Todd's paresis"
-    - "Hypoglycaemia"
-    - "Migraine with aura (hemiplegic migraine)"
+  - Intracerebral haemorrhage
+  - Subarachnoid haemorrhage
+  - Seizure with Todd's paresis
+  - Hypoglycaemia
+  - Migraine with aura (hemiplegic migraine)
 investigations:
   appropriate:
-    - { name: "Non-contrast CT head", expected: "No evidence of intracranial haemorrhage; possible early ischaemic signs (e.g., loss of grey-white differentiation, hyperdense artery sign)" }
-    - { name: "Blood glucose", expected: "Normal (e.g., 5.6 mmol/L) — excludes hypoglycaemia" }
-    - { name: "ECG", expected: "Possible atrial fibrillation or normal sinus rhythm" }
-    - { name: "INR/PTT", expected: "Normal (unless on anticoagulants)" }
+  - name: Non-contrast CT head
+    expected: No evidence of intracranial haemorrhage; possible early ischaemic signs
+      (e.g., loss of grey-white differentiation, hyperdense artery sign)
+  - name: Blood glucose
+    expected: Normal (e.g., 5.6 mmol/L) — excludes hypoglycaemia
+  - name: ECG
+    expected: Possible atrial fibrillation or normal sinus rhythm
+  - name: INR/PTT
+    expected: Normal (unless on anticoagulants)
   inappropriate:
-    - "MRI brain without prior CT"
-    - "Lumbar puncture"
+  - MRI brain without prior CT
+  - Lumbar puncture
 physical_exam_findings:
-  general: "Alert, anxious, sitting in wheelchair. Right-sided weakness noted. Mild dysarthria. Right facial droop."
+  general: Alert, anxious, sitting in wheelchair. Right-sided weakness noted. Mild
+    dysarthria. Right facial droop.
   vitals:
-    blood_pressure: "165/95 mmHg"
-    heart_rate: "82 bpm"
-    respiratory_rate: "18/min"
-    oxygen_saturation: "97% on room air"
-    temperature: "36.7°C"
+    blood_pressure: 165/95 mmHg
+    heart_rate: 82 bpm
+    respiratory_rate: 18/min
+    oxygen_saturation: 97% on room air
+    temperature: 36.7°C
 management:
   pharmacological:
-    - "Intravenous alteplase (tPA) if within 4.5 hours and no contraindications"
-    - "Aspirin 300 mg after haemorrhage excluded (if not given tPA)"
-    - "Antihypertensives if BP >185/110 mmHg (e.g., labetalol or nicardipine)"
+  - Intravenous alteplase (tPA) if within 4.5 hours and no contraindications
+  - Aspirin 300 mg after haemorrhage excluded (if not given tPA)
+  - Antihypertensives if BP >185/110 mmHg (e.g., labetalol or nicardipine)
   non_pharmacological:
-    - "Admit to stroke unit or intensive care"
-    - "Swallow assessment before oral intake"
-    - "Physiotherapy and occupational therapy"
+  - Admit to stroke unit or intensive care
+  - Swallow assessment before oral intake
+  - Physiotherapy and occupational therapy
   education_safety_netting:
-    - "Explain signs of deterioration (worsening weakness, decreased consciousness, headache)"
-    - "Importance of early treatment to minimise brain damage"
-    - "Lifestyle modifications: diet, exercise, medication adherence"
+  - Explain signs of deterioration (worsening weakness, decreased consciousness, headache)
+  - Importance of early treatment to minimise brain damage
+  - 'Lifestyle modifications: diet, exercise, medication adherence'
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

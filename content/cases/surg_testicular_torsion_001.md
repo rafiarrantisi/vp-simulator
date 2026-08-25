@@ -4,75 +4,132 @@ schema_version: 2
 status: in_review
 specialty: surgery
 system: genitourinary
-presentation: "Sudden severe testicular pain"
-presentation_id: "Nyeri hebat pada testis kanan yang muncul tiba-tiba beberapa jam lalu"
-first_impression: "Patient appears in pain."
-first_impression_id: "Pasien tampak kesakitan."
-target_condition: "Testicular torsion"
+presentation: Sudden severe testicular pain
+presentation_id: Nyeri hebat pada testis kanan yang muncul tiba-tiba beberapa jam
+  lalu
+first_impression: Patient appears in pain.
+first_impression_id: Pasien tampak kesakitan.
+target_condition: Testicular torsion
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: ["EAU Guidelines on Male Infertility, 2023", "AUA Urologic Guidelines"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have severe pain in my right testicle that started suddenly a few hours ago."
+languages:
+- en
+source_refs:
+- EAU Guidelines on Male Infertility, 2023
+- AUA Urologic Guidelines
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have severe pain in my right testicle that started suddenly a few
+  hours ago.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - right testicle", critical: true }
-    - { item: "Onset - sudden, while sleeping", critical: true }
-    - { item: "Character - sharp, constant, severe (10/10)", critical: true }
-    - { item: "Radiation - pain radiates to lower abdomen", critical: false }
-    - { item: "Associated symptoms - nausea, vomiting", critical: true }
-    - { item: "Timing - started about 3 hours ago", critical: false }
-    - { item: "Exacerbating factors - movement worsens", critical: false }
-    - { item: "Severity - worst pain ever, 10/10", critical: false }
+  - item: Site - right testicle
+    critical: true
+  - item: Onset - sudden, while sleeping
+    critical: true
+  - item: Character - sharp, constant, severe (10/10)
+    critical: true
+  - item: Radiation - pain radiates to lower abdomen
+    critical: false
+  - item: Associated symptoms - nausea, vomiting
+    critical: true
+  - item: Timing - started about 3 hours ago
+    critical: false
+  - item: Exacerbating factors - movement worsens
+    critical: false
+  - item: Severity - worst pain ever, 10/10
+    critical: false
   associated_symptoms:
-    - { item: "Nausea and vomiting", critical: true }
-    - { item: "Lower abdominal pain", critical: false }
-    - { item: "No fever or chills", critical: false }
-    - { item: "No urinary symptoms", critical: false }
+  - item: Nausea and vomiting
+    critical: true
+  - item: Lower abdominal pain
+    critical: false
+  - item: No fever or chills
+    critical: false
+  - item: No urinary symptoms
+    critical: false
   pmh:
-    - { item: "No prior testicular pain or trauma", critical: true }
-    - { item: "No history of sexually transmitted infections", critical: false }
-    - { item: "No surgeries", critical: false }
-    - { item: "No chronic illnesses", critical: false }
+  - item: No prior testicular pain or trauma
+    critical: true
+  - item: No history of sexually transmitted infections
+    critical: false
+  - item: No surgeries
+    critical: false
+  - item: No chronic illnesses
+    critical: false
   medications:
-    - { item: "No regular medications", critical: false }
-    - { item: "No allergies", critical: false }
+  - item: No regular medications
+    critical: false
+  - item: No allergies
+    critical: false
   family_social:
-    - { item: "Lives with parents, works as a delivery driver", critical: false }
-    - { item: "No family history of testicular problems", critical: false }
-    - { item: "Single, sexually active? (if asked: not currently active)", critical: false }
+  - item: Lives with parents, works as a delivery driver
+    critical: false
+  - item: No family history of testicular problems
+    critical: false
+  - item: 'Single, sexually active? (if asked: not currently active)'
+    critical: false
   ice_fife:
-    - { item: "Ideas - thinks it might be a pulled muscle or hernia", critical: true }
-    - { item: "Concerns - worried about losing the testicle or having cancer", critical: true }
-    - { item: "Expectations - wants pain relief and to know what's wrong", critical: false }
+  - item: Ideas - thinks it might be a pulled muscle or hernia
+    critical: true
+  - item: Concerns - worried about losing the testicle or having cancer
+    critical: true
+  - item: Expectations - wants pain relief and to know what's wrong
+    critical: false
 red_flags:
-  - { item: "Sudden onset severe testicular pain, especially in young male", critical: true }
-  - { item: "Nausea/vomiting with testicular pain", critical: false }
+- item: Sudden onset severe testicular pain, especially in young male
+  critical: true
+- item: Nausea/vomiting with testicular pain
+  critical: false
 expected_ddx:
-  working_diagnosis: "Testicular torsion"
-  differentials: ["Acute epididymitis", "Incarcerated inguinal hernia", "Testicular trauma"]
+  working_diagnosis: Testicular torsion
+  differentials:
+  - Acute epididymitis
+  - Incarcerated inguinal hernia
+  - Testicular trauma
 investigations:
   appropriate:
-    - { name: "Scrotal ultrasound with Doppler", expected: "Absent or decreased blood flow to affected testicle" }
-    - { name: "Urinalysis", expected: "No evidence of infection" }
-  inappropriate: ["CT scan of abdomen", "Testicular tumor markers"]
+  - name: Scrotal ultrasound with Doppler
+    expected: Absent or decreased blood flow to affected testicle
+  - name: Urinalysis
+    expected: No evidence of infection
+  inappropriate:
+  - CT scan of abdomen
+  - Testicular tumor markers
 physical_exam_findings:
-  general: "Patient appears in acute distress, lying still, pale, diaphoretic. Guarding lower abdomen."
-  vitals: { "BP": "130/80", "HR": "100", "RR": "18", "Temp": "37.0°C", "O2 sat": "99%" }
+  general: Patient appears in acute distress, lying still, pale, diaphoretic. Guarding
+    lower abdomen.
+  vitals:
+    BP: 130/80
+    HR: '100'
+    RR: '18'
+    Temp: 37.0°C
+    O2 sat: 99%
 management:
   pharmacological:
-    - "IV opioid analgesia (e.g., morphine) for pain"
-    - "Antiemetic (e.g., ondansetron) if needed"
+  - IV opioid analgesia (e.g., morphine) for pain
+  - Antiemetic (e.g., ondansetron) if needed
   non_pharmacological:
-    - "Manual detorsion attempt in emergency department"
-    - "Emergency surgical exploration and orchiopexy"
+  - Manual detorsion attempt in emergency department
+  - Emergency surgical exploration and orchiopexy
   education_safety_netting:
-    - "Explain urgency: time-sensitive to preserve testicle"
-    - "Advise no food/drink preoperatively"
-    - "Inform about risks of torsion and need for surgery"
+  - 'Explain urgency: time-sensitive to preserve testicle'
+  - Advise no food/drink preoperatively
+  - Inform about risks of torsion and need for surgery
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

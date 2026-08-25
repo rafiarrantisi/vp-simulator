@@ -1,100 +1,167 @@
 ---
 id: im_hyperthyroid_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: endocrine
-presentation: "Tremor weight loss and palpitations"
-presentation_id: "Tremor, penurunan berat badan, dan jantung berdebar"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Hyperthyroidism"
+presentation: Tremor weight loss and palpitations
+presentation_id: Tremor, penurunan berat badan, dan jantung berdebar
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Hyperthyroidism
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Thyroid Association Guidelines for the Diagnosis and Management of Hyperthyroidism (2016)"
-  - "ATA guidelines — hyperthyroidism (2016)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I've been losing weight without trying and I feel shaky and my heart races."
+- American Thyroid Association Guidelines for the Diagnosis and Management of Hyperthyroidism
+  (2016)
+- ATA guidelines — hyperthyroidism (2016)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I've been losing weight without trying and I feel shaky and my heart
+  races.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset – when did these symptoms start (gradual vs sudden)", critical: true }
-    - { item: "Duration – how long have they been present", critical: false }
-    - { item: "Severity – how bad is the tremor and palpitations", critical: false }
-    - { item: "Timing – constant or intermittent", critical: false }
-    - { item: "Aggravating factors – stress, caffeine, exercise", critical: false }
-    - { item: "Relieving factors – rest, lying down", critical: false }
+  - item: Onset – when did these symptoms start (gradual vs sudden)
+    critical: true
+  - item: Duration – how long have they been present
+    critical: false
+  - item: Severity – how bad is the tremor and palpitations
+    critical: false
+  - item: Timing – constant or intermittent
+    critical: false
+  - item: Aggravating factors – stress, caffeine, exercise
+    critical: false
+  - item: Relieving factors – rest, lying down
+    critical: false
   associated_symptoms:
-    - { item: "Heat intolerance or excessive sweating", critical: true }
-    - { item: "Increased appetite or change in eating habits", critical: false }
-    - { item: "Fatigue or weakness", critical: false }
-    - { item: "Insomnia or difficulty sleeping", critical: false }
-    - { item: "Emotional lability, anxiety, irritability", critical: false }
-    - { item: "Palpitations – fluttering, pounding, or irregular heartbeat", critical: true }
-    - { item: "Weight loss despite normal or increased appetite", critical: true }
-    - { item: "Tremor – fine shaking of hands", critical: true }
-    - { item: "Change in bowel habits (more frequent stools)", critical: false }
-    - { item: "Menstrual changes (women): lighter or less frequent periods", critical: false }
-    - { item: "Eye symptoms: bulging, gritty, double vision, lid lag", critical: false }
+  - item: Heat intolerance or excessive sweating
+    critical: true
+  - item: Increased appetite or change in eating habits
+    critical: false
+  - item: Fatigue or weakness
+    critical: false
+  - item: Insomnia or difficulty sleeping
+    critical: false
+  - item: Emotional lability, anxiety, irritability
+    critical: false
+  - item: Palpitations – fluttering, pounding, or irregular heartbeat
+    critical: true
+  - item: Weight loss despite normal or increased appetite
+    critical: true
+  - item: Tremor – fine shaking of hands
+    critical: true
+  - item: Change in bowel habits (more frequent stools)
+    critical: false
+  - item: 'Menstrual changes (women): lighter or less frequent periods'
+    critical: false
+  - item: 'Eye symptoms: bulging, gritty, double vision, lid lag'
+    critical: false
   pmh:
-    - { item: "Previous thyroid problems (e.g., goiter, nodules)", critical: true }
-    - { item: "Recent illness or infection", critical: false }
-    - { item: "Autoimmune conditions (e.g., type 1 diabetes, pernicious anemia)", critical: false }
-    - { item: "Pregnancy or postpartum status", critical: false }
+  - item: Previous thyroid problems (e.g., goiter, nodules)
+    critical: true
+  - item: Recent illness or infection
+    critical: false
+  - item: Autoimmune conditions (e.g., type 1 diabetes, pernicious anemia)
+    critical: false
+  - item: Pregnancy or postpartum status
+    critical: false
   medications:
-    - { item: "Current prescription medications (including amiodarone, lithium, iodine supplements)", critical: true }
-    - { item: "Over-the-counter supplements or herbal remedies", critical: false }
-    - { item: "Beta-blockers or other heart medications", critical: false }
+  - item: Current prescription medications (including amiodarone, lithium, iodine
+      supplements)
+    critical: true
+  - item: Over-the-counter supplements or herbal remedies
+    critical: false
+  - item: Beta-blockers or other heart medications
+    critical: false
   family_social:
-    - { item: "Family history of thyroid disease (hyperthyroidism, hypothyroidism, goiter)", critical: true }
-    - { item: "Smoking status (worsens Graves' ophthalmopathy)", critical: false }
-    - { item: "Stressful life events", critical: false }
+  - item: Family history of thyroid disease (hyperthyroidism, hypothyroidism, goiter)
+    critical: true
+  - item: Smoking status (worsens Graves' ophthalmopathy)
+    critical: false
+  - item: Stressful life events
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Unexplained weight loss", critical: true }
-  - { item: "Palpitations at rest or with minimal exertion", critical: true }
-  - { item: "Signs of thyroid storm: fever, altered mental status, chest pain, vomiting", critical: true }
-  - { item: "Eye symptoms (proptosis, vision changes) indicating possible optic neuropathy", critical: true }
+- item: Unexplained weight loss
+  critical: true
+- item: Palpitations at rest or with minimal exertion
+  critical: true
+- item: 'Signs of thyroid storm: fever, altered mental status, chest pain, vomiting'
+  critical: true
+- item: Eye symptoms (proptosis, vision changes) indicating possible optic neuropathy
+  critical: true
 expected_ddx:
-  working_diagnosis: "Hyperthyroidism"
-  differentials: [ "Anxiety disorder", "Pheochromocytoma", "Diabetes mellitus (uncontrolled)", "Malignancy (lymphoma, carcinoma)" ]
+  working_diagnosis: Hyperthyroidism
+  differentials:
+  - Anxiety disorder
+  - Pheochromocytoma
+  - Diabetes mellitus (uncontrolled)
+  - Malignancy (lymphoma, carcinoma)
 investigations:
   appropriate:
-    - { name: "TSH (thyroid-stimulating hormone)", expected: "Suppressed (low)" }
-    - { name: "Free T4 (thyroxine)", expected: "Elevated" }
-    - { name: "Free T3 (triiodothyronine)", expected: "Elevated (may be normal in early disease)" }
-    - { name: "Thyroid peroxidase antibodies (TPO) and thyroglobulin antibodies", expected: "Positive (in Graves' disease)" }
-    - { name: "TSH receptor antibody (TRAb)", expected: "Positive in Graves' disease" }
-    - { name: "Thyroid ultrasound with Doppler", expected: "Diffusely enlarged, hypervascular gland (Graves') or nodule(s) if toxic adenoma" }
-    - { name: "Radioactive iodine uptake and scan", expected: "Diffusely increased uptake (Graves') or focal uptake (toxic nodule)" }
-    - { name: "Complete blood count", expected: "Normal (baseline for antithyroid drug therapy)" }
-    - { name: "Liver function tests", expected: "Normal (baseline for methimazole)" }
+  - name: TSH (thyroid-stimulating hormone)
+    expected: Suppressed (low)
+  - name: Free T4 (thyroxine)
+    expected: Elevated
+  - name: Free T3 (triiodothyronine)
+    expected: Elevated (may be normal in early disease)
+  - name: Thyroid peroxidase antibodies (TPO) and thyroglobulin antibodies
+    expected: Positive (in Graves' disease)
+  - name: TSH receptor antibody (TRAb)
+    expected: Positive in Graves' disease
+  - name: Thyroid ultrasound with Doppler
+    expected: Diffusely enlarged, hypervascular gland (Graves') or nodule(s) if toxic
+      adenoma
+  - name: Radioactive iodine uptake and scan
+    expected: Diffusely increased uptake (Graves') or focal uptake (toxic nodule)
+  - name: Complete blood count
+    expected: Normal (baseline for antithyroid drug therapy)
+  - name: Liver function tests
+    expected: Normal (baseline for methimazole)
   inappropriate:
-    - { name: "CT scan of the neck without clear indication" }
-    - { name: "Serum calcium and PTH for workup of hyperthyroidism" }
+  - name: CT scan of the neck without clear indication
+  - name: Serum calcium and PTH for workup of hyperthyroidism
 physical_exam_findings:
-  general: "Thin, anxious-appearing woman in mild distress. Warm, moist skin. Fine tremor of outstretched hands. Tachycardic. Possible mild exophthalmos and lid lag. Thyroid gland diffusely enlarged (goiter), palpable thrill or audible bruit. Hyperreflexia."
-  vitals: { pulse: 110, blood_pressure: 140/80, respiratory_rate: 16, temperature: 37.2, oxygen_saturation: 98 }
+  general: Thin, anxious-appearing woman in mild distress. Warm, moist skin. Fine
+    tremor of outstretched hands. Tachycardic. Possible mild exophthalmos and lid
+    lag. Thyroid gland diffusely enlarged (goiter), palpable thrill or audible bruit.
+    Hyperreflexia.
+  vitals:
+    pulse: 110
+    blood_pressure: 140/80
+    respiratory_rate: 16
+    temperature: 37.2
+    oxygen_saturation: 98
 management:
   pharmacological:
-    - "Antithyroid drug: Methimazole (start 10–20 mg daily, then adjust)"
-    - "Beta-blocker: Propranolol (10–40 mg QID) for symptom control"
-    - "Consider radioactive iodine (RAI) or thyroidectomy if definitive therapy needed"
+  - 'Antithyroid drug: Methimazole (start 10–20 mg daily, then adjust)'
+  - 'Beta-blocker: Propranolol (10–40 mg QID) for symptom control'
+  - Consider radioactive iodine (RAI) or thyroidectomy if definitive therapy needed
   non_pharmacological:
-    - "Low-iodine diet (avoid shellfish, iodized salt, supplements)"
-    - "Counsel on smoking cessation (reduces progression of Graves' ophthalmopathy)"
-    - "Stress reduction techniques"
+  - Low-iodine diet (avoid shellfish, iodized salt, supplements)
+  - Counsel on smoking cessation (reduces progression of Graves' ophthalmopathy)
+  - Stress reduction techniques
   education_safety_netting:
-    - "Educate about signs of thyroid storm: fever, rapid irregular pulse, confusion, vomiting – seek immediate care"
-    - "Medication adherence and monitoring of side effects (agranulocytosis, hepatotoxicity) – report sore throat, fever, jaundice"
-    - "Regular follow-up with endocrinology for dose adjustments and monitoring of thyroid function"
-    - "If pregnant or planning pregnancy, discuss risks and management"
+  - 'Educate about signs of thyroid storm: fever, rapid irregular pulse, confusion,
+    vomiting – seek immediate care'
+  - Medication adherence and monitoring of side effects (agranulocytosis, hepatotoxicity)
+    – report sore throat, fever, jaundice
+  - Regular follow-up with endocrinology for dose adjustments and monitoring of thyroid
+    function
+  - If pregnant or planning pregnancy, discuss risks and management
 scoring_weights_override: null
 ---
 

@@ -21,8 +21,20 @@ SPECIALTIES = frozenset({
     "internal_medicine", "surgery", "paediatrics", "obstetrics_gynaecology",
     "psychiatry", "neurology", "ent", "dermatology", "ophthalmology", "emergency",
 })
-STATUSES = frozenset({"draft", "in_review", "published", "retired"})
+STATUSES = frozenset({
+    "draft", "ai_generated", "in_review", "clinically_reviewed",
+    "pilot_verified", "needs_update", "published", "retired",
+})
 MODES = frozenset({"anamnesis", "osce_full"})
+
+# Clinical review workflow (§11 of master plan). `status` doubles as the
+# review state; "published"/"retired" are terminal catalog states.
+RELEASE_STATES = frozenset({
+    "clinically_reviewed", "pilot_verified", "needs_update",
+    "published", "retired",
+})
+# Statuses that must NOT appear while requiring review (blocked transitions).
+PILOT_CANDIDATE_STATES = frozenset({"ai_generated", "in_review", "clinically_reviewed"})
 
 # Specialty -> id abbreviation (BUILD_PLAN §5.1 ID convention).
 SPECIALTY_ABBREV: dict[str, str] = {
@@ -105,6 +117,74 @@ class CaseV2:
             if low in header:
                 return text
         return ""
+
+    # ---- Review workflow (§11) ----
+    @property
+    def review_state(self) -> str:
+        return str(self.frontmatter.get("status") or "draft")
+
+    @property
+    def pilot_candidate(self) -> bool:
+        return bool(self.frontmatter.get("pilot_candidate", False))
+
+    def reviewed_by(self) -> str:
+        au = self.frontmatter.get("authoring") or {}
+        return (au.get("reviewed_by") or "").strip()
+
+    def is_released(self) -> bool:
+        """True once the case is safe to surface to learners (§11)."""
+        st = self.review_state
+        if st == "requires_review":  # defensive
+            return False
+        # published/retired are always surfaced; else require clinical sign-off.
+        if st in ("published", "retired"):
+            return True
+        return st in ("clinically_reviewed", "pilot_verified") and bool(self.reviewed_by())
+
+    # ---- Source / grounding (plan §11 Tier hierarchy) ----
+    def source_refs(self) -> list:
+        """Normalise source_refs to list of dicts (accepts string or dict entries)."""
+        raw = self.frontmatter.get("source_refs") or []
+        if isinstance(raw, str):
+            raw = [raw]
+        out = []
+        for r in raw:
+            if isinstance(r, dict):
+                out.append({
+                    "title": str(r.get("title") or r.get("name") or "").strip(),
+                    "authority": str(r.get("authority") or "").strip(),
+                    "version": str(r.get("version") or "").strip(),
+                    "year": str(r.get("year") or "").strip(),
+                    "url": str(r.get("url") or "").strip(),
+                    "effective_date": str(r.get("effective_date") or "").strip(),
+                })
+            else:
+                out.append({"title": str(r).strip(), "authority": "", "version": "",
+                            "year": "", "url": "", "effective_date": ""})
+        return out
+
+    def has_indonesian_grounding(self) -> bool:
+        """True if any source looks Indonesian official (PNPK/KMK/PerMenKes/JDIH)."""
+        _prefixes = ("pnpk", "perm", "kmk", "kepmen", "jdih.kemkes", "e-fornas",
+                     "formularium", "kemenkes", "kki", "skdi")
+        for s in self.source_refs():
+            hay = " ".join(v for v in s.values() if v).lower()
+            if any(p in hay for p in _prefixes):
+                return True
+        return False
+
+    # ---- Competency mapping (§3.1 / §6.1) ----
+    def competency(self) -> dict:
+        return self.frontmatter.get("competency") or {}
+
+    # ---- Variant family (§13) ----
+    @property
+    def variant_family(self) -> str:
+        return str(self.frontmatter.get("variant_family") or "").strip()
+
+    @property
+    def variant_id(self) -> str:
+        return str(self.frontmatter.get("variant_id") or "").strip()
 
 
 def _norm_item(it, group: str) -> dict:
@@ -264,6 +344,34 @@ def lint(case: CaseV2) -> LintResult:
         warnings.append("no `estimated_minutes`")
     if fm.get("status") == "draft":
         warnings.append("status=draft (not yet publishable)")
+
+    # ── Review workflow (§1/§11) ──
+    br = case.reviewed_by()
+    if fm.get("status") in RELEASE_STATES and not br:
+        errors.append(
+            "`status` in %s requires `authoring.reviewed_by` (clinical sign-off) "
+            "— see master plan §11" % sorted(RELEASE_STATES)
+        )
+    if case.pilot_candidate and fm.get("status") == "draft":
+        warnings.append("pilot_candidate but status=draft (not ready for a pilot set)")
+    # released cases are exempt from the "released-but-no-reviewer" drift check below.
+
+    # Indonesian PNPK/KMK grounding (plan §11 Tier 0/1) — informational.
+    if not case.has_indonesian_grounding():
+        warnings.append("no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` — "
+                        "internasional-only or none")
+
+    # ── Competency mapping (§3.1 / §6.1) ──
+    comp = case.competency()
+    if comp:
+        for k in ("standard", "authority", "version"):
+            if not str(comp.get(k) or "").strip():
+                errors.append(f"`competency.{k}` missing (wajib untuk version-aware mapping)")
+
+    # ── Variant family (§13) ──
+    if (case.variant_family or case.variant_id) and not (case.variant_family and case.variant_id):
+        errors.append("`variant_family` and `variant_id` must be set together")
+
     # Heuristic persona-consistency: critical checklist items should have some
     # apparent grounding in the body (true check is LLM-assisted, Phase 2).
     what_i_know = (

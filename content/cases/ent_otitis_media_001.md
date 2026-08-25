@@ -1,104 +1,105 @@
 ---
 id: ent_otitis_media_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ent
 system: ear
-presentation: "Ear pain in a child"
-presentation_id: "Nyeri telinga pada anak selama dua hari"
-first_impression: "Patient appears to have ear, nose, or throat discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
-target_condition: "Acute otitis media"
+presentation: Ear pain in a child
+presentation_id: Nyeri telinga pada anak selama dua hari
+first_impression: Patient appears to have ear, nose, or throat discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau
+  tenggorokan.
+target_condition: Acute otitis media
 difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
 languages:
-  - en
+- en
 source_refs:
-  - "AAP Clinical Practice Guideline for Acute Otitis Media (2013)"
+- AAP Clinical Practice Guideline for Acute Otitis Media (2013)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "My child has had ear pain for two days."
+chief_complaint: My child has had ear pain for two days.
 anamnesis_checklist:
   hpi_socrates:
-    - item: "Onset - when did the pain start?"
-      critical: true
-    - item: "Location - which ear?"
-      critical: false
-    - item: "Duration - how long has it lasted?"
-      critical: false
-    - item: "Character - sharp, dull, throbbing?"
-      critical: false
-    - item: "Aggravating factors - does anything make it worse?"
-      critical: false
-    - item: "Relieving factors - does anything help?"
-      critical: false
-    - item: "Timing - constant or intermittent?"
-      critical: false
-    - item: "Severity - on a scale 1-10?"
-      critical: true
-  associated_symptoms:
-    - item: "Fever - measured temperature?"
-      critical: true
-    - item: "Cough or runny nose in the past week?"
-      critical: false
-    - item: "Ear discharge or drainage?"
-      critical: true
-    - item: "Hearing difficulty?"
-      critical: false
-    - item: "Irritability or crying more than usual?"
-      critical: false
-    - item: "Vomiting or diarrhea?"
-      critical: false
-    - item: "Loss of appetite?"
-      critical: false
-  pmh:
-    - item: "Previous ear infections?"
-      critical: false
-    - item: "Any chronic medical conditions?"
-      critical: false
-    - item: "Immunizations up to date?"
-      critical: false
-  medications:
-    - item: "Any medications given for the pain?"
-      critical: false
-    - item: "Any antibiotics recently?"
-      critical: false
-    - item: "Any allergies to medications?"
-      critical: false
-  family_social:
-    - item: "Anyone else at home sick?"
-      critical: false
-    - item: "Exposure to smoke?"
-      critical: false
-    - item: "Daycare attendance?"
-      critical: false
-  ice_fife:
-    - item: "Ideas - what do you think might be wrong?"
-      critical: true
-    - item: "Concerns - what worries you the most?"
-      critical: true
-    - item: "Expectations - what do you hope the doctor will do?"
-      critical: false
-red_flags:
-  - item: "High fever (>102°F or 39°C)"
+  - item: Onset - when did the pain start?
     critical: true
-  - item: "Severe pain that doesn't respond to acetaminophen"
+  - item: Location - which ear?
     critical: false
-  - item: "Lethargy or extreme irritability"
+  - item: Duration - how long has it lasted?
+    critical: false
+  - item: Character - sharp, dull, throbbing?
+    critical: false
+  - item: Aggravating factors - does anything make it worse?
+    critical: false
+  - item: Relieving factors - does anything help?
+    critical: false
+  - item: Timing - constant or intermittent?
+    critical: false
+  - item: Severity - on a scale 1-10?
     critical: true
-  - item: "Stiff neck or seizure"
+  associated_symptoms:
+  - item: Fever - measured temperature?
     critical: true
+  - item: Cough or runny nose in the past week?
+    critical: false
+  - item: Ear discharge or drainage?
+    critical: true
+  - item: Hearing difficulty?
+    critical: false
+  - item: Irritability or crying more than usual?
+    critical: false
+  - item: Vomiting or diarrhea?
+    critical: false
+  - item: Loss of appetite?
+    critical: false
+  pmh:
+  - item: Previous ear infections?
+    critical: false
+  - item: Any chronic medical conditions?
+    critical: false
+  - item: Immunizations up to date?
+    critical: false
+  medications:
+  - item: Any medications given for the pain?
+    critical: false
+  - item: Any antibiotics recently?
+    critical: false
+  - item: Any allergies to medications?
+    critical: false
+  family_social:
+  - item: Anyone else at home sick?
+    critical: false
+  - item: Exposure to smoke?
+    critical: false
+  - item: Daycare attendance?
+    critical: false
+  ice_fife:
+  - item: Ideas - what do you think might be wrong?
+    critical: true
+  - item: Concerns - what worries you the most?
+    critical: true
+  - item: Expectations - what do you hope the doctor will do?
+    critical: false
+red_flags:
+- item: High fever (>102°F or 39°C)
+  critical: true
+- item: Severe pain that doesn't respond to acetaminophen
+  critical: false
+- item: Lethargy or extreme irritability
+  critical: true
+- item: Stiff neck or seizure
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acute otitis media"
+  working_diagnosis: Acute otitis media
   differentials:
-    - "Otitis media with effusion"
-    - "Acute mastoiditis"
-    - "Foreign body in ear canal"
+  - Otitis media with effusion
+  - Acute mastoiditis
+  - Foreign body in ear canal
 investigations:
   appropriate: []
   inappropriate: []

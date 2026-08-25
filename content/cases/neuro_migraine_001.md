@@ -4,69 +4,132 @@ schema_version: 2
 status: in_review
 specialty: neurology
 system: nervous
-presentation: "Recurrent headache"
-presentation_id: "Sakit kepala berulang yang terasa berat dan membuat mual"
-first_impression: "Patient appears to have neurological concerns."
-first_impression_id: "Pasien tampak mengalami masalah neurologis."
-target_condition: "Migraine"
+presentation: Recurrent headache
+presentation_id: Sakit kepala berulang yang terasa berat dan membuat mual
+first_impression: Patient appears to have neurological concerns.
+first_impression_id: Pasien tampak mengalami masalah neurologis.
+target_condition: Migraine
 difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
-source_refs: [ "International Headache Society (IHS) ICHD-3 beta" ]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I keep getting these really bad headaches that make me feel sick."
+languages:
+- en
+source_refs:
+- International Headache Society (IHS) ICHD-3 beta
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I keep getting these really bad headaches that make me feel sick.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain", critical: false }
-    - { item: "Onset (gradual or sudden)", critical: false }
-    - { item: "Character (throbbing, pressing, stabbing)", critical: true }
-    - { item: "Radiation", critical: false }
-    - { item: "Associated symptoms (nausea, vomiting, light sensitivity, sound sensitivity)", critical: true }
-    - { item: "Time course (duration, frequency, pattern)", critical: true }
-    - { item: "Exacerbating factors (movement, light, sound, activity)", critical: true }
-    - { item: "Severity (on a scale of 0-10, impact on daily life)", critical: true }
+  - item: Site of pain
+    critical: false
+  - item: Onset (gradual or sudden)
+    critical: false
+  - item: Character (throbbing, pressing, stabbing)
+    critical: true
+  - item: Radiation
+    critical: false
+  - item: Associated symptoms (nausea, vomiting, light sensitivity, sound sensitivity)
+    critical: true
+  - item: Time course (duration, frequency, pattern)
+    critical: true
+  - item: Exacerbating factors (movement, light, sound, activity)
+    critical: true
+  - item: Severity (on a scale of 0-10, impact on daily life)
+    critical: true
   associated_symptoms:
-    - { item: "Nausea or vomiting", critical: true }
-    - { item: "Sensitivity to light (photophobia)", critical: true }
-    - { item: "Sensitivity to sound (phonophobia)", critical: true }
-    - { item: "Visual changes before headache (aura)", critical: false }
-    - { item: "Neck stiffness", critical: false }
+  - item: Nausea or vomiting
+    critical: true
+  - item: Sensitivity to light (photophobia)
+    critical: true
+  - item: Sensitivity to sound (phonophobia)
+    critical: true
+  - item: Visual changes before headache (aura)
+    critical: false
+  - item: Neck stiffness
+    critical: false
   pmh:
-    - { item: "History of similar headaches", critical: true }
-    - { item: "Head injury", critical: false }
-    - { item: "Sinus problems", critical: false }
-    - { item: "High blood pressure", critical: false }
+  - item: History of similar headaches
+    critical: true
+  - item: Head injury
+    critical: false
+  - item: Sinus problems
+    critical: false
+  - item: High blood pressure
+    critical: false
   medications:
-    - { item: "Current medications (including over-the-counter painkillers)", critical: true }
-    - { item: "Frequency of painkiller use", critical: false }
+  - item: Current medications (including over-the-counter painkillers)
+    critical: true
+  - item: Frequency of painkiller use
+    critical: false
   family_social:
-    - { item: "Family history of headaches or migraines", critical: true }
-    - { item: "Occupation and stress levels", critical: false }
-    - { item: "Sleep patterns", critical: false }
-    - { item: "Caffeine or alcohol use", critical: false }
+  - item: Family history of headaches or migraines
+    critical: true
+  - item: Occupation and stress levels
+    critical: false
+  - item: Sleep patterns
+    critical: false
+  - item: Caffeine or alcohol use
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Sudden onset 'thunderclap' headache", critical: true }
-  - { item: "Headache with fever or stiff neck", critical: true }
-  - { item: "Headache after head injury", critical: true }
-  - { item: "New headache in patient over 50", critical: true }
-  - { item: "Headache with neurological symptoms (weakness, numbness, speech changes)", critical: true }
+- item: Sudden onset 'thunderclap' headache
+  critical: true
+- item: Headache with fever or stiff neck
+  critical: true
+- item: Headache after head injury
+  critical: true
+- item: New headache in patient over 50
+  critical: true
+- item: Headache with neurological symptoms (weakness, numbness, speech changes)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Migraine"
-  differentials: [ "Tension-type headache", "Cervicogenic headache" ]
+  working_diagnosis: Migraine
+  differentials:
+  - Tension-type headache
+  - Cervicogenic headache
 investigations:
-  appropriate: [ { name: "Clinical history and physical exam (no routine imaging needed)", expected: "Diagnosis based on ICHD-3 criteria" } ]
-  inappropriate: [ "CT scan of head for every headache" ]
-physical_exam_findings: { general: "Patient appears uncomfortable, holding head. No focal neurological deficits.", vitals: { bp: "120/80", hr: 72, temp: "36.8°C" } }
+  appropriate:
+  - name: Clinical history and physical exam (no routine imaging needed)
+    expected: Diagnosis based on ICHD-3 criteria
+  inappropriate:
+  - CT scan of head for every headache
+physical_exam_findings:
+  general: Patient appears uncomfortable, holding head. No focal neurological deficits.
+  vitals:
+    bp: 120/80
+    hr: 72
+    temp: 36.8°C
 management:
-  pharmacological: [ "Acute treatment: triptans (e.g., sumatriptan) or NSAIDs", "Preventive treatment if frequent: beta-blockers, amitriptyline, or topiramate" ]
-  non_pharmacological: [ "Identify and avoid triggers (e.g., stress, lack of sleep, certain foods)", "Regular sleep schedule, hydration, exercise" ]
-  education_safety_netting: [ "Explain migraine as a neurological condition, not just a headache", "When to seek urgent care: sudden severe headache, fever, stiff neck, or neurological symptoms" ]
+  pharmacological:
+  - 'Acute treatment: triptans (e.g., sumatriptan) or NSAIDs'
+  - 'Preventive treatment if frequent: beta-blockers, amitriptyline, or topiramate'
+  non_pharmacological:
+  - Identify and avoid triggers (e.g., stress, lack of sleep, certain foods)
+  - Regular sleep schedule, hydration, exercise
+  education_safety_netting:
+  - Explain migraine as a neurological condition, not just a headache
+  - 'When to seek urgent care: sudden severe headache, fever, stiff neck, or neurological
+    symptoms'
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

@@ -1,106 +1,130 @@
 ---
 id: im_gi_appendicitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: gastrointestinal
-presentation: "Acute abdominal pain"
-presentation_id: "Nyeri perut yang memburuk, dari tengah ke kanan bawah, selama 18 jam"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Appendicitis"
+presentation: Acute abdominal pain
+presentation_id: Nyeri perut yang memburuk, dari tengah ke kanan bawah, selama 18
+  jam
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Appendicitis
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "GMC MLA Content Map (2026)"
-  - "NICE CKS: Appendicitis"
-  - "WSES Jerusalem guidelines — acute appendicitis (2020)"
+- GMC MLA Content Map (2026)
+- 'NICE CKS: Appendicitis'
+- WSES Jerusalem guidelines — acute appendicitis (2020)
 authoring:
   drafted_by: human+ai
   model: adapted_from_build_plan_5.1
   reviewed_by: null
   reviewed_at: null
-  review_notes: "Cross-specialty exemplar (non-ophthalmology) proving schema v2 + osce_full mode. Study-aid draft pending clinician sign-off."
-
-chief_complaint: "Worsening central-then-right-lower abdominal pain for 18h"
-
+  review_notes: Cross-specialty exemplar (non-ophthalmology) proving schema v2 + osce_full
+    mode. Study-aid draft pending clinician sign-off.
+chief_complaint: Worsening central-then-right-lower abdominal pain for 18h
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset / timing of pain", critical: true }
-    - { item: "Site + migration (periumbilical -> right iliac fossa)", critical: true }
-    - { item: "Character / severity / radiation", critical: false }
-    - { item: "Aggravating/relieving (movement, coughing)", critical: false }
+  - item: Onset / timing of pain
+    critical: true
+  - item: Site + migration (periumbilical -> right iliac fossa)
+    critical: true
+  - item: Character / severity / radiation
+    critical: false
+  - item: Aggravating/relieving (movement, coughing)
+    critical: false
   associated_symptoms:
-    - { item: "Anorexia", critical: true }
-    - { item: "Nausea / vomiting", critical: false }
-    - { item: "Fever", critical: true }
-    - { item: "Bowel / urinary change (to exclude mimics)", critical: false }
+  - item: Anorexia
+    critical: true
+  - item: Nausea / vomiting
+    critical: false
+  - item: Fever
+    critical: true
+  - item: Bowel / urinary change (to exclude mimics)
+    critical: false
   pmh:
-    - { item: "Prior abdominal surgery", critical: false }
+  - item: Prior abdominal surgery
+    critical: false
   medications:
-    - { item: "Analgesia taken / allergies", critical: false }
+  - item: Analgesia taken / allergies
+    critical: false
   family_social:
-    - { item: "Relevant family history / social (alcohol, occupation)", critical: false }
+  - item: Relevant family history / social (alcohol, occupation)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
-
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Signs of peritonitis / generalised guarding", critical: true }
-  - { item: "Haemodynamic instability (syncope, severe tachycardia)", critical: true }
-  - { item: "GI bleeding / black stools", critical: true }
-  - { item: "Pregnancy (ectopic) in a person who can be pregnant", critical: true }
-
+- item: Signs of peritonitis / generalised guarding
+  critical: true
+- item: Haemodynamic instability (syncope, severe tachycardia)
+  critical: true
+- item: GI bleeding / black stools
+  critical: true
+- item: Pregnancy (ectopic) in a person who can be pregnant
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acute appendicitis"
+  working_diagnosis: Acute appendicitis
   differentials:
-    - "Mesenteric adenitis"
-    - "Ectopic pregnancy"
-    - "Ovarian torsion / ruptured cyst"
-    - "Ureteric colic"
-    - "Gastroenteritis"
-
+  - Mesenteric adenitis
+  - Ectopic pregnancy
+  - Ovarian torsion / ruptured cyst
+  - Ureteric colic
+  - Gastroenteritis
 investigations:
   appropriate:
-    - { name: "Full blood count", expected: "Neutrophilia / raised white cell count" }
-    - { name: "CRP", expected: "Elevated" }
-    - { name: "Urinalysis", expected: "Mild pyuria possible; exclude UTI/stone" }
-    - { name: "Beta-hCG (if able to be pregnant)", expected: "Negative" }
-    - { name: "Ultrasound / CT abdomen", expected: "Inflamed, non-compressible appendix" }
+  - name: Full blood count
+    expected: Neutrophilia / raised white cell count
+  - name: CRP
+    expected: Elevated
+  - name: Urinalysis
+    expected: Mild pyuria possible; exclude UTI/stone
+  - name: Beta-hCG (if able to be pregnant)
+    expected: Negative
+  - name: Ultrasound / CT abdomen
+    expected: Inflamed, non-compressible appendix
   inappropriate:
-    - "Echocardiogram"
-    - "Thyroid function tests"
-
+  - Echocardiogram
+  - Thyroid function tests
 physical_exam_findings:
-  general: "Lying still, looks unwell, low-grade fever"
-  abdomen: "Right iliac fossa tenderness, Rovsing's sign positive, guarding"
-  vitals: { hr: 98, bp: "120/76", temp: 37.9, rr: 18, spo2: 99 }
+  general: Lying still, looks unwell, low-grade fever
+  abdomen: Right iliac fossa tenderness, Rovsing's sign positive, guarding
+  vitals:
+    hr: 98
+    bp: 120/76
+    temp: 37.9
+    rr: 18
+    spo2: 99
   media:
-    - type: image
-      label: "Abdominal examination"
-      src: "exam-media/appendix-abdomen.svg"
-      caption: "Point tenderness at McBurney's point with guarding; Rovsing's sign positive."
-    - type: ultrasound
-      label: "RIF ultrasound"
-      src: "exam-media/appendix-ultrasound.svg"
-      caption: "Non-compressible blind-ending tubular structure, diameter 8.4 mm (target sign)."
-
+  - type: image
+    label: Abdominal examination
+    src: exam-media/appendix-abdomen.svg
+    caption: Point tenderness at McBurney's point with guarding; Rovsing's sign positive.
+  - type: ultrasound
+    label: RIF ultrasound
+    src: exam-media/appendix-ultrasound.svg
+    caption: Non-compressible blind-ending tubular structure, diameter 8.4 mm (target
+      sign).
 management:
   pharmacological:
-    - "Analgesia"
-    - "IV fluids"
-    - "Antibiotics per local policy"
+  - Analgesia
+  - IV fluids
+  - Antibiotics per local policy
   non_pharmacological:
-    - "Keep nil by mouth"
-    - "Surgical referral for appendicectomy"
+  - Keep nil by mouth
+  - Surgical referral for appendicectomy
   education_safety_netting:
-    - "Explain the likely diagnosis and plan"
-    - "Consent for surgery"
-    - "Red-flag return advice"
-
+  - Explain the likely diagnosis and plan
+  - Consent for surgery
+  - Red-flag return advice
 scoring_weights_override: null
 ---
 

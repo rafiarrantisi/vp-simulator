@@ -1,112 +1,112 @@
 ---
 id: paed_uti_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: paediatrics
 system: urinary
-presentation: "Feverish 4-year-old with smelly urine"
-presentation_id: "Anak perempuan 4 tahun demam dengan air kencing berbau busuk"
-first_impression: "A child appears unwell."
-first_impression_id: "Seorang anak tampak tidak sehat."
-target_condition: "Urinary tract infection in a child"
+presentation: Feverish 4-year-old with smelly urine
+presentation_id: Anak perempuan 4 tahun demam dengan air kencing berbau busuk
+first_impression: A child appears unwell.
+first_impression_id: Seorang anak tampak tidak sehat.
+target_condition: Urinary tract infection in a child
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline NG224: Urinary tract infection in under 16s"
-  - "AAP — UTI in children guideline (2011); NICE NG224"
-
+- 'NICE guideline NG224: Urinary tract infection in under 16s'
+- AAP — UTI in children guideline (2011); NICE NG224
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "My 4-year-old daughter has a fever and her wee smells really bad."
+chief_complaint: My 4-year-old daughter has a fever and her wee smells really bad.
 anamnesis_checklist:
   hpi_socrates:
-    - item: "When did the fever start?"
-      critical: true
-    - item: "How high is the fever?"
-      critical: false
-    - item: "Has she complained of pain when peeing?"
-      critical: true
-    - item: "Is she peeing more often or less than usual?"
-      critical: false
-    - item: "Has she had any accidents (wetting herself) recently?"
-      critical: false
-    - item: "What does the urine look like? Any blood?"
-      critical: true
-    - item: "Has she had any vomiting or diarrhoea?"
-      critical: false
-    - item: "Has she been drinking less than usual?"
-      critical: false
-  associated_symptoms:
-    - item: "Any tummy pain or back pain?"
-      critical: true
-    - item: "Any cough, runny nose, or earache?"
-      critical: false
-    - item: "Any rash?"
-      critical: false
-  pmh:
-    - item: "Has she ever had a urinary tract infection before?"
-      critical: true
-    - item: "Any problems with her kidneys or bladder?"
-      critical: true
-    - item: "Any constipation?"
-      critical: false
-    - item: "Any other medical conditions?"
-      critical: false
-  medications:
-    - item: "Is she on any regular medicines?"
-      critical: false
-    - item: "Has she taken any paracetamol or ibuprofen for the fever?"
-      critical: false
-    - item: "Any allergies to medicines?"
-      critical: true
-  family_social:
-    - item: "Does anyone in the family have frequent UTIs or kidney problems?"
-      critical: false
-    - item: "Does she go to nursery or school?"
-      critical: false
-    - item: "Is she potty trained? Any issues with wiping?"
-      critical: false
-  ice_fife:
-    - item: "Ideas - what they think is wrong"
-      critical: true
-    - item: "Concerns - what worries them"
-      critical: true
-    - item: "Expectations - what they hope for"
-      critical: false
-red_flags:
-  - item: "High fever (≥39°C) in a child under 6 months"
+  - item: When did the fever start?
     critical: true
-  - item: "Lethargy or unresponsiveness"
-    critical: true
-  - item: "Vomiting preventing oral intake"
-    critical: true
-  - item: "Signs of dehydration (dry mouth, no tears, sunken eyes)"
-    critical: true
-  - item: "Blood in urine"
+  - item: How high is the fever?
     critical: false
+  - item: Has she complained of pain when peeing?
+    critical: true
+  - item: Is she peeing more often or less than usual?
+    critical: false
+  - item: Has she had any accidents (wetting herself) recently?
+    critical: false
+  - item: What does the urine look like? Any blood?
+    critical: true
+  - item: Has she had any vomiting or diarrhoea?
+    critical: false
+  - item: Has she been drinking less than usual?
+    critical: false
+  associated_symptoms:
+  - item: Any tummy pain or back pain?
+    critical: true
+  - item: Any cough, runny nose, or earache?
+    critical: false
+  - item: Any rash?
+    critical: false
+  pmh:
+  - item: Has she ever had a urinary tract infection before?
+    critical: true
+  - item: Any problems with her kidneys or bladder?
+    critical: true
+  - item: Any constipation?
+    critical: false
+  - item: Any other medical conditions?
+    critical: false
+  medications:
+  - item: Is she on any regular medicines?
+    critical: false
+  - item: Has she taken any paracetamol or ibuprofen for the fever?
+    critical: false
+  - item: Any allergies to medicines?
+    critical: true
+  family_social:
+  - item: Does anyone in the family have frequent UTIs or kidney problems?
+    critical: false
+  - item: Does she go to nursery or school?
+    critical: false
+  - item: Is she potty trained? Any issues with wiping?
+    critical: false
+  ice_fife:
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
+red_flags:
+- item: High fever (≥39°C) in a child under 6 months
+  critical: true
+- item: Lethargy or unresponsiveness
+  critical: true
+- item: Vomiting preventing oral intake
+  critical: true
+- item: Signs of dehydration (dry mouth, no tears, sunken eyes)
+  critical: true
+- item: Blood in urine
+  critical: false
 expected_ddx:
-  working_diagnosis: "Urinary tract infection in a child"
+  working_diagnosis: Urinary tract infection in a child
   differentials:
-    - "Viral illness (e.g., influenza, adenovirus)"
-    - "Constipation with overflow incontinence"
-    - "Vulvovaginitis"
+  - Viral illness (e.g., influenza, adenovirus)
+  - Constipation with overflow incontinence
+  - Vulvovaginitis
 investigations:
   appropriate:
-    - name: "Urine dipstick"
-      expected: "Positive for leukocytes and/or nitrites"
-    - name: "Urine culture and sensitivity"
-      expected: "Growth of a single pathogen >10^5 CFU/mL"
+  - name: Urine dipstick
+    expected: Positive for leukocytes and/or nitrites
+  - name: Urine culture and sensitivity
+    expected: Growth of a single pathogen >10^5 CFU/mL
   inappropriate:
-    - "Blood culture (not routinely indicated in simple UTI)"
-    - "Renal ultrasound (not needed for first uncomplicated UTI)"
+  - Blood culture (not routinely indicated in simple UTI)
+  - Renal ultrasound (not needed for first uncomplicated UTI)
 physical_exam_findings:
-  general: "Child appears mildly unwell, flushed cheeks, no rash. Alert and interactive."
+  general: Child appears mildly unwell, flushed cheeks, no rash. Alert and interactive.
   vitals:
     temperature: 38.8°C
     heart_rate: 120 bpm
@@ -115,15 +115,15 @@ physical_exam_findings:
     oxygen_saturation: 98%
 management:
   pharmacological:
-    - "Trimethoprim (or nitrofurantoin) oral suspension for 3 days"
-    - "Paracetamol or ibuprofen for fever/pain as needed"
+  - Trimethoprim (or nitrofurantoin) oral suspension for 3 days
+  - Paracetamol or ibuprofen for fever/pain as needed
   non_pharmacological:
-    - "Encourage increased fluid intake"
-    - "Complete the full course of antibiotics"
+  - Encourage increased fluid intake
+  - Complete the full course of antibiotics
   education_safety_netting:
-    - "Return if fever persists >48 hours on antibiotics"
-    - "Return if vomiting, worsening pain, or decreased urine output"
-    - "Advise on hygiene: wipe front to back, avoid bubble baths"
+  - Return if fever persists >48 hours on antibiotics
+  - Return if vomiting, worsening pain, or decreased urine output
+  - 'Advise on hygiene: wipe front to back, avoid bubble baths'
 scoring_weights_override: null
 ---
 ## Identity

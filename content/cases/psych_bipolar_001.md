@@ -1,68 +1,123 @@
 ---
 id: psych_bipolar_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: psychiatry
 system: nervous
-presentation: "Episodes of high mood and reckless behaviour"
-presentation_id: "Mood meningkat drastis dan perilaku impulsif yang meresahkan"
-first_impression: "Patient appears anxious or sad."
-first_impression_id: "Pasien tampak cemas atau sedih."
-target_condition: "Bipolar I disorder"
+presentation: Episodes of high mood and reckless behaviour
+presentation_id: Mood meningkat drastis dan perilaku impulsif yang meresahkan
+first_impression: Patient appears anxious or sad.
+first_impression_id: Pasien tampak cemas atau sedih.
+target_condition: Bipolar I disorder
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
-source_refs: ["NICE guideline CG185 (Bipolar disorder)"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have been feeling really high and doing crazy things that worry my family."
+languages:
+- en
+source_refs:
+- NICE guideline CG185 (Bipolar disorder)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have been feeling really high and doing crazy things that worry
+  my family.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "When did this high mood episode start?", critical: true }
-    - { item: "How long does the high mood last?", critical: true }
-    - { item: "Is there a specific trigger or stress?", critical: false }
-    - { item: "Have you had similar episodes before?", critical: true }
-    - { item: "How many hours of sleep do you get at night?", critical: true }
-    - { item: "Any recent changes in appetite or eating?", critical: false }
+  - item: When did this high mood episode start?
+    critical: true
+  - item: How long does the high mood last?
+    critical: true
+  - item: Is there a specific trigger or stress?
+    critical: false
+  - item: Have you had similar episodes before?
+    critical: true
+  - item: How many hours of sleep do you get at night?
+    critical: true
+  - item: Any recent changes in appetite or eating?
+    critical: false
   associated_symptoms:
-    - { item: "Do you feel like you need less sleep than usual?", critical: true }
-    - { item: "Are you more talkative than usual?", critical: true }
-    - { item: "Do you feel more important or special than others?", critical: true }
-    - { item: "Have you spent money recklessly or done risky things?", critical: true }
-    - { item: "Any racing thoughts or jumping between ideas?", critical: false }
-    - { item: "Have you felt depressed or hopeless recently?", critical: false }
+  - item: Do you feel like you need less sleep than usual?
+    critical: true
+  - item: Are you more talkative than usual?
+    critical: true
+  - item: Do you feel more important or special than others?
+    critical: true
+  - item: Have you spent money recklessly or done risky things?
+    critical: true
+  - item: Any racing thoughts or jumping between ideas?
+    critical: false
+  - item: Have you felt depressed or hopeless recently?
+    critical: false
   pmh:
-    - { item: "Any previous diagnosis of depression or anxiety?", critical: true }
-    - { item: "Any hospitalizations for mental health?", critical: true }
-    - { item: "Any head injuries or neurological conditions?", critical: false }
+  - item: Any previous diagnosis of depression or anxiety?
+    critical: true
+  - item: Any hospitalizations for mental health?
+    critical: true
+  - item: Any head injuries or neurological conditions?
+    critical: false
   medications:
-    - { item: "Are you currently taking any medications?", critical: true }
-    - { item: "Have you stopped any medications recently?", critical: true }
-    - { item: "Do you use alcohol, cannabis, or other drugs?", critical: true }
+  - item: Are you currently taking any medications?
+    critical: true
+  - item: Have you stopped any medications recently?
+    critical: true
+  - item: Do you use alcohol, cannabis, or other drugs?
+    critical: true
   family_social:
-    - { item: "Any family history of bipolar disorder or mood swings?", critical: true }
-    - { item: "Any family history of suicide or depression?", critical: false }
-    - { item: "How is your work or school life currently?", critical: false }
-    - { item: "Are you married or in a relationship?", critical: false }
+  - item: Any family history of bipolar disorder or mood swings?
+    critical: true
+  - item: Any family history of suicide or depression?
+    critical: false
+  - item: How is your work or school life currently?
+    critical: false
+  - item: Are you married or in a relationship?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Risk of self-harm or suicide", critical: true }
-  - { item: "Aggressive or dangerous behaviour toward others", critical: true }
-  - { item: "Psychotic symptoms (hallucinations or delusions)", critical: true }
+- item: Risk of self-harm or suicide
+  critical: true
+- item: Aggressive or dangerous behaviour toward others
+  critical: true
+- item: Psychotic symptoms (hallucinations or delusions)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Bipolar I disorder"
-  differentials: ["Major depressive disorder", "Substance-induced mood disorder"]
+  working_diagnosis: Bipolar I disorder
+  differentials:
+  - Major depressive disorder
+  - Substance-induced mood disorder
 investigations:
-  appropriate: [ { name: "Mood disorder questionnaire (MDQ)", expected: "positive screen" } ]
-  inappropriate: ["Routine MRI brain"]
-physical_exam_findings: { general: "Appears alert, talkative, with pressured speech, normal vital signs except slightly elevated heart rate (88 bpm).", vitals: { bp: "120/80", hr: 88, rr: 16, temp: 36.8 } }
+  appropriate:
+  - name: Mood disorder questionnaire (MDQ)
+    expected: positive screen
+  inappropriate:
+  - Routine MRI brain
+physical_exam_findings:
+  general: Appears alert, talkative, with pressured speech, normal vital signs except
+    slightly elevated heart rate (88 bpm).
+  vitals:
+    bp: 120/80
+    hr: 88
+    rr: 16
+    temp: 36.8
 management:
-  pharmacological: ["Mood stabiliser (e.g., lithium or valproate)", "Antipsychotic (e.g., olanzapine) for acute mania"]
-  non_pharmacological: ["Psychoeducation for patient and family", "Cognitive behavioural therapy for relapse prevention"]
-  education_safety_netting: ["Avoid alcohol and street drugs", "Maintain regular sleep schedule", "Contact crisis team if thoughts of harming self or others"]
+  pharmacological:
+  - Mood stabiliser (e.g., lithium or valproate)
+  - Antipsychotic (e.g., olanzapine) for acute mania
+  non_pharmacological:
+  - Psychoeducation for patient and family
+  - Cognitive behavioural therapy for relapse prevention
+  education_safety_netting:
+  - Avoid alcohol and street drugs
+  - Maintain regular sleep schedule
+  - Contact crisis team if thoughts of harming self or others
 scoring_weights_override: null
 ---
 

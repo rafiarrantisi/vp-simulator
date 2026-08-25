@@ -1,89 +1,136 @@
 ---
 id: em_bacterial_meningitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: emergency
 system: nervous
-presentation: "High fever, severe headache and neck stiffness"
-presentation_id: "Demam tinggi, sakit kepala hebat, dan kaku leher"
-first_impression: "Patient lies still, grimacing, flushed and photophobic, avoiding light."
-first_impression_id: "Pasien tampak terbaring kaku, meringis, wajah memerah dan menghindari cahaya."
-target_condition: "Bacterial meningitis"
+presentation: High fever, severe headache and neck stiffness
+presentation_id: Demam tinggi, sakit kepala hebat, dan kaku leher
+first_impression: Patient lies still, grimacing, flushed and photophobic, avoiding
+  light.
+first_impression_id: Pasien tampak terbaring kaku, meringis, wajah memerah dan menghindari
+  cahaya.
+target_condition: Bacterial meningitis
 difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
-source_refs: [ "WHO meningitis guideline (2019)" ]
+languages:
+- en
+source_refs:
+- WHO meningitis guideline (2019)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I have a terrible headache, high fever, and my neck feels stiff."
+chief_complaint: I have a terrible headache, high fever, and my neck feels stiff.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of headache (whole head or specific location)", critical: false }
-    - { item: "Onset of headache and fever (sudden or gradual)", critical: true }
-    - { item: "Character of headache (throbbing, pressing, sharp)", critical: false }
-    - { item: "Radiation of headache (if any)", critical: false }
-    - { item: "Associated symptoms: nausea, vomiting, photophobia", critical: true }
-    - { item: "Time course: duration of symptoms, progression", critical: true }
-    - { item: "Exacerbating or relieving factors", critical: false }
-    - { item: "Severity of headache on 0-10 scale", critical: false }
+  - item: Site of headache (whole head or specific location)
+    critical: false
+  - item: Onset of headache and fever (sudden or gradual)
+    critical: true
+  - item: Character of headache (throbbing, pressing, sharp)
+    critical: false
+  - item: Radiation of headache (if any)
+    critical: false
+  - item: 'Associated symptoms: nausea, vomiting, photophobia'
+    critical: true
+  - item: 'Time course: duration of symptoms, progression'
+    critical: true
+  - item: Exacerbating or relieving factors
+    critical: false
+  - item: Severity of headache on 0-10 scale
+    critical: false
   associated_symptoms:
-    - { item: "Fever pattern (continuous, intermittent)", critical: false }
-    - { item: "Neck stiffness (difficulty touching chin to chest)", critical: true }
-    - { item: "Photophobia (sensitivity to light)", critical: true }
-    - { item: "Nausea or vomiting", critical: false }
-    - { item: "Altered mental status (confusion, drowsiness)", critical: true }
-    - { item: "Rash (any spots, especially non-blanching)", critical: true }
-    - { item: "Seizures", critical: true }
+  - item: Fever pattern (continuous, intermittent)
+    critical: false
+  - item: Neck stiffness (difficulty touching chin to chest)
+    critical: true
+  - item: Photophobia (sensitivity to light)
+    critical: true
+  - item: Nausea or vomiting
+    critical: false
+  - item: Altered mental status (confusion, drowsiness)
+    critical: true
+  - item: Rash (any spots, especially non-blanching)
+    critical: true
+  - item: Seizures
+    critical: true
   pmh:
-    - { item: "Past medical history (hypertension, diabetes, etc.)", critical: false }
-    - { item: "History of head trauma or surgery", critical: false }
-    - { item: "History of meningitis or ear/sinus infections", critical: true }
-    - { item: "Immunization history (especially pneumococcal, meningococcal, Hib)", critical: true }
+  - item: Past medical history (hypertension, diabetes, etc.)
+    critical: false
+  - item: History of head trauma or surgery
+    critical: false
+  - item: History of meningitis or ear/sinus infections
+    critical: true
+  - item: Immunization history (especially pneumococcal, meningococcal, Hib)
+    critical: true
   medications:
-    - { item: "Current medications", critical: false }
-    - { item: "Antibiotics taken recently", critical: true }
-    - { item: "Analgesics taken for headache", critical: false }
+  - item: Current medications
+    critical: false
+  - item: Antibiotics taken recently
+    critical: true
+  - item: Analgesics taken for headache
+    critical: false
   family_social:
-    - { item: "Family history of meningitis or similar illness", critical: false }
-    - { item: "Travel history (recent travel, especially to endemic areas)", critical: true }
-    - { item: "Exposure to ill contacts (especially with similar symptoms)", critical: true }
-    - { item: "Living conditions (crowding, dormitory, barracks)", critical: false }
-    - { item: "Occupation (exposure to animals or chemicals)", critical: false }
+  - item: Family history of meningitis or similar illness
+    critical: false
+  - item: Travel history (recent travel, especially to endemic areas)
+    critical: true
+  - item: Exposure to ill contacts (especially with similar symptoms)
+    critical: true
+  - item: Living conditions (crowding, dormitory, barracks)
+    critical: false
+  - item: Occupation (exposure to animals or chemicals)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Neck stiffness with fever and headache", critical: true }
-  - { item: "Altered mental status", critical: true }
-  - { item: "Non-blanching rash", critical: true }
-  - { item: "Photophobia", critical: false }
-  - { item: "Seizures", critical: true }
+- item: Neck stiffness with fever and headache
+  critical: true
+- item: Altered mental status
+  critical: true
+- item: Non-blanching rash
+  critical: true
+- item: Photophobia
+  critical: false
+- item: Seizures
+  critical: true
 expected_ddx:
-  working_diagnosis: "Bacterial meningitis"
+  working_diagnosis: Bacterial meningitis
   differentials:
-    - "Viral meningitis"
-    - "Subarachnoid hemorrhage"
-    - "Cerebral malaria"
-    - "Typhoid fever"
+  - Viral meningitis
+  - Subarachnoid hemorrhage
+  - Cerebral malaria
+  - Typhoid fever
 investigations:
   appropriate:
-    - { name: "Lumbar puncture with CSF analysis", expected: "Elevated white blood cell count (neutrophils), low glucose, high protein; Gram stain positive for bacteria" }
-    - { name: "Blood cultures", expected: "Positive for causative organism (e.g., Neisseria meningitidis, Streptococcus pneumoniae)" }
-    - { name: "CBC with differential", expected: "Leukocytosis with left shift" }
-    - { name: "CT head before LP (if indicated)", expected: "No mass lesion or elevated ICP" }
-    - { name: "CRP and procalcitonin", expected: "Elevated" }
+  - name: Lumbar puncture with CSF analysis
+    expected: Elevated white blood cell count (neutrophils), low glucose, high protein;
+      Gram stain positive for bacteria
+  - name: Blood cultures
+    expected: Positive for causative organism (e.g., Neisseria meningitidis, Streptococcus
+      pneumoniae)
+  - name: CBC with differential
+    expected: Leukocytosis with left shift
+  - name: CT head before LP (if indicated)
+    expected: No mass lesion or elevated ICP
+  - name: CRP and procalcitonin
+    expected: Elevated
   inappropriate:
-    - "MRI brain without contrast (not first-line in acute setting)"
-    - "EEG"
-    - "Urine culture"
+  - MRI brain without contrast (not first-line in acute setting)
+  - EEG
+  - Urine culture
 physical_exam_findings:
-  general: "Patient appears acutely ill, lying still with eyes closed, photophobic. Speech is coherent but slow. No visible rash."
+  general: Patient appears acutely ill, lying still with eyes closed, photophobic.
+    Speech is coherent but slow. No visible rash.
   vitals:
     temperature: 39.5 °C
     blood_pressure: 120/80 mmHg
@@ -92,18 +139,20 @@ physical_exam_findings:
     oxygen_saturation: 98%
 management:
   pharmacological:
-    - "Empiric intravenous antibiotics: ceftriaxone 2 g IV every 12 hours + vancomycin 15-20 mg/kg IV every 8-12 hours"
-    - "Dexamethasone 0.15 mg/kg IV every 6 hours for 4 days (start before or with first antibiotic dose)"
-    - "Acetaminophen for fever"
-    - "IV fluids for hydration"
+  - 'Empiric intravenous antibiotics: ceftriaxone 2 g IV every 12 hours + vancomycin
+    15-20 mg/kg IV every 8-12 hours'
+  - Dexamethasone 0.15 mg/kg IV every 6 hours for 4 days (start before or with first
+    antibiotic dose)
+  - Acetaminophen for fever
+  - IV fluids for hydration
   non_pharmacological:
-    - "Admit to ICU or high-dependency unit"
-    - "Isolation precautions until meningococcal ruled out"
-    - "Close monitoring of neurological status and vital signs"
+  - Admit to ICU or high-dependency unit
+  - Isolation precautions until meningococcal ruled out
+  - Close monitoring of neurological status and vital signs
   education_safety_netting:
-    - "Explain need for urgent lumbar puncture and antibiotics"
-    - "Discuss signs of deterioration (worsening headache, seizures, decreasing consciousness)"
-    - "Advise family to report any new rash or change in breathing"
+  - Explain need for urgent lumbar puncture and antibiotics
+  - Discuss signs of deterioration (worsening headache, seizures, decreasing consciousness)
+  - Advise family to report any new rash or change in breathing
 scoring_weights_override: null
 ---
 ## Identity

@@ -22,8 +22,8 @@ def load_v2_case(case_id: str) -> CaseV2:
 
 
 @lru_cache(maxsize=8)
-def _catalog_cached(specialty: str | None, published_only: bool) -> tuple[CaseV2, ...]:
-    """Catalog parses 82+ markdown files — cache by (specialty, published_only).
+def _catalog_cached(specialty: str | None, published_only: bool, status: str | None = None) -> tuple[CaseV2, ...]:
+    """Catalog parses 80+ markdown files — cache by (specialty, published_only, status).
 
     v0.16.1: sebelumnya parse ulang SEMUA file per request (~2s + 2x per call
     via specialties_present) -> bottleneck concurrency. Kasus berubah hanya
@@ -42,17 +42,22 @@ def _catalog_cached(specialty: str | None, published_only: bool) -> tuple[CaseV2
             continue
         if published_only and c.frontmatter.get("status") != "published":
             continue
+        if status and c.frontmatter.get("status") != status:
+            continue
         out.append(c)
     return tuple(out)
 
 
-def list_v2_cases(*, specialty: str | None = None, published_only: bool = False) -> list[CaseV2]:
-    return list(_catalog_cached(specialty, published_only))
+def list_v2_cases(*, specialty: str | None = None, published_only: bool = False,
+                  status: str | None = None) -> list[CaseV2]:
+    return list(_catalog_cached(specialty, published_only, status))
 
 
 def summary(c: CaseV2) -> dict:
     """Catalogue card — metadata only, no Part A scoring content."""
     fm = c.frontmatter
+    au = fm.get("authoring") or {}
+    comp = c.competency() or {}
     return {
         "id": c.id,
         "specialty": fm.get("specialty"),
@@ -65,6 +70,21 @@ def summary(c: CaseV2) -> dict:
         "mode": fm.get("mode_default"),
         "estimated_minutes": fm.get("estimated_minutes"),
         "status": fm.get("status"),
+        "review_state": c.review_state,
+        "pilot_candidate": c.pilot_candidate,
+        "released": c.is_released(),
+        "reviewed_by": au.get("reviewed_by") or None,
+        "reviewed_at": au.get("reviewed_at") or None,
+        "variant_family": c.variant_family or None,
+        "variant_id": c.variant_id or None,
+        "competency": {
+            "standard": comp.get("standard"),
+            "authority": comp.get("authority"),
+            "version": comp.get("version"),
+            "level": comp.get("level") or comp.get("code"),
+        } if comp else None,
+        "grounded_indo": c.has_indonesian_grounding(),
+        "source_count": len(c.source_refs()),
         "chief_complaint": fm.get("chief_complaint"),
     }
 

@@ -1,118 +1,121 @@
 ---
 id: ent_hearing_loss_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ent
 system: auditory
-presentation: "Gradual hearing loss in both ears"
-presentation_id: "Gangguan pendengaran bertahap di kedua telinga, terutama saat ramai"
-first_impression: "Patient appears to have ear, nose, or throat discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
-target_condition: "Presbycusis"
+presentation: Gradual hearing loss in both ears
+presentation_id: Gangguan pendengaran bertahap di kedua telinga, terutama saat ramai
+first_impression: Patient appears to have ear, nose, or throat discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau
+  tenggorokan.
+target_condition: Presbycusis
 difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
 languages:
-  - en
+- en
 source_refs:
-  - "AAO-HNS clinical practice guideline: age-related hearing loss"
-  - "NICE NG98 — Hearing loss in adults"
+- 'AAO-HNS clinical practice guideline: age-related hearing loss'
+- NICE NG98 — Hearing loss in adults
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I'm having trouble hearing conversations, especially when there's background noise."
+chief_complaint: I'm having trouble hearing conversations, especially when there's
+  background noise.
 anamnesis_checklist:
   hpi_socrates:
-    - item: "Onset: gradual over years"
-      critical: true
-    - item: "Location: both ears"
-      critical: false
-    - item: "Duration: several years"
-      critical: false
-    - item: "Quality: difficulty hearing high-pitched sounds, speech unclear"
-      critical: true
-    - item: "Aggravating factors: background noise, multiple speakers"
-      critical: true
-    - item: "Relieving factors: speaking loudly, facing speaker"
-      critical: false
-    - item: "Timing: slowly worsening"
-      critical: false
+  - item: 'Onset: gradual over years'
+    critical: true
+  - item: 'Location: both ears'
+    critical: false
+  - item: 'Duration: several years'
+    critical: false
+  - item: 'Quality: difficulty hearing high-pitched sounds, speech unclear'
+    critical: true
+  - item: 'Aggravating factors: background noise, multiple speakers'
+    critical: true
+  - item: 'Relieving factors: speaking loudly, facing speaker'
+    critical: false
+  - item: 'Timing: slowly worsening'
+    critical: false
   associated_symptoms:
-    - item: "Tinnitus (ringing in ears)"
-      critical: false
-    - item: "Vertigo or dizziness"
-      critical: false
-    - item: "Ear pain or discharge"
-      critical: false
-    - item: "Fullness in ears"
-      critical: false
+  - item: Tinnitus (ringing in ears)
+    critical: false
+  - item: Vertigo or dizziness
+    critical: false
+  - item: Ear pain or discharge
+    critical: false
+  - item: Fullness in ears
+    critical: false
   pmh:
-    - item: "History of noise exposure (occupational or recreational)"
-      critical: true
-    - item: "Use of ototoxic medications (e.g., aspirin, certain antibiotics)"
-      critical: false
-    - item: "Family history of hearing loss"
-      critical: false
-    - item: "Cardiovascular risk factors (HTN, DM)"
-      critical: false
+  - item: History of noise exposure (occupational or recreational)
+    critical: true
+  - item: Use of ototoxic medications (e.g., aspirin, certain antibiotics)
+    critical: false
+  - item: Family history of hearing loss
+    critical: false
+  - item: Cardiovascular risk factors (HTN, DM)
+    critical: false
   medications:
-    - item: "Current medications including aspirin, NSAIDs, loop diuretics"
-      critical: false
+  - item: Current medications including aspirin, NSAIDs, loop diuretics
+    critical: false
   family_social:
-    - item: "Family history of hearing loss in older age"
-      critical: false
-    - item: "Occupation (potential noise exposure)"
-      critical: true
-    - item: "Smoking history"
-      critical: false
+  - item: Family history of hearing loss in older age
+    critical: false
+  - item: Occupation (potential noise exposure)
+    critical: true
+  - item: Smoking history
+    critical: false
   ice_fife:
-    - item: "Ideas - what they think is wrong"
-      critical: true
-    - item: "Concerns - what worries them"
-      critical: true
-    - item: "Expectations - what they hope for"
-      critical: false
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - item: "Sudden onset or rapid progression of hearing loss"
-    critical: true
-  - item: "Unilateral hearing loss"
-    critical: true
-  - item: "Associated vertigo or imbalance"
-    critical: false
-  - item: "Ear drainage or pain"
-    critical: false
-  - item: "Neurological symptoms (facial numbness, weakness)"
-    critical: true
+- item: Sudden onset or rapid progression of hearing loss
+  critical: true
+- item: Unilateral hearing loss
+  critical: true
+- item: Associated vertigo or imbalance
+  critical: false
+- item: Ear drainage or pain
+  critical: false
+- item: Neurological symptoms (facial numbness, weakness)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Presbycusis"
+  working_diagnosis: Presbycusis
   differentials:
-    - "Noise-induced hearing loss"
-    - "Cerumen impaction"
+  - Noise-induced hearing loss
+  - Cerumen impaction
 investigations:
   appropriate:
-    - name: "Pure-tone audiometry"
-      expected: "Bilateral high-frequency sensorineural hearing loss"
-    - name: "Tympanometry"
-      expected: "Normal"
+  - name: Pure-tone audiometry
+    expected: Bilateral high-frequency sensorineural hearing loss
+  - name: Tympanometry
+    expected: Normal
   inappropriate:
-    - "CT scan of temporal bones"
+  - CT scan of temporal bones
 physical_exam_findings:
-  general: "Well-appearing older adult. Ear canals patent, tympanic membranes normal. Rinne test: air conduction > bone conduction bilaterally. Weber test: midline."
+  general: 'Well-appearing older adult. Ear canals patent, tympanic membranes normal.
+    Rinne test: air conduction > bone conduction bilaterally. Weber test: midline.'
   vitals: {}
 management:
   pharmacological:
-    - "Consider hearing aids"
-    - "Consider assistive listening devices"
+  - Consider hearing aids
+  - Consider assistive listening devices
   non_pharmacological:
-    - "Communication strategies (face speaker, reduce background noise)"
-    - "Auditory rehabilitation"
+  - Communication strategies (face speaker, reduce background noise)
+  - Auditory rehabilitation
   education_safety_netting:
-    - "Explain age-related hearing loss is common and slowly progressive"
-    - "Advise to protect ears from noise"
-    - "Return if sudden worsening or unilateral loss"
+  - Explain age-related hearing loss is common and slowly progressive
+  - Advise to protect ears from noise
+  - Return if sudden worsening or unilateral loss
 scoring_weights_override: null
 ---
 

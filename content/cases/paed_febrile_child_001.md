@@ -4,82 +4,147 @@ schema_version: 2
 status: in_review
 specialty: paediatrics
 system: general
-presentation: "Fever in a child"
-presentation_id: "Demam pada anak"
-first_impression: "A child appears unwell."
-first_impression_id: "Seorang anak tampak tidak sehat."
-target_condition: "Febrile illness in a child"
+presentation: Fever in a child
+presentation_id: Demam pada anak
+first_impression: A child appears unwell.
+first_impression_id: Seorang anak tampak tidak sehat.
+target_condition: Febrile illness in a child
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: [ "NICE guideline: Fever in under 5s (NG143)" ]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My child has a fever."
+languages:
+- en
+source_refs:
+- 'NICE guideline: Fever in under 5s (NG143)'
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: My child has a fever.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site: fever started", critical: false }
-    - { item: "Onset: 2 days ago", critical: true }
-    - { item: "Character: high temperature, feels hot to touch", critical: false }
-    - { item: "Radiation: none", critical: false }
-    - { item: "Associated symptoms: cough, runny nose", critical: false }
-    - { item: "Time course: persistent, not coming down completely", critical: false }
-    - { item: "Exacerbating/relieving: nothing seems to help", critical: false }
-    - { item: "Severity: measured up to 39.5°C", critical: true }
+  - item: 'Site: fever started'
+    critical: false
+  - item: 'Onset: 2 days ago'
+    critical: true
+  - item: 'Character: high temperature, feels hot to touch'
+    critical: false
+  - item: 'Radiation: none'
+    critical: false
+  - item: 'Associated symptoms: cough, runny nose'
+    critical: false
+  - item: 'Time course: persistent, not coming down completely'
+    critical: false
+  - item: 'Exacerbating/relieving: nothing seems to help'
+    critical: false
+  - item: 'Severity: measured up to 39.5°C'
+    critical: true
   associated_symptoms:
-    - { item: "Cough", critical: false }
-    - { item: "Runny nose", critical: false }
-    - { item: "Decreased appetite", critical: false }
-    - { item: "Irritability", critical: true }
-    - { item: "No vomiting or diarrhoea", critical: false }
-    - { item: "No rash", critical: false }
-    - { item: "No seizures", critical: false }
+  - item: Cough
+    critical: false
+  - item: Runny nose
+    critical: false
+  - item: Decreased appetite
+    critical: false
+  - item: Irritability
+    critical: true
+  - item: No vomiting or diarrhoea
+    critical: false
+  - item: No rash
+    critical: false
+  - item: No seizures
+    critical: false
   pmh:
-    - { item: "No significant past medical history", critical: false }
-    - { item: "Up to date with immunisations", critical: true }
+  - item: No significant past medical history
+    critical: false
+  - item: Up to date with immunisations
+    critical: true
   medications:
-    - { item: "No medications currently", critical: false }
+  - item: No medications currently
+    critical: false
   family_social:
-    - { item: "Both parents healthy", critical: false }
-    - { item: "No siblings", critical: false }
-    - { item: "Lives with parents in a house", critical: false }
-    - { item: "No recent travel", critical: false }
-    - { item: "No ill contacts known", critical: false }
+  - item: Both parents healthy
+    critical: false
+  - item: No siblings
+    critical: false
+  - item: Lives with parents in a house
+    critical: false
+  - item: No recent travel
+    critical: false
+  - item: No ill contacts known
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong: 'He might have a cold or flu.'", critical: false }
-    - { item: "Concerns - what worries them: 'I'm worried about meningitis because he's been fussy.'", critical: true }
-    - { item: "Expectations - what they hope for: 'I want medicine to bring the fever down and make sure it's not serious.'", critical: true }
+  - item: 'Ideas - what they think is wrong: ''He might have a cold or flu.'''
+    critical: false
+  - item: 'Concerns - what worries them: ''I''m worried about meningitis because he''s
+      been fussy.'''
+    critical: true
+  - item: 'Expectations - what they hope for: ''I want medicine to bring the fever
+      down and make sure it''s not serious.'''
+    critical: true
 red_flags:
-  - { item: "Meningeal signs (neck stiffness, photophobia, bulging fontanelle)", critical: true }
-  - { item: "Non-blanching rash", critical: true }
-  - { item: "Seizure", critical: false }
-  - { item: "Decreased consciousness", critical: true }
-  - { item: "Signs of dehydration (dry mouth, sunken eyes, reduced urine output)", critical: false }
+- item: Meningeal signs (neck stiffness, photophobia, bulging fontanelle)
+  critical: true
+- item: Non-blanching rash
+  critical: true
+- item: Seizure
+  critical: false
+- item: Decreased consciousness
+  critical: true
+- item: Signs of dehydration (dry mouth, sunken eyes, reduced urine output)
+  critical: false
 expected_ddx:
-  working_diagnosis: "Febrile illness in a child"
-  differentials: [ "Upper respiratory tract infection", "Urinary tract infection", "Viral exanthem" ]
+  working_diagnosis: Febrile illness in a child
+  differentials:
+  - Upper respiratory tract infection
+  - Urinary tract infection
+  - Viral exanthem
 investigations:
   appropriate:
-    - { name: "Urinalysis", expected: "Negative for nitrites and leukocytes" }
-    - { name: "Full blood count", expected: "Normal white blood cell count, mild lymphocytosis" }
-    - { name: "Blood culture", expected: "No growth" }
-    - { name: "Chest X-ray", expected: "Clear lung fields" }
-  inappropriate: [ "CT head", "MRI brain" ]
+  - name: Urinalysis
+    expected: Negative for nitrites and leukocytes
+  - name: Full blood count
+    expected: Normal white blood cell count, mild lymphocytosis
+  - name: Blood culture
+    expected: No growth
+  - name: Chest X-ray
+    expected: Clear lung fields
+  inappropriate:
+  - CT head
+  - MRI brain
 physical_exam_findings:
-  general: "Well-appearing child, playful but irritable when disturbed. No signs of respiratory distress. Mild rhinorrhoea."
-  vitals: { temperature: 38.9, heart_rate: 130, respiratory_rate: 30, oxygen_saturation: 98, blood_pressure: "not measured" }
+  general: Well-appearing child, playful but irritable when disturbed. No signs of
+    respiratory distress. Mild rhinorrhoea.
+  vitals:
+    temperature: 38.9
+    heart_rate: 130
+    respiratory_rate: 30
+    oxygen_saturation: 98
+    blood_pressure: not measured
 management:
   pharmacological:
-    - "Paracetamol 15 mg/kg every 4–6 hours as needed"
-    - "Ibuprofen 10 mg/kg every 6–8 hours as needed"
+  - Paracetamol 15 mg/kg every 4–6 hours as needed
+  - Ibuprofen 10 mg/kg every 6–8 hours as needed
   non_pharmacological:
-    - "Encourage oral fluids (breastmilk, formula, or water)"
-    - "Light clothing and comfortable room temperature"
-    - "Avoid tepid sponging or cold baths"
+  - Encourage oral fluids (breastmilk, formula, or water)
+  - Light clothing and comfortable room temperature
+  - Avoid tepid sponging or cold baths
   education_safety_netting:
-    - "Advise to return if fever persists >5 days, new rash appears, difficulty breathing, decreased responsiveness, or signs of dehydration"
-    - "Explain that fever is a normal immune response and does not always require treatment if child is comfortable"
+  - Advise to return if fever persists >5 days, new rash appears, difficulty breathing,
+    decreased responsiveness, or signs of dehydration
+  - Explain that fever is a normal immune response and does not always require treatment
+    if child is comfortable
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

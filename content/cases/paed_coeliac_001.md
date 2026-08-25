@@ -1,107 +1,108 @@
 ---
 id: paed_coeliac_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: paediatrics
 system: gastrointestinal
-presentation: "Failing to thrive and loose stools"
-presentation_id: "Anak tidak tumbuh baik dan sering buang air besar encer"
-first_impression: "A child appears unwell."
-first_impression_id: "Seorang anak tampak tidak sehat."
-target_condition: "Coeliac disease"
+presentation: Failing to thrive and loose stools
+presentation_id: Anak tidak tumbuh baik dan sering buang air besar encer
+first_impression: A child appears unwell.
+first_impression_id: Seorang anak tampak tidak sehat.
+target_condition: Coeliac disease
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline NG20: Coeliac disease (2015, updated 2021)"
-  - "ESPGHAN guidelines — coeliac disease (2020)"
-
+- 'NICE guideline NG20: Coeliac disease (2015, updated 2021)'
+- ESPGHAN guidelines — coeliac disease (2020)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "My child is not growing well and has frequent loose stools."
+chief_complaint: My child is not growing well and has frequent loose stools.
 anamnesis_checklist:
   hpi_socrates:
-    - item: "Site - where is the discomfort?"
-      critical: false
-    - item: "Onset - when did symptoms start?"
-      critical: true
-    - item: "Character - describe the stools"
-      critical: true
-    - item: "Radiation - does pain spread?"
-      critical: false
-    - item: "Associated symptoms - any other problems?"
-      critical: true
-    - item: "Timing - how often does it happen?"
-      critical: false
-    - item: "Exacerbating factors - what makes it worse?"
-      critical: true
-    - item: "Relieving factors - what helps?"
-      critical: false
-    - item: "Severity - how bad is it?"
-      critical: false
+  - item: Site - where is the discomfort?
+    critical: false
+  - item: Onset - when did symptoms start?
+    critical: true
+  - item: Character - describe the stools
+    critical: true
+  - item: Radiation - does pain spread?
+    critical: false
+  - item: Associated symptoms - any other problems?
+    critical: true
+  - item: Timing - how often does it happen?
+    critical: false
+  - item: Exacerbating factors - what makes it worse?
+    critical: true
+  - item: Relieving factors - what helps?
+    critical: false
+  - item: Severity - how bad is it?
+    critical: false
   associated_symptoms:
-    - item: "Abdominal pain or bloating"
-      critical: true
-    - item: "Fatigue or low energy"
-      critical: false
-    - item: "Irritability or mood changes"
-      critical: false
-    - item: "Weight loss or poor weight gain"
-      critical: true
-    - item: "Nausea or vomiting"
-      critical: false
+  - item: Abdominal pain or bloating
+    critical: true
+  - item: Fatigue or low energy
+    critical: false
+  - item: Irritability or mood changes
+    critical: false
+  - item: Weight loss or poor weight gain
+    critical: true
+  - item: Nausea or vomiting
+    critical: false
   pmh:
-    - item: "Previous diagnoses (e.g., anaemia)"
-      critical: true
-    - item: "Birth history and developmental milestones"
-      critical: false
-    - item: "Immunisation status"
-      critical: false
+  - item: Previous diagnoses (e.g., anaemia)
+    critical: true
+  - item: Birth history and developmental milestones
+    critical: false
+  - item: Immunisation status
+    critical: false
   medications:
-    - item: "Current medications or supplements"
-      critical: true
-    - item: "Any recent antibiotics or treatments"
-      critical: false
+  - item: Current medications or supplements
+    critical: true
+  - item: Any recent antibiotics or treatments
+    critical: false
   family_social:
-    - item: "Family history of autoimmune diseases (e.g., type 1 diabetes, thyroid disease, coeliac disease)"
-      critical: true
-    - item: "Family history of digestive problems"
-      critical: false
-    - item: "Home environment and diet"
-      critical: false
+  - item: Family history of autoimmune diseases (e.g., type 1 diabetes, thyroid disease,
+      coeliac disease)
+    critical: true
+  - item: Family history of digestive problems
+    critical: false
+  - item: Home environment and diet
+    critical: false
   ice_fife:
-    - item: "Ideas - what they think is wrong"
-      critical: true
-    - item: "Concerns - what worries them"
-      critical: true
-    - item: "Expectations - what they hope for"
-      critical: false
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - item: "Failure to thrive (weight loss or crossing centiles)"
-    critical: true
-  - item: "Persistent diarrhoea (>2 weeks)"
-    critical: true
-  - item: "Abdominal distension"
-    critical: true
-  - item: "Signs of malnutrition (e.g., pallor, fatigue)"
-    critical: true
+- item: Failure to thrive (weight loss or crossing centiles)
+  critical: true
+- item: Persistent diarrhoea (>2 weeks)
+  critical: true
+- item: Abdominal distension
+  critical: true
+- item: Signs of malnutrition (e.g., pallor, fatigue)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Coeliac disease"
+  working_diagnosis: Coeliac disease
   differentials:
-    - "Cow's milk protein allergy"
-    - "Cystic fibrosis"
-    - "Infectious diarrhoea (post-gastroenteritis syndrome)"
-    - "Inflammatory bowel disease"
+  - Cow's milk protein allergy
+  - Cystic fibrosis
+  - Infectious diarrhoea (post-gastroenteritis syndrome)
+  - Inflammatory bowel disease
 investigations:
   appropriate: []
   inappropriate: []
 physical_exam_findings:
-  general: ""
+  general: ''
   vitals: {}
 management:
   pharmacological: []

@@ -1,99 +1,125 @@
 ---
 id: oph_episcleritis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: ocular_surface
-presentation: "Sectoral red eye, painless, normal vision"
-presentation_id: "Bercak merah di satu bagian mata kanan, tidak nyeri, penglihatan normal"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Episcleritis"
+presentation: Sectoral red eye, painless, normal vision
+presentation_id: Bercak merah di satu bagian mata kanan, tidak nyeri, penglihatan
+  normal
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Episcleritis
 difficulty: 1
 estimated_minutes: 11
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE CKS: Red eye; Episcleritis and scleritis differentiation"
-  - "Migrated from legacy kasus-108 (PPK Kemenkes — Episkleritis, ICD-10 H15.1)"
-  - "AAO Preferred Practice Pattern — episcleritis/scleritis"
+- 'NICE CKS: Red eye; Episcleritis and scleritis differentiation'
+- Migrated from legacy kasus-108 (PPK Kemenkes — Episkleritis, ICD-10 H15.1)
+- AAO Preferred Practice Pattern — episcleritis/scleritis
 authoring:
   drafted_by: migrated_from_kasus-108
   model: human+ai
   reviewed_by: null
   reviewed_at: null
-  review_notes: "Restructured + translated to English schema v2. Study-aid draft pending ophthalmology sign-off."
-
-chief_complaint: "A patch of redness in the right eye for 4 days, painless, vision normal"
-
+  review_notes: Restructured + translated to English schema v2. Study-aid draft pending
+    ophthalmology sign-off.
+chief_complaint: A patch of redness in the right eye for 4 days, painless, vision
+  normal
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset (sudden, noticed 4 days ago)", critical: true }
-    - { item: "Site (right eye only, a single sector — not the whole eye)", critical: true }
-    - { item: "Character (salmon-pink localised redness)", critical: true }
-    - { item: "Severity / impact (mainly cosmetic)", critical: false }
-    - { item: "Aggravating / relieving factors (none clear)", critical: false }
+  - item: Onset (sudden, noticed 4 days ago)
+    critical: true
+  - item: Site (right eye only, a single sector — not the whole eye)
+    critical: true
+  - item: Character (salmon-pink localised redness)
+    critical: true
+  - item: Severity / impact (mainly cosmetic)
+    critical: false
+  - item: Aggravating / relieving factors (none clear)
+    critical: false
   associated_symptoms:
-    - { item: "Pain — should be absent or mild (distinguishes from scleritis)", critical: true }
-    - { item: "Vision — should be normal", critical: true }
-    - { item: "Photophobia / light sensitivity (screen for uveitis/keratitis)", critical: true }
-    - { item: "Discharge (clear watering vs purulent)", critical: false }
-    - { item: "Grittiness", critical: false }
+  - item: Pain — should be absent or mild (distinguishes from scleritis)
+    critical: true
+  - item: Vision — should be normal
+    critical: true
+  - item: Photophobia / light sensitivity (screen for uveitis/keratitis)
+    critical: true
+  - item: Discharge (clear watering vs purulent)
+    critical: false
+  - item: Grittiness
+    critical: false
   pmh:
-    - { item: "Previous similar self-limiting episodes", critical: false }
-    - { item: "Autoimmune disease (rheumatoid arthritis, lupus)", critical: false }
+  - item: Previous similar self-limiting episodes
+    critical: false
+  - item: Autoimmune disease (rheumatoid arthritis, lupus)
+    critical: false
   medications:
-    - { item: "What they have already tried", critical: false }
-    - { item: "Drug allergies", critical: false }
+  - item: What they have already tried
+    critical: false
+  - item: Drug allergies
+    critical: false
   family_social:
-    - { item: "Systemic review: joint pain, rashes, mouth ulcers (autoimmune screen)", critical: true }
-    - { item: "Occupation / stress; smoking", critical: false }
+  - item: 'Systemic review: joint pain, rashes, mouth ulcers (autoimmune screen)'
+    critical: true
+  - item: Occupation / stress; smoking
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think it is", critical: true }
-    - { item: "Concerns - worries (contagious? serious?)", critical: true }
-    - { item: "Expectations - what they want to know", critical: false }
-    - { item: "Function - impact on customer-facing work", critical: false }
-
+  - item: Ideas - what they think it is
+    critical: true
+  - item: Concerns - worries (contagious? serious?)
+    critical: true
+  - item: Expectations - what they want to know
+    critical: false
+  - item: Function - impact on customer-facing work
+    critical: false
 red_flags:
-  - { item: "Severe, deep, boring eye pain or pain on eye movement (scleritis)", critical: true }
-  - { item: "Reduced vision", critical: true }
-  - { item: "Marked photophobia (suggests uveitis/keratitis)", critical: true }
-  - { item: "Features of systemic autoimmune disease (joint pain, rash, mouth ulcers)", critical: false }
-
+- item: Severe, deep, boring eye pain or pain on eye movement (scleritis)
+  critical: true
+- item: Reduced vision
+  critical: true
+- item: Marked photophobia (suggests uveitis/keratitis)
+  critical: true
+- item: Features of systemic autoimmune disease (joint pain, rash, mouth ulcers)
+  critical: false
 expected_ddx:
-  working_diagnosis: "Simple episcleritis, right eye"
+  working_diagnosis: Simple episcleritis, right eye
   differentials:
-    - "Scleritis"
-    - "Conjunctivitis"
-    - "Subconjunctival haemorrhage"
-    - "Anterior uveitis"
-    - "Dry eye"
-
+  - Scleritis
+  - Conjunctivitis
+  - Subconjunctival haemorrhage
+  - Anterior uveitis
+  - Dry eye
 investigations:
   appropriate:
-    - { name: "Slit-lamp examination", expected: "Sectoral superficial (episcleral) injection, salmon-pink, no discharge, clear cornea" }
-    - { name: "Phenylephrine 2.5% blanching test", expected: "Superficial vessels blanch (positive) — distinguishes from scleritis" }
-    - { name: "Autoimmune screen (only if recurrent/bilateral)", expected: "Usually negative; most cases idiopathic" }
+  - name: Slit-lamp examination
+    expected: Sectoral superficial (episcleral) injection, salmon-pink, no discharge,
+      clear cornea
+  - name: Phenylephrine 2.5% blanching test
+    expected: Superficial vessels blanch (positive) — distinguishes from scleritis
+  - name: Autoimmune screen (only if recurrent/bilateral)
+    expected: Usually negative; most cases idiopathic
   inappropriate:
-    - "Orbital imaging"
-    - "Conjunctival swab for a quiet white-discharge-free eye"
-
+  - Orbital imaging
+  - Conjunctival swab for a quiet white-discharge-free eye
 physical_exam_findings:
-  general: "Well, comfortable"
-  eyes: "Visual acuity 6/6; localised salmon-pink sectoral injection of the right eye; vessels blanch with phenylephrine; no discharge; cornea clear; no tenderness"
+  general: Well, comfortable
+  eyes: Visual acuity 6/6; localised salmon-pink sectoral injection of the right eye;
+    vessels blanch with phenylephrine; no discharge; cornea clear; no tenderness
   vitals: {}
   media: []
-
 management:
   pharmacological:
-    - "Often none needed; artificial tears for comfort"
-    - "Topical NSAID or a short course of mild topical steroid if symptomatic"
+  - Often none needed; artificial tears for comfort
+  - Topical NSAID or a short course of mild topical steroid if symptomatic
   non_pharmacological:
-    - "Reassurance: benign and usually self-limiting over days to a couple of weeks"
+  - 'Reassurance: benign and usually self-limiting over days to a couple of weeks'
   education_safety_netting:
-    - "Investigate for systemic autoimmune disease only if recurrent or bilateral"
-    - "Return if severe pain, reduced vision, or marked light sensitivity (could indicate scleritis/uveitis)"
-
+  - Investigate for systemic autoimmune disease only if recurrent or bilateral
+  - Return if severe pain, reduced vision, or marked light sensitivity (could indicate
+    scleritis/uveitis)
 scoring_weights_override: null
 ---
 

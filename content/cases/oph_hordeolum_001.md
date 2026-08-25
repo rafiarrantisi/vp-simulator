@@ -1,101 +1,124 @@
 ---
 id: oph_hordeolum_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: adnexa
-presentation: "Painful eyelid lump"
-presentation_id: "Benjolan merah dan nyeri pada kelopak mata kanan atas selama 3 hari"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Hordeolum (stye)"
+presentation: Painful eyelid lump
+presentation_id: Benjolan merah dan nyeri pada kelopak mata kanan atas selama 3 hari
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Hordeolum (stye)
 difficulty: 1
 estimated_minutes: 10
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE CKS: Styes (hordeola)"
-  - "Migrated from legacy kasus-103 (PPK Kemenkes — Hordeolum, ICD-10 H00.0)"
-  - "AAO Preferred Practice Pattern — hordeolum and chalazion"
+- 'NICE CKS: Styes (hordeola)'
+- Migrated from legacy kasus-103 (PPK Kemenkes — Hordeolum, ICD-10 H00.0)
+- AAO Preferred Practice Pattern — hordeolum and chalazion
 authoring:
   drafted_by: migrated_from_kasus-103
   model: human+ai
   reviewed_by: null
   reviewed_at: null
-  review_notes: "Restructured + translated to English schema v2. Study-aid draft pending ophthalmology sign-off."
-
-chief_complaint: "Painful red lump on the right upper eyelid for 3 days"
-
+  review_notes: Restructured + translated to English schema v2. Study-aid draft pending
+    ophthalmology sign-off.
+chief_complaint: Painful red lump on the right upper eyelid for 3 days
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset and progression (3 days, enlarging)", critical: true }
-    - { item: "Site (right upper lid margin, near the lashes)", critical: false }
-    - { item: "Character (tender red lump, hot, with a yellow point)", critical: true }
-    - { item: "Severity / functional and cosmetic impact", critical: false }
-    - { item: "Aggravating factors (touch, blinking, washing the face)", critical: false }
-    - { item: "Relieving factors (leaving it alone, warmth)", critical: false }
+  - item: Onset and progression (3 days, enlarging)
+    critical: true
+  - item: Site (right upper lid margin, near the lashes)
+    critical: false
+  - item: Character (tender red lump, hot, with a yellow point)
+    critical: true
+  - item: Severity / functional and cosmetic impact
+    critical: false
+  - item: Aggravating factors (touch, blinking, washing the face)
+    critical: false
+  - item: Relieving factors (leaving it alone, warmth)
+    critical: false
   associated_symptoms:
-    - { item: "Local tenderness on touch or blink", critical: true }
-    - { item: "Watering of the eye", critical: false }
-    - { item: "Visible pus point at the lid margin", critical: false }
-    - { item: "Fever or feeling unwell (screen for cellulitis)", critical: true }
+  - item: Local tenderness on touch or blink
+    critical: true
+  - item: Watering of the eye
+    critical: false
+  - item: Visible pus point at the lid margin
+    critical: false
+  - item: Fever or feeling unwell (screen for cellulitis)
+    critical: true
   pmh:
-    - { item: "First episode vs recurrent styes / chalazion", critical: false }
-    - { item: "Underlying blepharitis or diabetes", critical: false }
+  - item: First episode vs recurrent styes / chalazion
+    critical: false
+  - item: Underlying blepharitis or diabetes
+    critical: false
   medications:
-    - { item: "What they have already tried (e.g. OTC drops)", critical: false }
-    - { item: "Drug allergies", critical: false }
+  - item: What they have already tried (e.g. OTC drops)
+    critical: false
+  - item: Drug allergies
+    critical: false
   family_social:
-    - { item: "Eye hygiene: hand-to-eye rubbing, eye make-up, sleep/fatigue", critical: true }
-    - { item: "Smoking", critical: false }
+  - item: 'Eye hygiene: hand-to-eye rubbing, eye make-up, sleep/fatigue'
+    critical: true
+  - item: Smoking
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think caused it", critical: true }
-    - { item: "Concerns - worries (appearance, getting worse)", critical: true }
-    - { item: "Expectations - what they hope for (quick cure)", critical: false }
-    - { item: "Function - impact on study/work", critical: false }
-
+  - item: Ideas - what they think caused it
+    critical: true
+  - item: Concerns - worries (appearance, getting worse)
+    critical: true
+  - item: Expectations - what they hope for (quick cure)
+    critical: false
+  - item: Function - impact on study/work
+    critical: false
 red_flags:
-  - { item: "Spreading redness/swelling beyond the lid (preseptal/orbital cellulitis)", critical: true }
-  - { item: "Fever or systemic upset", critical: true }
-  - { item: "Pain on eye movement, double vision, or a protruding eye (orbital cellulitis)", critical: true }
-  - { item: "Reduced vision", critical: true }
-
+- item: Spreading redness/swelling beyond the lid (preseptal/orbital cellulitis)
+  critical: true
+- item: Fever or systemic upset
+  critical: true
+- item: Pain on eye movement, double vision, or a protruding eye (orbital cellulitis)
+  critical: true
+- item: Reduced vision
+  critical: true
 expected_ddx:
-  working_diagnosis: "External hordeolum (stye), right upper eyelid"
+  working_diagnosis: External hordeolum (stye), right upper eyelid
   differentials:
-    - "Chalazion"
-    - "Internal hordeolum"
-    - "Preseptal cellulitis"
-    - "Blepharitis"
-    - "Sebaceous cyst of the lid"
-
+  - Chalazion
+  - Internal hordeolum
+  - Preseptal cellulitis
+  - Blepharitis
+  - Sebaceous cyst of the lid
 investigations:
   appropriate:
-    - { name: "Clinical lid examination", expected: "Localised tender pustule at the lash line" }
-    - { name: "Bacterial swab (only if atypical/recurrent)", expected: "Staphylococcus aureus if cultured" }
+  - name: Clinical lid examination
+    expected: Localised tender pustule at the lash line
+  - name: Bacterial swab (only if atypical/recurrent)
+    expected: Staphylococcus aureus if cultured
   inappropriate:
-    - "Orbital CT (reserve for suspected orbital cellulitis)"
-    - "Blood tests for a simple stye"
-
+  - Orbital CT (reserve for suspected orbital cellulitis)
+  - Blood tests for a simple stye
 physical_exam_findings:
-  general: "Well, afebrile, no systemic upset"
-  eyes: "Visual acuity 6/6; localised tender erythematous swelling at the right upper lid margin with a yellow pustular point; no proptosis; eye movements full and painless; pupils equal and reactive"
+  general: Well, afebrile, no systemic upset
+  eyes: Visual acuity 6/6; localised tender erythematous swelling at the right upper
+    lid margin with a yellow pustular point; no proptosis; eye movements full and
+    painless; pupils equal and reactive
   vitals: {}
   media: []
-
 management:
   pharmacological:
-    - "Topical antibiotic ointment (e.g. chloramphenicol) to the lid margin"
-    - "Oral antibiotics only if associated cellulitis"
+  - Topical antibiotic ointment (e.g. chloramphenicol) to the lid margin
+  - Oral antibiotics only if associated cellulitis
   non_pharmacological:
-    - "Warm compresses 4-6 times a day for ~15 minutes"
-    - "Lid hygiene; do not squeeze or pierce the lump"
-    - "Incision and drainage only if it points and does not resolve"
+  - Warm compresses 4-6 times a day for ~15 minutes
+  - Lid hygiene; do not squeeze or pierce the lump
+  - Incision and drainage only if it points and does not resolve
   education_safety_netting:
-    - "Reassure: usually self-limiting with warm compresses"
-    - "Avoid eye-rubbing and shared towels/make-up"
-    - "Return urgently if spreading swelling, fever, painful eye movements, double vision, or reduced vision"
-
+  - 'Reassure: usually self-limiting with warm compresses'
+  - Avoid eye-rubbing and shared towels/make-up
+  - Return urgently if spreading swelling, fever, painful eye movements, double vision,
+    or reduced vision
 scoring_weights_override: null
 ---
 

@@ -1,66 +1,99 @@
 ---
 id: derm_eczema_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: dermatology
 system: dermatology
-presentation: "Itchy rash"
-presentation_id: "Ruam gatal di lengan dan tungkai"
-first_impression: "Patient appears to have skin concerns."
-first_impression_id: "Pasien tampak memiliki masalah kulit."
-target_condition: "Atopic eczema"
+presentation: Itchy rash
+presentation_id: Ruam gatal di lengan dan tungkai
+first_impression: Patient appears to have skin concerns.
+first_impression_id: Pasien tampak memiliki masalah kulit.
+target_condition: Atopic eczema
 difficulty: 1
 estimated_minutes: 12
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guidelines for atopic eczema"
-  - "EDF 2022 atopic dermatitis guideline; NICE atopic eczema guidance"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have an itchy rash on my arms and legs."
+- NICE guidelines for atopic eczema
+- EDF 2022 atopic dermatitis guideline; NICE atopic eczema guidance
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have an itchy rash on my arms and legs.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did the rash start?", critical: true }
-    - { item: "Location - where exactly is the rash?", critical: true }
-    - { item: "Duration - how long has it been present?", critical: false }
-    - { item: "Character - what does the rash look like?", critical: true }
-    - { item: "Aggravating factors - anything that makes it worse?", critical: true }
-    - { item: "Relieving factors - anything that makes it better?", critical: false }
-    - { item: "Timing - is it constant or intermittent?", critical: false }
-    - { item: "Severity - how bad is the itch on a scale of 1-10?", critical: false }
-    - { item: "Exacerbating factors - stress, weather, soaps?", critical: true }
+  - item: Onset - when did the rash start?
+    critical: true
+  - item: Location - where exactly is the rash?
+    critical: true
+  - item: Duration - how long has it been present?
+    critical: false
+  - item: Character - what does the rash look like?
+    critical: true
+  - item: Aggravating factors - anything that makes it worse?
+    critical: true
+  - item: Relieving factors - anything that makes it better?
+    critical: false
+  - item: Timing - is it constant or intermittent?
+    critical: false
+  - item: Severity - how bad is the itch on a scale of 1-10?
+    critical: false
+  - item: Exacerbating factors - stress, weather, soaps?
+    critical: true
   associated_symptoms:
-    - { item: "Dry skin", critical: false }
-    - { item: "Sleep disturbance due to itch", critical: true }
-    - { item: "History of asthma or hay fever", critical: true }
-    - { item: "Skin infections", critical: false }
+  - item: Dry skin
+    critical: false
+  - item: Sleep disturbance due to itch
+    critical: true
+  - item: History of asthma or hay fever
+    critical: true
+  - item: Skin infections
+    critical: false
   pmh:
-    - { item: "History of eczema as a child", critical: true }
-    - { item: "Allergies", critical: false }
+  - item: History of eczema as a child
+    critical: true
+  - item: Allergies
+    critical: false
   medications:
-    - { item: "Current treatments for rash (creams, antihistamines)", critical: true }
-    - { item: "Other medications", critical: false }
+  - item: Current treatments for rash (creams, antihistamines)
+    critical: true
+  - item: Other medications
+    critical: false
   family_social:
-    - { item: "Family history of eczema, asthma, or hay fever", critical: true }
-    - { item: "Occupation and hobbies", critical: false }
-    - { item: "Living conditions", critical: false }
+  - item: Family history of eczema, asthma, or hay fever
+    critical: true
+  - item: Occupation and hobbies
+    critical: false
+  - item: Living conditions
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Signs of skin infection (weeping, crusting, fever)", critical: true }
-  - { item: "Rash spreading rapidly or blistering", critical: true }
-  - { item: "Systemic symptoms (fever, malaise)", critical: false }
+- item: Signs of skin infection (weeping, crusting, fever)
+  critical: true
+- item: Rash spreading rapidly or blistering
+  critical: true
+- item: Systemic symptoms (fever, malaise)
+  critical: false
 expected_ddx:
-  working_diagnosis: "Atopic eczema"
-  differentials: [ "Contact dermatitis", "Psoriasis" ]
+  working_diagnosis: Atopic eczema
+  differentials:
+  - Contact dermatitis
+  - Psoriasis
 investigations:
   appropriate: []
   inappropriate: []
 physical_exam_findings:
-  general: ""
+  general: ''
   vitals: {}
 management:
   pharmacological: []

@@ -1,71 +1,133 @@
 ---
 id: og_endometriosis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: obstetrics_gynaecology
 system: reproductive
-presentation: "Cyclical pelvic pain and subfertility"
-presentation_id: "Nyeri panggul siklus haid dan sulit hamil selama 2 tahun"
-first_impression: "Patient appears to have gynecological concerns."
-first_impression_id: "Pasien tampak mengalami masalah ginekologi."
-target_condition: "Endometriosis"
+presentation: Cyclical pelvic pain and subfertility
+presentation_id: Nyeri panggul siklus haid dan sulit hamil selama 2 tahun
+first_impression: Patient appears to have gynecological concerns.
+first_impression_id: Pasien tampak mengalami masalah ginekologi.
+target_condition: Endometriosis
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline NG73: Endometriosis (2017, updated 2024)"
-  - "ESHRE guideline — endometriosis (2022)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have really bad pain in my lower belly every month around my period, and I've been trying to get pregnant for two years without success."
+- 'NICE guideline NG73: Endometriosis (2017, updated 2024)'
+- ESHRE guideline — endometriosis (2022)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have really bad pain in my lower belly every month around my period,
+  and I've been trying to get pregnant for two years without success.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain (lower abdomen, pelvis)", critical: true }
-    - { item: "Onset (started a few years ago, gradually worsening)", critical: false }
-    - { item: "Character (cramping, sharp, or dull ache)", critical: true }
-    - { item: "Radiation (pain goes to lower back or thighs)", critical: false }
-    - { item: "Associated timing (pain starts 1-2 days before period, peaks during flow, lasts 2-3 days)", critical: true }
-    - { item: "Exacerbating factors (exercise, bowel movements, intercourse)", critical: true }
-    - { item: "Relieving factors (heat pack, rest, ibuprofen)", critical: false }
-    - { item: "Severity (pain scale 7-8/10, misses work)", critical: true }
+  - item: Site of pain (lower abdomen, pelvis)
+    critical: true
+  - item: Onset (started a few years ago, gradually worsening)
+    critical: false
+  - item: Character (cramping, sharp, or dull ache)
+    critical: true
+  - item: Radiation (pain goes to lower back or thighs)
+    critical: false
+  - item: Associated timing (pain starts 1-2 days before period, peaks during flow,
+      lasts 2-3 days)
+    critical: true
+  - item: Exacerbating factors (exercise, bowel movements, intercourse)
+    critical: true
+  - item: Relieving factors (heat pack, rest, ibuprofen)
+    critical: false
+  - item: Severity (pain scale 7-8/10, misses work)
+    critical: true
   associated_symptoms:
-    - { item: "Heavy menstrual bleeding (soaking pads every 2 hours)", critical: false }
-    - { item: "Painful bowel movements during period", critical: true }
-    - { item: "Pain during or after sexual intercourse", critical: true }
-    - { item: "Fatigue around period", critical: false }
-    - { item: "Nausea or bloating during period", critical: false }
+  - item: Heavy menstrual bleeding (soaking pads every 2 hours)
+    critical: false
+  - item: Painful bowel movements during period
+    critical: true
+  - item: Pain during or after sexual intercourse
+    critical: true
+  - item: Fatigue around period
+    critical: false
+  - item: Nausea or bloating during period
+    critical: false
   pmh:
-    - { item: "Previous surgeries (none)", critical: false }
-    - { item: "Chronic illnesses (none)", critical: false }
-    - { item: "Menstrual history (periods started at age 12, regular 28-day cycle, flow 5-7 days)", critical: true }
+  - item: Previous surgeries (none)
+    critical: false
+  - item: Chronic illnesses (none)
+    critical: false
+  - item: Menstrual history (periods started at age 12, regular 28-day cycle, flow
+      5-7 days)
+    critical: true
   medications:
-    - { item: "Current medications (ibuprofen 400 mg as needed for pain, no prescription meds)", critical: false }
-    - { item: "Allergies (none)", critical: false }
+  - item: Current medications (ibuprofen 400 mg as needed for pain, no prescription
+      meds)
+    critical: false
+  - item: Allergies (none)
+    critical: false
   family_social:
-    - { item: "Family history (mother had similar pain, no diagnosis)", critical: true }
-    - { item: "Smoking (no)", critical: false }
-    - { item: "Alcohol (occasional glass of wine)", critical: false }
-    - { item: "Occupation (teacher, standing for long hours worsens pain)", critical: false }
+  - item: Family history (mother had similar pain, no diagnosis)
+    critical: true
+  - item: Smoking (no)
+    critical: false
+  - item: Alcohol (occasional glass of wine)
+    critical: false
+  - item: Occupation (teacher, standing for long hours worsens pain)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong: 'Maybe it's just bad periods or something with my ovaries'", critical: true }
-    - { item: "Concerns - what worries them: 'I'm scared I might never be able to have a baby'", critical: true }
-    - { item: "Expectations - what they hope for: 'I want to find out why I'm in pain and get help to conceive'", critical: false }
+  - item: 'Ideas - what they think is wrong: ''Maybe it''s just bad periods or something
+      with my ovaries'''
+    critical: true
+  - item: 'Concerns - what worries them: ''I''m scared I might never be able to have
+      a baby'''
+    critical: true
+  - item: 'Expectations - what they hope for: ''I want to find out why I''m in pain
+      and get help to conceive'''
+    critical: false
 red_flags:
-  - { item: "Sudden severe pelvic pain (rule out ovarian torsion or ectopic pregnancy)", critical: true }
-  - { item: "Fever or chills (rule out pelvic inflammatory disease)", critical: true }
-  - { item: "Heavy bleeding with clots or soaking through pad in 1 hour (rule out hemorrhage)", critical: true }
+- item: Sudden severe pelvic pain (rule out ovarian torsion or ectopic pregnancy)
+  critical: true
+- item: Fever or chills (rule out pelvic inflammatory disease)
+  critical: true
+- item: Heavy bleeding with clots or soaking through pad in 1 hour (rule out hemorrhage)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Endometriosis"
-  differentials: ["Pelvic inflammatory disease", "Ovarian cyst", "Irritable bowel syndrome"]
+  working_diagnosis: Endometriosis
+  differentials:
+  - Pelvic inflammatory disease
+  - Ovarian cyst
+  - Irritable bowel syndrome
 investigations:
-  appropriate: [ { name: "Transvaginal ultrasound", expected: "May show endometrioma or be normal" }, { name: "Laparoscopy", expected: "Gold standard for diagnosis, visualizes endometrial implants" } ]
-  inappropriate: ["CT abdomen without contrast"]
-physical_exam_findings: { general: "Patient appears uncomfortable but well-nourished", vitals: { bp: "120/80", hr: 78, temp: 36.8 } }
+  appropriate:
+  - name: Transvaginal ultrasound
+    expected: May show endometrioma or be normal
+  - name: Laparoscopy
+    expected: Gold standard for diagnosis, visualizes endometrial implants
+  inappropriate:
+  - CT abdomen without contrast
+physical_exam_findings:
+  general: Patient appears uncomfortable but well-nourished
+  vitals:
+    bp: 120/80
+    hr: 78
+    temp: 36.8
 management:
-  pharmacological: ["NSAIDs for pain", "Combined oral contraceptive pill for symptom control", "GnRH agonists for severe cases"]
-  non_pharmacological: ["Heat therapy", "Pelvic floor physiotherapy", "Dietary changes (anti-inflammatory diet)"]
-  education_safety_netting: ["Explain chronic nature and treatment options", "Advise to seek urgent care for sudden severe pain or fever", "Refer to fertility specialist if trying to conceive"]
+  pharmacological:
+  - NSAIDs for pain
+  - Combined oral contraceptive pill for symptom control
+  - GnRH agonists for severe cases
+  non_pharmacological:
+  - Heat therapy
+  - Pelvic floor physiotherapy
+  - Dietary changes (anti-inflammatory diet)
+  education_safety_netting:
+  - Explain chronic nature and treatment options
+  - Advise to seek urgent care for sudden severe pain or fever
+  - Refer to fertility specialist if trying to conceive
 scoring_weights_override: null
 ---
 

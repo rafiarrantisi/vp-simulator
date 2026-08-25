@@ -1,90 +1,123 @@
 ---
 id: surg_diverticulitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: surgery
 system: gastrointestinal
-presentation: "Lower left abdominal pain and fever"
-presentation_id: "Nyeri perut kiri bawah dan demam"
-first_impression: "Patient appears in pain."
-first_impression_id: "Pasien tampak kesakitan."
-target_condition: "Acute diverticulitis"
+presentation: Lower left abdominal pain and fever
+presentation_id: Nyeri perut kiri bawah dan demam
+first_impression: Patient appears in pain.
+first_impression_id: Pasien tampak kesakitan.
+target_condition: Acute diverticulitis
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "World Society of Emergency Surgery (WSES) guidelines for acute diverticulitis"
-  - "ASCRS clinical practice guideline — diverticulitis (2020)"
-
+- World Society of Emergency Surgery (WSES) guidelines for acute diverticulitis
+- ASCRS clinical practice guideline — diverticulitis (2020)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I have pain in my lower left belly and a fever."
+chief_complaint: I have pain in my lower left belly and a fever.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain", critical: true }
-    - { item: "Onset of pain", critical: true }
-    - { item: "Character of pain", critical: true }
-    - { item: "Radiation of pain", critical: false }
-    - { item: "Timing (constant vs intermittent)", critical: false }
-    - { item: "Exacerbating factors", critical: false }
-    - { item: "Relieving factors", critical: false }
-    - { item: "Severity (pain scale)", critical: false }
+  - item: Site of pain
+    critical: true
+  - item: Onset of pain
+    critical: true
+  - item: Character of pain
+    critical: true
+  - item: Radiation of pain
+    critical: false
+  - item: Timing (constant vs intermittent)
+    critical: false
+  - item: Exacerbating factors
+    critical: false
+  - item: Relieving factors
+    critical: false
+  - item: Severity (pain scale)
+    critical: false
   associated_symptoms:
-    - { item: "Nausea or vomiting", critical: false }
-    - { item: "Fever and chills", critical: true }
-    - { item: "Change in bowel habits (constipation/diarrhea)", critical: false }
-    - { item: "Urinary symptoms", critical: false }
+  - item: Nausea or vomiting
+    critical: false
+  - item: Fever and chills
+    critical: true
+  - item: Change in bowel habits (constipation/diarrhea)
+    critical: false
+  - item: Urinary symptoms
+    critical: false
   pmh:
-    - { item: "Previous diverticulitis or diverticulosis", critical: true }
-    - { item: "Hypertension", critical: false }
-    - { item: "Diabetes", critical: false }
-    - { item: "Constipation history", critical: false }
+  - item: Previous diverticulitis or diverticulosis
+    critical: true
+  - item: Hypertension
+    critical: false
+  - item: Diabetes
+    critical: false
+  - item: Constipation history
+    critical: false
   medications:
-    - { item: "Current medications", critical: false }
+  - item: Current medications
+    critical: false
   family_social:
-    - { item: "Family history of diverticulitis or colon cancer", critical: false }
-    - { item: "Smoking history", critical: false }
-    - { item: "Alcohol use", critical: false }
-    - { item: "Diet (fiber intake)", critical: false }
+  - item: Family history of diverticulitis or colon cancer
+    critical: false
+  - item: Smoking history
+    critical: false
+  - item: Alcohol use
+    critical: false
+  - item: Diet (fiber intake)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Severe abdominal pain with guarding or rigidity", critical: true }
-  - { item: "High fever (>101°F/38.3°C)", critical: false }
-  - { item: "Inability to pass gas or stool", critical: false }
+- item: Severe abdominal pain with guarding or rigidity
+  critical: true
+- item: High fever (>101°F/38.3°C)
+  critical: false
+- item: Inability to pass gas or stool
+  critical: false
 expected_ddx:
-  working_diagnosis: "Acute diverticulitis"
-  differentials: [ "Irritable bowel syndrome", "Appendicitis" ]
+  working_diagnosis: Acute diverticulitis
+  differentials:
+  - Irritable bowel syndrome
+  - Appendicitis
 investigations:
   appropriate:
-    - { name: "CT abdomen and pelvis with contrast", expected: "Diverticulitis with wall thickening and fat stranding" }
-    - { name: "Complete blood count", expected: "Leukocytosis" }
-    - { name: "C-reactive protein", expected: "Elevated" }
-  inappropriate: [ "Abdominal X-ray" ]
+  - name: CT abdomen and pelvis with contrast
+    expected: Diverticulitis with wall thickening and fat stranding
+  - name: Complete blood count
+    expected: Leukocytosis
+  - name: C-reactive protein
+    expected: Elevated
+  inappropriate:
+  - Abdominal X-ray
 physical_exam_findings:
-  general: "Patient appears uncomfortable, febrile, holding left lower quadrant."
+  general: Patient appears uncomfortable, febrile, holding left lower quadrant.
   vitals:
-    temperature: "38.5°C (101.3°F)"
-    heart_rate: "95 bpm"
-    blood_pressure: "130/80 mmHg"
-    respiratory_rate: "18/min"
+    temperature: 38.5°C (101.3°F)
+    heart_rate: 95 bpm
+    blood_pressure: 130/80 mmHg
+    respiratory_rate: 18/min
 management:
   pharmacological:
-    - "Antibiotics (e.g., metronidazole + ciprofloxacin or amoxicillin-clavulanate)"
-    - "Pain management (acetaminophen or NSAIDs if no contraindication)"
+  - Antibiotics (e.g., metronidazole + ciprofloxacin or amoxicillin-clavulanate)
+  - Pain management (acetaminophen or NSAIDs if no contraindication)
   non_pharmacological:
-    - "Bowel rest (clear liquids only)"
-    - "Avoid straining during bowel movements"
+  - Bowel rest (clear liquids only)
+  - Avoid straining during bowel movements
   education_safety_netting:
-    - "Signs of worsening: increased pain, fever, vomiting, inability to pass gas"
-    - "When to return: if symptoms worsen or do not improve in 48 hours"
+  - 'Signs of worsening: increased pain, fever, vomiting, inability to pass gas'
+  - 'When to return: if symptoms worsen or do not improve in 48 hours'
 scoring_weights_override: null
 ---
 

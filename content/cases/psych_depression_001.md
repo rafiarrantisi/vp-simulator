@@ -1,67 +1,123 @@
 ---
 id: psych_depression_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: psychiatry
 system: nervous
-presentation: "Low mood"
-presentation_id: "Merasa sedih dan lelah berkepanjangan selama beberapa minggu terakhir"
-first_impression: "Patient appears anxious or sad."
-first_impression_id: "Pasien tampak cemas atau sedih."
-target_condition: "Depression"
+presentation: Low mood
+presentation_id: Merasa sedih dan lelah berkepanjangan selama beberapa minggu terakhir
+first_impression: Patient appears anxious or sad.
+first_impression_id: Pasien tampak cemas atau sedih.
+target_condition: Depression
 difficulty: 2
 estimated_minutes: 20
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "DSM-5-TR"
-  - "NICE NG222 — Depression in adults"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I've been feeling really down and tired for the last few weeks, and I just can't seem to shake it."
+- DSM-5-TR
+- NICE NG222 — Depression in adults
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I've been feeling really down and tired for the last few weeks, and
+  I just can't seem to shake it.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did this start?", critical: true }
-    - { item: "Duration - how long has it been going on?", critical: true }
-    - { item: "Course - is it getting worse, better, or staying the same?", critical: false }
-    - { item: "Severity - how bad is it on a scale of 1 to 10?", critical: false }
-    - { item: "Context - what was happening in your life when it started?", critical: true }
+  - item: Onset - when did this start?
+    critical: true
+  - item: Duration - how long has it been going on?
+    critical: true
+  - item: Course - is it getting worse, better, or staying the same?
+    critical: false
+  - item: Severity - how bad is it on a scale of 1 to 10?
+    critical: false
+  - item: Context - what was happening in your life when it started?
+    critical: true
   associated_symptoms:
-    - { item: "Sleep disturbances", critical: true }
-    - { item: "Appetite changes", critical: true }
-    - { item: "Energy levels / fatigue", critical: true }
-    - { item: "Loss of interest / anhedonia", critical: true }
-    - { item: "Concentration difficulties", critical: true }
-    - { item: "Feelings of worthlessness or guilt", critical: true }
-    - { item: "Suicidal thoughts", critical: true }
-    - { item: "Psychomotor changes (agitation or slowing)", critical: false }
+  - item: Sleep disturbances
+    critical: true
+  - item: Appetite changes
+    critical: true
+  - item: Energy levels / fatigue
+    critical: true
+  - item: Loss of interest / anhedonia
+    critical: true
+  - item: Concentration difficulties
+    critical: true
+  - item: Feelings of worthlessness or guilt
+    critical: true
+  - item: Suicidal thoughts
+    critical: true
+  - item: Psychomotor changes (agitation or slowing)
+    critical: false
   pmh:
-    - { item: "Past medical history", critical: false }
-    - { item: "Past psychiatric history", critical: true }
+  - item: Past medical history
+    critical: false
+  - item: Past psychiatric history
+    critical: true
   medications:
-    - { item: "Current medications", critical: false }
-    - { item: "Alcohol and substance use", critical: true }
+  - item: Current medications
+    critical: false
+  - item: Alcohol and substance use
+    critical: true
   family_social:
-    - { item: "Family history of depression or mental illness", critical: true }
-    - { item: "Living situation / social support", critical: false }
-    - { item: "Occupational functioning", critical: false }
+  - item: Family history of depression or mental illness
+    critical: true
+  - item: Living situation / social support
+    critical: false
+  - item: Occupational functioning
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Suicidal ideation or self-harm", critical: true }
-  - { item: "Psychotic features", critical: true }
-  - { item: "Severe weight loss or malnutrition", critical: false }
+- item: Suicidal ideation or self-harm
+  critical: true
+- item: Psychotic features
+  critical: true
+- item: Severe weight loss or malnutrition
+  critical: false
 expected_ddx:
-  working_diagnosis: "Depression"
-  differentials: [ "Adjustment disorder with depressed mood", "Bipolar disorder (current depressive episode)", "Persistent depressive disorder (Dysthymia)", "Hypothyroidism" ]
-investigations: { appropriate: [], inappropriate: [] }
-physical_exam_findings: { general: "Patient appears tired, with flat affect and minimal eye contact. Psychomotor retardation noted.", vitals: { bp: "120/80", hr: "72", rr: "16", temp: "37.0" } }
+  working_diagnosis: Depression
+  differentials:
+  - Adjustment disorder with depressed mood
+  - Bipolar disorder (current depressive episode)
+  - Persistent depressive disorder (Dysthymia)
+  - Hypothyroidism
+investigations:
+  appropriate: []
+  inappropriate: []
+physical_exam_findings:
+  general: Patient appears tired, with flat affect and minimal eye contact. Psychomotor
+    retardation noted.
+  vitals:
+    bp: 120/80
+    hr: '72'
+    rr: '16'
+    temp: '37.0'
 management:
-  pharmacological: [ "SSRI (e.g., sertraline or escitalopram)", "Consider psychotherapy augmentation" ]
-  non_pharmacological: [ "Cognitive Behavioral Therapy (CBT)", "Behavioral activation", "Exercise regimen", "Sleep hygiene" ]
-  education_safety_netting: [ "Explain diagnosis and treatment options", "Discuss side effects of medication", "Provide crisis hotline number (e.g., 988)", "Schedule close follow-up", "Educate family on warning signs" ]
+  pharmacological:
+  - SSRI (e.g., sertraline or escitalopram)
+  - Consider psychotherapy augmentation
+  non_pharmacological:
+  - Cognitive Behavioral Therapy (CBT)
+  - Behavioral activation
+  - Exercise regimen
+  - Sleep hygiene
+  education_safety_netting:
+  - Explain diagnosis and treatment options
+  - Discuss side effects of medication
+  - Provide crisis hotline number (e.g., 988)
+  - Schedule close follow-up
+  - Educate family on warning signs
 scoring_weights_override: null
 ---
 

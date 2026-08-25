@@ -4,65 +4,125 @@ schema_version: 2
 status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
-presentation: "Heavy painful periods"
-presentation_id: "Haid berat dan nyeri hebat selama dua hari setiap bulan"
-first_impression: "Patient appears to have gynecological concerns."
-first_impression_id: "Pasien tampak mengalami masalah ginekologi."
-target_condition: "Menorrhagia"
+presentation: Heavy painful periods
+presentation_id: Haid berat dan nyeri hebat selama dua hari setiap bulan
+first_impression: Patient appears to have gynecological concerns.
+first_impression_id: Pasien tampak mengalami masalah ginekologi.
+target_condition: Menorrhagia
 difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
-source_refs: ["NICE guideline NG88: Heavy menstrual bleeding"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My periods are so heavy and painful I can barely leave the house for two days each month."
+languages:
+- en
+source_refs:
+- 'NICE guideline NG88: Heavy menstrual bleeding'
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: My periods are so heavy and painful I can barely leave the house
+  for two days each month.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did this start getting worse?", critical: false }
-    - { item: "Duration - how many days does bleeding last?", critical: true }
-    - { item: "Severity - number of pads/tampons used per day", critical: true }
-    - { item: "Character - describe the pain (cramping, stabbing)", critical: false }
-    - { item: "Timing - relationship to cycle days", critical: false }
-    - { item: "Aggravating factors - does anything make it worse?", critical: false }
-    - { item: "Relieving factors - what helps?", critical: false }
-    - { item: "Associated symptoms - clots, flooding, fatigue", critical: true }
+  - item: Onset - when did this start getting worse?
+    critical: false
+  - item: Duration - how many days does bleeding last?
+    critical: true
+  - item: Severity - number of pads/tampons used per day
+    critical: true
+  - item: Character - describe the pain (cramping, stabbing)
+    critical: false
+  - item: Timing - relationship to cycle days
+    critical: false
+  - item: Aggravating factors - does anything make it worse?
+    critical: false
+  - item: Relieving factors - what helps?
+    critical: false
+  - item: Associated symptoms - clots, flooding, fatigue
+    critical: true
   associated_symptoms:
-    - { item: "Pain during intercourse", critical: false }
-    - { item: "Bloating or pelvic pressure", critical: false }
-    - { item: "Nausea or dizziness during period", critical: false }
+  - item: Pain during intercourse
+    critical: false
+  - item: Bloating or pelvic pressure
+    critical: false
+  - item: Nausea or dizziness during period
+    critical: false
   pmh:
-    - { item: "Any known gynaecological conditions (fibroids, endometriosis, PCOS)", critical: true }
-    - { item: "Pregnancy history (number of pregnancies, births, miscarriages)", critical: false }
-    - { item: "Contraception use", critical: false }
-    - { item: "Any bleeding disorders or anaemia", critical: true }
+  - item: Any known gynaecological conditions (fibroids, endometriosis, PCOS)
+    critical: true
+  - item: Pregnancy history (number of pregnancies, births, miscarriages)
+    critical: false
+  - item: Contraception use
+    critical: false
+  - item: Any bleeding disorders or anaemia
+    critical: true
   medications:
-    - { item: "Current medications (including over-the-counter pain relief)", critical: false }
-    - { item: "Any iron supplements", critical: false }
+  - item: Current medications (including over-the-counter pain relief)
+    critical: false
+  - item: Any iron supplements
+    critical: false
   family_social:
-    - { item: "Family history of heavy periods or gynaecological problems", critical: false }
-    - { item: "Smoking, alcohol, or drug use", critical: false }
+  - item: Family history of heavy periods or gynaecological problems
+    critical: false
+  - item: Smoking, alcohol, or drug use
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Bleeding between periods or after intercourse", critical: true }
-  - { item: "Severe anaemia symptoms (fainting, shortness of breath, palpitations)", critical: true }
-  - { item: "Postmenopausal bleeding (if applicable)", critical: true }
+- item: Bleeding between periods or after intercourse
+  critical: true
+- item: Severe anaemia symptoms (fainting, shortness of breath, palpitations)
+  critical: true
+- item: Postmenopausal bleeding (if applicable)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Menorrhagia"
-  differentials: ["Uterine fibroids", "Endometriosis", "Dysfunctional uterine bleeding"]
+  working_diagnosis: Menorrhagia
+  differentials:
+  - Uterine fibroids
+  - Endometriosis
+  - Dysfunctional uterine bleeding
 investigations:
   appropriate:
-    - { name: "Full blood count", expected: "May show iron-deficiency anaemia" }
-    - { name: "Pelvic ultrasound", expected: "May show fibroids or thickened endometrium" }
-  inappropriate: ["CA-125 blood test", "CT scan of pelvis"]
-physical_exam_findings: { general: "Pale conjunctivae, mild suprapubic tenderness on deep palpation", vitals: { bp: "110/70", hr: 88, temp: 36.8 } }
+  - name: Full blood count
+    expected: May show iron-deficiency anaemia
+  - name: Pelvic ultrasound
+    expected: May show fibroids or thickened endometrium
+  inappropriate:
+  - CA-125 blood test
+  - CT scan of pelvis
+physical_exam_findings:
+  general: Pale conjunctivae, mild suprapubic tenderness on deep palpation
+  vitals:
+    bp: 110/70
+    hr: 88
+    temp: 36.8
 management:
-  pharmacological: ["Tranexamic acid during periods", "Mefenamic acid for pain", "Iron supplementation if anaemic"]
-  non_pharmacological: ["Menstrual diary to track bleeding", "Consider levonorgestrel-releasing intrauterine system (Mirena)"]
-  education_safety_netting: ["Advise to return if soaking through more than 1 pad per hour for several hours", "Report any new symptoms like fever or severe pain"]
+  pharmacological:
+  - Tranexamic acid during periods
+  - Mefenamic acid for pain
+  - Iron supplementation if anaemic
+  non_pharmacological:
+  - Menstrual diary to track bleeding
+  - Consider levonorgestrel-releasing intrauterine system (Mirena)
+  education_safety_netting:
+  - Advise to return if soaking through more than 1 pad per hour for several hours
+  - Report any new symptoms like fever or severe pain
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

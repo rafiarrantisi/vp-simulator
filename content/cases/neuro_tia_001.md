@@ -4,90 +4,153 @@ schema_version: 2
 status: in_review
 specialty: neurology
 system: nervous
-presentation: "Transient weakness or speech disturbance"
-presentation_id: "Kelemahan lengan kanan dan bicara tidak jelas selama sepuluh menit"
-first_impression: "Patient appears to have neurological concerns."
-first_impression_id: "Pasien tampak mengalami masalah neurologis."
-target_condition: "Transient ischaemic attack"
+presentation: Transient weakness or speech disturbance
+presentation_id: Kelemahan lengan kanan dan bicara tidak jelas selama sepuluh menit
+first_impression: Patient appears to have neurological concerns.
+first_impression_id: Pasien tampak mengalami masalah neurologis.
+target_condition: Transient ischaemic attack
 difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "PNPK Tata Laksana Stroke (KMK 304/2026) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes3042026"
-  - "AHA/ASA guideline — transient ischaemic attack (2009)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I had a strange episode where my right arm went weak and I couldn't speak clearly for about ten minutes."
+- PNPK Tata Laksana Stroke (KMK 304/2026) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes3042026
+- AHA/ASA guideline — transient ischaemic attack (2009)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I had a strange episode where my right arm went weak and I couldn't
+  speak clearly for about ten minutes.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site – which body part affected", critical: true }
-    - { item: "Onset – sudden or gradual", critical: true }
-    - { item: "Character – weakness, numbness, speech difficulty", critical: true }
-    - { item: "Radiation – none", critical: false }
-    - { item: "Associations – any headache, dizziness, vision change", critical: false }
-    - { item: "Time course – exactly how long did symptoms last", critical: true }
-    - { item: "Exacerbating/relieving factors – anything that helped or worsened", critical: false }
-    - { item: "Severity – complete loss or partial", critical: false }
+  - item: Site – which body part affected
+    critical: true
+  - item: Onset – sudden or gradual
+    critical: true
+  - item: Character – weakness, numbness, speech difficulty
+    critical: true
+  - item: Radiation – none
+    critical: false
+  - item: Associations – any headache, dizziness, vision change
+    critical: false
+  - item: Time course – exactly how long did symptoms last
+    critical: true
+  - item: Exacerbating/relieving factors – anything that helped or worsened
+    critical: false
+  - item: Severity – complete loss or partial
+    critical: false
   associated_symptoms:
-    - { item: "Any loss of vision in one eye", critical: false }
-    - { item: "Any numbness or tingling", critical: false }
-    - { item: "Any headache or neck pain", critical: true }
-    - { item: "Any difficulty swallowing", critical: false }
-    - { item: "Any chest pain or palpitations", critical: false }
+  - item: Any loss of vision in one eye
+    critical: false
+  - item: Any numbness or tingling
+    critical: false
+  - item: Any headache or neck pain
+    critical: true
+  - item: Any difficulty swallowing
+    critical: false
+  - item: Any chest pain or palpitations
+    critical: false
   pmh:
-    - { item: "Hypertension", critical: true }
-    - { item: "Diabetes mellitus type 2", critical: true }
-    - { item: "Previous stroke or TIA", critical: true }
-    - { item: "Atrial fibrillation", critical: true }
-    - { item: "Hypercholesterolaemia", critical: false }
+  - item: Hypertension
+    critical: true
+  - item: Diabetes mellitus type 2
+    critical: true
+  - item: Previous stroke or TIA
+    critical: true
+  - item: Atrial fibrillation
+    critical: true
+  - item: Hypercholesterolaemia
+    critical: false
   medications:
-    - { item: "Antihypertensives – name and dose", critical: true }
-    - { item: "Antidiabetic medication", critical: true }
-    - { item: "Antiplatelet or anticoagulant", critical: true }
-    - { item: "Statin", critical: false }
-    - { item: "Any over‑the‑counter or herbal supplements", critical: false }
+  - item: Antihypertensives – name and dose
+    critical: true
+  - item: Antidiabetic medication
+    critical: true
+  - item: Antiplatelet or anticoagulant
+    critical: true
+  - item: Statin
+    critical: false
+  - item: Any over‑the‑counter or herbal supplements
+    critical: false
   family_social:
-    - { item: "Family history of stroke or heart disease", critical: true }
-    - { item: "Smoking status", critical: true }
-    - { item: "Alcohol consumption", critical: true }
-    - { item: "Living situation and support", critical: false }
+  - item: Family history of stroke or heart disease
+    critical: true
+  - item: Smoking status
+    critical: true
+  - item: Alcohol consumption
+    critical: true
+  - item: Living situation and support
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Sudden onset focal neurological deficit (weakness/speech)", critical: true }
-  - { item: "Symptoms that resolved within 24 hours but could be a warning", critical: true }
-  - { item: "Vascular risk factors (hypertension, diabetes, smoking)", critical: false }
+- item: Sudden onset focal neurological deficit (weakness/speech)
+  critical: true
+- item: Symptoms that resolved within 24 hours but could be a warning
+  critical: true
+- item: Vascular risk factors (hypertension, diabetes, smoking)
+  critical: false
 expected_ddx:
-  working_diagnosis: "Transient ischaemic attack"
-  differentials: [ "Simple partial seizure", "Migraine with aura", "Hypoglycaemia", "Functional neurological disorder" ]
+  working_diagnosis: Transient ischaemic attack
+  differentials:
+  - Simple partial seizure
+  - Migraine with aura
+  - Hypoglycaemia
+  - Functional neurological disorder
 investigations:
   appropriate:
-    - { name: "CT head (non‑contrast)", expected: "No acute intracranial haemorrhage or mass" }
-    - { name: "Carotid duplex ultrasound", expected: "May show <50% stenosis" }
-    - { name: "ECG", expected: "Normal sinus rhythm, no atrial fibrillation" }
-    - { name: "Blood glucose", expected: "Normal (exclude hypoglycaemia)" }
-    - { name: "Full blood count and coagulation profile", expected: "Normal" }
-  inappropriate: [ "CT angiography of head and neck in all patients", "MRI brain routinely" ]
+  - name: CT head (non‑contrast)
+    expected: No acute intracranial haemorrhage or mass
+  - name: Carotid duplex ultrasound
+    expected: May show <50% stenosis
+  - name: ECG
+    expected: Normal sinus rhythm, no atrial fibrillation
+  - name: Blood glucose
+    expected: Normal (exclude hypoglycaemia)
+  - name: Full blood count and coagulation profile
+    expected: Normal
+  inappropriate:
+  - CT angiography of head and neck in all patients
+  - MRI brain routinely
 physical_exam_findings:
-  general: "Alert, oriented, well‑nourished. No distress. Mild anxiety."
-  vitals: { BP: 148/92, HR: 76 regular, RR: 16, SpO2: 98%, temp: 36.8 }
+  general: Alert, oriented, well‑nourished. No distress. Mild anxiety.
+  vitals:
+    BP: 148/92
+    HR: 76 regular
+    RR: 16
+    SpO2: 98%
+    temp: 36.8
 management:
   pharmacological:
-    - "Aspirin 300 mg loading dose (if not already on antiplatelet), then 75 mg daily"
-    - "Clopidogrel 75 mg daily (if aspirin contraindicated)"
-    - "Statin (atorvastatin 20 mg daily) – start if not already on"
-    - "Antihypertensive optimisation"
+  - Aspirin 300 mg loading dose (if not already on antiplatelet), then 75 mg daily
+  - Clopidogrel 75 mg daily (if aspirin contraindicated)
+  - Statin (atorvastatin 20 mg daily) – start if not already on
+  - Antihypertensive optimisation
   non_pharmacological:
-    - "Carotid endarterectomy if >70% stenosis"
-    - "Lifestyle counselling: smoking cessation, diet, exercise"
+  - Carotid endarterectomy if >70% stenosis
+  - 'Lifestyle counselling: smoking cessation, diet, exercise'
   education_safety_netting:
-    - "Explain that this is a warning sign and that urgent assessment is needed"
-    - "Advise to call 999 if any new or recurrent symptoms"
-    - "Provide written information about TIA and stroke prevention"
+  - Explain that this is a warning sign and that urgent assessment is needed
+  - Advise to call 999 if any new or recurrent symptoms
+  - Provide written information about TIA and stroke prevention
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

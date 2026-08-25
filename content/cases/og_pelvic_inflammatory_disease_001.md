@@ -4,78 +4,132 @@ schema_version: 2
 status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
-presentation: "Pelvic pain and discharge"
-presentation_id: "Nyeri perut bagian bawah dan keputihan yang tidak normal"
-first_impression: "Patient appears to have gynecological concerns."
-first_impression_id: "Pasien tampak mengalami masalah ginekologi."
-target_condition: "Pelvic inflammatory disease"
+presentation: Pelvic pain and discharge
+presentation_id: Nyeri perut bagian bawah dan keputihan yang tidak normal
+first_impression: Patient appears to have gynecological concerns.
+first_impression_id: Pasien tampak mengalami masalah ginekologi.
+target_condition: Pelvic inflammatory disease
 difficulty: 2
 estimated_minutes: 20
 mode_default: anamnesis
-languages: [en]
-source_refs: ["CDC STI Treatment Guidelines, 2021"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have this pain in my lower belly and a weird discharge."
+languages:
+- en
+source_refs:
+- CDC STI Treatment Guidelines, 2021
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have this pain in my lower belly and a weird discharge.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain (lower abdomen)", critical: true }
-    - { item: "Onset (gradual over 3 days)", critical: false }
-    - { item: "Character (dull ache, cramping)", critical: false }
-    - { item: "Radiation (none)", critical: false }
-    - { item: "Associated symptoms (fever, chills)", critical: true }
-    - { item: "Time course (worsening)", critical: false }
-    - { item: "Exacerbating factors (movement, intercourse)", critical: false }
-    - { item: "Severity (moderate, 6/10)", critical: false }
+  - item: Site of pain (lower abdomen)
+    critical: true
+  - item: Onset (gradual over 3 days)
+    critical: false
+  - item: Character (dull ache, cramping)
+    critical: false
+  - item: Radiation (none)
+    critical: false
+  - item: Associated symptoms (fever, chills)
+    critical: true
+  - item: Time course (worsening)
+    critical: false
+  - item: Exacerbating factors (movement, intercourse)
+    critical: false
+  - item: Severity (moderate, 6/10)
+    critical: false
   associated_symptoms:
-    - { item: "Abnormal vaginal discharge (yellow-green, foul-smelling)", critical: true }
-    - { item: "Pain during intercourse", critical: false }
-    - { item: "Irregular bleeding between periods", critical: false }
-    - { item: "Urinary frequency or burning", critical: false }
+  - item: Abnormal vaginal discharge (yellow-green, foul-smelling)
+    critical: true
+  - item: Pain during intercourse
+    critical: false
+  - item: Irregular bleeding between periods
+    critical: false
+  - item: Urinary frequency or burning
+    critical: false
   pmh:
-    - { item: "History of sexually transmitted infections", critical: true }
-    - { item: "Recent intrauterine device insertion", critical: false }
-    - { item: "Previous pelvic infections", critical: false }
+  - item: History of sexually transmitted infections
+    critical: true
+  - item: Recent intrauterine device insertion
+    critical: false
+  - item: Previous pelvic infections
+    critical: false
   medications:
-    - { item: "Current antibiotic use", critical: false }
-    - { item: "Oral contraceptive pills", critical: false }
+  - item: Current antibiotic use
+    critical: false
+  - item: Oral contraceptive pills
+    critical: false
   family_social:
-    - { item: "Sexual activity (new partner in past 2 months)", critical: true }
-    - { item: "Number of sexual partners", critical: false }
-    - { item: "Condom use", critical: true }
-    - { item: "History of STI in partner", critical: false }
+  - item: Sexual activity (new partner in past 2 months)
+    critical: true
+  - item: Number of sexual partners
+    critical: false
+  - item: Condom use
+    critical: true
+  - item: History of STI in partner
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Fever >38°C", critical: true }
-  - { item: "Severe lower abdominal pain with rebound tenderness", critical: true }
-  - { item: "Vomiting or inability to keep fluids down", critical: true }
+- item: Fever >38°C
+  critical: true
+- item: Severe lower abdominal pain with rebound tenderness
+  critical: true
+- item: Vomiting or inability to keep fluids down
+  critical: true
 expected_ddx:
-  working_diagnosis: "Pelvic inflammatory disease"
-  differentials: ["Acute appendicitis", "Ectopic pregnancy", "Ovarian cyst rupture"]
+  working_diagnosis: Pelvic inflammatory disease
+  differentials:
+  - Acute appendicitis
+  - Ectopic pregnancy
+  - Ovarian cyst rupture
 investigations:
   appropriate:
-    - { name: "Nucleic acid amplification test for Chlamydia trachomatis and Neisseria gonorrhoeae", expected: "Positive for Chlamydia trachomatis" }
-    - { name: "Pregnancy test (urine or serum)", expected: "Negative" }
-    - { name: "Complete blood count", expected: "Elevated white blood cell count" }
-  inappropriate: ["CT abdomen and pelvis without contrast"]
+  - name: Nucleic acid amplification test for Chlamydia trachomatis and Neisseria
+      gonorrhoeae
+    expected: Positive for Chlamydia trachomatis
+  - name: Pregnancy test (urine or serum)
+    expected: Negative
+  - name: Complete blood count
+    expected: Elevated white blood cell count
+  inappropriate:
+  - CT abdomen and pelvis without contrast
 physical_exam_findings:
-  general: "Patient appears uncomfortable, guarding lower abdomen."
-  vitals: { temperature: 38.2, heart_rate: 95, blood_pressure: 115/75, respiratory_rate: 18 }
+  general: Patient appears uncomfortable, guarding lower abdomen.
+  vitals:
+    temperature: 38.2
+    heart_rate: 95
+    blood_pressure: 115/75
+    respiratory_rate: 18
 management:
   pharmacological:
-    - "Ceftriaxone 500 mg IM single dose"
-    - "Doxycycline 100 mg PO twice daily for 14 days"
-    - "Metronidazole 500 mg PO twice daily for 14 days"
+  - Ceftriaxone 500 mg IM single dose
+  - Doxycycline 100 mg PO twice daily for 14 days
+  - Metronidazole 500 mg PO twice daily for 14 days
   non_pharmacological:
-    - "Hospitalization if severe illness or unable to tolerate oral medications"
-    - "Partner treatment and STI screening"
+  - Hospitalization if severe illness or unable to tolerate oral medications
+  - Partner treatment and STI screening
   education_safety_netting:
-    - "Complete full course of antibiotics even if symptoms improve"
-    - "Avoid sexual intercourse until treatment completed and symptoms resolved"
-    - "Return if fever worsens, pain increases, or vomiting develops"
+  - Complete full course of antibiotics even if symptoms improve
+  - Avoid sexual intercourse until treatment completed and symptoms resolved
+  - Return if fever worsens, pain increases, or vomiting develops
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

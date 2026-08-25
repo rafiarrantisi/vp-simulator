@@ -1,72 +1,121 @@
 ---
 id: im_uta_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: cardiovascular
-presentation: "Unilateral leg swelling and pain"
-presentation_id: "Kaki kiri bengkak dan nyeri selama tiga hari"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
+presentation: Unilateral leg swelling and pain
+presentation_id: Kaki kiri bengkak dan nyeri selama tiga hari
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
 target_condition: Deep vein thrombosis
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline NG158: Venous thromboembolic diseases"
-  - "CHEST guideline — antithrombotic therapy for VTE (2021)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My left leg has been swollen and painful for three days."
+- 'NICE guideline NG158: Venous thromboembolic diseases'
+- CHEST guideline — antithrombotic therapy for VTE (2021)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My left leg has been swollen and painful for three days.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - which leg", critical: true }
-    - { item: "Onset - when did it start", critical: true }
-    - { item: "Character - describe the pain", critical: false }
-    - { item: "Radiation - does pain travel", critical: false }
-    - { item: "Associations - any redness or warmth", critical: true }
-    - { item: "Time course - constant or comes and goes", critical: false }
-    - { item: "Exacerbating factors - standing or walking", critical: false }
-    - { item: "Severity - pain level out of 10", critical: false }
+  - item: Site - which leg
+    critical: true
+  - item: Onset - when did it start
+    critical: true
+  - item: Character - describe the pain
+    critical: false
+  - item: Radiation - does pain travel
+    critical: false
+  - item: Associations - any redness or warmth
+    critical: true
+  - item: Time course - constant or comes and goes
+    critical: false
+  - item: Exacerbating factors - standing or walking
+    critical: false
+  - item: Severity - pain level out of 10
+    critical: false
   associated_symptoms:
-    - { item: "Chest pain or shortness of breath", critical: true }
-    - { item: "Fever or chills", critical: false }
-    - { item: "Recent injury to leg", critical: true }
+  - item: Chest pain or shortness of breath
+    critical: true
+  - item: Fever or chills
+    critical: false
+  - item: Recent injury to leg
+    critical: true
   pmh:
-    - { item: "Any previous blood clots", critical: true }
-    - { item: "Any recent surgery or hospitalization", critical: true }
-    - { item: "Any cancer diagnosis", critical: true }
-    - { item: "Any heart or lung conditions", critical: false }
+  - item: Any previous blood clots
+    critical: true
+  - item: Any recent surgery or hospitalization
+    critical: true
+  - item: Any cancer diagnosis
+    critical: true
+  - item: Any heart or lung conditions
+    critical: false
   medications:
-    - { item: "Current medications", critical: true }
-    - { item: "Hormonal birth control or hormone therapy", critical: true }
+  - item: Current medications
+    critical: true
+  - item: Hormonal birth control or hormone therapy
+    critical: true
   family_social:
-    - { item: "Family history of blood clots", critical: true }
-    - { item: "Smoking history", critical: true }
-    - { item: "Recent long travel (car, plane, train)", critical: true }
+  - item: Family history of blood clots
+    critical: true
+  - item: Smoking history
+    critical: true
+  - item: Recent long travel (car, plane, train)
+    critical: true
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Sudden chest pain or difficulty breathing", critical: true }
-  - { item: "Coughing up blood", critical: true }
+- item: Sudden chest pain or difficulty breathing
+  critical: true
+- item: Coughing up blood
+  critical: true
 expected_ddx:
-  working_diagnosis: "Deep vein thrombosis"
-  differentials: ["Cellulitis", "Superficial thrombophlebitis", "Baker's cyst rupture"]
+  working_diagnosis: Deep vein thrombosis
+  differentials:
+  - Cellulitis
+  - Superficial thrombophlebitis
+  - Baker's cyst rupture
 investigations:
   appropriate:
-    - { name: "D-dimer blood test", expected: "Elevated" }
-    - { name: "Compression ultrasound of leg veins", expected: "Non-compressible segment in left popliteal vein" }
-  inappropriate: ["CT scan of leg without contrast"]
+  - name: D-dimer blood test
+    expected: Elevated
+  - name: Compression ultrasound of leg veins
+    expected: Non-compressible segment in left popliteal vein
+  inappropriate:
+  - CT scan of leg without contrast
 physical_exam_findings:
-  general: "Patient appears uncomfortable, favoring left leg."
-  vitals: { heart_rate: 88, blood_pressure: 128/78, respiratory_rate: 16, temperature: 37.1, oxygen_saturation: 98 }
+  general: Patient appears uncomfortable, favoring left leg.
+  vitals:
+    heart_rate: 88
+    blood_pressure: 128/78
+    respiratory_rate: 16
+    temperature: 37.1
+    oxygen_saturation: 98
 management:
-  pharmacological: ["Low molecular weight heparin (e.g., enoxaparin)", "Warfarin or direct oral anticoagulant (e.g., rivaroxaban)"]
-  non_pharmacological: ["Compression stockings", "Leg elevation", "Early mobilization"]
-  education_safety_netting: ["Seek immediate care if chest pain, shortness of breath, or coughing up blood occurs", "Avoid prolonged sitting or standing", "Take anticoagulants as prescribed"]
+  pharmacological:
+  - Low molecular weight heparin (e.g., enoxaparin)
+  - Warfarin or direct oral anticoagulant (e.g., rivaroxaban)
+  non_pharmacological:
+  - Compression stockings
+  - Leg elevation
+  - Early mobilization
+  education_safety_netting:
+  - Seek immediate care if chest pain, shortness of breath, or coughing up blood occurs
+  - Avoid prolonged sitting or standing
+  - Take anticoagulants as prescribed
 scoring_weights_override: null
 ---
 

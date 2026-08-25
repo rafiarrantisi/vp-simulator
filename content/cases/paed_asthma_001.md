@@ -1,94 +1,96 @@
 ---
 id: paed_asthma_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: paediatrics
 system: respiratory
-presentation: "Recurrent wheeze and cough in a 6-year-old"
-presentation_id: "Batuk dan mengi berulang pada anak usia 6 tahun"
-first_impression: "A child appears unwell."
-first_impression_id: "Seorang anak tampak tidak sehat."
-target_condition: "Paediatric asthma"
+presentation: Recurrent wheeze and cough in a 6-year-old
+presentation_id: Batuk dan mengi berulang pada anak usia 6 tahun
+first_impression: A child appears unwell.
+first_impression_id: Seorang anak tampak tidak sehat.
+target_condition: Paediatric asthma
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
 languages:
-  - en
+- en
 source_refs:
-  - "GINA 2023"
+- GINA 2023
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "My 6-year-old son has been coughing and wheezing on and off for months."
+chief_complaint: My 6-year-old son has been coughing and wheezing on and off for months.
 anamnesis_checklist:
   hpi_socrates:
-    - item: "Onset – when did the symptoms first start?"
-      critical: true
-    - item: "Triggers – what makes the cough or wheeze worse (e.g., exercise, cold air, allergens)?"
-      critical: true
-    - item: "Timing – does it occur at night or early morning?"
-      critical: true
-    - item: "Progression – have symptoms been getting worse over time?"
-      critical: false
-    - item: "Severity – how bad are the episodes? Does he stop playing or have trouble breathing?"
-      critical: true
+  - item: Onset – when did the symptoms first start?
+    critical: true
+  - item: Triggers – what makes the cough or wheeze worse (e.g., exercise, cold air,
+      allergens)?
+    critical: true
+  - item: Timing – does it occur at night or early morning?
+    critical: true
+  - item: Progression – have symptoms been getting worse over time?
+    critical: false
+  - item: Severity – how bad are the episodes? Does he stop playing or have trouble
+      breathing?
+    critical: true
   associated_symptoms:
-    - item: "Fever or cold symptoms at onset"
-      critical: false
-    - item: "Chest tightness or pain"
-      critical: false
-    - item: "Rapid breathing or shortness of breath"
-      critical: true
-    - item: "Nasal congestion or runny nose"
-      critical: false
+  - item: Fever or cold symptoms at onset
+    critical: false
+  - item: Chest tightness or pain
+    critical: false
+  - item: Rapid breathing or shortness of breath
+    critical: true
+  - item: Nasal congestion or runny nose
+    critical: false
   pmh:
-    - item: "History of eczema or allergic rhinitis"
-      critical: true
-    - item: "Previous episodes of wheezing or asthma-like symptoms"
-      critical: true
-    - item: "Birth history – was he full-term? Any neonatal respiratory issues?"
-      critical: false
-    - item: "Immunization status – up to date?"
-      critical: false
+  - item: History of eczema or allergic rhinitis
+    critical: true
+  - item: Previous episodes of wheezing or asthma-like symptoms
+    critical: true
+  - item: Birth history – was he full-term? Any neonatal respiratory issues?
+    critical: false
+  - item: Immunization status – up to date?
+    critical: false
   medications:
-    - item: "Any current medications (including inhalers, antihistamines)?"
-      critical: true
-    - item: "Any treatments tried for this cough (e.g., antibiotics, cough syrup)?"
-      critical: false
-    - item: "Any known drug allergies?"
-      critical: true
+  - item: Any current medications (including inhalers, antihistamines)?
+    critical: true
+  - item: Any treatments tried for this cough (e.g., antibiotics, cough syrup)?
+    critical: false
+  - item: Any known drug allergies?
+    critical: true
   family_social:
-    - item: "Family history of asthma, eczema, or allergies in first-degree relatives"
-      critical: true
-    - item: "Smoking exposure at home or in car"
-      critical: true
-    - item: "Pets at home"
-      critical: false
-    - item: "Daycare or school attendance"
-      critical: false
+  - item: Family history of asthma, eczema, or allergies in first-degree relatives
+    critical: true
+  - item: Smoking exposure at home or in car
+    critical: true
+  - item: Pets at home
+    critical: false
+  - item: Daycare or school attendance
+    critical: false
   ice_fife:
-    - item: "Ideas - what they think is wrong"
-      critical: true
-    - item: "Concerns - what worries them"
-      critical: true
-    - item: "Expectations - what they hope for"
-      critical: false
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - item: "Cyanosis or bluish lips/skin during episodes"
-    critical: true
-  - item: "Stridor or barking cough (possible croup or foreign body)"
-    critical: true
-  - item: "Progressive difficulty breathing despite treatment"
-    critical: true
+- item: Cyanosis or bluish lips/skin during episodes
+  critical: true
+- item: Stridor or barking cough (possible croup or foreign body)
+  critical: true
+- item: Progressive difficulty breathing despite treatment
+  critical: true
 expected_ddx:
-  working_diagnosis: "Paediatric asthma"
+  working_diagnosis: Paediatric asthma
   differentials:
-    - "Viral-induced wheeze"
-    - "Gastroesophageal reflux disease"
-    - "Foreign body aspiration"
+  - Viral-induced wheeze
+  - Gastroesophageal reflux disease
+  - Foreign body aspiration
 investigations: []
 physical_exam_findings: {}
 management: {}

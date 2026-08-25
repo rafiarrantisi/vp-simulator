@@ -1,99 +1,122 @@
 ---
 id: oph_night_blindness_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: retina
-presentation: "Difficulty seeing in the dark"
-presentation_id: "Kesulitan melihat pada malam hari selama beberapa bulan, semakin memburuk"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Vitamin A deficiency (night blindness)"
+presentation: Difficulty seeing in the dark
+presentation_id: Kesulitan melihat pada malam hari selama beberapa bulan, semakin
+  memburuk
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Vitamin A deficiency (night blindness)
 difficulty: 2
 estimated_minutes: 12
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "WHO: Vitamin A deficiency and xerophthalmia classification"
-  - "Migrated from legacy kasus-102 (PPK Kemenkes — Buta Senja, ICD-10 H53.6)"
+- 'WHO: Vitamin A deficiency and xerophthalmia classification'
+- Migrated from legacy kasus-102 (PPK Kemenkes — Buta Senja, ICD-10 H53.6)
 authoring:
   drafted_by: migrated_from_kasus-102
   model: human+ai
   reviewed_by: null
   reviewed_at: null
-  review_notes: "Restructured + translated to English schema v2. Study-aid draft pending ophthalmology sign-off."
-
-chief_complaint: "Cannot see well at night for several months, getting worse"
-
+  review_notes: Restructured + translated to English schema v2. Study-aid draft pending
+    ophthalmology sign-off.
+chief_complaint: Cannot see well at night for several months, getting worse
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset and progression (gradual over months, worsening)", critical: true }
-    - { item: "Site / laterality (both eyes)", critical: false }
-    - { item: "Character (poor vision in dusk/dark, slow dark adaptation)", critical: true }
-    - { item: "Severity / functional impact (cannot work or move at night)", critical: false }
-    - { item: "Aggravating (darkness) and relieving (bright light) factors", critical: false }
+  - item: Onset and progression (gradual over months, worsening)
+    critical: true
+  - item: Site / laterality (both eyes)
+    critical: false
+  - item: Character (poor vision in dusk/dark, slow dark adaptation)
+    critical: true
+  - item: Severity / functional impact (cannot work or move at night)
+    critical: false
+  - item: Aggravating (darkness) and relieving (bright light) factors
+    critical: false
   associated_symptoms:
-    - { item: "Dry, gritty eyes / ocular dryness", critical: true }
-    - { item: "Dry, scaly skin", critical: false }
-    - { item: "Eye redness", critical: false }
-    - { item: "Chronic diarrhoea or GI symptoms (malabsorption)", critical: false }
+  - item: Dry, gritty eyes / ocular dryness
+    critical: true
+  - item: Dry, scaly skin
+    critical: false
+  - item: Eye redness
+    critical: false
+  - item: Chronic diarrhoea or GI symptoms (malabsorption)
+    critical: false
   pmh:
-    - { item: "Prior eye disease or surgery", critical: false }
-    - { item: "Chronic gut/liver disease or prolonged diarrhoea", critical: true }
+  - item: Prior eye disease or surgery
+    critical: false
+  - item: Chronic gut/liver disease or prolonged diarrhoea
+    critical: true
   medications:
-    - { item: "Any vitamins/supplements taken", critical: false }
-    - { item: "Drug allergies", critical: false }
+  - item: Any vitamins/supplements taken
+    critical: false
+  - item: Drug allergies
+    critical: false
   family_social:
-    - { item: "Diet quality, food access, socioeconomic status", critical: true }
-    - { item: "Smoking", critical: false }
+  - item: Diet quality, food access, socioeconomic status
+    critical: true
+  - item: Smoking
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is causing it", critical: true }
-    - { item: "Concerns - worries (going blind, livelihood)", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
-    - { item: "Function - impact on work/daily life", critical: false }
-
+  - item: Ideas - what they think is causing it
+    critical: true
+  - item: Concerns - worries (going blind, livelihood)
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
+  - item: Function - impact on work/daily life
+    critical: false
 red_flags:
-  - { item: "Rapidly progressive or daytime vision loss", critical: true }
-  - { item: "Painful eye, corneal haze, ulcer, or softening cornea (keratomalacia)", critical: true }
-  - { item: "Severe malnutrition, especially in a child or pregnant/breastfeeding woman", critical: true }
-  - { item: "Foamy white conjunctival (Bitot) spots or corneal dryness", critical: false }
-
+- item: Rapidly progressive or daytime vision loss
+  critical: true
+- item: Painful eye, corneal haze, ulcer, or softening cornea (keratomalacia)
+  critical: true
+- item: Severe malnutrition, especially in a child or pregnant/breastfeeding woman
+  critical: true
+- item: Foamy white conjunctival (Bitot) spots or corneal dryness
+  critical: false
 expected_ddx:
-  working_diagnosis: "Night blindness due to vitamin A deficiency"
+  working_diagnosis: Night blindness due to vitamin A deficiency
   differentials:
-    - "Retinitis pigmentosa"
-    - "Early cataract"
-    - "Diabetic retinopathy"
-    - "Glaucoma"
-    - "Chronic liver disease causing vitamin A deficiency"
-
+  - Retinitis pigmentosa
+  - Early cataract
+  - Diabetic retinopathy
+  - Glaucoma
+  - Chronic liver disease causing vitamin A deficiency
 investigations:
   appropriate:
-    - { name: "Serum vitamin A (retinol)", expected: "Low" }
-    - { name: "Ocular surface examination", expected: "Conjunctival xerosis; foamy temporal Bitot spot" }
-    - { name: "Dilated fundus examination", expected: "Normal in pure deficiency; bone-spicule pigment if retinitis pigmentosa" }
+  - name: Serum vitamin A (retinol)
+    expected: Low
+  - name: Ocular surface examination
+    expected: Conjunctival xerosis; foamy temporal Bitot spot
+  - name: Dilated fundus examination
+    expected: Normal in pure deficiency; bone-spicule pigment if retinitis pigmentosa
   inappropriate:
-    - "Orbital CT"
-    - "Tonometry as first-line"
-
+  - Orbital CT
+  - Tonometry as first-line
 physical_exam_findings:
-  general: "Thin, with dry scaly skin"
-  eyes: "Daytime acuity near normal; bilateral conjunctival dryness with a foamy temporal spot; dry-looking cornea; fundus normal"
+  general: Thin, with dry scaly skin
+  eyes: Daytime acuity near normal; bilateral conjunctival dryness with a foamy temporal
+    spot; dry-looking cornea; fundus normal
   vitals: {}
   media: []
-
 management:
   pharmacological:
-    - "High-dose vitamin A per deficiency protocol"
-    - "Lubricating eye drops"
-    - "Topical antibiotic to prevent secondary infection"
+  - High-dose vitamin A per deficiency protocol
+  - Lubricating eye drops
+  - Topical antibiotic to prevent secondary infection
   non_pharmacological:
-    - "Nutrition advice: vitamin-A-rich foods (green leafy vegetables, carrots, liver, eggs)"
-    - "Identify and treat any underlying malabsorption"
+  - 'Nutrition advice: vitamin-A-rich foods (green leafy vegetables, carrots, liver,
+    eggs)'
+  - Identify and treat any underlying malabsorption
   education_safety_netting:
-    - "Explain it is usually reversible if treated early"
-    - "Return urgently if the eye becomes painful, red, or the cornea looks cloudy (sight-threatening)"
-
+  - Explain it is usually reversible if treated early
+  - Return urgently if the eye becomes painful, red, or the cornea looks cloudy (sight-threatening)
 scoring_weights_override: null
 ---
 

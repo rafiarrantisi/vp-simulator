@@ -1,61 +1,102 @@
 ---
 id: derm_suspected_melanoma_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: dermatology
 system: integumentary
-presentation: "Changing mole"
-presentation_id: "Tahi lalat di punggung berubah bentuk dan warna dalam beberapa bulan"
-first_impression: "Patient appears to have skin concerns."
-first_impression_id: "Pasien tampak memiliki masalah kulit."
-target_condition: "Suspected melanoma"
+presentation: Changing mole
+presentation_id: Tahi lalat di punggung berubah bentuk dan warna dalam beberapa bulan
+first_impression: Patient appears to have skin concerns.
+first_impression_id: Pasien tampak memiliki masalah kulit.
+target_condition: Suspected melanoma
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
-source_refs: [ "NICE guideline for melanoma (NG14)", "British Association of Dermatologists guidelines for the management of melanoma" ]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have a mole on my back that has changed shape and colour over the past few months."
+languages:
+- en
+source_refs:
+- NICE guideline for melanoma (NG14)
+- British Association of Dermatologists guidelines for the management of melanoma
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have a mole on my back that has changed shape and colour over the
+  past few months.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of the mole", critical: false }
-    - { item: "Onset of changes", critical: true }
-    - { item: "Character of changes (shape, color, size)", critical: true }
-    - { item: "Associated symptoms (itching, bleeding, pain)", critical: true }
-    - { item: "Timing (how long has it been changing)", critical: false }
-    - { item: "Exacerbating factors (sun exposure, trauma)", critical: false }
-    - { item: "Severity (how much has it changed)", critical: false }
+  - item: Site of the mole
+    critical: false
+  - item: Onset of changes
+    critical: true
+  - item: Character of changes (shape, color, size)
+    critical: true
+  - item: Associated symptoms (itching, bleeding, pain)
+    critical: true
+  - item: Timing (how long has it been changing)
+    critical: false
+  - item: Exacerbating factors (sun exposure, trauma)
+    critical: false
+  - item: Severity (how much has it changed)
+    critical: false
   associated_symptoms:
-    - { item: "Any itching at the mole site", critical: true }
-    - { item: "Any bleeding or oozing", critical: true }
-    - { item: "Any pain or tenderness", critical: false }
-    - { item: "Any other new moles or changes elsewhere", critical: false }
+  - item: Any itching at the mole site
+    critical: true
+  - item: Any bleeding or oozing
+    critical: true
+  - item: Any pain or tenderness
+    critical: false
+  - item: Any other new moles or changes elsewhere
+    critical: false
   pmh:
-    - { item: "History of sunburns", critical: true }
-    - { item: "Previous skin cancers or precancerous lesions", critical: true }
-    - { item: "Personal history of melanoma", critical: true }
-    - { item: "Immunosuppression", critical: false }
+  - item: History of sunburns
+    critical: true
+  - item: Previous skin cancers or precancerous lesions
+    critical: true
+  - item: Personal history of melanoma
+    critical: true
+  - item: Immunosuppression
+    critical: false
   medications:
-    - { item: "Current medications including immunosuppressants", critical: false }
+  - item: Current medications including immunosuppressants
+    critical: false
   family_social:
-    - { item: "Family history of melanoma or other skin cancers", critical: true }
-    - { item: "Sun exposure habits and use of sunscreen", critical: false }
-    - { item: "Use of tanning beds", critical: true }
-    - { item: "Occupation and outdoor activities", critical: false }
+  - item: Family history of melanoma or other skin cancers
+    critical: true
+  - item: Sun exposure habits and use of sunscreen
+    critical: false
+  - item: Use of tanning beds
+    critical: true
+  - item: Occupation and outdoor activities
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Rapidly changing mole over weeks", critical: true }
-  - { item: "Mole with irregular borders and multiple colors", critical: true }
-  - { item: "Mole larger than 6mm", critical: false }
-  - { item: "Mole that is bleeding or ulcerated", critical: true }
+- item: Rapidly changing mole over weeks
+  critical: true
+- item: Mole with irregular borders and multiple colors
+  critical: true
+- item: Mole larger than 6mm
+  critical: false
+- item: Mole that is bleeding or ulcerated
+  critical: true
 expected_ddx:
-  working_diagnosis: "Suspected melanoma"
-  differentials: [ "Atypical nevus (dysplastic nevus)", "Basal cell carcinoma", "Seborrheic keratosis" ]
+  working_diagnosis: Suspected melanoma
+  differentials:
+  - Atypical nevus (dysplastic nevus)
+  - Basal cell carcinoma
+  - Seborrheic keratosis
 investigations: null
-physical_exam_findings: { general: "Patient appears well, no acute distress.", vitals: {} }
+physical_exam_findings:
+  general: Patient appears well, no acute distress.
+  vitals: {}
 management:
   pharmacological: []
   non_pharmacological: []

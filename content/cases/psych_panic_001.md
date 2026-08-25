@@ -1,77 +1,141 @@
 ---
 id: psych_panic_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: psychiatry
 system: nervous
-presentation: "Sudden attacks of overwhelming fear"
-presentation_id: "Serangan tiba-tiba rasa takut luar biasa, seperti akan mati atau gila"
-first_impression: "Patient appears anxious or sad."
-first_impression_id: "Pasien tampak cemas atau sedih."
-target_condition: "Panic disorder"
+presentation: Sudden attacks of overwhelming fear
+presentation_id: Serangan tiba-tiba rasa takut luar biasa, seperti akan mati atau
+  gila
+first_impression: Patient appears anxious or sad.
+first_impression_id: Pasien tampak cemas atau sedih.
+target_condition: Panic disorder
 difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "DSM-5-TR"
-  - "NICE CG113 — Panic disorder"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I keep having these sudden attacks where I feel like I'm dying or losing my mind."
+- DSM-5-TR
+- NICE CG113 — Panic disorder
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I keep having these sudden attacks where I feel like I'm dying or
+  losing my mind.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did the first attack happen", critical: true }
-    - { item: "Location - where do attacks occur", critical: false }
-    - { item: "Duration - how long does each attack last", critical: true }
-    - { item: "Character - describe the feeling during an attack", critical: true }
-    - { item: "Aggravating factors - what triggers an attack", critical: true }
-    - { item: "Relieving factors - what helps you calm down", critical: false }
-    - { item: "Timing - how often do attacks happen", critical: true }
-    - { item: "Severity - rate the fear on a scale of 0-10", critical: false }
+  - item: Onset - when did the first attack happen
+    critical: true
+  - item: Location - where do attacks occur
+    critical: false
+  - item: Duration - how long does each attack last
+    critical: true
+  - item: Character - describe the feeling during an attack
+    critical: true
+  - item: Aggravating factors - what triggers an attack
+    critical: true
+  - item: Relieving factors - what helps you calm down
+    critical: false
+  - item: Timing - how often do attacks happen
+    critical: true
+  - item: Severity - rate the fear on a scale of 0-10
+    critical: false
   associated_symptoms:
-    - { item: "Heart racing or pounding", critical: true }
-    - { item: "Shortness of breath or feeling smothered", critical: true }
-    - { item: "Chest pain or discomfort", critical: true }
-    - { item: "Sweating", critical: false }
-    - { item: "Trembling or shaking", critical: false }
-    - { item: "Nausea or abdominal distress", critical: false }
-    - { item: "Dizziness or lightheadedness", critical: true }
-    - { item: "Chills or hot flushes", critical: false }
-    - { item: "Numbness or tingling sensations", critical: false }
-    - { item: "Fear of dying", critical: true }
-    - { item: "Fear of losing control or going crazy", critical: true }
-    - { item: "Feeling detached from yourself or reality", critical: false }
+  - item: Heart racing or pounding
+    critical: true
+  - item: Shortness of breath or feeling smothered
+    critical: true
+  - item: Chest pain or discomfort
+    critical: true
+  - item: Sweating
+    critical: false
+  - item: Trembling or shaking
+    critical: false
+  - item: Nausea or abdominal distress
+    critical: false
+  - item: Dizziness or lightheadedness
+    critical: true
+  - item: Chills or hot flushes
+    critical: false
+  - item: Numbness or tingling sensations
+    critical: false
+  - item: Fear of dying
+    critical: true
+  - item: Fear of losing control or going crazy
+    critical: true
+  - item: Feeling detached from yourself or reality
+    critical: false
   pmh:
-    - { item: "Any medical conditions like heart problems, asthma, or thyroid issues", critical: true }
-    - { item: "Any past mental health problems", critical: true }
-    - { item: "Any hospitalizations or surgeries", critical: false }
+  - item: Any medical conditions like heart problems, asthma, or thyroid issues
+    critical: true
+  - item: Any past mental health problems
+    critical: true
+  - item: Any hospitalizations or surgeries
+    critical: false
   medications:
-    - { item: "Current medications, including over-the-counter and supplements", critical: true }
-    - { item: "Any caffeine, alcohol, or drug use", critical: true }
+  - item: Current medications, including over-the-counter and supplements
+    critical: true
+  - item: Any caffeine, alcohol, or drug use
+    critical: true
   family_social:
-    - { item: "Family history of anxiety or panic attacks", critical: true }
-    - { item: "Recent life stressors or major changes", critical: true }
-    - { item: "Occupation and living situation", critical: false }
+  - item: Family history of anxiety or panic attacks
+    critical: true
+  - item: Recent life stressors or major changes
+    critical: true
+  - item: Occupation and living situation
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Suicidal thoughts or self-harm", critical: true }
-  - { item: "Chest pain with radiation, shortness of breath at rest (cardiac red flag)", critical: true }
-  - { item: "Loss of consciousness or seizure-like activity", critical: true }
+- item: Suicidal thoughts or self-harm
+  critical: true
+- item: Chest pain with radiation, shortness of breath at rest (cardiac red flag)
+  critical: true
+- item: Loss of consciousness or seizure-like activity
+  critical: true
 expected_ddx:
-  working_diagnosis: "Panic disorder"
-  differentials: [ "Generalized anxiety disorder", "Hyperthyroidism", "Cardiac arrhythmia" ]
+  working_diagnosis: Panic disorder
+  differentials:
+  - Generalized anxiety disorder
+  - Hyperthyroidism
+  - Cardiac arrhythmia
 investigations:
-  appropriate: [ { name: "ECG", expected: "Normal sinus rhythm" }, { name: "Thyroid function tests", expected: "Within normal limits" }, { name: "Basic metabolic panel", expected: "Normal" } ]
-  inappropriate: [ "CT head without indication" ]
-physical_exam_findings: { general: "Anxious appearing, alert and oriented, no acute distress", vitals: { hr: 88, bp: 128/78, rr: 16, temp: 37.0 } }
+  appropriate:
+  - name: ECG
+    expected: Normal sinus rhythm
+  - name: Thyroid function tests
+    expected: Within normal limits
+  - name: Basic metabolic panel
+    expected: Normal
+  inappropriate:
+  - CT head without indication
+physical_exam_findings:
+  general: Anxious appearing, alert and oriented, no acute distress
+  vitals:
+    hr: 88
+    bp: 128/78
+    rr: 16
+    temp: 37.0
 management:
-  pharmacological: [ "SSRI (e.g., sertraline) as first-line", "Short-term benzodiazepine for severe attacks, with caution" ]
-  non_pharmacological: [ "Cognitive-behavioral therapy (CBT) focusing on panic management", "Relaxation techniques and breathing exercises" ]
-  education_safety_netting: [ "Explain that panic attacks are not dangerous but feel frightening", "Avoid caffeine and stimulants", "Return if suicidal thoughts or new chest pain develops" ]
+  pharmacological:
+  - SSRI (e.g., sertraline) as first-line
+  - Short-term benzodiazepine for severe attacks, with caution
+  non_pharmacological:
+  - Cognitive-behavioral therapy (CBT) focusing on panic management
+  - Relaxation techniques and breathing exercises
+  education_safety_netting:
+  - Explain that panic attacks are not dangerous but feel frightening
+  - Avoid caffeine and stimulants
+  - Return if suicidal thoughts or new chest pain develops
 scoring_weights_override: null
 ---
 

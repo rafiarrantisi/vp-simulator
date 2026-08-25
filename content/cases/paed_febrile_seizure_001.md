@@ -1,69 +1,115 @@
 ---
 id: paed_febrile_seizure_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: paediatrics
 system: nervous
-presentation: "Convulsion in a febrile toddler"
-presentation_id: "Kejang pada balita yang sedang demam"
-first_impression: "Toddler lies still, flushed, eyes half-open; mother trembles, tearful, clutching him tightly."
-first_impression_id: "Anak tampak lemas, wajah merah, mata setengah terbuka; ibu tampak gemetar, menangis, memeluknya erat."
-target_condition: "Febrile seizure"
+presentation: Convulsion in a febrile toddler
+presentation_id: Kejang pada balita yang sedang demam
+first_impression: Toddler lies still, flushed, eyes half-open; mother trembles, tearful,
+  clutching him tightly.
+first_impression_id: Anak tampak lemas, wajah merah, mata setengah terbuka; ibu tampak
+  gemetar, menangis, memeluknya erat.
+target_condition: Febrile seizure
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "PPK Kemenkes (Panduan Praktik Klinis) for Febrile Seizure — standard guidance: simple vs complex febrile seizure (age 6mo-5y, generalised <15 min, single in 24h, no focality), risk factors for recurrence, red flags for meningitis, first aid, no routine EEG/neuroimaging for simple febrile seizure."
-  - "NICE NG143 — feverish illness; AAP febrile seizures (1996)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My son had a seizure when he had a fever."
+- 'PPK Kemenkes (Panduan Praktik Klinis) for Febrile Seizure — standard guidance:
+  simple vs complex febrile seizure (age 6mo-5y, generalised <15 min, single in 24h,
+  no focality), risk factors for recurrence, red flags for meningitis, first aid,
+  no routine EEG/neuroimaging for simple febrile seizure.'
+- NICE NG143 — feverish illness; AAP febrile seizures (1996)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My son had a seizure when he had a fever.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "When did the seizure happen?", critical: true }
-    - { item: "How long did the seizure last?", critical: true }
-    - { item: "What did the seizure look like? (e.g., whole body shaking, stiff, eyes rolling)", critical: true }
-    - { item: "Did he lose consciousness?", critical: true }
-    - { item: "Has he had more than one seizure in the last 24 hours?", critical: true }
-    - { item: "Did he have a fever before the seizure? How high was it?", critical: true }
-    - { item: "Was he awake and acting normally after the seizure stopped?", critical: true }
-    - { item: "Has he had any head injury or fall before the seizure?", critical: false }
+  - item: When did the seizure happen?
+    critical: true
+  - item: How long did the seizure last?
+    critical: true
+  - item: What did the seizure look like? (e.g., whole body shaking, stiff, eyes rolling)
+    critical: true
+  - item: Did he lose consciousness?
+    critical: true
+  - item: Has he had more than one seizure in the last 24 hours?
+    critical: true
+  - item: Did he have a fever before the seizure? How high was it?
+    critical: true
+  - item: Was he awake and acting normally after the seizure stopped?
+    critical: true
+  - item: Has he had any head injury or fall before the seizure?
+    critical: false
   associated_symptoms:
-    - { item: "Did he have any stiff neck or trouble moving his neck?", critical: true }
-    - { item: "Did he have any rash, especially one that doesn't fade when pressed?", critical: true }
-    - { item: "Did he have any vomiting, especially forceful or repeated?", critical: false }
-    - { item: "Did he have any cough, runny nose, or diarrhea?", critical: false }
-    - { item: "Did he seem unusually sleepy or hard to wake after the seizure?", critical: true }
+  - item: Did he have any stiff neck or trouble moving his neck?
+    critical: true
+  - item: Did he have any rash, especially one that doesn't fade when pressed?
+    critical: true
+  - item: Did he have any vomiting, especially forceful or repeated?
+    critical: false
+  - item: Did he have any cough, runny nose, or diarrhea?
+    critical: false
+  - item: Did he seem unusually sleepy or hard to wake after the seizure?
+    critical: true
   pmh:
-    - { item: "Has he ever had a seizure before?", critical: true }
-    - { item: "Does he have any chronic medical conditions?", critical: false }
-    - { item: "Is he up to date on his immunizations?", critical: true }
-    - { item: "Was he born full term? Any problems during pregnancy or birth?", critical: true }
-    - { item: "Has he reached his developmental milestones? (e.g., sitting, walking, talking)", critical: true }
+  - item: Has he ever had a seizure before?
+    critical: true
+  - item: Does he have any chronic medical conditions?
+    critical: false
+  - item: Is he up to date on his immunizations?
+    critical: true
+  - item: Was he born full term? Any problems during pregnancy or birth?
+    critical: true
+  - item: Has he reached his developmental milestones? (e.g., sitting, walking, talking)
+    critical: true
   medications:
-    - { item: "Is he on any regular medications?", critical: false }
-    - { item: "Did you give him any medicine for the fever, like paracetamol?", critical: false }
+  - item: Is he on any regular medications?
+    critical: false
+  - item: Did you give him any medicine for the fever, like paracetamol?
+    critical: false
   family_social:
-    - { item: "Does anyone in the family have a history of seizures or epilepsy?", critical: true }
-    - { item: "Does anyone in the family have a history of febrile seizures?", critical: true }
+  - item: Does anyone in the family have a history of seizures or epilepsy?
+    critical: true
+  - item: Does anyone in the family have a history of febrile seizures?
+    critical: true
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Seizure lasting more than 15 minutes", critical: true }
-  - { item: "Focal seizure (only one side of body shaking)", critical: true }
-  - { item: "More than one seizure in 24 hours", critical: true }
-  - { item: "Child not returning to normal consciousness within 1 hour after seizure", critical: true }
-  - { item: "Stiff neck or bulging fontanelle", critical: true }
-  - { item: "Petechial or purpuric rash (non-blanching)", critical: true }
-  - { item: "Signs of meningitis (photophobia, severe headache, vomiting)", critical: true }
+- item: Seizure lasting more than 15 minutes
+  critical: true
+- item: Focal seizure (only one side of body shaking)
+  critical: true
+- item: More than one seizure in 24 hours
+  critical: true
+- item: Child not returning to normal consciousness within 1 hour after seizure
+  critical: true
+- item: Stiff neck or bulging fontanelle
+  critical: true
+- item: Petechial or purpuric rash (non-blanching)
+  critical: true
+- item: Signs of meningitis (photophobia, severe headache, vomiting)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Febrile seizure"
-  differentials: [ "Meningitis/encephalitis", "Epilepsy (first afebrile seizure)" ]
+  working_diagnosis: Febrile seizure
+  differentials:
+  - Meningitis/encephalitis
+  - Epilepsy (first afebrile seizure)
 investigations: null
-physical_exam_findings: { general: null, vitals: null }
+physical_exam_findings:
+  general: null
+  vitals: null
 management: null
 scoring_weights_override: null
 ---

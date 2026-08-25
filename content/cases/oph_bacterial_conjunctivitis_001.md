@@ -1,106 +1,133 @@
 ---
 id: oph_bacterial_conjunctivitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: ocular_surface
-presentation: "Red eye with discharge"
-presentation_id: "Mata merah dengan sekret lengket selama 2 hari, kelopak saling menempel saat bangun tidur"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Bacterial conjunctivitis"
+presentation: Red eye with discharge
+presentation_id: Mata merah dengan sekret lengket selama 2 hari, kelopak saling menempel
+  saat bangun tidur
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Bacterial conjunctivitis
 difficulty: 2
 estimated_minutes: 12
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE CKS: Conjunctivitis - infective"
-  - "Migrated from legacy kasus-104 (PPK Kemenkes — Konjungtivitis, ICD-10 H10.9)"
-  - "AAO Preferred Practice Pattern — conjunctivitis (2018)"
+- 'NICE CKS: Conjunctivitis - infective'
+- Migrated from legacy kasus-104 (PPK Kemenkes — Konjungtivitis, ICD-10 H10.9)
+- AAO Preferred Practice Pattern — conjunctivitis (2018)
 authoring:
   drafted_by: migrated_from_kasus-104
   model: human+ai
   reviewed_by: null
   reviewed_at: null
-  review_notes: "Restructured + translated to English schema v2. Study-aid draft pending ophthalmology sign-off."
-
-chief_complaint: "Both eyes red with sticky discharge for 2 days, lids glued shut on waking"
-
+  review_notes: Restructured + translated to English schema v2. Study-aid draft pending
+    ophthalmology sign-off.
+chief_complaint: Both eyes red with sticky discharge for 2 days, lids glued shut on
+  waking
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset and spread (one eye then both, over 2 days)", critical: true }
-    - { item: "Site / laterality (started left, now bilateral)", critical: false }
-    - { item: "Discharge type and amount (purulent, yellow, sticky vs watery)", critical: true }
-    - { item: "Gritty / foreign-body sensation", critical: false }
-    - { item: "Aggravating/relieving (worse on waking, better after wiping)", critical: false }
+  - item: Onset and spread (one eye then both, over 2 days)
+    critical: true
+  - item: Site / laterality (started left, now bilateral)
+    critical: false
+  - item: Discharge type and amount (purulent, yellow, sticky vs watery)
+    critical: true
+  - item: Gritty / foreign-body sensation
+    critical: false
+  - item: Aggravating/relieving (worse on waking, better after wiping)
+    critical: false
   associated_symptoms:
-    - { item: "Itching (points to allergic)", critical: false }
-    - { item: "Eye pain or photophobia (screen for keratitis/uveitis)", critical: true }
-    - { item: "Vision change (should be normal)", critical: true }
-    - { item: "Watering", critical: false }
-    - { item: "Recent cold / upper-respiratory symptoms (points to viral)", critical: false }
+  - item: Itching (points to allergic)
+    critical: false
+  - item: Eye pain or photophobia (screen for keratitis/uveitis)
+    critical: true
+  - item: Vision change (should be normal)
+    critical: true
+  - item: Watering
+    critical: false
+  - item: Recent cold / upper-respiratory symptoms (points to viral)
+    critical: false
   pmh:
-    - { item: "Previous similar episodes", critical: false }
-    - { item: "Contact-lens wear (raises keratitis risk)", critical: true }
-    - { item: "Allergies / atopy", critical: false }
+  - item: Previous similar episodes
+    critical: false
+  - item: Contact-lens wear (raises keratitis risk)
+    critical: true
+  - item: Allergies / atopy
+    critical: false
   medications:
-    - { item: "What they have already tried (OTC drops)", critical: false }
-    - { item: "Drug allergies", critical: false }
+  - item: What they have already tried (OTC drops)
+    critical: false
+  - item: Drug allergies
+    critical: false
   family_social:
-    - { item: "Sick contacts / occupation (teacher, contact with children)", critical: true }
-    - { item: "Towel/pillow sharing and hand hygiene", critical: false }
+  - item: Sick contacts / occupation (teacher, contact with children)
+    critical: true
+  - item: Towel/pillow sharing and hand hygiene
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think caused it", critical: true }
-    - { item: "Concerns - worries (spreading to family/pupils)", critical: true }
-    - { item: "Expectations - cure time, when safe to return to work, prevention", critical: false }
-    - { item: "Function - impact (cannot teach)", critical: false }
-
+  - item: Ideas - what they think caused it
+    critical: true
+  - item: Concerns - worries (spreading to family/pupils)
+    critical: true
+  - item: Expectations - cure time, when safe to return to work, prevention
+    critical: false
+  - item: Function - impact (cannot teach)
+    critical: false
 red_flags:
-  - { item: "Severe eye pain or marked photophobia (keratitis/uveitis)", critical: true }
-  - { item: "Reduced or blurred vision that does not clear", critical: true }
-  - { item: "Contact-lens wearer with a red painful eye (microbial keratitis)", critical: true }
-  - { item: "Hyperacute copious purulent discharge (gonococcal conjunctivitis)", critical: true }
-  - { item: "Corneal haze or white spot on the cornea", critical: false }
-
+- item: Severe eye pain or marked photophobia (keratitis/uveitis)
+  critical: true
+- item: Reduced or blurred vision that does not clear
+  critical: true
+- item: Contact-lens wearer with a red painful eye (microbial keratitis)
+  critical: true
+- item: Hyperacute copious purulent discharge (gonococcal conjunctivitis)
+  critical: true
+- item: Corneal haze or white spot on the cornea
+  critical: false
 expected_ddx:
-  working_diagnosis: "Acute bacterial conjunctivitis (both eyes)"
+  working_diagnosis: Acute bacterial conjunctivitis (both eyes)
   differentials:
-    - "Viral conjunctivitis"
-    - "Allergic conjunctivitis"
-    - "Hyperacute (gonococcal) conjunctivitis"
-    - "Keratitis"
-    - "Subconjunctival haemorrhage"
-
+  - Viral conjunctivitis
+  - Allergic conjunctivitis
+  - Hyperacute (gonococcal) conjunctivitis
+  - Keratitis
+  - Subconjunctival haemorrhage
 investigations:
   appropriate:
-    - { name: "Clinical slit-lamp / penlight examination", expected: "Conjunctival injection, purulent discharge, clear cornea" }
-    - { name: "Conjunctival swab (if severe, hyperacute, neonatal, or refractory)", expected: "Bacterial growth; Gram-negative diplococci if gonococcal" }
+  - name: Clinical slit-lamp / penlight examination
+    expected: Conjunctival injection, purulent discharge, clear cornea
+  - name: Conjunctival swab (if severe, hyperacute, neonatal, or refractory)
+    expected: Bacterial growth; Gram-negative diplococci if gonococcal
   inappropriate:
-    - "Orbital imaging"
-    - "Blood cultures for uncomplicated conjunctivitis"
-
+  - Orbital imaging
+  - Blood cultures for uncomplicated conjunctivitis
 physical_exam_findings:
-  general: "Well, afebrile"
-  eyes: "Visual acuity 6/6 both eyes; diffuse conjunctival injection with chemosis; mucopurulent yellow discharge; matted lashes; cornea clear; pupils normal and reactive"
+  general: Well, afebrile
+  eyes: Visual acuity 6/6 both eyes; diffuse conjunctival injection with chemosis;
+    mucopurulent yellow discharge; matted lashes; cornea clear; pupils normal and
+    reactive
   vitals: {}
   media:
-    - type: image
-      label: "External eye photograph"
-      src: "exam-media/conjunctivitis-eye.svg"
-      caption: "Diffuse conjunctival injection with chemosis and mucopurulent yellow discharge; matted lashes; cornea clear."
-
+  - type: image
+    label: External eye photograph
+    src: exam-media/conjunctivitis-eye.svg
+    caption: Diffuse conjunctival injection with chemosis and mucopurulent yellow
+      discharge; matted lashes; cornea clear.
 management:
   pharmacological:
-    - "Topical antibiotic (e.g. chloramphenicol drops/ointment) for 5-7 days"
+  - Topical antibiotic (e.g. chloramphenicol drops/ointment) for 5-7 days
   non_pharmacological:
-    - "Strict hand hygiene; do not share towels/pillows; avoid touching the eyes"
-    - "Clean lids with cooled boiled water; cold compresses for comfort"
-    - "Do not patch the eye"
+  - Strict hand hygiene; do not share towels/pillows; avoid touching the eyes
+  - Clean lids with cooled boiled water; cold compresses for comfort
+  - Do not patch the eye
   education_safety_netting:
-    - "Usually settles in about a week; highly contagious — wash hands, separate towels"
-    - "Stop contact-lens wear until fully better"
-    - "Return urgently if pain, photophobia, reduced vision, or very profuse discharge"
-
+  - Usually settles in about a week; highly contagious — wash hands, separate towels
+  - Stop contact-lens wear until fully better
+  - Return urgently if pain, photophobia, reduced vision, or very profuse discharge
 scoring_weights_override: null
 ---
 

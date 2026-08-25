@@ -1,78 +1,103 @@
 ---
 id: derm_tinea_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: dermatology
 system: integumentary
-presentation: "Round itchy patches on the torso"
-presentation_id: "Bercak bulat gatal di badan"
-first_impression: "Patient appears to have skin concerns."
-first_impression_id: "Pasien tampak memiliki masalah kulit."
-target_condition: "Tinea corporis"
+presentation: Round itchy patches on the torso
+presentation_id: Bercak bulat gatal di badan
+first_impression: Patient appears to have skin concerns.
+first_impression_id: Pasien tampak memiliki masalah kulit.
+target_condition: Tinea corporis
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
-source_refs: [ "NICE CKS: Fungal skin infections" ]
+languages:
+- en
+source_refs:
+- 'NICE CKS: Fungal skin infections'
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I have round, itchy patches on my torso."
+chief_complaint: I have round, itchy patches on my torso.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Location of the rash", critical: true }
-    - { item: "Onset and duration", critical: true }
-    - { item: "Character of the patches (e.g., raised, scaly, central clearing)", critical: true }
-    - { item: "Severity of itching", critical: false }
-    - { item: "Any exacerbating or relieving factors", critical: false }
+  - item: Location of the rash
+    critical: true
+  - item: Onset and duration
+    critical: true
+  - item: Character of the patches (e.g., raised, scaly, central clearing)
+    critical: true
+  - item: Severity of itching
+    critical: false
+  - item: Any exacerbating or relieving factors
+    critical: false
   associated_symptoms:
-    - { item: "Itching", critical: true }
-    - { item: "Scaling or flaking", critical: false }
-    - { item: "Pain or tenderness", critical: false }
+  - item: Itching
+    critical: true
+  - item: Scaling or flaking
+    critical: false
+  - item: Pain or tenderness
+    critical: false
   pmh:
-    - { item: "Previous fungal infections", critical: false }
-    - { item: "Diabetes or immunosuppression", critical: true }
-    - { item: "Allergies", critical: false }
+  - item: Previous fungal infections
+    critical: false
+  - item: Diabetes or immunosuppression
+    critical: true
+  - item: Allergies
+    critical: false
   medications:
-    - { item: "Recent antibiotic use", critical: false }
-    - { item: "Topical steroids or antifungals used", critical: true }
+  - item: Recent antibiotic use
+    critical: false
+  - item: Topical steroids or antifungals used
+    critical: true
   family_social:
-    - { item: "Exposure to pets (especially cats or dogs)", critical: true }
-    - { item: "Other family members with similar rash", critical: true }
-    - { item: "Recent travel or contact with infected individuals", critical: false }
-    - { item: "Occupation and hobbies (e.g., farming, sports)", critical: false }
+  - item: Exposure to pets (especially cats or dogs)
+    critical: true
+  - item: Other family members with similar rash
+    critical: true
+  - item: Recent travel or contact with infected individuals
+    critical: false
+  - item: Occupation and hobbies (e.g., farming, sports)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Fever or chills", critical: true }
-  - { item: "Rash spreading rapidly or covering large area", critical: false }
-  - { item: "Painful or oozing lesions", critical: true }
+- item: Fever or chills
+  critical: true
+- item: Rash spreading rapidly or covering large area
+  critical: false
+- item: Painful or oozing lesions
+  critical: true
 expected_ddx:
-  working_diagnosis: "Tinea corporis"
+  working_diagnosis: Tinea corporis
   differentials:
-    - "Nummular eczema"
-    - "Pityriasis rosea"
+  - Nummular eczema
+  - Pityriasis rosea
 investigations: null
 physical_exam_findings:
-  general: "Patient appears well, no acute distress."
+  general: Patient appears well, no acute distress.
   vitals:
-    bp: "120/80"
-    hr: "72"
-    temp: "36.8"
+    bp: 120/80
+    hr: '72'
+    temp: '36.8'
 management:
   pharmacological:
-    - "Topical antifungal cream (e.g., clotrimazole)"
+  - Topical antifungal cream (e.g., clotrimazole)
   non_pharmacological:
-    - "Keep affected area clean and dry"
-    - "Avoid sharing towels or clothing"
+  - Keep affected area clean and dry
+  - Avoid sharing towels or clothing
   education_safety_netting:
-    - "Complete full course of treatment even if rash improves"
-    - "Seek medical attention if rash worsens or spreads despite treatment"
+  - Complete full course of treatment even if rash improves
+  - Seek medical attention if rash worsens or spreads despite treatment
 scoring_weights_override: null
 ---
 

@@ -4,93 +4,159 @@ schema_version: 2
 status: in_review
 specialty: obstetrics_gynaecology
 system: reproductive
-presentation: "Swelling and headache in late pregnancy"
-presentation_id: "Bengkak di kaki dan sakit kepala pada ibu hamil tua"
-first_impression: "Patient appears to have gynecological concerns."
-first_impression_id: "Pasien tampak mengalami masalah ginekologi."
+presentation: Swelling and headache in late pregnancy
+presentation_id: Bengkak di kaki dan sakit kepala pada ibu hamil tua
+first_impression: Patient appears to have gynecological concerns.
+first_impression_id: Pasien tampak mengalami masalah ginekologi.
 target_condition: Pre-eclampsia
 difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "PNPK Tata Laksana Komplikasi Kehamilan (KMK 91/2017) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes912017"
-  - "NICE NG133 — Hypertension in pregnancy"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have this really bad headache and my feet are swollen, and I'm worried about my blood pressure."
+- PNPK Tata Laksana Komplikasi Kehamilan (KMK 91/2017) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes912017
+- NICE NG133 — Hypertension in pregnancy
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have this really bad headache and my feet are swollen, and I'm
+  worried about my blood pressure.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Location of swelling - feet, hands, face", critical: false }
-    - { item: "Onset of swelling - gradual over past few days", critical: false }
-    - { item: "Character of headache - constant, throbbing, both sides", critical: true }
-    - { item: "Severity of headache - moderate to severe, 7/10", critical: false }
-    - { item: "Timing/duration of headache - started 2 days ago, persists", critical: false }
-    - { item: "Associated symptoms with headache - visual changes, nausea", critical: true }
-    - { item: "Exacerbating/relieving factors - lying down helps a bit, but no relief from paracetamol", critical: false }
-    - { item: "Weight gain in last week - rapid, 3 kg in 5 days", critical: true }
+  - item: Location of swelling - feet, hands, face
+    critical: false
+  - item: Onset of swelling - gradual over past few days
+    critical: false
+  - item: Character of headache - constant, throbbing, both sides
+    critical: true
+  - item: Severity of headache - moderate to severe, 7/10
+    critical: false
+  - item: Timing/duration of headache - started 2 days ago, persists
+    critical: false
+  - item: Associated symptoms with headache - visual changes, nausea
+    critical: true
+  - item: Exacerbating/relieving factors - lying down helps a bit, but no relief from
+      paracetamol
+    critical: false
+  - item: Weight gain in last week - rapid, 3 kg in 5 days
+    critical: true
   associated_symptoms:
-    - { item: "Visual disturbances (blurred vision, spots)", critical: true }
-    - { item: "Upper abdominal pain (right upper quadrant or epigastric)", critical: true }
-    - { item: "Nausea or vomiting", critical: false }
-    - { item: "Shortness of breath", critical: false }
-    - { item: "Decreased fetal movements", critical: true }
-    - { item: "Swelling of hands and face", critical: false }
+  - item: Visual disturbances (blurred vision, spots)
+    critical: true
+  - item: Upper abdominal pain (right upper quadrant or epigastric)
+    critical: true
+  - item: Nausea or vomiting
+    critical: false
+  - item: Shortness of breath
+    critical: false
+  - item: Decreased fetal movements
+    critical: true
+  - item: Swelling of hands and face
+    critical: false
   pmh:
-    - { item: "Previous pregnancies", critical: false }
-    - { item: "History of high blood pressure or kidney disease", critical: true }
-    - { item: "History of diabetes or preeclampsia in prior pregnancies", critical: false }
-    - { item: "Allergies", critical: false }
+  - item: Previous pregnancies
+    critical: false
+  - item: History of high blood pressure or kidney disease
+    critical: true
+  - item: History of diabetes or preeclampsia in prior pregnancies
+    critical: false
+  - item: Allergies
+    critical: false
   medications:
-    - { item: "Current medications (including over-the-counter and supplements)", critical: true }
-    - { item: "Prenatal vitamins", critical: false }
-    - { item: "Any pain relievers taken for headache", critical: false }
+  - item: Current medications (including over-the-counter and supplements)
+    critical: true
+  - item: Prenatal vitamins
+    critical: false
+  - item: Any pain relievers taken for headache
+    critical: false
   family_social:
-    - { item: "Family history of preeclampsia or high blood pressure in pregnancy", critical: true }
-    - { item: "Smoking, alcohol, or drug use", critical: true }
-    - { item: "Occupation and living situation", critical: false }
+  - item: Family history of preeclampsia or high blood pressure in pregnancy
+    critical: true
+  - item: Smoking, alcohol, or drug use
+    critical: true
+  - item: Occupation and living situation
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Severe headache not relieved by simple analgesia", critical: true }
-  - { item: "Visual disturbances (blurred vision, flashing lights)", critical: true }
-  - { item: "Epigastric or right upper quadrant pain", critical: true }
-  - { item: "Rapid weight gain (>2 kg/week)", critical: true }
-  - { item: "Decreased fetal movements", critical: true }
-  - { item: "Shortness of breath", critical: true }
-  - { item: "Seizures or loss of consciousness", critical: true }
+- item: Severe headache not relieved by simple analgesia
+  critical: true
+- item: Visual disturbances (blurred vision, flashing lights)
+  critical: true
+- item: Epigastric or right upper quadrant pain
+  critical: true
+- item: Rapid weight gain (>2 kg/week)
+  critical: true
+- item: Decreased fetal movements
+  critical: true
+- item: Shortness of breath
+  critical: true
+- item: Seizures or loss of consciousness
+  critical: true
 expected_ddx:
-  working_diagnosis: "Pre-eclampsia"
-  differentials: [ "Gestational hypertension", "Chronic hypertension", "HELLP syndrome", "Migraine in pregnancy", "Pregnancy-related anxiety" ]
+  working_diagnosis: Pre-eclampsia
+  differentials:
+  - Gestational hypertension
+  - Chronic hypertension
+  - HELLP syndrome
+  - Migraine in pregnancy
+  - Pregnancy-related anxiety
 investigations:
   appropriate:
-    - { name: "Blood pressure measurement", expected: "Elevated (≥140/90 mmHg)" }
-    - { name: "Urine dipstick for protein", expected: "≥1+ protein" }
-    - { name: "Full blood count", expected: "May show thrombocytopenia" }
-    - { name: "Liver function tests", expected: "Elevated transaminases" }
-    - { name: "Serum creatinine", expected: "Elevated" }
-    - { name: "Fetal ultrasound", expected: "Assess fetal growth and amniotic fluid volume" }
-  inappropriate: [ "CT head without contrast (low yield without focal neurological signs)" ]
+  - name: Blood pressure measurement
+    expected: Elevated (≥140/90 mmHg)
+  - name: Urine dipstick for protein
+    expected: ≥1+ protein
+  - name: Full blood count
+    expected: May show thrombocytopenia
+  - name: Liver function tests
+    expected: Elevated transaminases
+  - name: Serum creatinine
+    expected: Elevated
+  - name: Fetal ultrasound
+    expected: Assess fetal growth and amniotic fluid volume
+  inappropriate:
+  - CT head without contrast (low yield without focal neurological signs)
 physical_exam_findings:
-  general: "Appears anxious, mild periorbital edema, no acute distress."
-  vitals: { BP: 155/95, HR: 88, RR: 16, Temp: 37.0, SpO2: 98% on room air }
+  general: Appears anxious, mild periorbital edema, no acute distress.
+  vitals:
+    BP: 155/95
+    HR: 88
+    RR: 16
+    Temp: 37.0
+    SpO2: 98% on room air
 management:
   pharmacological:
-    - "Labetalol or nifedipine for blood pressure control"
-    - "Magnesium sulfate for seizure prophylaxis if severe features develop"
-    - "Corticosteroids (betamethasone) for fetal lung maturity if <34 weeks"
+  - Labetalol or nifedipine for blood pressure control
+  - Magnesium sulfate for seizure prophylaxis if severe features develop
+  - Corticosteroids (betamethasone) for fetal lung maturity if <34 weeks
   non_pharmacological:
-    - "Admit to hospital for continuous monitoring of mother and baby"
-    - "Monitor fetal well-being with non-stress test and biophysical profile"
-    - "Consider delivery if severe features or fetal compromise"
+  - Admit to hospital for continuous monitoring of mother and baby
+  - Monitor fetal well-being with non-stress test and biophysical profile
+  - Consider delivery if severe features or fetal compromise
   education_safety_netting:
-    - "Explain signs of worsening preeclampsia: severe headache, visual changes, epigastric pain, shortness of breath, decreased fetal movements"
-    - "Advise to present immediately to emergency department if any of these occur"
-    - "Discuss plan for delivery and postpartum blood pressure monitoring"
+  - 'Explain signs of worsening preeclampsia: severe headache, visual changes, epigastric
+    pain, shortness of breath, decreased fetal movements'
+  - Advise to present immediately to emergency department if any of these occur
+  - Discuss plan for delivery and postpartum blood pressure monitoring
 scoring_weights_override: null
-
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

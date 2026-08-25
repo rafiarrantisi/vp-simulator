@@ -4,105 +4,163 @@ schema_version: 2
 status: in_review
 specialty: emergency
 system: endocrine
-presentation: "Confusion fruity breath and deep breathing"
-presentation_id: "Kebingungan, napas cepat, dan bau napas seperti buah"
-first_impression: "A person appears drowsy, breathing deeply, dry lips."
-first_impression_id: "Seseorang tampak mengantuk, napas dalam, bibir kering."
-target_condition: "Diabetic ketoacidosis"
+presentation: Confusion fruity breath and deep breathing
+presentation_id: Kebingungan, napas cepat, dan bau napas seperti buah
+first_impression: A person appears drowsy, breathing deeply, dry lips.
+first_impression_id: Seseorang tampak mengantuk, napas dalam, bibir kering.
+target_condition: Diabetic ketoacidosis
 difficulty: 2
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Diabetes Association. Standards of Medical Care in Diabetes—2023. Diabetes Care. 2023;46(Suppl 1):S1-S291."
-  - "PNPK Tata Laksana Diabetes Melitus Tipe 2 Dewasa (KMK 603/2020) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107m6032020"
-  - "ISPAD Clinical Practice Consensus Guidelines — diabetic ketoacidosis (2022)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-
-# Returning-patient continuity (PRD_QORA_MENTOR §4.3.4): visit 2 of the
-# T2DM→DKA series — triggered when the student misses the DKA red flag
-# ("signs of diabetic ketoacidosis") in im_new_t2dm_001.
+- American Diabetes Association. Standards of Medical Care in Diabetes—2023. Diabetes
+  Care. 2023;46(Suppl 1):S1-S291.
+- PNPK Tata Laksana Diabetes Melitus Tipe 2 Dewasa (KMK 603/2020) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107m6032020
+- ISPAD Clinical Practice Consensus Guidelines — diabetic ketoacidosis (2022)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
 continuity:
   is_continuity: true
-  series_id: "joko_t2dm_series"
+  series_id: joko_t2dm_series
   visit_number: 2
-  previous_case_id: "im_new_t2dm_001"
+  previous_case_id: im_new_t2dm_001
   days_since_last: 14
-  previous_diagnosis: "diabetes melitus tipe 2"
-  previous_treatment: "metformin oral"
-  current_concern: "haus terus, mual, muntah, dan napas cepat"
-  new_symptoms: ["haus berlebihan", "mual muntah", "napas cepat dan dalam", "mengantuk"]
-
-chief_complaint: "I'm confused and breathing really fast, and my breath smells funny."
+  previous_diagnosis: diabetes melitus tipe 2
+  previous_treatment: metformin oral
+  current_concern: haus terus, mual, muntah, dan napas cepat
+  new_symptoms:
+  - haus berlebihan
+  - mual muntah
+  - napas cepat dan dalam
+  - mengantuk
+chief_complaint: I'm confused and breathing really fast, and my breath smells funny.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "onset - gradual over days", critical: false }
-    - { item: "character - deep breathing (Kussmaul)", critical: true }
-    - { item: "character - confusion", critical: true }
-    - { item: "severity - confusion level", critical: true }
-    - { item: "timing - worsening", critical: false }
-    - { item: "exacerbating factors - missed insulin", critical: true }
-    - { item: "relieving factors - none", critical: false }
+  - item: onset - gradual over days
+    critical: false
+  - item: character - deep breathing (Kussmaul)
+    critical: true
+  - item: character - confusion
+    critical: true
+  - item: severity - confusion level
+    critical: true
+  - item: timing - worsening
+    critical: false
+  - item: exacerbating factors - missed insulin
+    critical: true
+  - item: relieving factors - none
+    critical: false
   associated_symptoms:
-    - { item: "polyuria", critical: true }
-    - { item: "polydipsia", critical: false }
-    - { item: "nausea / vomiting", critical: false }
-    - { item: "abdominal pain", critical: false }
-    - { item: "fatigue", critical: false }
-    - { item: "blurred vision", critical: false }
+  - item: polyuria
+    critical: true
+  - item: polydipsia
+    critical: false
+  - item: nausea / vomiting
+    critical: false
+  - item: abdominal pain
+    critical: false
+  - item: fatigue
+    critical: false
+  - item: blurred vision
+    critical: false
   pmh:
-    - { item: "type 1 diabetes", critical: true }
-    - { item: "recent upper respiratory infection", critical: false }
+  - item: type 1 diabetes
+    critical: true
+  - item: recent upper respiratory infection
+    critical: false
   medications:
-    - { item: "insulin regimen", critical: true }
-    - { item: "missed insulin doses", critical: true }
-    - { item: "over‑the‑counter cold remedies", critical: false }
+  - item: insulin regimen
+    critical: true
+  - item: missed insulin doses
+    critical: true
+  - item: over‑the‑counter cold remedies
+    critical: false
   family_social:
-    - { item: "family history of diabetes", critical: false }
-    - { item: "lives alone", critical: false }
-    - { item: "occupation – truck driver, poor adherence when busy", critical: false }
+  - item: family history of diabetes
+    critical: false
+  - item: lives alone
+    critical: false
+  - item: occupation – truck driver, poor adherence when busy
+    critical: false
   ice_fife:
-    - { item: "Ideas - I think I have a bad infection", critical: false }
-    - { item: "Concerns - I'm scared I'm going to die", critical: true }
-    - { item: "Expectations - I want to feel better and get my breathing back to normal", critical: false }
+  - item: Ideas - I think I have a bad infection
+    critical: false
+  - item: Concerns - I'm scared I'm going to die
+    critical: true
+  - item: Expectations - I want to feel better and get my breathing back to normal
+    critical: false
 red_flags:
-  - { item: "confusion or altered mental status", critical: true }
-  - { item: "deep, labored breathing (Kussmaul respirations)", critical: true }
-  - { item: "fruity‑scented breath", critical: true }
-  - { item: "tachycardia and hypotension", critical: true }
+- item: confusion or altered mental status
+  critical: true
+- item: deep, labored breathing (Kussmaul respirations)
+  critical: true
+- item: fruity‑scented breath
+  critical: true
+- item: tachycardia and hypotension
+  critical: true
 expected_ddx:
-  working_diagnosis: "Diabetic ketoacidosis"
-  differentials: [ "Hyperosmolar hyperglycemic state", "Sepsis" ]
+  working_diagnosis: Diabetic ketoacidosis
+  differentials:
+  - Hyperosmolar hyperglycemic state
+  - Sepsis
 investigations:
   appropriate:
-    - { name: "venous blood gas", expected: "pH 7.1, bicarbonate 8 mmol/L, base excess -18" }
-    - { name: "serum glucose", expected: "450 mg/dL (25 mmol/L)" }
-    - { name: "serum ketones", expected: "positive (3+)" }
-    - { name: "basic metabolic panel", expected: "anion gap 25, potassium 5.5, BUN 28, creatinine 1.2" }
-    - { name: "complete blood count", expected: "WBC 14,000 with left shift" }
-    - { name: "HbA1c", expected: "12% (108 mmol/mol)" }
-    - { name: "ECG", expected: "sinus tachycardia, possibly peaked T waves" }
-  inappropriate: [ "CT head without clinical indication", "lumbar puncture" ]
+  - name: venous blood gas
+    expected: pH 7.1, bicarbonate 8 mmol/L, base excess -18
+  - name: serum glucose
+    expected: 450 mg/dL (25 mmol/L)
+  - name: serum ketones
+    expected: positive (3+)
+  - name: basic metabolic panel
+    expected: anion gap 25, potassium 5.5, BUN 28, creatinine 1.2
+  - name: complete blood count
+    expected: WBC 14,000 with left shift
+  - name: HbA1c
+    expected: 12% (108 mmol/mol)
+  - name: ECG
+    expected: sinus tachycardia, possibly peaked T waves
+  inappropriate:
+  - CT head without clinical indication
+  - lumbar puncture
 physical_exam_findings:
-  general: "Ill‑appearing, confused, leaning forward with pursed‑lip breathing, pale, diaphoretic, fruity odor on breath."
-  vitals: { "HR": 110, "BP": 90/60, "RR": 30, "Temp": 37.0, "SpO2": 98% }
+  general: Ill‑appearing, confused, leaning forward with pursed‑lip breathing, pale,
+    diaphoretic, fruity odor on breath.
+  vitals:
+    HR: 110
+    BP: 90/60
+    RR: 30
+    Temp: 37.0
+    SpO2: 98%
 management:
   pharmacological:
-    - "IV normal saline bolus (20 mL/kg)"
-    - "continuous regular insulin infusion (0.1 units/kg/hr)"
-    - "potassium replacement (per protocol)"
-    - "sodium bicarbonate only if pH < 7.0"
+  - IV normal saline bolus (20 mL/kg)
+  - continuous regular insulin infusion (0.1 units/kg/hr)
+  - potassium replacement (per protocol)
+  - sodium bicarbonate only if pH < 7.0
   non_pharmacological:
-    - "cardiac monitoring"
-    - "airway assessment and oxygen if needed"
-    - "admission to ICU or step‑down unit"
+  - cardiac monitoring
+  - airway assessment and oxygen if needed
+  - admission to ICU or step‑down unit
   education_safety_netting:
-    - "teach sick‑day rules for diabetes"
-    - "reinforce insulin adherence"
-    - "schedule follow‑up with endocrinology"
-    - "discuss early warning signs of DKA"
+  - teach sick‑day rules for diabetes
+  - reinforce insulin adherence
+  - schedule follow‑up with endocrinology
+  - discuss early warning signs of DKA
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

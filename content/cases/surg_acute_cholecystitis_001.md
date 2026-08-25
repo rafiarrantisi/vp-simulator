@@ -4,84 +4,140 @@ schema_version: 2
 status: in_review
 specialty: surgery
 system: gastrointestinal
-presentation: "Right upper quadrant pain"
-presentation_id: "Nyeri tajam di perut kanan atas sejak semalam"
-first_impression: "Patient appears in pain."
-first_impression_id: "Pasien tampak kesakitan."
-target_condition: "Acute cholecystitis"
+presentation: Right upper quadrant pain
+presentation_id: Nyeri tajam di perut kanan atas sejak semalam
+first_impression: Patient appears in pain.
+first_impression_id: Pasien tampak kesakitan.
+target_condition: Acute cholecystitis
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "SAGES guidelines for acute cholecystitis"
-  - "Tokyo Guidelines (TG18) — acute cholecystitis"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have a sharp pain under my right ribs that started last night and won't go away."
+- SAGES guidelines for acute cholecystitis
+- Tokyo Guidelines (TG18) — acute cholecystitis
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have a sharp pain under my right ribs that started last night and
+  won't go away.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain (right upper quadrant)", critical: true }
-    - { item: "Onset (sudden, after a heavy meal)", critical: true }
-    - { item: "Character (sharp, cramping, or dull)", critical: true }
-    - { item: "Radiation (to right shoulder or back)", critical: true }
-    - { item: "Associated nausea or vomiting", critical: true }
-    - { item: "Aggravating factors (eating fatty foods)", critical: false }
-    - { item: "Relieving factors (nothing helps)", critical: false }
-    - { item: "Timing (constant, not intermittent)", critical: false }
-    - { item: "Exacerbations (worse after meals)", critical: false }
-    - { item: "Severity (7/10, bad enough to come to ER)", critical: true }
+  - item: Site of pain (right upper quadrant)
+    critical: true
+  - item: Onset (sudden, after a heavy meal)
+    critical: true
+  - item: Character (sharp, cramping, or dull)
+    critical: true
+  - item: Radiation (to right shoulder or back)
+    critical: true
+  - item: Associated nausea or vomiting
+    critical: true
+  - item: Aggravating factors (eating fatty foods)
+    critical: false
+  - item: Relieving factors (nothing helps)
+    critical: false
+  - item: Timing (constant, not intermittent)
+    critical: false
+  - item: Exacerbations (worse after meals)
+    critical: false
+  - item: Severity (7/10, bad enough to come to ER)
+    critical: true
   associated_symptoms:
-    - { item: "Fever or chills", critical: true }
-    - { item: "Nausea and vomiting", critical: true }
-    - { item: "Loss of appetite", critical: false }
-    - { item: "Jaundice or yellowing of skin/eyes", critical: true }
-    - { item: "Dark urine or pale stools", critical: false }
+  - item: Fever or chills
+    critical: true
+  - item: Nausea and vomiting
+    critical: true
+  - item: Loss of appetite
+    critical: false
+  - item: Jaundice or yellowing of skin/eyes
+    critical: true
+  - item: Dark urine or pale stools
+    critical: false
   pmh:
-    - { item: "Previous gallbladder attacks or gallstones", critical: true }
-    - { item: "History of diabetes, hypertension, or obesity", critical: false }
-    - { item: "Previous abdominal surgeries", critical: false }
+  - item: Previous gallbladder attacks or gallstones
+    critical: true
+  - item: History of diabetes, hypertension, or obesity
+    critical: false
+  - item: Previous abdominal surgeries
+    critical: false
   medications:
-    - { item: "Current medications (including over-the-counter)", critical: false }
-    - { item: "Allergies to medications", critical: false }
+  - item: Current medications (including over-the-counter)
+    critical: false
+  - item: Allergies to medications
+    critical: false
   family_social:
-    - { item: "Family history of gallbladder disease", critical: false }
-    - { item: "Dietary habits (high-fat diet)", critical: false }
-    - { item: "Alcohol use", critical: false }
+  - item: Family history of gallbladder disease
+    critical: false
+  - item: Dietary habits (high-fat diet)
+    critical: false
+  - item: Alcohol use
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Fever and chills (signs of infection)", critical: true }
-  - { item: "Jaundice (possible common bile duct obstruction)", critical: true }
-  - { item: "Severe constant pain (possible perforation)", critical: true }
+- item: Fever and chills (signs of infection)
+  critical: true
+- item: Jaundice (possible common bile duct obstruction)
+  critical: true
+- item: Severe constant pain (possible perforation)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acute cholecystitis"
-  differentials: ["Acute pancreatitis", "Perforated peptic ulcer"]
+  working_diagnosis: Acute cholecystitis
+  differentials:
+  - Acute pancreatitis
+  - Perforated peptic ulcer
 investigations:
   appropriate:
-    - { name: "Abdominal ultrasound", expected: "Thickened gallbladder wall, pericholecystic fluid, gallstones" }
-    - { name: "Complete blood count", expected: "Elevated white blood cell count" }
-    - { name: "Liver function tests", expected: "Elevated alkaline phosphatase, bilirubin may be normal or mildly elevated" }
-    - { name: "Amylase/lipase", expected: "Normal (to rule out pancreatitis)" }
-  inappropriate: ["CT abdomen without contrast", "Upper GI series"]
+  - name: Abdominal ultrasound
+    expected: Thickened gallbladder wall, pericholecystic fluid, gallstones
+  - name: Complete blood count
+    expected: Elevated white blood cell count
+  - name: Liver function tests
+    expected: Elevated alkaline phosphatase, bilirubin may be normal or mildly elevated
+  - name: Amylase/lipase
+    expected: Normal (to rule out pancreatitis)
+  inappropriate:
+  - CT abdomen without contrast
+  - Upper GI series
 physical_exam_findings:
-  general: "Patient appears uncomfortable, holding right upper quadrant, mild distress."
-  vitals: { temp: "38.2°C", bp: "130/85", hr: "95", rr: "18", o2_sat: "98%" }
+  general: Patient appears uncomfortable, holding right upper quadrant, mild distress.
+  vitals:
+    temp: 38.2°C
+    bp: 130/85
+    hr: '95'
+    rr: '18'
+    o2_sat: 98%
 management:
   pharmacological:
-    - "IV fluids (normal saline)"
-    - "IV antibiotics (e.g., ceftriaxone + metronidazole)"
-    - "Analgesics (e.g., morphine or ketorolac)"
+  - IV fluids (normal saline)
+  - IV antibiotics (e.g., ceftriaxone + metronidazole)
+  - Analgesics (e.g., morphine or ketorolac)
   non_pharmacological:
-    - "NPO (nothing by mouth) pending surgery"
-    - "Laparoscopic cholecystectomy within 24-48 hours"
+  - NPO (nothing by mouth) pending surgery
+  - Laparoscopic cholecystectomy within 24-48 hours
   education_safety_netting:
-    - "Explain need for surgery to remove gallbladder"
-    - "Advise to return to ER if pain worsens, fever spikes, or jaundice develops"
-    - "Post-operative dietary changes (low-fat diet initially)"
+  - Explain need for surgery to remove gallbladder
+  - Advise to return to ER if pain worsens, fever spikes, or jaundice develops
+  - Post-operative dietary changes (low-fat diet initially)
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

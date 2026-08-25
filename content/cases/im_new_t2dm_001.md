@@ -1,65 +1,119 @@
 ---
 id: im_new_t2dm_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: endocrine
-presentation: "Polyuria and thirst"
-presentation_id: "Sering haus dan sering buang air kecil"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Type 2 diabetes mellitus"
+presentation: Polyuria and thirst
+presentation_id: Sering haus dan sering buang air kecil
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Type 2 diabetes mellitus
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "PNPK Tata Laksana Diabetes Melitus Tipe 2 Dewasa (KMK 603/2020) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107m6032020"
-  - "American Diabetes Association Standards of Care (2023)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I've been drinking a lot and peeing a lot, and I'm always thirsty."
+- PNPK Tata Laksana Diabetes Melitus Tipe 2 Dewasa (KMK 603/2020) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107m6032020
+- American Diabetes Association Standards of Care (2023)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I've been drinking a lot and peeing a lot, and I'm always thirsty.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset: gradual over weeks", critical: false }
-    - { item: "Duration: about 2 months", critical: false }
-    - { item: "Character: constant thirst, frequent urination", critical: false }
-    - { item: "Location: generalized", critical: false }
-    - { item: "Aggravating factors: drinking more fluids", critical: false }
-    - { item: "Relieving factors: none", critical: false }
-    - { item: "Timing: day and night, nocturia", critical: false }
-    - { item: "Severity: moderate, interfering with sleep", critical: false }
-    - { item: "Context: no clear trigger", critical: false }
-    - { item: "Nocturia: 3-4 times per night", critical: true }
+  - item: 'Onset: gradual over weeks'
+    critical: false
+  - item: 'Duration: about 2 months'
+    critical: false
+  - item: 'Character: constant thirst, frequent urination'
+    critical: false
+  - item: 'Location: generalized'
+    critical: false
+  - item: 'Aggravating factors: drinking more fluids'
+    critical: false
+  - item: 'Relieving factors: none'
+    critical: false
+  - item: 'Timing: day and night, nocturia'
+    critical: false
+  - item: 'Severity: moderate, interfering with sleep'
+    critical: false
+  - item: 'Context: no clear trigger'
+    critical: false
+  - item: 'Nocturia: 3-4 times per night'
+    critical: true
   associated_symptoms:
-    - { item: "Fatigue", critical: false }
-    - { item: "Unintentional weight loss (10 lbs over 2 months)", critical: true }
-    - { item: "Blurred vision", critical: false }
-    - { item: "Recurrent infections", critical: false }
+  - item: Fatigue
+    critical: false
+  - item: Unintentional weight loss (10 lbs over 2 months)
+    critical: true
+  - item: Blurred vision
+    critical: false
+  - item: Recurrent infections
+    critical: false
   pmh:
-    - { item: "No known chronic diseases", critical: false }
-    - { item: "Overweight (BMI 28)", critical: true }
+  - item: No known chronic diseases
+    critical: false
+  - item: Overweight (BMI 28)
+    critical: true
   medications:
-    - { item: "No prescription medications", critical: false }
-    - { item: "Occasional over-the-counter pain relievers", critical: false }
+  - item: No prescription medications
+    critical: false
+  - item: Occasional over-the-counter pain relievers
+    critical: false
   family_social:
-    - { item: "Family history: father had type 2 diabetes", critical: true }
-    - { item: "Smoking: 10 cigarettes per day for 30 years", critical: false }
-    - { item: "Alcohol: occasional, 1-2 drinks per week", critical: false }
+  - item: 'Family history: father had type 2 diabetes'
+    critical: true
+  - item: 'Smoking: 10 cigarettes per day for 30 years'
+    critical: false
+  - item: 'Alcohol: occasional, 1-2 drinks per week'
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong: 'Maybe I have a bladder infection or something.'", critical: true }
-    - { item: "Concerns - what worries them: 'I'm worried it might be diabetes because my dad had it.'", critical: true }
-    - { item: "Expectations - what they hope for: 'I hope you can give me something to stop the thirst and urination.'", critical: false }
+  - item: 'Ideas - what they think is wrong: ''Maybe I have a bladder infection or
+      something.'''
+    critical: true
+  - item: 'Concerns - what worries them: ''I''m worried it might be diabetes because
+      my dad had it.'''
+    critical: true
+  - item: 'Expectations - what they hope for: ''I hope you can give me something to
+      stop the thirst and urination.'''
+    critical: false
 red_flags:
-  - { item: "Signs of diabetic ketoacidosis (nausea, vomiting, abdominal pain, rapid breathing)", critical: true }
-  - { item: "Altered mental status or confusion", critical: false }
-  - { item: "Severe dehydration or hypotension", critical: false }
+- item: Signs of diabetic ketoacidosis (nausea, vomiting, abdominal pain, rapid breathing)
+  critical: true
+- item: Altered mental status or confusion
+  critical: false
+- item: Severe dehydration or hypotension
+  critical: false
 expected_ddx:
-  working_diagnosis: "Type 2 diabetes mellitus"
-  differentials: ["Type 1 diabetes mellitus", "Diabetes insipidus", "Psychogenic polydipsia"]
-investigations: { appropriate: [], inappropriate: [] }
-physical_exam_findings: { general: "Well-appearing, overweight male.", vitals: { bp: 130/80, hr: 80, rr: 16, temp: 98.6, weight: 90, height: 1.78, bmi: 28.4 } }
-management: { pharmacological: [], non_pharmacological: [], education_safety_netting: ["Lifestyle modification advice", "Follow-up with primary care for labs"] }
+  working_diagnosis: Type 2 diabetes mellitus
+  differentials:
+  - Type 1 diabetes mellitus
+  - Diabetes insipidus
+  - Psychogenic polydipsia
+investigations:
+  appropriate: []
+  inappropriate: []
+physical_exam_findings:
+  general: Well-appearing, overweight male.
+  vitals:
+    bp: 130/80
+    hr: 80
+    rr: 16
+    temp: 98.6
+    weight: 90
+    height: 1.78
+    bmi: 28.4
+management:
+  pharmacological: []
+  non_pharmacological: []
+  education_safety_netting:
+  - Lifestyle modification advice
+  - Follow-up with primary care for labs
 scoring_weights_override: null
 ---
 ## Identity

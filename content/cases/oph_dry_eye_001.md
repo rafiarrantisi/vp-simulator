@@ -1,110 +1,139 @@
 ---
 id: oph_dry_eye_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: ocular_surface
-presentation: "Dry, gritty, irritable eyes"
-presentation_id: "Mata kering, perih, dan terasa berat selama 2 bulan, semakin parah minggu ini"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Dry eye disease"
+presentation: Dry, gritty, irritable eyes
+presentation_id: Mata kering, perih, dan terasa berat selama 2 bulan, semakin parah
+  minggu ini
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Dry eye disease
 difficulty: 2
 estimated_minutes: 12
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "TFOS DEWS II report (2017) — definition & diagnostic methodology"
-  - "NICE CKS: Dry eye"
-  - "Migrated from legacy kasus-101 (PPK Kemenkes — Dry Eye, ICD-10 H04.1)"
+- TFOS DEWS II report (2017) — definition & diagnostic methodology
+- 'NICE CKS: Dry eye'
+- Migrated from legacy kasus-101 (PPK Kemenkes — Dry Eye, ICD-10 H04.1)
 authoring:
   drafted_by: migrated_from_kasus-101
   model: human+ai
   reviewed_by: null
   reviewed_at: null
-  review_notes: "Restructured + translated to English schema v2. Pending ophthalmology sign-off (study-aid draft)."
-
-chief_complaint: "Gritty, burning, tired eyes for ~2 months, worse this week"
-
+  review_notes: Restructured + translated to English schema v2. Pending ophthalmology
+    sign-off (study-aid draft).
+chief_complaint: Gritty, burning, tired eyes for ~2 months, worse this week
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset and time course (gradual over ~2 months, worse recently)", critical: true }
-    - { item: "Site / laterality (both eyes)", critical: false }
-    - { item: "Character of discomfort (gritty/foreign-body, burning, stinging)", critical: true }
-    - { item: "Severity / functional impact on work and concentration", critical: false }
-    - { item: "Aggravating factors (screen time, air-conditioning, contact lenses, low humidity)", critical: true }
-    - { item: "Relieving factors (rest, blinking, leaving AC, lubricants)", critical: false }
-    - { item: "Diurnal pattern (worse end of day, better at weekends)", critical: false }
+  - item: Onset and time course (gradual over ~2 months, worse recently)
+    critical: true
+  - item: Site / laterality (both eyes)
+    critical: false
+  - item: Character of discomfort (gritty/foreign-body, burning, stinging)
+    critical: true
+  - item: Severity / functional impact on work and concentration
+    critical: false
+  - item: Aggravating factors (screen time, air-conditioning, contact lenses, low
+      humidity)
+    critical: true
+  - item: Relieving factors (rest, blinking, leaving AC, lubricants)
+    critical: false
+  - item: Diurnal pattern (worse end of day, better at weekends)
+    critical: false
   associated_symptoms:
-    - { item: "Paradoxical reflex watering / epiphora", critical: false }
-    - { item: "Transient blurring that clears on blinking", critical: false }
-    - { item: "Redness", critical: false }
-    - { item: "Itching or lid-margin symptoms (overlap allergy/blepharitis)", critical: false }
-    - { item: "Pain or photophobia (screens for sinister causes)", critical: true }
+  - item: Paradoxical reflex watering / epiphora
+    critical: false
+  - item: Transient blurring that clears on blinking
+    critical: false
+  - item: Redness
+    critical: false
+  - item: Itching or lid-margin symptoms (overlap allergy/blepharitis)
+    critical: false
+  - item: Pain or photophobia (screens for sinister causes)
+    critical: true
   pmh:
-    - { item: "Refractive error / spectacle or contact-lens wear", critical: false }
-    - { item: "Systemic screen: dry mouth, joint pain (Sjogren), thyroid, diabetes", critical: true }
+  - item: Refractive error / spectacle or contact-lens wear
+    critical: false
+  - item: 'Systemic screen: dry mouth, joint pain (Sjogren), thyroid, diabetes'
+    critical: true
   medications:
-    - { item: "Current eye drops, esp. OTC vasoconstrictor ('whitening') overuse", critical: false }
-    - { item: "Systemic drying drugs (antihistamines, isotretinoin, antidepressants)", critical: false }
-    - { item: "Drug allergies", critical: false }
+  - item: Current eye drops, esp. OTC vasoconstrictor ('whitening') overuse
+    critical: false
+  - item: Systemic drying drugs (antihistamines, isotretinoin, antidepressants)
+    critical: false
+  - item: Drug allergies
+    critical: false
   family_social:
-    - { item: "Occupation, daily screen hours, air-conditioned environment", critical: true }
-    - { item: "Sleep, smoking, alcohol", critical: false }
+  - item: Occupation, daily screen hours, air-conditioned environment
+    critical: true
+  - item: Sleep, smoking, alcohol
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is causing it", critical: true }
-    - { item: "Concerns - what worries them (worsening, permanence, work)", critical: true }
-    - { item: "Expectations - what they hope to get from the visit", critical: false }
-    - { item: "Function - impact on daily activities", critical: false }
-
+  - item: Ideas - what they think is causing it
+    critical: true
+  - item: Concerns - what worries them (worsening, permanence, work)
+    critical: true
+  - item: Expectations - what they hope to get from the visit
+    critical: false
+  - item: Function - impact on daily activities
+    critical: false
 red_flags:
-  - { item: "Acute or progressive vision loss", critical: true }
-  - { item: "Severe eye pain or marked photophobia (keratitis/uveitis/acute angle closure)", critical: true }
-  - { item: "Contact-lens wearer with pain, redness and discharge (microbial keratitis)", critical: true }
-  - { item: "Ocular trauma or high-velocity foreign body", critical: true }
-  - { item: "Purulent discharge with rapidly progressive redness", critical: false }
-
+- item: Acute or progressive vision loss
+  critical: true
+- item: Severe eye pain or marked photophobia (keratitis/uveitis/acute angle closure)
+  critical: true
+- item: Contact-lens wearer with pain, redness and discharge (microbial keratitis)
+  critical: true
+- item: Ocular trauma or high-velocity foreign body
+  critical: true
+- item: Purulent discharge with rapidly progressive redness
+  critical: false
 expected_ddx:
-  working_diagnosis: "Dry eye disease (evaporative, screen-use related)"
+  working_diagnosis: Dry eye disease (evaporative, screen-use related)
   differentials:
-    - "Allergic conjunctivitis"
-    - "Blepharitis / meibomian gland dysfunction"
-    - "Asthenopia (computer vision syndrome) without true dry eye"
-    - "Viral conjunctivitis"
-    - "Aqueous-deficient dry eye / early Sjogren syndrome"
-
+  - Allergic conjunctivitis
+  - Blepharitis / meibomian gland dysfunction
+  - Asthenopia (computer vision syndrome) without true dry eye
+  - Viral conjunctivitis
+  - Aqueous-deficient dry eye / early Sjogren syndrome
 investigations:
   appropriate:
-    - { name: "Tear break-up time (TBUT)", expected: "Reduced, < 10 seconds" }
-    - { name: "Schirmer test", expected: "< 10 mm/5 min; < 5 mm suggests aqueous deficiency" }
-    - { name: "Ocular surface staining (fluorescein / lissamine green)", expected: "Punctate epithelial erosions, interpalpebral cornea/conjunctiva" }
-    - { name: "Slit-lamp lid & meibomian gland assessment", expected: "Possible meibomian dysfunction; foamy tear film at lid margin" }
+  - name: Tear break-up time (TBUT)
+    expected: Reduced, < 10 seconds
+  - name: Schirmer test
+    expected: < 10 mm/5 min; < 5 mm suggests aqueous deficiency
+  - name: Ocular surface staining (fluorescein / lissamine green)
+    expected: Punctate epithelial erosions, interpalpebral cornea/conjunctiva
+  - name: Slit-lamp lid & meibomian gland assessment
+    expected: Possible meibomian dysfunction; foamy tear film at lid margin
   inappropriate:
-    - "CT head / neuroimaging"
-    - "Gonioscopy"
-    - "Automated visual field perimetry"
-
+  - CT head / neuroimaging
+  - Gonioscopy
+  - Automated visual field perimetry
 physical_exam_findings:
-  general: "Comfortable, no acute distress"
-  eyes: "Visual acuity 6/6 each eye; foamy tears in the fornix; mild punctate epithelial erosions; reduced tear break-up time; Schirmer < 10 mm"
+  general: Comfortable, no acute distress
+  eyes: Visual acuity 6/6 each eye; foamy tears in the fornix; mild punctate epithelial
+    erosions; reduced tear break-up time; Schirmer < 10 mm
   vitals: {}
   media: []
-
 management:
   pharmacological:
-    - "Preservative-free artificial tears (carmellose or sodium hyaluronate)"
-    - "Lipid-based drops / warm compresses if meibomian dysfunction"
-    - "Topical anti-inflammatory only under specialist guidance"
+  - Preservative-free artificial tears (carmellose or sodium hyaluronate)
+  - Lipid-based drops / warm compresses if meibomian dysfunction
+  - Topical anti-inflammatory only under specialist guidance
   non_pharmacological:
-    - "20-20-20 rule and deliberate blinking during screen work"
-    - "Reduce direct air-conditioning airflow; humidify"
-    - "Lid hygiene and warm compresses"
-    - "Reduce contact-lens wearing hours"
+  - 20-20-20 rule and deliberate blinking during screen work
+  - Reduce direct air-conditioning airflow; humidify
+  - Lid hygiene and warm compresses
+  - Reduce contact-lens wearing hours
   education_safety_netting:
-    - "Explain it is a chronic but manageable ocular-surface problem"
-    - "Avoid overusing vasoconstrictor 'whitening' drops (rebound redness)"
-    - "Return if vision drops, significant pain, marked redness, or light sensitivity"
-
+  - Explain it is a chronic but manageable ocular-surface problem
+  - Avoid overusing vasoconstrictor 'whitening' drops (rebound redness)
+  - Return if vision drops, significant pain, marked redness, or light sensitivity
 scoring_weights_override: null
 ---
 

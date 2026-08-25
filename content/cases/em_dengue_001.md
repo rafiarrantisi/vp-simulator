@@ -4,85 +4,150 @@ schema_version: 2
 status: in_review
 specialty: emergency
 system: infectious disease
-presentation: "Fever, headache and body aches for 3 days"
-presentation_id: "Demam tinggi, sakit kepala berat, dan nyeri badan selama 3 hari"
-first_impression: "Patient appears flushed, restless, and uncomfortable, rubbing her temples while seated."
-first_impression_id: "Pasien tampak kemerahan, gelisah, dan tidak nyaman, sambil mengusap pelipisnya."
-target_condition: "Dengue fever with warning signs"
+presentation: Fever, headache and body aches for 3 days
+presentation_id: Demam tinggi, sakit kepala berat, dan nyeri badan selama 3 hari
+first_impression: Patient appears flushed, restless, and uncomfortable, rubbing her
+  temples while seated.
+first_impression_id: Pasien tampak kemerahan, gelisah, dan tidak nyaman, sambil mengusap
+  pelipisnya.
+target_condition: Dengue fever with warning signs
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: ["WHO SEARO dengue guidelines (2009/2011) — dengue fever with warning signs"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have had a high fever and bad headache for three days."
+languages:
+- en
+source_refs:
+- WHO SEARO dengue guidelines (2009/2011) — dengue fever with warning signs
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have had a high fever and bad headache for three days.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain", critical: false }
-    - { item: "Onset of fever", critical: true }
-    - { item: "Character of fever", critical: false }
-    - { item: "Radiation of pain", critical: false }
-    - { item: "Associated symptoms like vomiting or bleeding", critical: true }
-    - { item: "Time course of symptoms over 3 days", critical: false }
-    - { item: "Exacerbating factors", critical: false }
-    - { item: "Severity of pain (scale 1-10)", critical: false }
+  - item: Site of pain
+    critical: false
+  - item: Onset of fever
+    critical: true
+  - item: Character of fever
+    critical: false
+  - item: Radiation of pain
+    critical: false
+  - item: Associated symptoms like vomiting or bleeding
+    critical: true
+  - item: Time course of symptoms over 3 days
+    critical: false
+  - item: Exacerbating factors
+    critical: false
+  - item: Severity of pain (scale 1-10)
+    critical: false
   associated_symptoms:
-    - { item: "Do you have abdominal pain or tenderness?", critical: true }
-    - { item: "Have you vomited? How many times in the last 24 hours?", critical: true }
-    - { item: "Any bleeding from nose, gums, or easy bruising?", critical: true }
-    - { item: "Do you feel unusually tired or weak?", critical: true }
-    - { item: "Any rash on your skin?", critical: false }
-    - { item: "Any joint or muscle aches?", critical: false }
-    - { item: "Any red spots on your skin?", critical: false }
-    - { item: "Any dizziness or feeling faint when standing?", critical: true }
+  - item: Do you have abdominal pain or tenderness?
+    critical: true
+  - item: Have you vomited? How many times in the last 24 hours?
+    critical: true
+  - item: Any bleeding from nose, gums, or easy bruising?
+    critical: true
+  - item: Do you feel unusually tired or weak?
+    critical: true
+  - item: Any rash on your skin?
+    critical: false
+  - item: Any joint or muscle aches?
+    critical: false
+  - item: Any red spots on your skin?
+    critical: false
+  - item: Any dizziness or feeling faint when standing?
+    critical: true
   pmh:
-    - { item: "Any chronic illnesses like diabetes or hypertension?", critical: false }
-    - { item: "Any history of dengue or other infections?", critical: false }
-    - { item: "Any previous surgeries?", critical: false }
+  - item: Any chronic illnesses like diabetes or hypertension?
+    critical: false
+  - item: Any history of dengue or other infections?
+    critical: false
+  - item: Any previous surgeries?
+    critical: false
   medications:
-    - { item: "What have you taken for the fever?", critical: false }
-    - { item: "Any regular medications for chronic diseases?", critical: false }
-    - { item: "Any allergies to medicines?", critical: false }
+  - item: What have you taken for the fever?
+    critical: false
+  - item: Any regular medications for chronic diseases?
+    critical: false
+  - item: Any allergies to medicines?
+    critical: false
   family_social:
-    - { item: "Does anyone in your household have similar symptoms?", critical: false }
-    - { item: "Do you live in a dengue-prone area? Any recent mosquito bites?", critical: true }
-    - { item: "What is your occupation and daily activities?", critical: false }
+  - item: Does anyone in your household have similar symptoms?
+    critical: false
+  - item: Do you live in a dengue-prone area? Any recent mosquito bites?
+    critical: true
+  - item: What is your occupation and daily activities?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Abdominal pain or tenderness", critical: true }
-  - { item: "Persistent vomiting (≥3 times in 24 hours)", critical: true }
-  - { item: "Mucosal bleeding (nose or gums)", critical: true }
-  - { item: "Lethargy or restlessness", critical: true }
-  - { item: "Dizziness on standing (possible hypovolemia)", critical: false }
+- item: Abdominal pain or tenderness
+  critical: true
+- item: Persistent vomiting (≥3 times in 24 hours)
+  critical: true
+- item: Mucosal bleeding (nose or gums)
+  critical: true
+- item: Lethargy or restlessness
+  critical: true
+- item: Dizziness on standing (possible hypovolemia)
+  critical: false
 expected_ddx:
-  working_diagnosis: "Dengue fever with warning signs"
-  differentials: ["Typhoid fever", "Viral upper respiratory tract infection"]
+  working_diagnosis: Dengue fever with warning signs
+  differentials:
+  - Typhoid fever
+  - Viral upper respiratory tract infection
 investigations:
   appropriate:
-    - { name: "Complete blood count (including platelet and haematocrit)", expected: "Low platelet count (<150,000/mm³), rising haematocrit (>10% from baseline or >45%)" }
-    - { name: "NS1 antigen test", expected: "Positive for dengue virus" }
-    - { name: "Serology (IgM and IgG)", expected: "Positive IgM, indicative of acute infection" }
-    - { name: "Tourniquet test (Rumpel-Leede test)", expected: "Positive (≥20 petechiae per square inch)" }
-  inappropriate: ["Widal test for typhoid as initial test"]
+  - name: Complete blood count (including platelet and haematocrit)
+    expected: Low platelet count (<150,000/mm³), rising haematocrit (>10% from baseline
+      or >45%)
+  - name: NS1 antigen test
+    expected: Positive for dengue virus
+  - name: Serology (IgM and IgG)
+    expected: Positive IgM, indicative of acute infection
+  - name: Tourniquet test (Rumpel-Leede test)
+    expected: Positive (≥20 petechiae per square inch)
+  inappropriate:
+  - Widal test for typhoid as initial test
 physical_exam_findings:
-  general: "Patient appears tired and in mild distress. Mucosa slightly dry. Conjunctival injection noted."
-  vitals: { temperature: 38.7, blood_pressure: 100/70, heart_rate: 110, respiratory_rate: 22, oxygen_saturation: 98 }
+  general: Patient appears tired and in mild distress. Mucosa slightly dry. Conjunctival
+    injection noted.
+  vitals:
+    temperature: 38.7
+    blood_pressure: 100/70
+    heart_rate: 110
+    respiratory_rate: 22
+    oxygen_saturation: 98
 management:
   pharmacological:
-    - "Paracetamol for fever (avoid NSAIDs due to bleeding risk)"
-    - "Oral rehydration salts (ORS) for fluid replacement"
+  - Paracetamol for fever (avoid NSAIDs due to bleeding risk)
+  - Oral rehydration salts (ORS) for fluid replacement
   non_pharmacological:
-    - "Monitor for bleeding signs (petechiae, ecchymosis, epistaxis)"
-    - "Monitor vital signs (blood pressure, heart rate, temperature) every 4 hours"
-    - "Encourage oral fluid intake (2-3 liters per day of clear fluids)"
+  - Monitor for bleeding signs (petechiae, ecchymosis, epistaxis)
+  - Monitor vital signs (blood pressure, heart rate, temperature) every 4 hours
+  - Encourage oral fluid intake (2-3 liters per day of clear fluids)
   education_safety_netting:
-    - "Return to the hospital immediately if vomiting worsens, severe abdominal pain develops, or any bleeding occurs"
-    - "Avoid NSAIDs (like ibuprofen) as they increase bleeding risk"
-    - "Ensure adequate rest at home"
+  - Return to the hospital immediately if vomiting worsens, severe abdominal pain
+    develops, or any bleeding occurs
+  - Avoid NSAIDs (like ibuprofen) as they increase bleeding risk
+  - Ensure adequate rest at home
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

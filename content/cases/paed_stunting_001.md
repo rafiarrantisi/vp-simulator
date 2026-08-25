@@ -4,81 +4,122 @@ schema_version: 2
 status: in_review
 specialty: paediatrics
 system: growth_and_development
-presentation: "Short stature and poor growth in a 3-year-old"
-presentation_id: "Anak usia 3 tahun dengan perawakan pendek dan pertumbuhan yang lambat"
-first_impression: "Child is small for stated age, sits quietly, avoids eye contact."
-first_impression_id: "Anak tampak kecil untuk usianya, duduk diam, menghindari kontak mata."
-target_condition: "Stunting (chronic malnutrition)"
+presentation: Short stature and poor growth in a 3-year-old
+presentation_id: Anak usia 3 tahun dengan perawakan pendek dan pertumbuhan yang lambat
+first_impression: Child is small for stated age, sits quietly, avoids eye contact.
+first_impression_id: Anak tampak kecil untuk usianya, duduk diam, menghindari kontak
+  mata.
+target_condition: Stunting (chronic malnutrition)
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "PPK Kemenkes (Panduan Praktik Klinis) for Stunting — KMK 1928/2022"
-  - "WHO Child Growth Standards — height-for-age"
-
+- PPK Kemenkes (Panduan Praktik Klinis) for Stunting — KMK 1928/2022
+- WHO Child Growth Standards — height-for-age
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
-  review_notes: null
-chief_complaint: "My son is very short for his age and doesn't seem to grow well."
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: My son is very short for his age and doesn't seem to grow well.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "When did you first notice the poor growth?", critical: true }
-    - { item: "Has his height always been behind other children his age?", critical: false }
-    - { item: "Has his weight been stable, increasing, or decreasing?", critical: false }
-    - { item: "Any changes in appetite or feeding difficulties?", critical: false }
-    - { item: "Any recent illnesses like diarrhea, fever, or cough?", critical: true }
+  - item: When did you first notice the poor growth?
+    critical: true
+  - item: Has his height always been behind other children his age?
+    critical: false
+  - item: Has his weight been stable, increasing, or decreasing?
+    critical: false
+  - item: Any changes in appetite or feeding difficulties?
+    critical: false
+  - item: Any recent illnesses like diarrhea, fever, or cough?
+    critical: true
   associated_symptoms:
-    - { item: "Does he have any chronic diarrhea or constipation?", critical: false }
-    - { item: "Does he vomit frequently?", critical: false }
-    - { item: "Has he had any delays in walking, talking, or other milestones?", critical: true }
-    - { item: "Does he seem tired or less active than other children?", critical: false }
+  - item: Does he have any chronic diarrhea or constipation?
+    critical: false
+  - item: Does he vomit frequently?
+    critical: false
+  - item: Has he had any delays in walking, talking, or other milestones?
+    critical: true
+  - item: Does he seem tired or less active than other children?
+    critical: false
   pmh:
-    - { item: "Pregnancy history: any illnesses, medications, or complications during pregnancy?", critical: true }
-    - { item: "Birth history: full-term or premature? Birth weight? Delivery mode?", critical: true }
-    - { item: "Neonatal history: any problems after birth (e.g., jaundice, infections)?", critical: false }
-    - { item: "Feeding history: exclusive breastfeeding for first 6 months? When were complementary foods started?", critical: true }
-    - { item: "Immunization status: are all vaccines up to date?", critical: false }
-    - { item: "Past medical history: any hospitalizations, chronic illnesses, or recurrent infections?", critical: true }
+  - item: 'Pregnancy history: any illnesses, medications, or complications during
+      pregnancy?'
+    critical: true
+  - item: 'Birth history: full-term or premature? Birth weight? Delivery mode?'
+    critical: true
+  - item: 'Neonatal history: any problems after birth (e.g., jaundice, infections)?'
+    critical: false
+  - item: 'Feeding history: exclusive breastfeeding for first 6 months? When were
+      complementary foods started?'
+    critical: true
+  - item: 'Immunization status: are all vaccines up to date?'
+    critical: false
+  - item: 'Past medical history: any hospitalizations, chronic illnesses, or recurrent
+      infections?'
+    critical: true
   medications:
-    - { item: "Is he taking any vitamins, supplements, or medicines?", critical: false }
-    - { item: "Has he ever received vitamin A or deworming?", critical: false }
+  - item: Is he taking any vitamins, supplements, or medicines?
+    critical: false
+  - item: Has he ever received vitamin A or deworming?
+    critical: false
   family_social:
-    - { item: "How many people live in the household? What is the family income?", critical: false }
-    - { item: "Is there a history of short stature in the family (parents, siblings)?", critical: true }
-    - { item: "What is the mother's height and father's height?", critical: false }
-    - { item: "Do you have access to clean water and a toilet at home?", critical: true }
-    - { item: "How many meals does your child eat per day? What kinds of food?", critical: true }
+  - item: How many people live in the household? What is the family income?
+    critical: false
+  - item: Is there a history of short stature in the family (parents, siblings)?
+    critical: true
+  - item: What is the mother's height and father's height?
+    critical: false
+  - item: Do you have access to clean water and a toilet at home?
+    critical: true
+  - item: How many meals does your child eat per day? What kinds of food?
+    critical: true
   ice_fife:
-    - { item: "Ideas - what do you think is causing his small size?", critical: true }
-    - { item: "Concerns - what worries you most about his growth?", critical: true }
-    - { item: "Expectations - what are you hoping the doctor can do?", critical: false }
+  - item: Ideas - what do you think is causing his small size?
+    critical: true
+  - item: Concerns - what worries you most about his growth?
+    critical: true
+  - item: Expectations - what are you hoping the doctor can do?
+    critical: false
 red_flags:
-  - { item: "Severe wasting (visible ribs, very thin arms/legs)", critical: true }
-  - { item: "Edema (swelling of feet or face)", critical: true }
-  - { item: "Signs of neglect or abuse", critical: true }
-  - { item: "Recurrent severe infections (pneumonia, diarrhea) requiring hospitalization", critical: false }
+- item: Severe wasting (visible ribs, very thin arms/legs)
+  critical: true
+- item: Edema (swelling of feet or face)
+  critical: true
+- item: Signs of neglect or abuse
+  critical: true
+- item: Recurrent severe infections (pneumonia, diarrhea) requiring hospitalization
+  critical: false
 expected_ddx:
-  working_diagnosis: "Stunting (chronic malnutrition)"
+  working_diagnosis: Stunting (chronic malnutrition)
   differentials:
-    - "Growth hormone deficiency"
-    - "Hypothyroidism"
-    - "Celiac disease"
-    - "Chronic infection (e.g., tuberculosis, HIV)"
+  - Growth hormone deficiency
+  - Hypothyroidism
+  - Celiac disease
+  - Chronic infection (e.g., tuberculosis, HIV)
 investigations:
   appropriate:
-    - { name: "Anthropometry (height, weight, head circumference plotted on WHO growth chart)", expected: "Height-for-age < -2 SD, weight-for-age may be low, weight-for-height may be normal or low" }
-    - { name: "Complete blood count", expected: "May show anemia (low hemoglobin)" }
-    - { name: "Stool examination for ova and parasites", expected: "May show intestinal parasites" }
-    - { name: "Tuberculin skin test or IGRA", expected: "Negative unless TB is present" }
+  - name: Anthropometry (height, weight, head circumference plotted on WHO growth
+      chart)
+    expected: Height-for-age < -2 SD, weight-for-age may be low, weight-for-height
+      may be normal or low
+  - name: Complete blood count
+    expected: May show anemia (low hemoglobin)
+  - name: Stool examination for ova and parasites
+    expected: May show intestinal parasites
+  - name: Tuberculin skin test or IGRA
+    expected: Negative unless TB is present
   inappropriate:
-    - "Growth hormone stimulation test (not first-line in chronic malnutrition)"
-    - "Thyroid function tests (only if other signs of hypothyroidism)"
+  - Growth hormone stimulation test (not first-line in chronic malnutrition)
+  - Thyroid function tests (only if other signs of hypothyroidism)
 physical_exam_findings:
-  general: "Child appears small for stated age, thin, with mild abdominal distension. Hair is sparse and brittle. No edema. Alert but quiet."
+  general: Child appears small for stated age, thin, with mild abdominal distension.
+    Hair is sparse and brittle. No edema. Alert but quiet.
   vitals:
     temperature: 36.5
     blood_pressure: 90/60
@@ -87,19 +128,29 @@ physical_exam_findings:
     oxygen_saturation: 98
 management:
   pharmacological:
-    - "Deworming (albendazole) if parasitic infection suspected"
-    - "Iron supplementation if anemic"
-    - "Vitamin A supplementation (high-dose) if deficient"
+  - Deworming (albendazole) if parasitic infection suspected
+  - Iron supplementation if anemic
+  - Vitamin A supplementation (high-dose) if deficient
   non_pharmacological:
-    - "Nutritional counseling: increase caloric intake, diversify diet with animal-source foods, fruits, vegetables"
-    - "Exclusive breastfeeding until 6 months, continued breastfeeding until 2 years with appropriate complementary feeding"
-    - "Growth monitoring monthly until catch-up"
-    - "Improve water, sanitation, and hygiene (WASH) practices"
+  - 'Nutritional counseling: increase caloric intake, diversify diet with animal-source
+    foods, fruits, vegetables'
+  - Exclusive breastfeeding until 6 months, continued breastfeeding until 2 years
+    with appropriate complementary feeding
+  - Growth monitoring monthly until catch-up
+  - Improve water, sanitation, and hygiene (WASH) practices
   education_safety_netting:
-    - "Explain that stunting is reversible if caught early; emphasize importance of nutrition and follow-up"
-    - "Return if child develops severe wasting, edema, or persistent fever/diarrhea"
-    - "Ensure all immunizations are up to date"
+  - Explain that stunting is reversible if caught early; emphasize importance of nutrition
+    and follow-up
+  - Return if child develops severe wasting, edema, or persistent fever/diarrhea
+  - Ensure all immunizations are up to date
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

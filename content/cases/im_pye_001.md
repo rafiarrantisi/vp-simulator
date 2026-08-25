@@ -1,83 +1,138 @@
 ---
 id: im_pye_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: urinary
-presentation: "Cramping flank pain and dysuria"
-presentation_id: "Nyeri kram di pinggang kiri dan nyeri saat buang air kecil"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Acute pyelonephritis"
+presentation: Cramping flank pain and dysuria
+presentation_id: Nyeri kram di pinggang kiri dan nyeri saat buang air kecil
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Acute pyelonephritis
 difficulty: 2
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
-source_refs: ["NICE guideline NG184: Urinary tract infection (lower) – antimicrobial prescribing", "IDSA Guidelines for Acute Pyelonephritis"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have a sharp, cramping pain in my left side and it burns when I pee."
+languages:
+- en
+source_refs:
+- 'NICE guideline NG184: Urinary tract infection (lower) – antimicrobial prescribing'
+- IDSA Guidelines for Acute Pyelonephritis
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have a sharp, cramping pain in my left side and it burns when I
+  pee.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain (left flank)", critical: true }
-    - { item: "Onset (sudden, 2 days ago)", critical: false }
-    - { item: "Character (cramping, sharp)", critical: true }
-    - { item: "Radiation (none, stays in flank)", critical: false }
-    - { item: "Associated symptoms (fever, chills, nausea)", critical: true }
-    - { item: "Timing (constant, worse with movement)", critical: false }
-    - { item: "Exacerbating factors (none specific)", critical: false }
-    - { item: "Severity (7/10)", critical: false }
+  - item: Site of pain (left flank)
+    critical: true
+  - item: Onset (sudden, 2 days ago)
+    critical: false
+  - item: Character (cramping, sharp)
+    critical: true
+  - item: Radiation (none, stays in flank)
+    critical: false
+  - item: Associated symptoms (fever, chills, nausea)
+    critical: true
+  - item: Timing (constant, worse with movement)
+    critical: false
+  - item: Exacerbating factors (none specific)
+    critical: false
+  - item: Severity (7/10)
+    critical: false
   associated_symptoms:
-    - { item: "Dysuria (burning when urinating)", critical: true }
-    - { item: "Urinary frequency (going more often)", critical: false }
-    - { item: "Urinary urgency (feeling need to go suddenly)", critical: false }
-    - { item: "Fever and chills", critical: true }
-    - { item: "Nausea, no vomiting", critical: false }
-    - { item: "Cloudy or foul-smelling urine", critical: false }
+  - item: Dysuria (burning when urinating)
+    critical: true
+  - item: Urinary frequency (going more often)
+    critical: false
+  - item: Urinary urgency (feeling need to go suddenly)
+    critical: false
+  - item: Fever and chills
+    critical: true
+  - item: Nausea, no vomiting
+    critical: false
+  - item: Cloudy or foul-smelling urine
+    critical: false
   pmh:
-    - { item: "History of urinary tract infections (2 in past year)", critical: true }
-    - { item: "No diabetes, no kidney stones", critical: false }
-    - { item: "No recent hospitalizations or surgeries", critical: false }
+  - item: History of urinary tract infections (2 in past year)
+    critical: true
+  - item: No diabetes, no kidney stones
+    critical: false
+  - item: No recent hospitalizations or surgeries
+    critical: false
   medications:
-    - { item: "No current medications", critical: false }
-    - { item: "No allergies to medications", critical: false }
+  - item: No current medications
+    critical: false
+  - item: No allergies to medications
+    critical: false
   family_social:
-    - { item: "No family history of kidney disease", critical: false }
-    - { item: "Sexually active, uses condoms sometimes", critical: true }
-    - { item: "Does not smoke, drinks alcohol occasionally", critical: false }
+  - item: No family history of kidney disease
+    critical: false
+  - item: Sexually active, uses condoms sometimes
+    critical: true
+  - item: Does not smoke, drinks alcohol occasionally
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong: 'I think it's just another bladder infection, but it feels worse this time.'", critical: true }
-    - { item: "Concerns - what worries them: 'I'm worried the infection might spread to my kidneys or that I'll get really sick.'", critical: true }
-    - { item: "Expectations - what they hope for: 'I hope you can give me some strong antibiotics to clear it up quickly.'", critical: false }
+  - item: 'Ideas - what they think is wrong: ''I think it''s just another bladder
+      infection, but it feels worse this time.'''
+    critical: true
+  - item: 'Concerns - what worries them: ''I''m worried the infection might spread
+      to my kidneys or that I''ll get really sick.'''
+    critical: true
+  - item: 'Expectations - what they hope for: ''I hope you can give me some strong
+      antibiotics to clear it up quickly.'''
+    critical: false
 red_flags:
-  - { item: "High fever (>38.5°C) with chills and rigors", critical: true }
-  - { item: "Flank pain with signs of systemic infection", critical: true }
+- item: High fever (>38.5°C) with chills and rigors
+  critical: true
+- item: Flank pain with signs of systemic infection
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acute pyelonephritis"
-  differentials: ["Lower urinary tract infection (cystitis)", "Renal colic due to kidney stone"]
+  working_diagnosis: Acute pyelonephritis
+  differentials:
+  - Lower urinary tract infection (cystitis)
+  - Renal colic due to kidney stone
 investigations:
   appropriate:
-    - { name: "Urinalysis (dipstick)", expected: "Positive for leukocyte esterase and nitrites" }
-    - { name: "Urine culture and sensitivity", expected: "Growth of Escherichia coli >10^5 CFU/mL" }
-    - { name: "Blood cultures", expected: "May show growth of same organism" }
-    - { name: "Complete blood count", expected: "Elevated white blood cell count with left shift" }
-    - { name: "Serum creatinine", expected: "Normal or mildly elevated" }
-  inappropriate: ["CT scan of abdomen without contrast"]
+  - name: Urinalysis (dipstick)
+    expected: Positive for leukocyte esterase and nitrites
+  - name: Urine culture and sensitivity
+    expected: Growth of Escherichia coli >10^5 CFU/mL
+  - name: Blood cultures
+    expected: May show growth of same organism
+  - name: Complete blood count
+    expected: Elevated white blood cell count with left shift
+  - name: Serum creatinine
+    expected: Normal or mildly elevated
+  inappropriate:
+  - CT scan of abdomen without contrast
 physical_exam_findings:
-  general: "Patient appears uncomfortable, flushed, and febrile. Mild distress."
-  vitals: { temperature: 39.1°C, heart_rate: 102 bpm, blood_pressure: 110/70 mmHg, respiratory_rate: 18/min, oxygen_saturation: 98% on room air }
+  general: Patient appears uncomfortable, flushed, and febrile. Mild distress.
+  vitals:
+    temperature: 39.1°C
+    heart_rate: 102 bpm
+    blood_pressure: 110/70 mmHg
+    respiratory_rate: 18/min
+    oxygen_saturation: 98% on room air
 management:
   pharmacological:
-    - "Empiric intravenous antibiotics (e.g., ceftriaxone 1g daily) until culture results guide therapy"
-    - "Oral antibiotics (e.g., ciprofloxacin or trimethoprim-sulfamethoxazole) for step-down therapy"
-    - "Antipyretics (e.g., acetaminophen) for fever and pain"
-    - "Analgesics (e.g., ibuprofen) for flank pain"
+  - Empiric intravenous antibiotics (e.g., ceftriaxone 1g daily) until culture results
+    guide therapy
+  - Oral antibiotics (e.g., ciprofloxacin or trimethoprim-sulfamethoxazole) for step-down
+    therapy
+  - Antipyretics (e.g., acetaminophen) for fever and pain
+  - Analgesics (e.g., ibuprofen) for flank pain
   non_pharmacological:
-    - "Hospital admission for intravenous fluids and monitoring"
-    - "Encourage increased oral fluid intake"
+  - Hospital admission for intravenous fluids and monitoring
+  - Encourage increased oral fluid intake
   education_safety_netting:
-    - "Explain signs of worsening infection (worsening pain, high fever, confusion) and when to return"
-    - "Advise to complete full course of antibiotics even if feeling better"
-    - "Discuss prevention: urinate after intercourse, wipe front to back, stay hydrated"
+  - Explain signs of worsening infection (worsening pain, high fever, confusion) and
+    when to return
+  - Advise to complete full course of antibiotics even if feeling better
+  - 'Discuss prevention: urinate after intercourse, wipe front to back, stay hydrated'
 scoring_weights_override: null
 ---
 

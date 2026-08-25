@@ -1,98 +1,156 @@
 ---
 id: neuro_gb_syndrome_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: neurology
 system: nervous system
-presentation: "Progressive weakness after a stomach bug"
-presentation_id: "Kelemahan progresif pada kaki dan tangan setelah diare berat"
-first_impression: "Patient appears to have neurological concerns."
-first_impression_id: "Pasien tampak mengalami masalah neurologis."
-target_condition: "Guillain-Barre syndrome"
+presentation: Progressive weakness after a stomach bug
+presentation_id: Kelemahan progresif pada kaki dan tangan setelah diare berat
+first_impression: Patient appears to have neurological concerns.
+first_impression_id: Pasien tampak mengalami masalah neurologis.
+target_condition: Guillain-Barre syndrome
 difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "National Institute for Health and Care Excellence (NICE) guideline NG152, Guillain-Barre syndrome, 2024"
-  - "Lancet Seminar — Guillain-Barré syndrome (2016)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I've been getting weaker in my legs and arms since last week after a bad stomach bug."
-
+- National Institute for Health and Care Excellence (NICE) guideline NG152, Guillain-Barre
+  syndrome, 2024
+- Lancet Seminar — Guillain-Barré syndrome (2016)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I've been getting weaker in my legs and arms since last week after
+  a bad stomach bug.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset: When did the weakness start?", critical: true }
-    - { item: "Location: Which body parts are affected first?", critical: true }
-    - { item: "Duration: How long has the weakness been progressing?", critical: false }
-    - { item: "Character: Describe the weakness – steady, comes and goes, or worse over time?", critical: true }
-    - { item: "Aggravating factors: Does anything make the weakness worse (e.g., activity, time of day)?", critical: false }
-    - { item: "Alleviating factors: Does rest help? Any position that makes it better?", critical: false }
-    - { item: "Radiation: Does the weakness spread from one area to another?", critical: true }
-    - { item: "Timing: Is it constant or only at certain times?", critical: false }
-    - { item: "Severity: How bad is the weakness on a 0‑10 scale (0=normal, 10=paralysed)?", critical: false }
+  - item: 'Onset: When did the weakness start?'
+    critical: true
+  - item: 'Location: Which body parts are affected first?'
+    critical: true
+  - item: 'Duration: How long has the weakness been progressing?'
+    critical: false
+  - item: 'Character: Describe the weakness – steady, comes and goes, or worse over
+      time?'
+    critical: true
+  - item: 'Aggravating factors: Does anything make the weakness worse (e.g., activity,
+      time of day)?'
+    critical: false
+  - item: 'Alleviating factors: Does rest help? Any position that makes it better?'
+    critical: false
+  - item: 'Radiation: Does the weakness spread from one area to another?'
+    critical: true
+  - item: 'Timing: Is it constant or only at certain times?'
+    critical: false
+  - item: 'Severity: How bad is the weakness on a 0‑10 scale (0=normal, 10=paralysed)?'
+    critical: false
   associated_symptoms:
-    - { item: "Numbness or tingling (pins and needles)", critical: true }
-    - { item: "Back pain or muscle aches", critical: false }
-    - { item: "Facial drooping or trouble smiling", critical: true }
-    - { item: "Difficulty swallowing or speaking", critical: true }
-    - { item: "Shortness of breath or trouble breathing", critical: true }
-    - { item: "Dizziness, palpitations, or fainting", critical: true }
-    - { item: "Bladder or bowel changes", critical: false }
+  - item: Numbness or tingling (pins and needles)
+    critical: true
+  - item: Back pain or muscle aches
+    critical: false
+  - item: Facial drooping or trouble smiling
+    critical: true
+  - item: Difficulty swallowing or speaking
+    critical: true
+  - item: Shortness of breath or trouble breathing
+    critical: true
+  - item: Dizziness, palpitations, or fainting
+    critical: true
+  - item: Bladder or bowel changes
+    critical: false
   pmh:
-    - { item: "Recent infections (diarrhea, cold, flu)", critical: true }
-    - { item: "Autoimmune conditions", critical: false }
-    - { item: "Previous episodes of weakness or numbness", critical: false }
+  - item: Recent infections (diarrhea, cold, flu)
+    critical: true
+  - item: Autoimmune conditions
+    critical: false
+  - item: Previous episodes of weakness or numbness
+    critical: false
   medications:
-    - { item: "Current medications (including over‑the‑counter and supplements)", critical: false }
+  - item: Current medications (including over‑the‑counter and supplements)
+    critical: false
   family_social:
-    - { item: "Occupation and work demands (physical job?)", critical: false }
-    - { item: "Family history of nerve or autoimmune diseases", critical: false }
-    - { item: "Recent travel or vaccinations", critical: false }
+  - item: Occupation and work demands (physical job?)
+    critical: false
+  - item: Family history of nerve or autoimmune diseases
+    critical: false
+  - item: Recent travel or vaccinations
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
-
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Rapidly progressing weakness (over days) affecting arms or legs", critical: true }
-  - { item: "Shortness of breath or difficulty breathing", critical: true }
-  - { item: "Difficulty swallowing, choking, or slurred speech", critical: true }
-  - { item: "Any loss of bladder or bowel control", critical: false }
-
+- item: Rapidly progressing weakness (over days) affecting arms or legs
+  critical: true
+- item: Shortness of breath or difficulty breathing
+  critical: true
+- item: Difficulty swallowing, choking, or slurred speech
+  critical: true
+- item: Any loss of bladder or bowel control
+  critical: false
 expected_ddx:
-  working_diagnosis: "Guillain-Barre syndrome"
-  differentials: [ "Transverse myelitis", "Spinal cord compression", "Tick paralysis", "Botulism", "Myasthenia gravis" ]
-
+  working_diagnosis: Guillain-Barre syndrome
+  differentials:
+  - Transverse myelitis
+  - Spinal cord compression
+  - Tick paralysis
+  - Botulism
+  - Myasthenia gravis
 investigations:
-  appropriate: 
-    - { name: "Lumbar puncture (CSF analysis)", expected: "Elevated protein with normal white cell count (cytoalbuminologic dissociation)" }
-    - { name: "Nerve conduction studies and electromyography (NCS/EMG)", expected: "Demyelinating polyneuropathy pattern (prolonged distal latencies, conduction block, slowed conduction velocity)" }
-    - { name: "Magnetic resonance imaging (MRI) of the spine", expected: "Excludes compressive lesions; may show nerve root enhancement" }
-  inappropriate: [ "CT head without contrast" ]
-
+  appropriate:
+  - name: Lumbar puncture (CSF analysis)
+    expected: Elevated protein with normal white cell count (cytoalbuminologic dissociation)
+  - name: Nerve conduction studies and electromyography (NCS/EMG)
+    expected: Demyelinating polyneuropathy pattern (prolonged distal latencies, conduction
+      block, slowed conduction velocity)
+  - name: Magnetic resonance imaging (MRI) of the spine
+    expected: Excludes compressive lesions; may show nerve root enhancement
+  inappropriate:
+  - CT head without contrast
 physical_exam_findings:
-  general: "Alert, oriented, anxious appearance. Sitting upright with legs dangling, unable to walk without support. No rash or fever."
-  vitals: { blood_pressure: "135/85 mmHg", heart_rate: "102 bpm", respiratory_rate: "18/min", oxygen_saturation: "97%", temperature: "37.0°C" }
-  neurological: "Normal cranial nerves except mild bilateral facial weakness. Symmetric proximal and distal weakness in legs (3/5 hip flexion, 4/5 ankle dorsiflexion). Arms weaker distally (4/5 grip). Deep tendon reflexes absent at ankles, diminished at knees. Plantar responses flexor. Decreased pinprick over feet and shins. Vibratory sensation mildly reduced at toes. Gait not tested (unable to stand). Romberg sign not tested."
-
+  general: Alert, oriented, anxious appearance. Sitting upright with legs dangling,
+    unable to walk without support. No rash or fever.
+  vitals:
+    blood_pressure: 135/85 mmHg
+    heart_rate: 102 bpm
+    respiratory_rate: 18/min
+    oxygen_saturation: 97%
+    temperature: 37.0°C
+  neurological: Normal cranial nerves except mild bilateral facial weakness. Symmetric
+    proximal and distal weakness in legs (3/5 hip flexion, 4/5 ankle dorsiflexion).
+    Arms weaker distally (4/5 grip). Deep tendon reflexes absent at ankles, diminished
+    at knees. Plantar responses flexor. Decreased pinprick over feet and shins. Vibratory
+    sensation mildly reduced at toes. Gait not tested (unable to stand). Romberg sign
+    not tested.
 management:
   pharmacological:
-    - "Intravenous immunoglobulin (IVIG) 0.4 g/kg/day for 5 days"
-    - "DVT prophylaxis with low molecular weight heparin"
-    - "Pain management (neuropathic pain agents such as gabapentin if needed)"
+  - Intravenous immunoglobulin (IVIG) 0.4 g/kg/day for 5 days
+  - DVT prophylaxis with low molecular weight heparin
+  - Pain management (neuropathic pain agents such as gabapentin if needed)
   non_pharmacological:
-    - "Admit to neurology ward for monitoring"
-    - "Monitor respiratory function with spirometry (forced vital capacity) every 4–6 hours"
-    - "Physical therapy and occupational therapy"
-    - "Nutritional support (if swallowing difficulty present)"
+  - Admit to neurology ward for monitoring
+  - Monitor respiratory function with spirometry (forced vital capacity) every 4–6
+    hours
+  - Physical therapy and occupational therapy
+  - Nutritional support (if swallowing difficulty present)
   education_safety_netting:
-    - "Explain the diagnosis in simple terms: swelling of the nerves that causes muscle weakness"
-    - "Emphasise that most people improve with immunotherapy, but recovery can take weeks to months"
-    - "Teach signs of respiratory failure: increasing shortness of breath, inability to speak full sentences, severe weakness in arms and legs"
-    - "Advise to call immediately if breathing becomes difficult, if they cannot swallow, or if weakness worsens rapidly"
-    - "Provide contact information for neurology team and emergency services"
-
+  - 'Explain the diagnosis in simple terms: swelling of the nerves that causes muscle
+    weakness'
+  - Emphasise that most people improve with immunotherapy, but recovery can take weeks
+    to months
+  - 'Teach signs of respiratory failure: increasing shortness of breath, inability
+    to speak full sentences, severe weakness in arms and legs'
+  - Advise to call immediately if breathing becomes difficult, if they cannot swallow,
+    or if weakness worsens rapidly
+  - Provide contact information for neurology team and emergency services
 scoring_weights_override: null
 ---
 

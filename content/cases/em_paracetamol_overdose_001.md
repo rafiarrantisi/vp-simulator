@@ -1,84 +1,129 @@
 ---
 id: em_paracetamol_overdose_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: emergency
 system: gastrointestinal
-presentation: "Overdose"
-presentation_id: "Terlalu banyak minum obat pereda sakit kepala dan kini mual"
-first_impression: "A person appears pale, nauseous, holding stomach."
-first_impression_id: "Seseorang tampak pucat, mual, memegangi perut."
-target_condition: "Paracetamol overdose"
+presentation: Overdose
+presentation_id: Terlalu banyak minum obat pereda sakit kepala dan kini mual
+first_impression: A person appears pale, nauseous, holding stomach.
+first_impression_id: Seseorang tampak pucat, mual, memegangi perut.
+target_condition: Paracetamol overdose
 difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "Toxicology Handbook, 3rd ed."
-  - "UK NPIS/TOXBASE — paracetamol overdose management guidance"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I took too many painkillers for my headache and now I feel sick."
+- Toxicology Handbook, 3rd ed.
+- UK NPIS/TOXBASE — paracetamol overdose management guidance
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I took too many painkillers for my headache and now I feel sick.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain - stomach ache", critical: false }
-    - { item: "Onset - started about 4 hours after taking pills", critical: true }
-    - { item: "Character - dull ache", critical: false }
-    - { item: "Radiation - none", critical: false }
-    - { item: "Associated symptoms - nausea, vomiting", critical: true }
-    - { item: "Time course - symptoms started gradually", critical: false }
-    - { item: "Exacerbating factors - none", critical: false }
-    - { item: "Severity - moderate, 5/10", critical: false }
-    - { item: "Amount of paracetamol taken - about 20 tablets of 500mg each", critical: true }
-    - { item: "Time of ingestion - about 8 hours ago", critical: true }
-    - { item: "Any alcohol taken with pills - no", critical: false }
+  - item: Site of pain - stomach ache
+    critical: false
+  - item: Onset - started about 4 hours after taking pills
+    critical: true
+  - item: Character - dull ache
+    critical: false
+  - item: Radiation - none
+    critical: false
+  - item: Associated symptoms - nausea, vomiting
+    critical: true
+  - item: Time course - symptoms started gradually
+    critical: false
+  - item: Exacerbating factors - none
+    critical: false
+  - item: Severity - moderate, 5/10
+    critical: false
+  - item: Amount of paracetamol taken - about 20 tablets of 500mg each
+    critical: true
+  - item: Time of ingestion - about 8 hours ago
+    critical: true
+  - item: Any alcohol taken with pills - no
+    critical: false
   associated_symptoms:
-    - { item: "Nausea", critical: true }
-    - { item: "Vomiting (once)", critical: false }
-    - { item: "Loss of appetite", critical: false }
+  - item: Nausea
+    critical: true
+  - item: Vomiting (once)
+    critical: false
+  - item: Loss of appetite
+    critical: false
   pmh:
-    - { item: "Migraine headaches", critical: false }
-    - { item: "No liver problems", critical: true }
-    - { item: "No previous overdoses", critical: false }
+  - item: Migraine headaches
+    critical: false
+  - item: No liver problems
+    critical: true
+  - item: No previous overdoses
+    critical: false
   medications:
-    - { item: "Paracetamol (acetaminophen) - took extra for headache", critical: true }
-    - { item: "No other regular medications", critical: false }
+  - item: Paracetamol (acetaminophen) - took extra for headache
+    critical: true
+  - item: No other regular medications
+    critical: false
   family_social:
-    - { item: "Lives alone", critical: false }
-    - { item: "Works as a teacher", critical: false }
-    - { item: "Drinks alcohol occasionally - 2 glasses of wine per week", critical: false }
-    - { item: "No smoking or drugs", critical: false }
+  - item: Lives alone
+    critical: false
+  - item: Works as a teacher
+    critical: false
+  - item: Drinks alcohol occasionally - 2 glasses of wine per week
+    critical: false
+  - item: No smoking or drugs
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Large paracetamol ingestion (>10g or >200mg/kg)", critical: true }
-  - { item: "Delayed presentation (>8 hours)", critical: true }
-  - { item: "Vomiting", critical: false }
+- item: Large paracetamol ingestion (>10g or >200mg/kg)
+  critical: true
+- item: Delayed presentation (>8 hours)
+  critical: true
+- item: Vomiting
+  critical: false
 expected_ddx:
-  working_diagnosis: "Paracetamol overdose"
-  differentials: ["Acute viral hepatitis", "Gastroenteritis"]
+  working_diagnosis: Paracetamol overdose
+  differentials:
+  - Acute viral hepatitis
+  - Gastroenteritis
 investigations:
   appropriate:
-    - { name: "Serum paracetamol level", expected: "Elevated, above treatment line on nomogram" }
-    - { name: "Liver function tests (ALT/AST)", expected: "May be normal early, elevated later" }
-    - { name: "INR/PT", expected: "Normal early, prolonged with liver injury" }
-  inappropriate: ["CT abdomen"]
+  - name: Serum paracetamol level
+    expected: Elevated, above treatment line on nomogram
+  - name: Liver function tests (ALT/AST)
+    expected: May be normal early, elevated later
+  - name: INR/PT
+    expected: Normal early, prolonged with liver injury
+  inappropriate:
+  - CT abdomen
 physical_exam_findings:
-  general: "Patient appears anxious but in no acute distress. Mild pallor."
-  vitals: { hr: 88, bp: 120/75, rr: 16, temp: 37.0, o2_sat: 99% }
+  general: Patient appears anxious but in no acute distress. Mild pallor.
+  vitals:
+    hr: 88
+    bp: 120/75
+    rr: 16
+    temp: 37.0
+    o2_sat: 99%
 management:
   pharmacological:
-    - "N-acetylcysteine (NAC) IV infusion"
-    - "Antiemetics if needed (e.g., ondansetron)"
+  - N-acetylcysteine (NAC) IV infusion
+  - Antiemetics if needed (e.g., ondansetron)
   non_pharmacological:
-    - "Activated charcoal if within 1-2 hours of ingestion (not applicable here)"
-    - "IV fluids for hydration"
+  - Activated charcoal if within 1-2 hours of ingestion (not applicable here)
+  - IV fluids for hydration
   education_safety_netting:
-    - "Explain importance of completing NAC course"
-    - "Advise to avoid alcohol for 48 hours"
-    - "Return if vomiting worsens or jaundice develops"
+  - Explain importance of completing NAC course
+  - Advise to avoid alcohol for 48 hours
+  - Return if vomiting worsens or jaundice develops
 scoring_weights_override: null
 ---
 

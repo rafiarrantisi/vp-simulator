@@ -1,68 +1,118 @@
 ---
 id: psych_ocd_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: psychiatry
 system: nervous
-presentation: "Intrusive thoughts and repetitive rituals"
-presentation_id: "Pikiran mengganggu berulang dan ritual yang dilakukan berulang kali"
-first_impression: "Patient appears anxious or sad."
-first_impression_id: "Pasien tampak cemas atau sedih."
-target_condition: "Obsessive-compulsive disorder"
+presentation: Intrusive thoughts and repetitive rituals
+presentation_id: Pikiran mengganggu berulang dan ritual yang dilakukan berulang kali
+first_impression: Patient appears anxious or sad.
+first_impression_id: Pasien tampak cemas atau sedih.
+target_condition: Obsessive-compulsive disorder
 difficulty: 2
 estimated_minutes: 20
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "DSM-5-TR"
-  - "NICE CG31 — Obsessive-compulsive disorder"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I keep having bad thoughts and I have to do things over and over to make them go away."
+- DSM-5-TR
+- NICE CG31 — Obsessive-compulsive disorder
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I keep having bad thoughts and I have to do things over and over
+  to make them go away.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did the thoughts and rituals start?", critical: true }
-    - { item: "Triggers - what brings on the bad thoughts?", critical: true }
-    - { item: "Frequency - how often do the rituals occur each day?", critical: false }
-    - { item: "Duration - how long do the rituals take each time?", critical: false }
-    - { item: "Progression - have the symptoms gotten worse over time?", critical: true }
-    - { item: "Interference - how do these affect daily life or work?", critical: true }
+  - item: Onset - when did the thoughts and rituals start?
+    critical: true
+  - item: Triggers - what brings on the bad thoughts?
+    critical: true
+  - item: Frequency - how often do the rituals occur each day?
+    critical: false
+  - item: Duration - how long do the rituals take each time?
+    critical: false
+  - item: Progression - have the symptoms gotten worse over time?
+    critical: true
+  - item: Interference - how do these affect daily life or work?
+    critical: true
   associated_symptoms:
-    - { item: "Anxiety or panic when not performing rituals", critical: true }
-    - { item: "Avoidance of situations that trigger thoughts", critical: false }
-    - { item: "Depressed mood or low energy", critical: false }
-    - { item: "Sleep disturbance", critical: false }
+  - item: Anxiety or panic when not performing rituals
+    critical: true
+  - item: Avoidance of situations that trigger thoughts
+    critical: false
+  - item: Depressed mood or low energy
+    critical: false
+  - item: Sleep disturbance
+    critical: false
   pmh:
-    - { item: "Past medical history - any chronic illnesses", critical: false }
-    - { item: "Past psychiatric history - any prior treatment for anxiety or depression", critical: true }
-    - { item: "Allergies", critical: false }
+  - item: Past medical history - any chronic illnesses
+    critical: false
+  - item: Past psychiatric history - any prior treatment for anxiety or depression
+    critical: true
+  - item: Allergies
+    critical: false
   medications:
-    - { item: "Current medications - any prescribed or over-the-counter", critical: true }
-    - { item: "Previous treatments - therapy or medications tried before", critical: false }
+  - item: Current medications - any prescribed or over-the-counter
+    critical: true
+  - item: Previous treatments - therapy or medications tried before
+    critical: false
   family_social:
-    - { item: "Family history - any relatives with similar problems or mental health issues", critical: true }
-    - { item: "Living situation - who lives at home", critical: false }
-    - { item: "Occupation - current job or school status", critical: false }
-    - { item: "Substance use - alcohol, tobacco, or drugs", critical: true }
+  - item: Family history - any relatives with similar problems or mental health issues
+    critical: true
+  - item: Living situation - who lives at home
+    critical: false
+  - item: Occupation - current job or school status
+    critical: false
+  - item: Substance use - alcohol, tobacco, or drugs
+    critical: true
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Suicidal ideation or self-harm thoughts", critical: true }
-  - { item: "Inability to perform basic self-care due to rituals", critical: true }
-  - { item: "Psychotic symptoms (hallucinations or delusions)", critical: true }
+- item: Suicidal ideation or self-harm thoughts
+  critical: true
+- item: Inability to perform basic self-care due to rituals
+  critical: true
+- item: Psychotic symptoms (hallucinations or delusions)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Obsessive-compulsive disorder"
-  differentials: [ "Generalized anxiety disorder", "Major depressive disorder" ]
+  working_diagnosis: Obsessive-compulsive disorder
+  differentials:
+  - Generalized anxiety disorder
+  - Major depressive disorder
 investigations:
-  appropriate: [ { name: "Yale-Brown Obsessive Compulsive Scale (Y-BOCS)", expected: "Moderate severity" } ]
-  inappropriate: [ "CT head" ]
-physical_exam_findings: { general: "Appears anxious, fidgety, with mild hand tremor. No acute distress.", vitals: { bp: "128/82", hr: 92, rr: 16, temp: 37.0, o2sat: 99 } }
+  appropriate:
+  - name: Yale-Brown Obsessive Compulsive Scale (Y-BOCS)
+    expected: Moderate severity
+  inappropriate:
+  - CT head
+physical_exam_findings:
+  general: Appears anxious, fidgety, with mild hand tremor. No acute distress.
+  vitals:
+    bp: 128/82
+    hr: 92
+    rr: 16
+    temp: 37.0
+    o2sat: 99
 management:
-  pharmacological: [ "SSRI (e.g., fluoxetine or sertraline) as first-line", "Consider augmentation with low-dose antipsychotic if refractory" ]
-  non_pharmacological: [ "Cognitive-behavioral therapy with exposure and response prevention (ERP)", "Support groups for OCD" ]
-  education_safety_netting: [ "Explain that rituals provide temporary relief but reinforce the cycle", "Advise to avoid reassurance-seeking", "Emergency contact if suicidal thoughts emerge" ]
+  pharmacological:
+  - SSRI (e.g., fluoxetine or sertraline) as first-line
+  - Consider augmentation with low-dose antipsychotic if refractory
+  non_pharmacological:
+  - Cognitive-behavioral therapy with exposure and response prevention (ERP)
+  - Support groups for OCD
+  education_safety_netting:
+  - Explain that rituals provide temporary relief but reinforce the cycle
+  - Advise to avoid reassurance-seeking
+  - Emergency contact if suicidal thoughts emerge
 scoring_weights_override: null
 ---
 

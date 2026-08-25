@@ -4,67 +4,113 @@ schema_version: 2
 status: in_review
 specialty: surgery
 system: gastrointestinal
-presentation: "Groin lump"
-presentation_id: "Benjolan di selangkangan yang muncul dan hilang"
-first_impression: "Patient appears in pain."
-first_impression_id: "Pasien tampak kesakitan."
-target_condition: "Inguinal hernia"
+presentation: Groin lump
+presentation_id: Benjolan di selangkangan yang muncul dan hilang
+first_impression: Patient appears in pain.
+first_impression_id: Pasien tampak kesakitan.
+target_condition: Inguinal hernia
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guidelines on inguinal hernia (2023)"
-  - "UpToDate: Inguinal hernia in adults"
-  - "European Hernia Society — inguinal hernia guideline"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have a lump in my groin that comes and goes."
+- NICE guidelines on inguinal hernia (2023)
+- 'UpToDate: Inguinal hernia in adults'
+- European Hernia Society — inguinal hernia guideline
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have a lump in my groin that comes and goes.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - location of lump", critical: true }
-    - { item: "Onset - when first noticed", critical: false }
-    - { item: "Character - reducible or not", critical: true }
-    - { item: "Radiation - does it move", critical: false }
-    - { item: "Associated symptoms - pain, heaviness", critical: false }
-    - { item: "Timing - intermittent or constant", critical: false }
-    - { item: "Exacerbating factors - straining, coughing, lifting", critical: true }
-    - { item: "Relieving factors - lying down, manual reduction", critical: true }
-    - { item: "Severity - pain intensity (0-10)", critical: false }
+  - item: Site - location of lump
+    critical: true
+  - item: Onset - when first noticed
+    critical: false
+  - item: Character - reducible or not
+    critical: true
+  - item: Radiation - does it move
+    critical: false
+  - item: Associated symptoms - pain, heaviness
+    critical: false
+  - item: Timing - intermittent or constant
+    critical: false
+  - item: Exacerbating factors - straining, coughing, lifting
+    critical: true
+  - item: Relieving factors - lying down, manual reduction
+    critical: true
+  - item: Severity - pain intensity (0-10)
+    critical: false
   associated_symptoms:
-    - { item: "Pain or discomfort in groin", critical: false }
-    - { item: "Heaviness or dragging sensation", critical: false }
-    - { item: "Nausea or vomiting", critical: false }
+  - item: Pain or discomfort in groin
+    critical: false
+  - item: Heaviness or dragging sensation
+    critical: false
+  - item: Nausea or vomiting
+    critical: false
   pmh:
-    - { item: "Previous hernia surgery", critical: false }
-    - { item: "Chronic cough (COPD)", critical: false }
-    - { item: "Constipation", critical: false }
-    - { item: "Benign prostatic hyperplasia", critical: false }
+  - item: Previous hernia surgery
+    critical: false
+  - item: Chronic cough (COPD)
+    critical: false
+  - item: Constipation
+    critical: false
+  - item: Benign prostatic hyperplasia
+    critical: false
   medications:
-    - { item: "Current medications (including laxatives)", critical: false }
+  - item: Current medications (including laxatives)
+    critical: false
   family_social:
-    - { item: "Family history of hernia", critical: false }
-    - { item: "Occupation - heavy lifting", critical: true }
-    - { item: "Smoking", critical: false }
+  - item: Family history of hernia
+    critical: false
+  - item: Occupation - heavy lifting
+    critical: true
+  - item: Smoking
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Sudden severe pain with vomiting and inability to reduce lump (strangulation)", critical: true }
-  - { item: "Fever", critical: false }
+- item: Sudden severe pain with vomiting and inability to reduce lump (strangulation)
+  critical: true
+- item: Fever
+  critical: false
 expected_ddx:
-  working_diagnosis: "Inguinal hernia"
-  differentials: [ "Femoral hernia", "Hydrocele" ]
+  working_diagnosis: Inguinal hernia
+  differentials:
+  - Femoral hernia
+  - Hydrocele
 investigations:
   appropriate: []
   inappropriate: []
-physical_exam_findings: { general: "Patient appears well, no acute distress.", vitals: {} }
+physical_exam_findings:
+  general: Patient appears well, no acute distress.
+  vitals: {}
 management:
   pharmacological: []
-  non_pharmacological: [ "Advise to avoid heavy lifting", "Seek urgent care if lump becomes painful and irreducible" ]
-  education_safety_netting: [ "Explain signs of strangulation: sudden pain, vomiting, inability to reduce lump", "Advise to consider elective repair to prevent complications" ]
+  non_pharmacological:
+  - Advise to avoid heavy lifting
+  - Seek urgent care if lump becomes painful and irreducible
+  education_safety_netting:
+  - 'Explain signs of strangulation: sudden pain, vomiting, inability to reduce lump'
+  - Advise to consider elective repair to prevent complications
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

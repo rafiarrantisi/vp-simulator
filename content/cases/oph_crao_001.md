@@ -1,84 +1,135 @@
 ---
 id: oph_crao_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: visual
-presentation: "Sudden painless loss of vision"
-presentation_id: "Kehilangan penglihatan mendadak tanpa nyeri pada satu mata"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Central retinal artery occlusion"
+presentation: Sudden painless loss of vision
+presentation_id: Kehilangan penglihatan mendadak tanpa nyeri pada satu mata
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Central retinal artery occlusion
 difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Academy of Ophthalmology Preferred Practice Pattern: Retinal and Ophthalmic Artery Occlusions"
-  - "AAO Preferred Practice Pattern — retinal vascular disease; AHA statement on retinal ischaemia"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I suddenly lost vision in my right eye about an hour ago, and it's not getting better."
+- 'American Academy of Ophthalmology Preferred Practice Pattern: Retinal and Ophthalmic
+  Artery Occlusions'
+- AAO Preferred Practice Pattern — retinal vascular disease; AHA statement on retinal
+  ischaemia
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I suddenly lost vision in my right eye about an hour ago, and it's
+  not getting better.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - sudden, within seconds", critical: true }
-    - { item: "Location - right eye only", critical: true }
-    - { item: "Duration - about 1 hour", critical: true }
-    - { item: "Character - painless, like a curtain coming down", critical: true }
-    - { item: "Aggravating factors - none", critical: false }
-    - { item: "Relieving factors - none", critical: false }
-    - { item: "Timing - constant since onset", critical: false }
-    - { item: "Severity - complete loss of vision in that eye", critical: true }
+  - item: Onset - sudden, within seconds
+    critical: true
+  - item: Location - right eye only
+    critical: true
+  - item: Duration - about 1 hour
+    critical: true
+  - item: Character - painless, like a curtain coming down
+    critical: true
+  - item: Aggravating factors - none
+    critical: false
+  - item: Relieving factors - none
+    critical: false
+  - item: Timing - constant since onset
+    critical: false
+  - item: Severity - complete loss of vision in that eye
+    critical: true
   associated_symptoms:
-    - { item: "No eye pain or headache", critical: true }
-    - { item: "No flashing lights or floaters", critical: false }
-    - { item: "No double vision", critical: false }
-    - { item: "No dizziness or weakness", critical: false }
+  - item: No eye pain or headache
+    critical: true
+  - item: No flashing lights or floaters
+    critical: false
+  - item: No double vision
+    critical: false
+  - item: No dizziness or weakness
+    critical: false
   pmh:
-    - { item: "High blood pressure", critical: true }
-    - { item: "Diabetes type 2", critical: true }
-    - { item: "High cholesterol", critical: true }
-    - { item: "History of smoking", critical: false }
+  - item: High blood pressure
+    critical: true
+  - item: Diabetes type 2
+    critical: true
+  - item: High cholesterol
+    critical: true
+  - item: History of smoking
+    critical: false
   medications:
-    - { item: "Lisinopril for blood pressure", critical: false }
-    - { item: "Metformin for diabetes", critical: false }
-    - { item: "Atorvastatin for cholesterol", critical: false }
+  - item: Lisinopril for blood pressure
+    critical: false
+  - item: Metformin for diabetes
+    critical: false
+  - item: Atorvastatin for cholesterol
+    critical: false
   family_social:
-    - { item: "Father had a stroke at age 65", critical: true }
-    - { item: "Smoked 1 pack per day for 20 years, quit 5 years ago", critical: false }
+  - item: Father had a stroke at age 65
+    critical: true
+  - item: Smoked 1 pack per day for 20 years, quit 5 years ago
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Sudden painless vision loss in one eye", critical: true }
-  - { item: "History of hypertension and diabetes", critical: true }
-  - { item: "Family history of stroke", critical: true }
+- item: Sudden painless vision loss in one eye
+  critical: true
+- item: History of hypertension and diabetes
+  critical: true
+- item: Family history of stroke
+  critical: true
 expected_ddx:
-  working_diagnosis: "Central retinal artery occlusion"
-  differentials: ["Amaurosis fugax", "Optic neuritis", "Retinal detachment", "Vitreous hemorrhage"]
+  working_diagnosis: Central retinal artery occlusion
+  differentials:
+  - Amaurosis fugax
+  - Optic neuritis
+  - Retinal detachment
+  - Vitreous hemorrhage
 investigations:
   appropriate:
-    - { name: "Ophthalmoscopy (funduscopy)", expected: "Cherry-red spot at macula, retinal whitening, attenuated arterioles" }
-    - { name: "Carotid Doppler ultrasound", expected: "May show carotid stenosis or plaque" }
-    - { name: "Echocardiogram", expected: "Rule out cardiac source of emboli" }
-    - { name: "ESR and CRP", expected: "Normal, to rule out giant cell arteritis" }
-  inappropriate: ["CT scan of head without contrast (low yield for this presentation)"]
+  - name: Ophthalmoscopy (funduscopy)
+    expected: Cherry-red spot at macula, retinal whitening, attenuated arterioles
+  - name: Carotid Doppler ultrasound
+    expected: May show carotid stenosis or plaque
+  - name: Echocardiogram
+    expected: Rule out cardiac source of emboli
+  - name: ESR and CRP
+    expected: Normal, to rule out giant cell arteritis
+  inappropriate:
+  - CT scan of head without contrast (low yield for this presentation)
 physical_exam_findings:
-  general: "Patient appears anxious but in no distress. Vital signs: BP 160/95, HR 88, RR 16, O2 sat 98%."
-  vitals: { bp: "160/95", hr: 88, rr: 16, temp: 37.0, o2_sat: 98 }
+  general: 'Patient appears anxious but in no distress. Vital signs: BP 160/95, HR
+    88, RR 16, O2 sat 98%.'
+  vitals:
+    bp: 160/95
+    hr: 88
+    rr: 16
+    temp: 37.0
+    o2_sat: 98
 management:
   pharmacological:
-    - "Immediate referral to ophthalmology for possible intra-arterial thrombolysis or ocular massage"
-    - "Acetazolamide to lower intraocular pressure"
-    - "Aspirin 325 mg chewed stat (if no contraindications)"
+  - Immediate referral to ophthalmology for possible intra-arterial thrombolysis or
+    ocular massage
+  - Acetazolamide to lower intraocular pressure
+  - Aspirin 325 mg chewed stat (if no contraindications)
   non_pharmacological:
-    - "Ocular massage to attempt dislodging embolus"
-    - "Anterior chamber paracentesis to lower IOP"
+  - Ocular massage to attempt dislodging embolus
+  - Anterior chamber paracentesis to lower IOP
   education_safety_netting:
-    - "Explain urgency: this is a stroke of the eye, need immediate treatment"
-    - "Advise to go to emergency department now"
-    - "Discuss risk factors: control BP, diabetes, cholesterol, stop smoking"
+  - 'Explain urgency: this is a stroke of the eye, need immediate treatment'
+  - Advise to go to emergency department now
+  - 'Discuss risk factors: control BP, diabetes, cholesterol, stop smoking'
 scoring_weights_override: null
 ---
 

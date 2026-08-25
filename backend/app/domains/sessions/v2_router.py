@@ -42,8 +42,13 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 
 @router.get("/cases")
-def v2_list_cases(specialty: str | None = None, user: User = Depends(get_current_user)):
-    cases = list_v2_cases(specialty=specialty)
+def v2_list_cases(specialty: str | None = None, status: str | None = None,
+                  scope: str | None = None, user: User = Depends(get_current_user)):
+    cases = list_v2_cases(specialty=specialty, status=status)
+    if scope == "pilot":  # kurasi pre-pilot: hanya kasus yang ditandai pilot_candidate
+        cases = [c for c in cases if c.pilot_candidate]
+    elif scope == "released":
+        cases = [c for c in cases if c.is_released()]
     return ok({"cases": [summary(c) for c in cases], "total": len(cases),
                "specialties": specialties_present()})
 

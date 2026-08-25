@@ -1,77 +1,114 @@
 ---
 id: paed_measles_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: paediatrics
 system: infectious_disease
-presentation: "Fever and rash in a child"
-presentation_id: "Demam dan ruam pada anak yang dimulai dari wajah"
-first_impression: "A child appears unwell."
-first_impression_id: "Seorang anak tampak tidak sehat."
-target_condition: "Morbilli (measles)"
+presentation: Fever and rash in a child
+presentation_id: Demam dan ruam pada anak yang dimulai dari wajah
+first_impression: A child appears unwell.
+first_impression_id: Seorang anak tampak tidak sehat.
+target_condition: Morbilli (measles)
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: ["WHO measles guidelines", "CDC measles"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My son has a fever and a rash that started on his face."
+languages:
+- en
+source_refs:
+- WHO measles guidelines
+- CDC measles
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My son has a fever and a rash that started on his face.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset of fever (4 days ago)", critical: true }
-    - { item: "Fever pattern (high, not well controlled by paracetamol)", critical: false }
-    - { item: "Rash location (started on face, spreading to trunk)", critical: false }
-    - { item: "Rash timing (appeared 1 day ago)", critical: false }
-    - { item: "Associated cough, runny nose, red eyes", critical: false }
+  - item: Onset of fever (4 days ago)
+    critical: true
+  - item: Fever pattern (high, not well controlled by paracetamol)
+    critical: false
+  - item: Rash location (started on face, spreading to trunk)
+    critical: false
+  - item: Rash timing (appeared 1 day ago)
+    critical: false
+  - item: Associated cough, runny nose, red eyes
+    critical: false
   associated_symptoms:
-    - { item: "Cough", critical: false }
-    - { item: "Runny nose", critical: false }
-    - { item: "Conjunctivitis (red, watery eyes)", critical: true }
-    - { item: "Decreased appetite and activity", critical: false }
+  - item: Cough
+    critical: false
+  - item: Runny nose
+    critical: false
+  - item: Conjunctivitis (red, watery eyes)
+    critical: true
+  - item: Decreased appetite and activity
+    critical: false
   pmh:
-    - { item: "No prior significant illnesses", critical: false }
-    - { item: "Unvaccinated (no MMR)", critical: true }
+  - item: No prior significant illnesses
+    critical: false
+  - item: Unvaccinated (no MMR)
+    critical: true
   medications:
-    - { item: "No regular medications", critical: false }
-    - { item: "Paracetamol given for fever, with limited effect", critical: false }
+  - item: No regular medications
+    critical: false
+  - item: Paracetamol given for fever, with limited effect
+    critical: false
   family_social:
-    - { item: "No known sick contacts in last 3 weeks", critical: false }
-    - { item: "1 younger sister had fever last week but no rash", critical: false }
-    - { item: "Lives in suburban home, no recent travel", critical: false }
+  - item: No known sick contacts in last 3 weeks
+    critical: false
+  - item: 1 younger sister had fever last week but no rash
+    critical: false
+  - item: Lives in suburban home, no recent travel
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Difficulty breathing (episode last night, resolved)", critical: true }
-  - { item: "Lethargy (less responsive than usual)", critical: false }
-  - { item: "Poor feeding (not drinking enough)", critical: false }
+- item: Difficulty breathing (episode last night, resolved)
+  critical: true
+- item: Lethargy (less responsive than usual)
+  critical: false
+- item: Poor feeding (not drinking enough)
+  critical: false
 expected_ddx:
-  working_diagnosis: "Morbilli (measles)"
+  working_diagnosis: Morbilli (measles)
   differentials:
-    - "Scarlet fever"
-    - "Roseola infantum"
-    - "Rubella"
+  - Scarlet fever
+  - Roseola infantum
+  - Rubella
 investigations:
   appropriate:
-    - { name: "Measles IgM serology", expected: "Positive" }
-    - { name: "Throat swab for measles PCR", expected: "Positive" }
+  - name: Measles IgM serology
+    expected: Positive
+  - name: Throat swab for measles PCR
+    expected: Positive
   inappropriate:
-    - "Complete blood count"
+  - Complete blood count
 physical_exam_findings:
-  general: "Ill-appearing, febrile child with conjunctivitis. Koplik spots on buccal mucosa. Erythematous maculopapular rash starting on face, spreading to trunk."
-  vitals: { temperature: "40.0°C", heart_rate: "140 bpm", respiratory_rate: "30 breaths/min", oxygen_saturation: "97% on room air" }
+  general: Ill-appearing, febrile child with conjunctivitis. Koplik spots on buccal
+    mucosa. Erythematous maculopapular rash starting on face, spreading to trunk.
+  vitals:
+    temperature: 40.0°C
+    heart_rate: 140 bpm
+    respiratory_rate: 30 breaths/min
+    oxygen_saturation: 97% on room air
 management:
   pharmacological:
-    - "Vitamin A supplementation (age-appropriate dose)"
-    - "Antipyretics (paracetamol or ibuprofen) as needed"
+  - Vitamin A supplementation (age-appropriate dose)
+  - Antipyretics (paracetamol or ibuprofen) as needed
   non_pharmacological:
-    - "Isolation at home until 4 days after rash onset"
-    - "Supportive care: rest, fluids, humidified air for cough"
+  - Isolation at home until 4 days after rash onset
+  - 'Supportive care: rest, fluids, humidified air for cough'
   education_safety_netting:
-    - "Return to clinic if breathing worsens, lethargy, or poor oral intake"
-    - "Avoid contact with pregnant women, infants, and immunocompromised individuals"
-    - "Complete routine MMR vaccination after recovery"
+  - Return to clinic if breathing worsens, lethargy, or poor oral intake
+  - Avoid contact with pregnant women, infants, and immunocompromised individuals
+  - Complete routine MMR vaccination after recovery
 scoring_weights_override: null
 ---
 

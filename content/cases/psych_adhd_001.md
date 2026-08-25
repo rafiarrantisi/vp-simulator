@@ -1,68 +1,118 @@
 ---
 id: psych_adhd_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: psychiatry
 system: nervous
-presentation: "Difficulty concentrating and fidgety"
-presentation_id: "Sulit berkonsentrasi dan selalu gelisah saat bekerja"
-first_impression: "Patient appears anxious or sad."
-first_impression_id: "Pasien tampak cemas atau sedih."
-target_condition: "Adult attention deficit hyperactivity disorder"
+presentation: Difficulty concentrating and fidgety
+presentation_id: Sulit berkonsentrasi dan selalu gelisah saat bekerja
+first_impression: Patient appears anxious or sad.
+first_impression_id: Pasien tampak cemas atau sedih.
+target_condition: Adult attention deficit hyperactivity disorder
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
-source_refs: ["NICE guideline NG87: Attention deficit hyperactivity disorder: diagnosis and management"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I can't seem to focus at work and I'm always restless."
+languages:
+- en
+source_refs:
+- 'NICE guideline NG87: Attention deficit hyperactivity disorder: diagnosis and management'
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I can't seem to focus at work and I'm always restless.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - where do you feel the restlessness?", critical: false }
-    - { item: "Onset - when did these problems start?", critical: true }
-    - { item: "Character - describe the difficulty concentrating", critical: true }
-    - { item: "Radiation - does the restlessness spread?", critical: false }
-    - { item: "Associations - any triggers like stress or caffeine?", critical: false }
-    - { item: "Time course - is it constant or does it come and go?", critical: true }
-    - { item: "Exacerbating factors - what makes it worse?", critical: false }
-    - { item: "Severity - how much does it affect your daily life?", critical: true }
+  - item: Site - where do you feel the restlessness?
+    critical: false
+  - item: Onset - when did these problems start?
+    critical: true
+  - item: Character - describe the difficulty concentrating
+    critical: true
+  - item: Radiation - does the restlessness spread?
+    critical: false
+  - item: Associations - any triggers like stress or caffeine?
+    critical: false
+  - item: Time course - is it constant or does it come and go?
+    critical: true
+  - item: Exacerbating factors - what makes it worse?
+    critical: false
+  - item: Severity - how much does it affect your daily life?
+    critical: true
   associated_symptoms:
-    - { item: "Do you feel easily distracted by noises or thoughts?", critical: true }
-    - { item: "Do you have trouble finishing tasks or following through?", critical: true }
-    - { item: "Do you feel impulsive, like interrupting others or making hasty decisions?", critical: false }
-    - { item: "Do you have trouble sitting still or feel an inner restlessness?", critical: true }
-    - { item: "Do you have any mood swings or irritability?", critical: false }
-    - { item: "Do you have trouble sleeping or feel tired during the day?", critical: false }
+  - item: Do you feel easily distracted by noises or thoughts?
+    critical: true
+  - item: Do you have trouble finishing tasks or following through?
+    critical: true
+  - item: Do you feel impulsive, like interrupting others or making hasty decisions?
+    critical: false
+  - item: Do you have trouble sitting still or feel an inner restlessness?
+    critical: true
+  - item: Do you have any mood swings or irritability?
+    critical: false
+  - item: Do you have trouble sleeping or feel tired during the day?
+    critical: false
   pmh:
-    - { item: "Have you ever been diagnosed with anxiety, depression, or any other mental health condition?", critical: true }
-    - { item: "Do you have any chronic medical conditions like high blood pressure or thyroid problems?", critical: false }
-    - { item: "Have you ever had a head injury or concussion?", critical: false }
+  - item: Have you ever been diagnosed with anxiety, depression, or any other mental
+      health condition?
+    critical: true
+  - item: Do you have any chronic medical conditions like high blood pressure or thyroid
+      problems?
+    critical: false
+  - item: Have you ever had a head injury or concussion?
+    critical: false
   medications:
-    - { item: "Are you taking any prescription medications, including for mental health?", critical: true }
-    - { item: "Do you take any over-the-counter supplements or caffeine pills?", critical: false }
-    - { item: "Have you ever taken stimulant medications before?", critical: true }
+  - item: Are you taking any prescription medications, including for mental health?
+    critical: true
+  - item: Do you take any over-the-counter supplements or caffeine pills?
+    critical: false
+  - item: Have you ever taken stimulant medications before?
+    critical: true
   family_social:
-    - { item: "Does anyone in your family have ADHD, anxiety, or depression?", critical: true }
-    - { item: "What is your job and how is your performance at work?", critical: true }
-    - { item: "Do you use alcohol, tobacco, or recreational drugs?", critical: true }
-    - { item: "How is your relationship with your partner or family?", critical: false }
+  - item: Does anyone in your family have ADHD, anxiety, or depression?
+    critical: true
+  - item: What is your job and how is your performance at work?
+    critical: true
+  - item: Do you use alcohol, tobacco, or recreational drugs?
+    critical: true
+  - item: How is your relationship with your partner or family?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Suicidal thoughts or self-harm", critical: true }
-  - { item: "Recent head injury or confusion", critical: true }
-  - { item: "Substance withdrawal or intoxication", critical: true }
+- item: Suicidal thoughts or self-harm
+  critical: true
+- item: Recent head injury or confusion
+  critical: true
+- item: Substance withdrawal or intoxication
+  critical: true
 expected_ddx:
-  working_diagnosis: "Adult attention deficit hyperactivity disorder"
-  differentials: ["Generalized anxiety disorder", "Major depressive disorder"]
+  working_diagnosis: Adult attention deficit hyperactivity disorder
+  differentials:
+  - Generalized anxiety disorder
+  - Major depressive disorder
 investigations: []
-physical_exam_findings: { general: "Appears restless, frequently shifts in chair, avoids sustained eye contact.", vitals: {} }
+physical_exam_findings:
+  general: Appears restless, frequently shifts in chair, avoids sustained eye contact.
+  vitals: {}
 management:
-  pharmacological: ["Stimulant medication (e.g., methylphenidate)", "Non-stimulant medication (e.g., atomoxetine)"]
-  non_pharmacological: ["Cognitive behavioral therapy", "Organizational skills training"]
-  education_safety_netting: ["Explain ADHD as a neurodevelopmental condition", "Advise on sleep hygiene and reducing caffeine", "Monitor for side effects of medication"]
+  pharmacological:
+  - Stimulant medication (e.g., methylphenidate)
+  - Non-stimulant medication (e.g., atomoxetine)
+  non_pharmacological:
+  - Cognitive behavioral therapy
+  - Organizational skills training
+  education_safety_netting:
+  - Explain ADHD as a neurodevelopmental condition
+  - Advise on sleep hygiene and reducing caffeine
+  - Monitor for side effects of medication
 scoring_weights_override: null
 ---
 ## Identity

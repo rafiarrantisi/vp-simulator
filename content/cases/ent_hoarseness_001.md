@@ -1,76 +1,136 @@
 ---
 id: ent_hoarseness_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ent
 system: ent
-presentation: "Horse voice for 4 weeks"
-presentation_id: "Suara serak selama 4 minggu"
-first_impression: "Patient appears to have ear, nose, or throat discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
-target_condition: "Laryngeal carcinoma"
+presentation: Horse voice for 4 weeks
+presentation_id: Suara serak selama 4 minggu
+first_impression: Patient appears to have ear, nose, or throat discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau
+  tenggorokan.
+target_condition: Laryngeal carcinoma
 difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: ["NICE guideline: Suspected cancer: recognition and referral (NG12)"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My voice has been hoarse for about four weeks and it's not getting better."
+languages:
+- en
+source_refs:
+- 'NICE guideline: Suspected cancer: recognition and referral (NG12)'
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My voice has been hoarse for about four weeks and it's not getting
+  better.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did the hoarseness start?", critical: true }
-    - { item: "Duration - how long has it lasted?", critical: true }
-    - { item: "Character - describe the hoarseness (e.g., rough, breathy, weak)", critical: false }
-    - { item: "Severity - how bad is it on a scale of 1-10?", critical: false }
-    - { item: "Progression - has it gotten worse, better, or stayed the same?", critical: true }
-    - { item: "Triggers - does anything make it better or worse (e.g., talking, rest)?", critical: false }
-    - { item: "Associated factors - any pain, cough, or throat clearing?", critical: false }
+  - item: Onset - when did the hoarseness start?
+    critical: true
+  - item: Duration - how long has it lasted?
+    critical: true
+  - item: Character - describe the hoarseness (e.g., rough, breathy, weak)
+    critical: false
+  - item: Severity - how bad is it on a scale of 1-10?
+    critical: false
+  - item: Progression - has it gotten worse, better, or stayed the same?
+    critical: true
+  - item: Triggers - does anything make it better or worse (e.g., talking, rest)?
+    critical: false
+  - item: Associated factors - any pain, cough, or throat clearing?
+    critical: false
   associated_symptoms:
-    - { item: "Any difficulty swallowing (dysphagia)?", critical: true }
-    - { item: "Any pain in the throat or ear?", critical: true }
-    - { item: "Any cough or coughing up blood?", critical: true }
-    - { item: "Any shortness of breath or noisy breathing?", critical: true }
-    - { item: "Any weight loss?", critical: true }
-    - { item: "Any neck lump or swelling?", critical: true }
-    - { item: "Any heartburn or acid reflux?", critical: false }
+  - item: Any difficulty swallowing (dysphagia)?
+    critical: true
+  - item: Any pain in the throat or ear?
+    critical: true
+  - item: Any cough or coughing up blood?
+    critical: true
+  - item: Any shortness of breath or noisy breathing?
+    critical: true
+  - item: Any weight loss?
+    critical: true
+  - item: Any neck lump or swelling?
+    critical: true
+  - item: Any heartburn or acid reflux?
+    critical: false
   pmh:
-    - { item: "Any past medical history (e.g., high blood pressure, diabetes)?", critical: false }
-    - { item: "Any previous throat problems or surgeries?", critical: true }
-    - { item: "Any history of cancer?", critical: true }
+  - item: Any past medical history (e.g., high blood pressure, diabetes)?
+    critical: false
+  - item: Any previous throat problems or surgeries?
+    critical: true
+  - item: Any history of cancer?
+    critical: true
   medications:
-    - { item: "Are you taking any medications (prescription, over-the-counter, or herbal)?", critical: false }
+  - item: Are you taking any medications (prescription, over-the-counter, or herbal)?
+    critical: false
   family_social:
-    - { item: "Do you smoke or have you ever smoked?", critical: true }
-    - { item: "Do you drink alcohol? If so, how much?", critical: true }
-    - { item: "Any family history of cancer, especially throat or lung cancer?", critical: true }
-    - { item: "What is your occupation? Any exposure to chemicals or dust?", critical: false }
+  - item: Do you smoke or have you ever smoked?
+    critical: true
+  - item: Do you drink alcohol? If so, how much?
+    critical: true
+  - item: Any family history of cancer, especially throat or lung cancer?
+    critical: true
+  - item: What is your occupation? Any exposure to chemicals or dust?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Persistent hoarseness > 3 weeks in a smoker", critical: true }
-  - { item: "Dysphagia (difficulty swallowing)", critical: true }
-  - { item: "Otalgia (ear pain) with normal ear exam", critical: true }
-  - { item: "Hemoptysis (coughing up blood)", critical: true }
-  - { item: "Unexplained weight loss", critical: true }
-  - { item: "Neck mass", critical: true }
+- item: Persistent hoarseness > 3 weeks in a smoker
+  critical: true
+- item: Dysphagia (difficulty swallowing)
+  critical: true
+- item: Otalgia (ear pain) with normal ear exam
+  critical: true
+- item: Hemoptysis (coughing up blood)
+  critical: true
+- item: Unexplained weight loss
+  critical: true
+- item: Neck mass
+  critical: true
 expected_ddx:
-  working_diagnosis: "Laryngeal carcinoma"
-  differentials: ["Laryngitis (viral or reflux)", "Vocal cord nodules or polyps", "Functional dysphonia"]
+  working_diagnosis: Laryngeal carcinoma
+  differentials:
+  - Laryngitis (viral or reflux)
+  - Vocal cord nodules or polyps
+  - Functional dysphonia
 investigations:
   appropriate:
-    - { name: "Flexible nasolaryngoscopy", expected: "Abnormal growth or lesion on the vocal cord" }
-    - { name: "CT scan of neck", expected: "Mass involving the larynx with possible lymph node involvement" }
-    - { name: "Biopsy of lesion", expected: "Squamous cell carcinoma" }
-  inappropriate: ["Chest X-ray as first-line for hoarseness"]
+  - name: Flexible nasolaryngoscopy
+    expected: Abnormal growth or lesion on the vocal cord
+  - name: CT scan of neck
+    expected: Mass involving the larynx with possible lymph node involvement
+  - name: Biopsy of lesion
+    expected: Squamous cell carcinoma
+  inappropriate:
+  - Chest X-ray as first-line for hoarseness
 physical_exam_findings:
-  general: "Patient appears well-nourished but slightly anxious. No acute distress."
-  vitals: { bp: "130/85", hr: 78, rr: 14, temp: 36.8, spo2: 98 }
+  general: Patient appears well-nourished but slightly anxious. No acute distress.
+  vitals:
+    bp: 130/85
+    hr: 78
+    rr: 14
+    temp: 36.8
+    spo2: 98
 management:
-  pharmacological: ["Referral to ENT for urgent assessment", "Consider pain management if needed"]
-  non_pharmacological: ["Smoking cessation counseling", "Voice rest advice", "Nutritional support if weight loss"]
-  education_safety_netting: ["Explain need for urgent specialist evaluation", "Advise to return if difficulty breathing or swallowing worsens", "Provide smoking cessation resources"]
+  pharmacological:
+  - Referral to ENT for urgent assessment
+  - Consider pain management if needed
+  non_pharmacological:
+  - Smoking cessation counseling
+  - Voice rest advice
+  - Nutritional support if weight loss
+  education_safety_netting:
+  - Explain need for urgent specialist evaluation
+  - Advise to return if difficulty breathing or swallowing worsens
+  - Provide smoking cessation resources
 scoring_weights_override: null
 ---
 

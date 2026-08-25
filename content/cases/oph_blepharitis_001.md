@@ -1,98 +1,122 @@
 ---
 id: oph_blepharitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: adnexa
-presentation: "Itchy, crusty eyelid margins"
-presentation_id: "Gatal dan krusta di tepi kelopak mata selama 2–3 bulan, hilang timbul"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Chronic blepharitis"
+presentation: Itchy, crusty eyelid margins
+presentation_id: Gatal dan krusta di tepi kelopak mata selama 2–3 bulan, hilang timbul
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Chronic blepharitis
 difficulty: 1
 estimated_minutes: 11
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE CKS: Blepharitis"
-  - "Migrated from legacy kasus-105 (PPK Kemenkes — Blefaritis, ICD-10 H01.0)"
-  - "AAO Preferred Practice Pattern — blepharitis"
+- 'NICE CKS: Blepharitis'
+- Migrated from legacy kasus-105 (PPK Kemenkes — Blefaritis, ICD-10 H01.0)
+- AAO Preferred Practice Pattern — blepharitis
 authoring:
   drafted_by: migrated_from_kasus-105
   model: human+ai
   reviewed_by: null
   reviewed_at: null
-  review_notes: "Restructured + translated to English schema v2. Study-aid draft pending ophthalmology sign-off."
-
-chief_complaint: "Itchy, red, crusty eyelid margins for 2-3 months, coming and going"
-
+  review_notes: Restructured + translated to English schema v2. Study-aid draft pending
+    ophthalmology sign-off.
+chief_complaint: Itchy, red, crusty eyelid margins for 2-3 months, coming and going
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset and course (gradual, intermittent over 2-3 months)", critical: true }
-    - { item: "Site / laterality (both eyes, left worse)", critical: false }
-    - { item: "Character (itchy/burning lid margins, white scales on lashes, hard morning crusts)", critical: true }
-    - { item: "Severity / impact (embarrassment at work)", critical: false }
-    - { item: "Aggravating (fatigue, coffee-roasting steam/smoke) and relieving (lid cleaning) factors", critical: false }
+  - item: Onset and course (gradual, intermittent over 2-3 months)
+    critical: true
+  - item: Site / laterality (both eyes, left worse)
+    critical: false
+  - item: Character (itchy/burning lid margins, white scales on lashes, hard morning
+      crusts)
+    critical: true
+  - item: Severity / impact (embarrassment at work)
+    critical: false
+  - item: Aggravating (fatigue, coffee-roasting steam/smoke) and relieving (lid cleaning)
+      factors
+    critical: false
   associated_symptoms:
-    - { item: "Mild eye redness", critical: false }
-    - { item: "Eyelash loss or sticky lids on waking", critical: false }
-    - { item: "Scalp dandruff / facial flaking (seborrhoeic link)", critical: true }
-    - { item: "Eye pain, photophobia, or blurred vision (screen for corneal involvement)", critical: true }
+  - item: Mild eye redness
+    critical: false
+  - item: Eyelash loss or sticky lids on waking
+    critical: false
+  - item: Scalp dandruff / facial flaking (seborrhoeic link)
+    critical: true
+  - item: Eye pain, photophobia, or blurred vision (screen for corneal involvement)
+    critical: true
   pmh:
-    - { item: "Scalp seborrhoeic dermatitis / dandruff, rosacea", critical: true }
-    - { item: "Previous similar episodes or styes/chalazia", critical: false }
+  - item: Scalp seborrhoeic dermatitis / dandruff, rosacea
+    critical: true
+  - item: Previous similar episodes or styes/chalazia
+    critical: false
   medications:
-    - { item: "What they have tried (OTC drops, anti-dandruff shampoo)", critical: false }
-    - { item: "Drug allergies", critical: false }
+  - item: What they have tried (OTC drops, anti-dandruff shampoo)
+    critical: false
+  - item: Drug allergies
+    critical: false
   family_social:
-    - { item: "Occupational exposure (steam/smoke), eye hygiene, make-up", critical: true }
-    - { item: "Family history of dandruff/skin conditions; smoking", critical: false }
+  - item: Occupational exposure (steam/smoke), eye hygiene, make-up
+    critical: true
+  - item: Family history of dandruff/skin conditions; smoking
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is causing it", critical: true }
-    - { item: "Concerns - worries (appearance, permanence)", critical: true }
-    - { item: "Expectations - what they hope for (a permanent fix)", critical: false }
-    - { item: "Function - impact on customer-facing work", critical: false }
-
+  - item: Ideas - what they think is causing it
+    critical: true
+  - item: Concerns - worries (appearance, permanence)
+    critical: true
+  - item: Expectations - what they hope for (a permanent fix)
+    critical: false
+  - item: Function - impact on customer-facing work
+    critical: false
 red_flags:
-  - { item: "Reduced vision", critical: true }
-  - { item: "Significant eye pain or photophobia (corneal involvement)", critical: true }
-  - { item: "Corneal ulcer or marked conjunctival inflammation", critical: true }
-  - { item: "A persistent unilateral lid lesion with localised lash loss not responding to treatment (possible malignancy)", critical: true }
-
+- item: Reduced vision
+  critical: true
+- item: Significant eye pain or photophobia (corneal involvement)
+  critical: true
+- item: Corneal ulcer or marked conjunctival inflammation
+  critical: true
+- item: A persistent unilateral lid lesion with localised lash loss not responding
+    to treatment (possible malignancy)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Chronic blepharitis (seborrhoeic/mixed), both eyes"
+  working_diagnosis: Chronic blepharitis (seborrhoeic/mixed), both eyes
   differentials:
-    - "Meibomian gland dysfunction"
-    - "Seborrhoeic dermatitis of the lids"
-    - "Allergic / contact dermatitis of the eyelids"
-    - "Dry eye disease"
-    - "Ocular rosacea"
-
+  - Meibomian gland dysfunction
+  - Seborrhoeic dermatitis of the lids
+  - Allergic / contact dermatitis of the eyelids
+  - Dry eye disease
+  - Ocular rosacea
 investigations:
   appropriate:
-    - { name: "Slit-lamp lid-margin examination", expected: "Crusting/scales at the lash bases, lid-margin telangiectasia, possible mild lash loss" }
-    - { name: "Ocular surface / tear film check", expected: "Often reduced tear break-up time (associated dry eye)" }
+  - name: Slit-lamp lid-margin examination
+    expected: Crusting/scales at the lash bases, lid-margin telangiectasia, possible
+      mild lash loss
+  - name: Ocular surface / tear film check
+    expected: Often reduced tear break-up time (associated dry eye)
   inappropriate:
-    - "Orbital imaging"
-    - "Autoimmune blood panel for typical blepharitis"
-
+  - Orbital imaging
+  - Autoimmune blood panel for typical blepharitis
 physical_exam_findings:
-  general: "Well; some facial/scalp flaking"
-  eyes: "Visual acuity 6/6; erythematous lid margins with scales and crusts at the lash bases; mild conjunctival injection; cornea clear"
+  general: Well; some facial/scalp flaking
+  eyes: Visual acuity 6/6; erythematous lid margins with scales and crusts at the
+    lash bases; mild conjunctival injection; cornea clear
   vitals: {}
   media: []
-
 management:
   pharmacological:
-    - "Topical antibiotic ointment to the lid margin if infected/ulcerated"
-    - "Treat associated scalp seborrhoea"
+  - Topical antibiotic ointment to the lid margin if infected/ulcerated
+  - Treat associated scalp seborrhoea
   non_pharmacological:
-    - "Daily lid hygiene (warm compresses, lid massage, lid-margin cleaning)"
-    - "Explain it is chronic and relapsing — maintenance hygiene is key"
+  - Daily lid hygiene (warm compresses, lid massage, lid-margin cleaning)
+  - Explain it is chronic and relapsing — maintenance hygiene is key
   education_safety_netting:
-    - "Reassure: common and manageable, not sight-threatening when uncomplicated"
-    - "Return if pain, photophobia, reduced vision, or a non-healing lid lump"
-
+  - 'Reassure: common and manageable, not sight-threatening when uncomplicated'
+  - Return if pain, photophobia, reduced vision, or a non-healing lid lump
 scoring_weights_override: null
 ---
 

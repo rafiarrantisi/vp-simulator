@@ -1,124 +1,129 @@
 ---
 id: em_leptospirosis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: emergency
 system: infectious
-presentation: "High fever, muscle pain and jaundice after flooding"
-presentation_id: "Demam tinggi, nyeri otot, dan mata kuning setelah banjir"
-first_impression: "Patient lies prostrate on the stretcher, flushed, shivering, with scleral icterus."
-first_impression_id: "Pasien tampak terbaring lemas di brankar, wajah merah, menggigil, dengan sklera ikterik."
-target_condition: "Leptospirosis"
+presentation: High fever, muscle pain and jaundice after flooding
+presentation_id: Demam tinggi, nyeri otot, dan mata kuning setelah banjir
+first_impression: Patient lies prostrate on the stretcher, flushed, shivering, with
+  scleral icterus.
+first_impression_id: Pasien tampak terbaring lemas di brankar, wajah merah, menggigil,
+  dengan sklera ikterik.
+target_condition: Leptospirosis
 difficulty: 3
 estimated_minutes: 25
 mode_default: osce_full
 languages:
-  - en
+- en
 source_refs:
-  - "WHO leptospirosis guidance + Indonesian outbreak reports"
+- WHO leptospirosis guidance + Indonesian outbreak reports
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I have high fever, body aches, and my eyes turned yellow after the flood."
+chief_complaint: I have high fever, body aches, and my eyes turned yellow after the
+  flood.
 anamnesis_checklist:
   hpi_socrates:
-    - item: "Site of pain – where exactly does it hurt?"
-      critical: false
-    - item: "Onset – when did the fever start?"
-      critical: true
-    - item: "Character – what does the pain feel like?"
-      critical: false
-    - item: "Radiation – does the pain spread?"
-      critical: false
-    - item: "Associated symptoms – any nausea, vomiting, diarrhea, cough, shortness of breath?"
-      critical: true
-    - item: "Time course – has the fever been constant or come and go?"
-      critical: false
-    - item: "Exacerbating/relieving factors – anything that makes it better or worse?"
-      critical: false
-    - item: "Severity – how bad is the pain on a scale of 0-10?"
-      critical: false
+  - item: Site of pain – where exactly does it hurt?
+    critical: false
+  - item: Onset – when did the fever start?
+    critical: true
+  - item: Character – what does the pain feel like?
+    critical: false
+  - item: Radiation – does the pain spread?
+    critical: false
+  - item: Associated symptoms – any nausea, vomiting, diarrhea, cough, shortness of
+      breath?
+    critical: true
+  - item: Time course – has the fever been constant or come and go?
+    critical: false
+  - item: Exacerbating/relieving factors – anything that makes it better or worse?
+    critical: false
+  - item: Severity – how bad is the pain on a scale of 0-10?
+    critical: false
   associated_symptoms:
-    - item: "Jaundice (yellow eyes/skin)"
-      critical: true
-    - item: "Muscle pain (especially calves)"
-      critical: true
-    - item: "Headache"
-      critical: false
-    - item: "Nausea or vomiting"
-      critical: false
-    - item: "Dark urine or decreased urination"
-      critical: true
-    - item: "Red eyes (conjunctival injection)"
-      critical: true
+  - item: Jaundice (yellow eyes/skin)
+    critical: true
+  - item: Muscle pain (especially calves)
+    critical: true
+  - item: Headache
+    critical: false
+  - item: Nausea or vomiting
+    critical: false
+  - item: Dark urine or decreased urination
+    critical: true
+  - item: Red eyes (conjunctival injection)
+    critical: true
   pmh:
-    - item: "Any chronic illnesses (diabetes, hypertension, liver disease)"
-      critical: false
-    - item: "Previous similar episodes"
-      critical: false
-    - item: "Medication allergies"
-      critical: true
+  - item: Any chronic illnesses (diabetes, hypertension, liver disease)
+    critical: false
+  - item: Previous similar episodes
+    critical: false
+  - item: Medication allergies
+    critical: true
   medications:
-    - item: "Any medications taken for this illness (paracetamol, antibiotics, herbal)"
-      critical: false
-    - item: "Regular medications"
-      critical: false
+  - item: Any medications taken for this illness (paracetamol, antibiotics, herbal)
+    critical: false
+  - item: Regular medications
+    critical: false
   family_social:
-    - item: "Occupation – farmer, sewer worker, or other exposure to flood water or rats"
-      critical: true
-    - item: "Recent travel or flooding in the area"
-      critical: true
-    - item: "Contact with animals (rats, cattle, dogs)"
-      critical: true
-    - item: "Alcohol or smoking history"
-      critical: false
+  - item: Occupation – farmer, sewer worker, or other exposure to flood water or rats
+    critical: true
+  - item: Recent travel or flooding in the area
+    critical: true
+  - item: Contact with animals (rats, cattle, dogs)
+    critical: true
+  - item: Alcohol or smoking history
+    critical: false
   ice_fife:
-    - item: "Ideas - what they think is wrong"
-      critical: true
-    - item: "Concerns - what worries them"
-      critical: true
-    - item: "Expectations - what they hope for"
-      critical: false
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - item: "Oliguria or anuria (kidney failure)"
-    critical: true
-  - item: "Shortness of breath or hemoptysis (pulmonary hemorrhage)"
-    critical: true
-  - item: "Altered mental status or seizures"
-    critical: true
-  - item: "Hypotension or shock"
-    critical: true
+- item: Oliguria or anuria (kidney failure)
+  critical: true
+- item: Shortness of breath or hemoptysis (pulmonary hemorrhage)
+  critical: true
+- item: Altered mental status or seizures
+  critical: true
+- item: Hypotension or shock
+  critical: true
 expected_ddx:
-  working_diagnosis: "Leptospirosis"
+  working_diagnosis: Leptospirosis
   differentials:
-    - "Dengue fever"
-    - "Typhoid fever"
-    - "Malaria"
-    - "Acute viral hepatitis"
+  - Dengue fever
+  - Typhoid fever
+  - Malaria
+  - Acute viral hepatitis
 investigations:
   appropriate:
-    - name: "Complete blood count"
-      expected: "Leukocytosis with left shift, thrombocytopenia possible"
-    - name: "Serum creatinine and BUN"
-      expected: "Elevated (acute kidney injury)"
-    - name: "Liver function tests (bilirubin, AST, ALT)"
-      expected: "Elevated bilirubin (direct > indirect), mild transaminitis"
-    - name: "Urinalysis"
-      expected: "Proteinuria, hematuria, bilirubinuria"
-    - name: "Leptospira IgM serology (ELISA) or MAT"
-      expected: "Positive"
-    - name: "Blood cultures"
-      expected: "May grow Leptospira in early phase"
-    - name: "Chest X-ray"
-      expected: "May show diffuse alveolar infiltrates if pulmonary involvement"
+  - name: Complete blood count
+    expected: Leukocytosis with left shift, thrombocytopenia possible
+  - name: Serum creatinine and BUN
+    expected: Elevated (acute kidney injury)
+  - name: Liver function tests (bilirubin, AST, ALT)
+    expected: Elevated bilirubin (direct > indirect), mild transaminitis
+  - name: Urinalysis
+    expected: Proteinuria, hematuria, bilirubinuria
+  - name: Leptospira IgM serology (ELISA) or MAT
+    expected: Positive
+  - name: Blood cultures
+    expected: May grow Leptospira in early phase
+  - name: Chest X-ray
+    expected: May show diffuse alveolar infiltrates if pulmonary involvement
   inappropriate:
-    - "CT scan of abdomen without indication"
-    - "Autoimmune panel"
+  - CT scan of abdomen without indication
+  - Autoimmune panel
 physical_exam_findings:
-  general: "Ill-appearing, jaundiced, conjunctival suffusion, muscle tenderness in calves."
+  general: Ill-appearing, jaundiced, conjunctival suffusion, muscle tenderness in
+    calves.
   vitals:
     temperature: 39.5
     blood_pressure: 110/70
@@ -127,18 +132,19 @@ physical_exam_findings:
     oxygen_saturation: 97
 management:
   pharmacological:
-    - "IV ceftriaxone 1 g every 24 hours (or IV penicillin G 1.5 million units every 6 hours)"
-    - "IV fluids (normal saline) for hydration and renal protection"
-    - "Paracetamol for fever and pain"
-    - "Consider doxycycline if mild and able to take oral (but severe cases need IV)"
+  - IV ceftriaxone 1 g every 24 hours (or IV penicillin G 1.5 million units every
+    6 hours)
+  - IV fluids (normal saline) for hydration and renal protection
+  - Paracetamol for fever and pain
+  - Consider doxycycline if mild and able to take oral (but severe cases need IV)
   non_pharmacological:
-    - "Admit to hospital for monitoring of renal function and pulmonary status"
-    - "Monitor urine output (strict input/output chart)"
-    - "Oxygen if hypoxic"
+  - Admit to hospital for monitoring of renal function and pulmonary status
+  - Monitor urine output (strict input/output chart)
+  - Oxygen if hypoxic
   education_safety_netting:
-    - "Explain the need for early treatment to prevent kidney failure and bleeding"
-    - "Advise to avoid further exposure to flood water or rat urine"
-    - "Return immediately if shortness of breath, decreased urine, or confusion develops"
+  - Explain the need for early treatment to prevent kidney failure and bleeding
+  - Advise to avoid further exposure to flood water or rat urine
+  - Return immediately if shortness of breath, decreased urine, or confusion develops
 scoring_weights_override: null
 ---
 

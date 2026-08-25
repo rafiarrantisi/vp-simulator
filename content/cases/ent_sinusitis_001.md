@@ -1,91 +1,130 @@
 ---
 id: ent_sinusitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ent
 system: ent
-presentation: "Facial pain and nasal congestion"
-presentation_id: "Tekanan di wajah dan hidung tersumbat"
-first_impression: "Patient appears to have ear, nose, or throat discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
-target_condition: "Acute sinusitis"
+presentation: Facial pain and nasal congestion
+presentation_id: Tekanan di wajah dan hidung tersumbat
+first_impression: Patient appears to have ear, nose, or throat discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau
+  tenggorokan.
+target_condition: Acute sinusitis
 difficulty: 1
 estimated_minutes: 12
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "IDSA guidelines for acute sinusitis 2023"
-  - "AAO-HNS clinical practice guideline — acute rhinosinusitis (2015)"
-
+- IDSA guidelines for acute sinusitis 2023
+- AAO-HNS clinical practice guideline — acute rhinosinusitis (2015)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I have a bad pressure in my face and my nose is all stuffed up."
+chief_complaint: I have a bad pressure in my face and my nose is all stuffed up.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain - cheeks and around eyes", critical: false }
-    - { item: "Onset - started 5 days ago after a cold", critical: false }
-    - { item: "Character - dull, pressure-like pain", critical: true }
-    - { item: "Radiation - to forehead sometimes", critical: false }
-    - { item: "Associations - nasal congestion, thick yellow discharge", critical: false }
-    - { item: "Timing - constant, worse when bending down", critical: false }
-    - { item: "Exacerbating factors - bending down, coughing", critical: false }
-    - { item: "Relieving factors - steam, over-the-counter nasal spray", critical: false }
-    - { item: "Severity - 5 out of 10", critical: false }
+  - item: Site of pain - cheeks and around eyes
+    critical: false
+  - item: Onset - started 5 days ago after a cold
+    critical: false
+  - item: Character - dull, pressure-like pain
+    critical: true
+  - item: Radiation - to forehead sometimes
+    critical: false
+  - item: Associations - nasal congestion, thick yellow discharge
+    critical: false
+  - item: Timing - constant, worse when bending down
+    critical: false
+  - item: Exacerbating factors - bending down, coughing
+    critical: false
+  - item: Relieving factors - steam, over-the-counter nasal spray
+    critical: false
+  - item: Severity - 5 out of 10
+    critical: false
   associated_symptoms:
-    - { item: "Fever and chills", critical: false }
-    - { item: "Headache", critical: false }
-    - { item: "Cough, especially at night", critical: false }
-    - { item: "Ear fullness or pressure", critical: false }
-    - { item: "Reduced sense of smell", critical: false }
+  - item: Fever and chills
+    critical: false
+  - item: Headache
+    critical: false
+  - item: Cough, especially at night
+    critical: false
+  - item: Ear fullness or pressure
+    critical: false
+  - item: Reduced sense of smell
+    critical: false
   pmh:
-    - { item: "Allergic rhinitis (seasonal)", critical: false }
-    - { item: "Previous sinusitis episodes (2-3 times before)", critical: false }
-    - { item: "Asthma (mild, controlled)", critical: false }
+  - item: Allergic rhinitis (seasonal)
+    critical: false
+  - item: Previous sinusitis episodes (2-3 times before)
+    critical: false
+  - item: Asthma (mild, controlled)
+    critical: false
   medications:
-    - { item: "Over-the-counter oxymetazoline nasal spray (used for 2 days)", critical: false }
-    - { item: "Acetaminophen as needed for pain", critical: false }
-    - { item: "None prescribed", critical: false }
+  - item: Over-the-counter oxymetazoline nasal spray (used for 2 days)
+    critical: false
+  - item: Acetaminophen as needed for pain
+    critical: false
+  - item: None prescribed
+    critical: false
   family_social:
-    - { item: "Husband is a smoker (smokes in the house)", critical: false }
-    - { item: "No family history of sinusitis or chronic lung disease", critical: false }
-    - { item: "Works as an office manager; no recent travel", critical: false }
+  - item: Husband is a smoker (smokes in the house)
+    critical: false
+  - item: No family history of sinusitis or chronic lung disease
+    critical: false
+  - item: Works as an office manager; no recent travel
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Vision changes or double vision", critical: true }
-  - { item: "Severe headache with stiff neck", critical: true }
-  - { item: "Swelling around the eye or forehead", critical: true }
+- item: Vision changes or double vision
+  critical: true
+- item: Severe headache with stiff neck
+  critical: true
+- item: Swelling around the eye or forehead
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acute sinusitis"
-  differentials: [ "Allergic rhinitis with secondary infection", "Migraine variant", "Dental abscess" ]
+  working_diagnosis: Acute sinusitis
+  differentials:
+  - Allergic rhinitis with secondary infection
+  - Migraine variant
+  - Dental abscess
 investigations:
   appropriate:
-    - { name: "Anterior rhinoscopy", expected: "Mucosal oedema, purulent discharge in middle meatus" }
+  - name: Anterior rhinoscopy
+    expected: Mucosal oedema, purulent discharge in middle meatus
   inappropriate:
-    - "CT sinus without clear indication"
-    - "Nasal swab for culture in first 7 days"
+  - CT sinus without clear indication
+  - Nasal swab for culture in first 7 days
 physical_exam_findings:
-  general: "Patient appears uncomfortable, mild fever present."
-  vitals: { temp: 37.8, hr: 80, bp: "120/80", rr: 16, o2: 98 }
+  general: Patient appears uncomfortable, mild fever present.
+  vitals:
+    temp: 37.8
+    hr: 80
+    bp: 120/80
+    rr: 16
+    o2: 98
 management:
   pharmacological:
-    - "Nasal saline spray"
-    - "Oral decongestant (pseudoephedrine) if no contraindications"
-    - "Analgesics (acetaminophen or ibuprofen)"
-    - "Consider antibiotics (amoxicillin) if symptoms >10 days or worsening after 7 days"
+  - Nasal saline spray
+  - Oral decongestant (pseudoephedrine) if no contraindications
+  - Analgesics (acetaminophen or ibuprofen)
+  - Consider antibiotics (amoxicillin) if symptoms >10 days or worsening after 7 days
   non_pharmacological:
-    - "Steam inhalation 2-3 times daily"
-    - "Hydration and rest"
-    - "Elevate head while sleeping"
+  - Steam inhalation 2-3 times daily
+  - Hydration and rest
+  - Elevate head while sleeping
   education_safety_netting:
-    - "Return if vision changes, severe headache, periorbital swelling, or high fever"
-    - "Return if no improvement after 7 days or symptoms worsen"
+  - Return if vision changes, severe headache, periorbital swelling, or high fever
+  - Return if no improvement after 7 days or symptoms worsen
 scoring_weights_override: null
 ---
 ## Identity

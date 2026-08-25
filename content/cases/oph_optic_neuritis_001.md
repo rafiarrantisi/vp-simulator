@@ -1,67 +1,118 @@
 ---
 id: oph_optic_neuritis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: nervous
-presentation: "Sudden vision loss with pain on eye movement"
-presentation_id: "Kehilangan penglihatan mendadak pada satu mata disertai nyeri saat menggerakkan mata"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Optic neuritis"
+presentation: Sudden vision loss with pain on eye movement
+presentation_id: Kehilangan penglihatan mendadak pada satu mata disertai nyeri saat
+  menggerakkan mata
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Optic neuritis
 difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: ["Optic Neuritis Treatment Trial (ONTT) guidelines", "American Academy of Ophthalmology Preferred Practice Pattern"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I suddenly lost vision in my right eye and it hurts when I move it."
+languages:
+- en
+source_refs:
+- Optic Neuritis Treatment Trial (ONTT) guidelines
+- American Academy of Ophthalmology Preferred Practice Pattern
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I suddenly lost vision in my right eye and it hurts when I move it.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - right eye", critical: false }
-    - { item: "Onset - sudden, over hours", critical: true }
-    - { item: "Character - blurred vision, central scotoma", critical: true }
-    - { item: "Radiation - none", critical: false }
-    - { item: "Associated symptoms - pain on eye movement", critical: true }
-    - { item: "Timing - constant, present for 2 days", critical: false }
-    - { item: "Exacerbating factors - eye movement worsens pain", critical: true }
-    - { item: "Relieving factors - rest does not help", critical: false }
-    - { item: "Severity - pain 7/10, vision loss profound", critical: false }
+  - item: Site - right eye
+    critical: false
+  - item: Onset - sudden, over hours
+    critical: true
+  - item: Character - blurred vision, central scotoma
+    critical: true
+  - item: Radiation - none
+    critical: false
+  - item: Associated symptoms - pain on eye movement
+    critical: true
+  - item: Timing - constant, present for 2 days
+    critical: false
+  - item: Exacerbating factors - eye movement worsens pain
+    critical: true
+  - item: Relieving factors - rest does not help
+    critical: false
+  - item: Severity - pain 7/10, vision loss profound
+    critical: false
   associated_symptoms:
-    - { item: "Color desaturation (colors appear washed out)", critical: true }
-    - { item: "Mild headache behind the eye", critical: false }
-    - { item: "Recent cold or flu-like illness", critical: false }
+  - item: Color desaturation (colors appear washed out)
+    critical: true
+  - item: Mild headache behind the eye
+    critical: false
+  - item: Recent cold or flu-like illness
+    critical: false
   pmh:
-    - { item: "No known medical conditions", critical: true }
-    - { item: "No history of neurological disease", critical: true }
+  - item: No known medical conditions
+    critical: true
+  - item: No history of neurological disease
+    critical: true
   medications:
-    - { item: "No regular medications", critical: true }
+  - item: No regular medications
+    critical: true
   family_social:
-    - { item: "No family history of multiple sclerosis", critical: true }
-    - { item: "No family history of vision loss", critical: false }
-    - { item: "Non-smoker, occasional alcohol", critical: false }
+  - item: No family history of multiple sclerosis
+    critical: true
+  - item: No family history of vision loss
+    critical: false
+  - item: Non-smoker, occasional alcohol
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong: Could be a stroke or brain tumor", critical: true }
-    - { item: "Concerns - what worries them: Worried about permanent vision loss or multiple sclerosis", critical: true }
-    - { item: "Expectations - what they hope for: I want to get my vision back and know the cause", critical: false }
+  - item: 'Ideas - what they think is wrong: Could be a stroke or brain tumor'
+    critical: true
+  - item: 'Concerns - what worries them: Worried about permanent vision loss or multiple
+      sclerosis'
+    critical: true
+  - item: 'Expectations - what they hope for: I want to get my vision back and know
+      the cause'
+    critical: false
 red_flags:
-  - { item: "Acute monocular vision loss", critical: true }
-  - { item: "Pain with eye movement", critical: true }
-  - { item: "Central scotoma", critical: false }
+- item: Acute monocular vision loss
+  critical: true
+- item: Pain with eye movement
+  critical: true
+- item: Central scotoma
+  critical: false
 expected_ddx:
-  working_diagnosis: "Optic neuritis"
-  differentials: ["Anterior ischemic optic neuropathy (AION)", "Compressive optic neuropathy"]
+  working_diagnosis: Optic neuritis
+  differentials:
+  - Anterior ischemic optic neuropathy (AION)
+  - Compressive optic neuropathy
 investigations:
   appropriate:
-    - { name: "Magnetic resonance imaging (MRI) of brain and orbits with contrast", expected: "May show enhancement of the optic nerve consistent with demyelination" }
-    - { name: "Visual evoked potentials (VEP)", expected: "P100 latency prolonged" }
-    - { name: "Blood tests for inflammatory markers (ESR, CRP)", expected: "Normal or mildly elevated" }
-  inappropriate: ["CT head without contrast"]
-physical_exam_findings: { general: "Alert, oriented, anxious. Vitals normal. Right eye: visual acuity 20/200, relative afferent pupillary defect (RAPD) present, color vision impaired (red desaturation), central scotoma on Amsler grid. Optic disc normal or slightly swollen. Left eye normal. No other neurological deficits." }
+  - name: Magnetic resonance imaging (MRI) of brain and orbits with contrast
+    expected: May show enhancement of the optic nerve consistent with demyelination
+  - name: Visual evoked potentials (VEP)
+    expected: P100 latency prolonged
+  - name: Blood tests for inflammatory markers (ESR, CRP)
+    expected: Normal or mildly elevated
+  inappropriate:
+  - CT head without contrast
+physical_exam_findings:
+  general: 'Alert, oriented, anxious. Vitals normal. Right eye: visual acuity 20/200,
+    relative afferent pupillary defect (RAPD) present, color vision impaired (red
+    desaturation), central scotoma on Amsler grid. Optic disc normal or slightly swollen.
+    Left eye normal. No other neurological deficits.'
 management:
-  pharmacological: ["High-dose intravenous methylprednisolone (1g daily for 3 days) then oral taper"]
-  non_pharmacological: ["Rest, eye patch if photophobia present"]
-  education_safety_netting: ["Explain that vision may improve over weeks to months", "Discuss risk of developing multiple sclerosis", "Advise follow-up with neurologist", "'Return if new neurological symptoms appear'"]
+  pharmacological:
+  - High-dose intravenous methylprednisolone (1g daily for 3 days) then oral taper
+  non_pharmacological:
+  - Rest, eye patch if photophobia present
+  education_safety_netting:
+  - Explain that vision may improve over weeks to months
+  - Discuss risk of developing multiple sclerosis
+  - Advise follow-up with neurologist
+  - '''Return if new neurological symptoms appear'''
 scoring_weights_override: null
 ---
 

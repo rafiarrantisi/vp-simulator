@@ -1,75 +1,125 @@
 ---
 id: paed_kawasaki_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: paediatrics
 system: cardiovascular
-presentation: "Prolonged fever and red eyes in a toddler"
-presentation_id: "Demam tinggi selama 5 hari dan mata merah pada balita 2 tahun"
-first_impression: "A child appears unwell."
-first_impression_id: "Seorang anak tampak tidak sehat."
-target_condition: "Kawasaki disease"
+presentation: Prolonged fever and red eyes in a toddler
+presentation_id: Demam tinggi selama 5 hari dan mata merah pada balita 2 tahun
+first_impression: A child appears unwell.
+first_impression_id: Seorang anak tampak tidak sehat.
+target_condition: Kawasaki disease
 difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Heart Association guidelines for Kawasaki disease (2017)"
-  - "AHA scientific statement — Kawasaki disease (2017)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My 2-year-old has had a high fever for 5 days and his eyes are really red."
+- American Heart Association guidelines for Kawasaki disease (2017)
+- AHA scientific statement — Kawasaki disease (2017)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My 2-year-old has had a high fever for 5 days and his eyes are really
+  red.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Fever - how high and for how many days", critical: true }
-    - { item: "Red eyes - when did they start and are they painful or just red", critical: false }
-    - { item: "Any rash on the body", critical: true }
-    - { item: "Any changes in the mouth or lips (redness, cracking, strawberry tongue)", critical: true }
-    - { item: "Any swelling of hands or feet", critical: true }
-    - { item: "Any neck swelling", critical: false }
-    - { item: "Irritability or extreme fussiness", critical: true }
-    - { item: "Any vomiting, diarrhea, or abdominal pain", critical: false }
-    - { item: "Any joint pain or limping", critical: false }
+  - item: Fever - how high and for how many days
+    critical: true
+  - item: Red eyes - when did they start and are they painful or just red
+    critical: false
+  - item: Any rash on the body
+    critical: true
+  - item: Any changes in the mouth or lips (redness, cracking, strawberry tongue)
+    critical: true
+  - item: Any swelling of hands or feet
+    critical: true
+  - item: Any neck swelling
+    critical: false
+  - item: Irritability or extreme fussiness
+    critical: true
+  - item: Any vomiting, diarrhea, or abdominal pain
+    critical: false
+  - item: Any joint pain or limping
+    critical: false
   associated_symptoms:
-    - { item: "Runny nose or cough", critical: false }
-    - { item: "Ear pain or pulling at ears", critical: false }
-    - { item: "Any sores in the mouth", critical: false }
+  - item: Runny nose or cough
+    critical: false
+  - item: Ear pain or pulling at ears
+    critical: false
+  - item: Any sores in the mouth
+    critical: false
   pmh:
-    - { item: "Birth history (full term, complications)", critical: false }
-    - { item: "Previous illnesses or hospitalizations", critical: false }
-    - { item: "Vaccination status", critical: false }
-    - { item: "Allergies", critical: false }
+  - item: Birth history (full term, complications)
+    critical: false
+  - item: Previous illnesses or hospitalizations
+    critical: false
+  - item: Vaccination status
+    critical: false
+  - item: Allergies
+    critical: false
   medications:
-    - { item: "Any medications given for fever (type, dose, frequency)", critical: true }
-    - { item: "Any other medications or supplements", critical: false }
+  - item: Any medications given for fever (type, dose, frequency)
+    critical: true
+  - item: Any other medications or supplements
+    critical: false
   family_social:
-    - { item: "Anyone else at home sick with similar symptoms", critical: false }
-    - { item: "Daycare attendance", critical: false }
-    - { item: "Recent travel", critical: false }
+  - item: Anyone else at home sick with similar symptoms
+    critical: false
+  - item: Daycare attendance
+    critical: false
+  - item: Recent travel
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Fever for 5 or more days", critical: true }
-  - { item: "Red eyes without discharge", critical: true }
-  - { item: "Rash on trunk or extremities", critical: true }
-  - { item: "Changes in lips or mouth (red, cracked lips, strawberry tongue)", critical: true }
-  - { item: "Swelling of hands or feet", critical: true }
+- item: Fever for 5 or more days
+  critical: true
+- item: Red eyes without discharge
+  critical: true
+- item: Rash on trunk or extremities
+  critical: true
+- item: Changes in lips or mouth (red, cracked lips, strawberry tongue)
+  critical: true
+- item: Swelling of hands or feet
+  critical: true
 expected_ddx:
-  working_diagnosis: "Kawasaki disease"
-  differentials: ["Viral infection (e.g., adenovirus, measles)", "Scarlet fever", "Juvenile idiopathic arthritis"]
+  working_diagnosis: Kawasaki disease
+  differentials:
+  - Viral infection (e.g., adenovirus, measles)
+  - Scarlet fever
+  - Juvenile idiopathic arthritis
 investigations:
   appropriate:
-    - { name: "Complete blood count", expected: "Elevated white blood cell count, possible anemia" }
-    - { name: "C-reactive protein", expected: "Markedly elevated" }
-    - { name: "Erythrocyte sedimentation rate", expected: "Elevated" }
-    - { name: "Echocardiogram", expected: "May show coronary artery dilation or aneurysm" }
-    - { name: "Liver function tests", expected: "Mildly elevated transaminases" }
-    - { name: "Urinalysis", expected: "Sterile pyuria possible" }
-  inappropriate: ["Blood culture (unless sepsis suspected)", "Throat culture for group A strep"]
+  - name: Complete blood count
+    expected: Elevated white blood cell count, possible anemia
+  - name: C-reactive protein
+    expected: Markedly elevated
+  - name: Erythrocyte sedimentation rate
+    expected: Elevated
+  - name: Echocardiogram
+    expected: May show coronary artery dilation or aneurysm
+  - name: Liver function tests
+    expected: Mildly elevated transaminases
+  - name: Urinalysis
+    expected: Sterile pyuria possible
+  inappropriate:
+  - Blood culture (unless sepsis suspected)
+  - Throat culture for group A strep
 physical_exam_findings:
-  general: "Fussy toddler, appears uncomfortable. Conjunctival injection bilaterally without discharge. Lips are red and cracked. Oral mucosa is erythematous with prominent papillae (strawberry tongue). Non-exudative conjunctivitis. Erythematous maculopapular rash on trunk. Mild non-pitting edema of hands and feet. Single enlarged, non-tender cervical lymph node on the right."
+  general: Fussy toddler, appears uncomfortable. Conjunctival injection bilaterally
+    without discharge. Lips are red and cracked. Oral mucosa is erythematous with
+    prominent papillae (strawberry tongue). Non-exudative conjunctivitis. Erythematous
+    maculopapular rash on trunk. Mild non-pitting edema of hands and feet. Single
+    enlarged, non-tender cervical lymph node on the right.
   vitals:
     temperature: 39.2 C
     heart_rate: 140
@@ -78,18 +128,21 @@ physical_exam_findings:
     oxygen_saturation: 98%
 management:
   pharmacological:
-    - "Intravenous immunoglobulin (IVIG) 2 g/kg as a single dose"
-    - "High-dose aspirin (80-100 mg/kg/day divided every 6 hours) until fever resolves, then low-dose aspirin (3-5 mg/kg/day) for antiplatelet effect"
+  - Intravenous immunoglobulin (IVIG) 2 g/kg as a single dose
+  - High-dose aspirin (80-100 mg/kg/day divided every 6 hours) until fever resolves,
+    then low-dose aspirin (3-5 mg/kg/day) for antiplatelet effect
   non_pharmacological:
-    - "Hospital admission for monitoring and treatment"
-    - "Echocardiogram at baseline and follow-up at 2 weeks and 6 weeks"
-    - "Cardiology consultation"
+  - Hospital admission for monitoring and treatment
+  - Echocardiogram at baseline and follow-up at 2 weeks and 6 weeks
+  - Cardiology consultation
   education_safety_netting:
-    - "Explain Kawasaki disease is an inflammatory condition affecting blood vessels, especially heart arteries"
-    - "Emphasize importance of completing IVIG and aspirin course"
-    - "Watch for signs of heart problems: chest pain, shortness of breath, pale or blue skin"
-    - "Return to emergency if fever recurs or child becomes more irritable"
-    - "Avoid live vaccines for 11 months after IVIG"
+  - Explain Kawasaki disease is an inflammatory condition affecting blood vessels,
+    especially heart arteries
+  - Emphasize importance of completing IVIG and aspirin course
+  - 'Watch for signs of heart problems: chest pain, shortness of breath, pale or blue
+    skin'
+  - Return to emergency if fever recurs or child becomes more irritable
+  - Avoid live vaccines for 11 months after IVIG
 scoring_weights_override: null
 ---
 

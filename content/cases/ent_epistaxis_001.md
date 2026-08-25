@@ -1,72 +1,102 @@
 ---
 id: ent_epistaxis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ent
 system: ent
-presentation: "Nosebleed"
-presentation_id: "Mimisan yang tidak berhenti"
-first_impression: "Patient appears to have ear, nose, or throat discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
-target_condition: "Epistaxis"
+presentation: Nosebleed
+presentation_id: Mimisan yang tidak berhenti
+first_impression: Patient appears to have ear, nose, or throat discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau
+  tenggorokan.
+target_condition: Epistaxis
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "AAO-HNS Clinical Practice Guideline: Epistaxis"
-  - "ENT-UK / NICE CKS — epistaxis management"
-
+- 'AAO-HNS Clinical Practice Guideline: Epistaxis'
+- ENT-UK / NICE CKS — epistaxis management
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I have a nosebleed that won't stop."
+chief_complaint: I have a nosebleed that won't stop.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "When did the nosebleed start?", critical: true }
-    - { item: "Which nostril is bleeding?", critical: false }
-    - { item: "How long did the bleeding last?", critical: true }
-    - { item: "How much blood did you lose?", critical: false }
-    - { item: "What were you doing when it started?", critical: false }
-    - { item: "Did you have any trauma to the nose?", critical: true }
-    - { item: "Have you had nosebleeds before?", critical: false }
+  - item: When did the nosebleed start?
+    critical: true
+  - item: Which nostril is bleeding?
+    critical: false
+  - item: How long did the bleeding last?
+    critical: true
+  - item: How much blood did you lose?
+    critical: false
+  - item: What were you doing when it started?
+    critical: false
+  - item: Did you have any trauma to the nose?
+    critical: true
+  - item: Have you had nosebleeds before?
+    critical: false
   associated_symptoms:
-    - { item: "Do you have any pain?", critical: false }
-    - { item: "Do you feel lightheaded or dizzy?", critical: true }
-    - { item: "Do you have any headache?", critical: false }
-    - { item: "Do you have any difficulty breathing?", critical: false }
+  - item: Do you have any pain?
+    critical: false
+  - item: Do you feel lightheaded or dizzy?
+    critical: true
+  - item: Do you have any headache?
+    critical: false
+  - item: Do you have any difficulty breathing?
+    critical: false
   pmh:
-    - { item: "Do you have high blood pressure or liver disease?", critical: false }
-    - { item: "Do you have a bleeding disorder?", critical: true }
-    - { item: "Have you ever had surgery on your nose?", critical: false }
+  - item: Do you have high blood pressure or liver disease?
+    critical: false
+  - item: Do you have a bleeding disorder?
+    critical: true
+  - item: Have you ever had surgery on your nose?
+    critical: false
   medications:
-    - { item: "Are you taking any blood thinners like aspirin or warfarin?", critical: true }
-    - { item: "Are you taking any other medications?", critical: false }
+  - item: Are you taking any blood thinners like aspirin or warfarin?
+    critical: true
+  - item: Are you taking any other medications?
+    critical: false
   family_social:
-    - { item: "Does anyone in your family have a bleeding disorder?", critical: false }
-    - { item: "Do you smoke or drink alcohol?", critical: false }
+  - item: Does anyone in your family have a bleeding disorder?
+    critical: false
+  - item: Do you smoke or drink alcohol?
+    critical: false
   ice_fife:
-    - { item: "Ideas – what do you think is causing this?", critical: true }
-    - { item: "Concerns – what worries you about this nosebleed?", critical: true }
-    - { item: "Expectations – what do you hope I can do for you today?", critical: false }
-    - { item: "Feelings – how does this make you feel?", critical: false }
-    - { item: "Impact – how has this affected your daily life?", critical: false }
+  - item: Ideas – what do you think is causing this?
+    critical: true
+  - item: Concerns – what worries you about this nosebleed?
+    critical: true
+  - item: Expectations – what do you hope I can do for you today?
+    critical: false
+  - item: Feelings – how does this make you feel?
+    critical: false
+  - item: Impact – how has this affected your daily life?
+    critical: false
 red_flags:
-  - { item: "Are you taking blood thinners?", critical: true }
-  - { item: "Have you had a recent head injury?", critical: false }
-  - { item: "Do you have a history of easy bruising or bleeding?", critical: true }
-  - { item: "Do you feel faint or lightheaded?", critical: true }
+- item: Are you taking blood thinners?
+  critical: true
+- item: Have you had a recent head injury?
+  critical: false
+- item: Do you have a history of easy bruising or bleeding?
+  critical: true
+- item: Do you feel faint or lightheaded?
+  critical: true
 expected_ddx:
-  working_diagnosis: "Epistaxis"
-  differentials: [ "Trauma", "Coagulopathy" ]
+  working_diagnosis: Epistaxis
+  differentials:
+  - Trauma
+  - Coagulopathy
 investigations:
   appropriate: []
   inappropriate: []
 physical_exam_findings:
-  general: "Not applicable for anamnesis mode"
+  general: Not applicable for anamnesis mode
   vitals: {}
 management:
   pharmacological: []

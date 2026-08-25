@@ -1,102 +1,138 @@
 ---
 id: ent_tonsillitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ent
 system: ent
-presentation: "Sore throat and difficulty swallowing"
-presentation_id: "Nyeri tenggorokan parah dan sulit menelan"
-first_impression: "Patient appears to have ear, nose, or throat discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau tenggorokan."
-target_condition: "Acute tonsillitis"
+presentation: Sore throat and difficulty swallowing
+presentation_id: Nyeri tenggorokan parah dan sulit menelan
+first_impression: Patient appears to have ear, nose, or throat discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan telinga, hidung, atau
+  tenggorokan.
+target_condition: Acute tonsillitis
 difficulty: 1
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "AAO-HNSF Clinical Practice Guideline: Tonsillitis (2019)"
-  - "NICE NG84 — Sore throat (acute)"
-
+- 'AAO-HNSF Clinical Practice Guideline: Tonsillitis (2019)'
+- NICE NG84 — Sore throat (acute)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "My throat is really sore and it hurts to swallow."
+chief_complaint: My throat is really sore and it hurts to swallow.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain", critical: true }
-    - { item: "Onset of symptoms", critical: false }
-    - { item: "Character of pain", critical: false }
-    - { item: "Radiation of pain", critical: false }
-    - { item: "Associated symptoms (fever, chills, malaise)", critical: false }
-    - { item: "Time course / progression", critical: false }
-    - { item: "Exacerbating factors (swallowing, talking)", critical: false }
-    - { item: "Relieving factors (painkillers, cold drinks)", critical: false }
-    - { item: "Severity (0-10 scale)", critical: false }
+  - item: Site of pain
+    critical: true
+  - item: Onset of symptoms
+    critical: false
+  - item: Character of pain
+    critical: false
+  - item: Radiation of pain
+    critical: false
+  - item: Associated symptoms (fever, chills, malaise)
+    critical: false
+  - item: Time course / progression
+    critical: false
+  - item: Exacerbating factors (swallowing, talking)
+    critical: false
+  - item: Relieving factors (painkillers, cold drinks)
+    critical: false
+  - item: Severity (0-10 scale)
+    critical: false
   associated_symptoms:
-    - { item: "Fever", critical: true }
-    - { item: "Chills", critical: false }
-    - { item: "Ear pain", critical: false }
-    - { item: "Voice changes", critical: false }
-    - { item: "Cough or runny nose", critical: false }
-    - { item: "Difficulty breathing or drooling", critical: false }
+  - item: Fever
+    critical: true
+  - item: Chills
+    critical: false
+  - item: Ear pain
+    critical: false
+  - item: Voice changes
+    critical: false
+  - item: Cough or runny nose
+    critical: false
+  - item: Difficulty breathing or drooling
+    critical: false
   pmh:
-    - { item: "History of recurrent tonsillitis", critical: true }
-    - { item: "Recent exposure to strep throat", critical: false }
-    - { item: "Smoking history", critical: false }
+  - item: History of recurrent tonsillitis
+    critical: true
+  - item: Recent exposure to strep throat
+    critical: false
+  - item: Smoking history
+    critical: false
   medications:
-    - { item: "Current medications (none)", critical: false }
-    - { item: "Allergies (especially penicillin)", critical: true }
+  - item: Current medications (none)
+    critical: false
+  - item: Allergies (especially penicillin)
+    critical: true
   family_social:
-    - { item: "Family history of tonsillitis or strep", critical: false }
-    - { item: "Occupation (teacher)", critical: false }
+  - item: Family history of tonsillitis or strep
+    critical: false
+  - item: Occupation (teacher)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Difficulty breathing or stridor", critical: true }
-  - { item: "Muffled voice (hot potato voice)", critical: false }
-  - { item: "Drooling", critical: false }
-  - { item: "Trismus (difficulty opening mouth)", critical: false }
-  - { item: "Unilateral severe pain with peritonsillar swelling", critical: false }
+- item: Difficulty breathing or stridor
+  critical: true
+- item: Muffled voice (hot potato voice)
+  critical: false
+- item: Drooling
+  critical: false
+- item: Trismus (difficulty opening mouth)
+  critical: false
+- item: Unilateral severe pain with peritonsillar swelling
+  critical: false
 expected_ddx:
-  working_diagnosis: "Acute tonsillitis"
+  working_diagnosis: Acute tonsillitis
   differentials:
-    - "Infectious mononucleosis"
-    - "Peritonsillar abscess"
-    - "Viral pharyngitis"
+  - Infectious mononucleosis
+  - Peritonsillar abscess
+  - Viral pharyngitis
 investigations:
   appropriate:
-    - { name: "Rapid strep test", expected: "Positive" }
-    - { name: "Throat culture", expected: "Growth of Group A Streptococcus" }
-    - { name: "Complete blood count (CBC)", expected: "Elevated white blood count with left shift" }
+  - name: Rapid strep test
+    expected: Positive
+  - name: Throat culture
+    expected: Growth of Group A Streptococcus
+  - name: Complete blood count (CBC)
+    expected: Elevated white blood count with left shift
   inappropriate:
-    - "CT scan of neck"
-    - "X-ray of neck"
+  - CT scan of neck
+  - X-ray of neck
 physical_exam_findings:
-  general: "Acutely ill, febrile, appears uncomfortable. Enlarged, erythematous tonsils with exudates. Bilateral tender cervical lymphadenopathy."
+  general: Acutely ill, febrile, appears uncomfortable. Enlarged, erythematous tonsils
+    with exudates. Bilateral tender cervical lymphadenopathy.
   vitals:
-    temperature: "38.8°C"
+    temperature: 38.8°C
     heart_rate: 98
-    blood_pressure: "118/76"
+    blood_pressure: 118/76
     respiratory_rate: 16
     oxygen_saturation: 98
 management:
   pharmacological:
-    - "Penicillin VK 500 mg PO TID × 10 days (or amoxicillin if no allergy)"
-    - "Acetaminophen or ibuprofen for pain and fever"
-    - "Antibiotic course adjustment if penicillin allergy (e.g., clindamycin)"
+  - Penicillin VK 500 mg PO TID × 10 days (or amoxicillin if no allergy)
+  - Acetaminophen or ibuprofen for pain and fever
+  - Antibiotic course adjustment if penicillin allergy (e.g., clindamycin)
   non_pharmacological:
-    - "Warm salt water gargles"
-    - "Adequate hydration, rest"
-    - "Soft diet, avoid irritants"
+  - Warm salt water gargles
+  - Adequate hydration, rest
+  - Soft diet, avoid irritants
   education_safety_netting:
-    - "Complete full course of antibiotics even if feeling better"
-    - "Seek urgent care if worsening throat pain, difficulty breathing, drooling, or inability to swallow"
-    - "Return if no improvement after 48 hours of antibiotics"
+  - Complete full course of antibiotics even if feeling better
+  - Seek urgent care if worsening throat pain, difficulty breathing, drooling, or
+    inability to swallow
+  - Return if no improvement after 48 hours of antibiotics
 scoring_weights_override: null
 ---
 

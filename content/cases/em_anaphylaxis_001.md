@@ -1,71 +1,116 @@
 ---
 id: em_anaphylaxis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: emergency
 system: immune
-presentation: "Sudden rash and breathing difficulty"
-presentation_id: "Ruam mendadak dan sesak napas"
-first_impression: "A woman appears breathless, with visible swelling on face and neck, hives on arms."
-first_impression_id: "Seorang wanita tampak sesak, bengkak terlihat di wajah dan leher, bentol-bentol di lengan."
+presentation: Sudden rash and breathing difficulty
+presentation_id: Ruam mendadak dan sesak napas
+first_impression: A woman appears breathless, with visible swelling on face and neck,
+  hives on arms.
+first_impression_id: Seorang wanita tampak sesak, bengkak terlihat di wajah dan leher,
+  bentol-bentol di lengan.
 target_condition: Anaphylaxis
 difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "World Allergy Organization Anaphylaxis Guidelines 2020"
-  - "WAO Anaphylaxis Guidance (2020)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I suddenly broke out in hives and now I can't breathe properly."
+- World Allergy Organization Anaphylaxis Guidelines 2020
+- WAO Anaphylaxis Guidance (2020)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I suddenly broke out in hives and now I can't breathe properly.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did this start?", critical: true }
-    - { item: "Location - where is the rash?", critical: false }
-    - { item: "Duration - how long has it been going on?", critical: false }
-    - { item: "Character - what does the rash look like?", critical: false }
-    - { item: "Aggravating factors - anything that makes it worse?", critical: false }
-    - { item: "Relieving factors - anything that makes it better?", critical: false }
-    - { item: "Timing - has it changed since it started?", critical: false }
-    - { item: "Severity - how bad is the breathing difficulty?", critical: true }
-    - { item: "Exposure - did you eat, drink, or get stung by anything new?", critical: true }
+  - item: Onset - when did this start?
+    critical: true
+  - item: Location - where is the rash?
+    critical: false
+  - item: Duration - how long has it been going on?
+    critical: false
+  - item: Character - what does the rash look like?
+    critical: false
+  - item: Aggravating factors - anything that makes it worse?
+    critical: false
+  - item: Relieving factors - anything that makes it better?
+    critical: false
+  - item: Timing - has it changed since it started?
+    critical: false
+  - item: Severity - how bad is the breathing difficulty?
+    critical: true
+  - item: Exposure - did you eat, drink, or get stung by anything new?
+    critical: true
   associated_symptoms:
-    - { item: "Swelling of lips, tongue, or throat", critical: true }
-    - { item: "Wheezing or noisy breathing", critical: true }
-    - { item: "Dizziness or feeling faint", critical: true }
-    - { item: "Nausea, vomiting, or abdominal pain", critical: false }
-    - { item: "Itching of the skin or eyes", critical: false }
-    - { item: "Hoarse voice or difficulty speaking", critical: true }
+  - item: Swelling of lips, tongue, or throat
+    critical: true
+  - item: Wheezing or noisy breathing
+    critical: true
+  - item: Dizziness or feeling faint
+    critical: true
+  - item: Nausea, vomiting, or abdominal pain
+    critical: false
+  - item: Itching of the skin or eyes
+    critical: false
+  - item: Hoarse voice or difficulty speaking
+    critical: true
   pmh:
-    - { item: "Any known allergies", critical: true }
-    - { item: "Previous similar reactions", critical: true }
-    - { item: "Asthma or other lung conditions", critical: false }
-    - { item: "Heart conditions", critical: false }
+  - item: Any known allergies
+    critical: true
+  - item: Previous similar reactions
+    critical: true
+  - item: Asthma or other lung conditions
+    critical: false
+  - item: Heart conditions
+    critical: false
   medications:
-    - { item: "Current medications", critical: false }
-    - { item: "Any new medications or supplements", critical: true }
+  - item: Current medications
+    critical: false
+  - item: Any new medications or supplements
+    critical: true
   family_social:
-    - { item: "Family history of allergies", critical: false }
-    - { item: "Smoking or alcohol use", critical: false }
+  - item: Family history of allergies
+    critical: false
+  - item: Smoking or alcohol use
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Airway compromise - stridor, hoarseness, or difficulty speaking", critical: true }
-  - { item: "Breathing difficulty - tachypnea, wheezing, or cyanosis", critical: true }
-  - { item: "Circulatory collapse - hypotension, tachycardia, or syncope", critical: true }
+- item: Airway compromise - stridor, hoarseness, or difficulty speaking
+  critical: true
+- item: Breathing difficulty - tachypnea, wheezing, or cyanosis
+  critical: true
+- item: Circulatory collapse - hypotension, tachycardia, or syncope
+  critical: true
 expected_ddx:
-  working_diagnosis: "Anaphylaxis"
-  differentials: ["Acute urticaria", "Angioedema", "Asthma exacerbation", "Panic attack"]
+  working_diagnosis: Anaphylaxis
+  differentials:
+  - Acute urticaria
+  - Angioedema
+  - Asthma exacerbation
+  - Panic attack
 investigations:
   appropriate:
-    - { name: "Serum tryptase level", expected: "Elevated" }
-    - { name: "Oxygen saturation", expected: "Decreased (e.g., 88-92%)" }
-  inappropriate: ["Chest X-ray", "Complete blood count"]
+  - name: Serum tryptase level
+    expected: Elevated
+  - name: Oxygen saturation
+    expected: Decreased (e.g., 88-92%)
+  inappropriate:
+  - Chest X-ray
+  - Complete blood count
 physical_exam_findings:
-  general: "Patient appears anxious, sitting upright, using accessory muscles to breathe. Diffuse urticarial rash on trunk and arms."
+  general: Patient appears anxious, sitting upright, using accessory muscles to breathe.
+    Diffuse urticarial rash on trunk and arms.
   vitals:
     heart_rate: 110 bpm
     blood_pressure: 90/60 mmHg
@@ -74,20 +119,20 @@ physical_exam_findings:
     temperature: 37.0 C
 management:
   pharmacological:
-    - "Epinephrine 0.3 mg intramuscularly (anterolateral thigh) immediately"
-    - "Diphenhydramine 25-50 mg IV/IM"
-    - "Methylprednisolone 125 mg IV"
-    - "Albuterol nebulized 2.5 mg if wheezing"
+  - Epinephrine 0.3 mg intramuscularly (anterolateral thigh) immediately
+  - Diphenhydramine 25-50 mg IV/IM
+  - Methylprednisolone 125 mg IV
+  - Albuterol nebulized 2.5 mg if wheezing
   non_pharmacological:
-    - "Place patient in supine position with legs elevated if hypotensive"
-    - "High-flow oxygen via non-rebreather mask"
-    - "Establish IV access with two large-bore cannulas"
-    - "Continuous cardiac and oxygen saturation monitoring"
+  - Place patient in supine position with legs elevated if hypotensive
+  - High-flow oxygen via non-rebreather mask
+  - Establish IV access with two large-bore cannulas
+  - Continuous cardiac and oxygen saturation monitoring
   education_safety_netting:
-    - "Explain the need for an epinephrine auto-injector prescription"
-    - "Advise to avoid the suspected trigger (e.g., peanuts)"
-    - "Provide a written anaphylaxis action plan"
-    - "Schedule follow-up with an allergist"
+  - Explain the need for an epinephrine auto-injector prescription
+  - Advise to avoid the suspected trigger (e.g., peanuts)
+  - Provide a written anaphylaxis action plan
+  - Schedule follow-up with an allergist
 scoring_weights_override: null
 ---
 

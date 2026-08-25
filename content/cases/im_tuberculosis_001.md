@@ -4,79 +4,137 @@ schema_version: 2
 status: in_review
 specialty: internal_medicine
 system: respiratory
-presentation: "Productive cough weight loss and night sweats"
-presentation_id: "Batuk berdahak tidak sembuh-sembuh dan berat badan turun"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Pulmonary tuberculosis"
+presentation: Productive cough weight loss and night sweats
+presentation_id: Batuk berdahak tidak sembuh-sembuh dan berat badan turun
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Pulmonary tuberculosis
 difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
-source_refs: ["Program Nasional Penanggulangan TB (Permenkes), WHO TB guidelines (no PNPK on JDIH)"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have a bad cough that won't go away, and I've been losing weight."
+languages:
+- en
+source_refs:
+- Program Nasional Penanggulangan TB (Permenkes), WHO TB guidelines (no PNPK on JDIH)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have a bad cough that won't go away, and I've been losing weight.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset of cough (weeks/months)", critical: true }
-    - { item: "Character of cough (dry vs productive)", critical: true }
-    - { item: "Sputum color and amount", critical: false }
-    - { item: "Hemoptysis (blood in sputum)", critical: true }
-    - { item: "Duration of night sweats", critical: true }
-    - { item: "Weight loss amount over time", critical: true }
-    - { item: "Fever pattern", critical: false }
-    - { item: "Chest pain or shortness of breath", critical: false }
+  - item: Onset of cough (weeks/months)
+    critical: true
+  - item: Character of cough (dry vs productive)
+    critical: true
+  - item: Sputum color and amount
+    critical: false
+  - item: Hemoptysis (blood in sputum)
+    critical: true
+  - item: Duration of night sweats
+    critical: true
+  - item: Weight loss amount over time
+    critical: true
+  - item: Fever pattern
+    critical: false
+  - item: Chest pain or shortness of breath
+    critical: false
   associated_symptoms:
-    - { item: "Fatigue or weakness", critical: false }
-    - { item: "Loss of appetite", critical: false }
+  - item: Fatigue or weakness
+    critical: false
+  - item: Loss of appetite
+    critical: false
   pmh:
-    - { item: "Previous tuberculosis or exposure", critical: true }
-    - { item: "HIV status or risk factors", critical: true }
-    - { item: "Diabetes or other immunosuppression", critical: false }
+  - item: Previous tuberculosis or exposure
+    critical: true
+  - item: HIV status or risk factors
+    critical: true
+  - item: Diabetes or other immunosuppression
+    critical: false
   medications:
-    - { item: "Current medications (including over-the-counter)", critical: false }
-    - { item: "Any prior TB treatment", critical: true }
+  - item: Current medications (including over-the-counter)
+    critical: false
+  - item: Any prior TB treatment
+    critical: true
   family_social:
-    - { item: "Household contacts with cough or TB", critical: true }
-    - { item: "Travel to high-TB-burden areas", critical: false }
-    - { item: "Smoking history", critical: false }
-    - { item: "Alcohol or drug use", critical: false }
-    - { item: "Occupation and living conditions (crowding)", critical: true }
+  - item: Household contacts with cough or TB
+    critical: true
+  - item: Travel to high-TB-burden areas
+    critical: false
+  - item: Smoking history
+    critical: false
+  - item: Alcohol or drug use
+    critical: false
+  - item: Occupation and living conditions (crowding)
+    critical: true
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Hemoptysis (coughing up blood)", critical: true }
-  - { item: "Unexplained weight loss >10% body weight", critical: true }
-  - { item: "Night sweats for >3 weeks", critical: true }
-  - { item: "Known HIV positive or immunocompromised", critical: true }
+- item: Hemoptysis (coughing up blood)
+  critical: true
+- item: Unexplained weight loss >10% body weight
+  critical: true
+- item: Night sweats for >3 weeks
+  critical: true
+- item: Known HIV positive or immunocompromised
+  critical: true
 expected_ddx:
-  working_diagnosis: "Pulmonary tuberculosis"
-  differentials: ["Community-acquired pneumonia", "Lung cancer", "Bronchiectasis"]
+  working_diagnosis: Pulmonary tuberculosis
+  differentials:
+  - Community-acquired pneumonia
+  - Lung cancer
+  - Bronchiectasis
 investigations:
   appropriate:
-    - { name: "Chest X-ray", expected: "Upper lobe infiltrates or cavitary lesions" }
-    - { name: "Sputum smear microscopy for acid-fast bacilli", expected: "Positive" }
-    - { name: "Sputum culture for Mycobacterium tuberculosis", expected: "Positive" }
-    - { name: "GeneXpert MTB/RIF assay", expected: "Positive, rifampicin sensitive" }
-    - { name: "HIV test", expected: "Negative" }
-  inappropriate: ["Complete blood count alone", "CT scan without prior chest X-ray"]
+  - name: Chest X-ray
+    expected: Upper lobe infiltrates or cavitary lesions
+  - name: Sputum smear microscopy for acid-fast bacilli
+    expected: Positive
+  - name: Sputum culture for Mycobacterium tuberculosis
+    expected: Positive
+  - name: GeneXpert MTB/RIF assay
+    expected: Positive, rifampicin sensitive
+  - name: HIV test
+    expected: Negative
+  inappropriate:
+  - Complete blood count alone
+  - CT scan without prior chest X-ray
 physical_exam_findings:
-  general: "Thin, appears chronically ill, mild pallor"
-  vitals: { heart_rate: 95, blood_pressure: "110/70", respiratory_rate: 20, temperature: 37.8, oxygen_saturation: 97 }
+  general: Thin, appears chronically ill, mild pallor
+  vitals:
+    heart_rate: 95
+    blood_pressure: 110/70
+    respiratory_rate: 20
+    temperature: 37.8
+    oxygen_saturation: 97
 management:
   pharmacological:
-    - "Standard 4-drug regimen: rifampicin, isoniazid, pyrazinamide, ethambutol for 2 months"
-    - "Continuation phase: rifampicin and isoniazid for 4 months"
+  - 'Standard 4-drug regimen: rifampicin, isoniazid, pyrazinamide, ethambutol for
+    2 months'
+  - 'Continuation phase: rifampicin and isoniazid for 4 months'
   non_pharmacological:
-    - "Respiratory isolation until sputum smear negative"
-    - "Directly observed therapy (DOT) recommended"
+  - Respiratory isolation until sputum smear negative
+  - Directly observed therapy (DOT) recommended
   education_safety_netting:
-    - "Complete full course of treatment even if feeling better"
-    - "Report any hemoptysis or worsening symptoms immediately"
-    - "Avoid close contact with others until no longer infectious"
+  - Complete full course of treatment even if feeling better
+  - Report any hemoptysis or worsening symptoms immediately
+  - Avoid close contact with others until no longer infectious
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

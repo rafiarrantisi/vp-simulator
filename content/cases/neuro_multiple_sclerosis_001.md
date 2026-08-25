@@ -1,73 +1,133 @@
 ---
 id: neuro_multiple_sclerosis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: neurology
 system: nervous
-presentation: "Weakness and numbness on one side of the body"
-presentation_id: "Kelemahan dan mati rasa pada satu sisi tubuh"
-first_impression: "Patient appears to have neurological concerns."
-first_impression_id: "Pasien tampak mengalami masalah neurologis."
-target_condition: "Multiple sclerosis"
+presentation: Weakness and numbness on one side of the body
+presentation_id: Kelemahan dan mati rasa pada satu sisi tubuh
+first_impression: Patient appears to have neurological concerns.
+first_impression_id: Pasien tampak mengalami masalah neurologis.
+target_condition: Multiple sclerosis
 difficulty: 3
 estimated_minutes: 20
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline NG220: Multiple sclerosis in adults"
-  - "NICE NG144 — Multiple sclerosis"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have weakness and numbness on my right side that started a few days ago."
+- 'NICE guideline NG220: Multiple sclerosis in adults'
+- NICE NG144 — Multiple sclerosis
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have weakness and numbness on my right side that started a few
+  days ago.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - right arm and leg", critical: true }
-    - { item: "Onset - sudden, three days ago", critical: true }
-    - { item: "Character - heavy, dragging feeling in leg; tingling numbness in arm", critical: true }
-    - { item: "Radiation - no radiation", critical: false }
-    - { item: "Associated symptoms - blurred vision in right eye one month ago", critical: true }
-    - { item: "Time course - symptoms came on over a few hours, then stayed the same", critical: true }
-    - { item: "Exacerbating factors - hot shower makes the numbness feel worse", critical: true }
-    - { item: "Severity - 4/10 for weakness, 3/10 for numbness", critical: false }
+  - item: Site - right arm and leg
+    critical: true
+  - item: Onset - sudden, three days ago
+    critical: true
+  - item: Character - heavy, dragging feeling in leg; tingling numbness in arm
+    critical: true
+  - item: Radiation - no radiation
+    critical: false
+  - item: Associated symptoms - blurred vision in right eye one month ago
+    critical: true
+  - item: Time course - symptoms came on over a few hours, then stayed the same
+    critical: true
+  - item: Exacerbating factors - hot shower makes the numbness feel worse
+    critical: true
+  - item: Severity - 4/10 for weakness, 3/10 for numbness
+    critical: false
   associated_symptoms:
-    - { item: "Blurred vision in right eye that lasted two weeks and got better on its own", critical: true }
-    - { item: "Fatigue that is worse in the afternoon", critical: false }
-    - { item: "No headache, fever, or neck stiffness", critical: true }
-    - { item: "No chest pain or shortness of breath", critical: false }
+  - item: Blurred vision in right eye that lasted two weeks and got better on its
+      own
+    critical: true
+  - item: Fatigue that is worse in the afternoon
+    critical: false
+  - item: No headache, fever, or neck stiffness
+    critical: true
+  - item: No chest pain or shortness of breath
+    critical: false
   pmh:
-    - { item: "No previous hospitalizations", critical: false }
-    - { item: "No high blood pressure or diabetes", critical: false }
-    - { item: "No history of stroke or seizures", critical: true }
-    - { item: "No recent infections or vaccinations", critical: false }
+  - item: No previous hospitalizations
+    critical: false
+  - item: No high blood pressure or diabetes
+    critical: false
+  - item: No history of stroke or seizures
+    critical: true
+  - item: No recent infections or vaccinations
+    critical: false
   medications:
-    - { item: "No regular medications", critical: false }
-    - { item: "No over-the-counter or herbal supplements", critical: false }
+  - item: No regular medications
+    critical: false
+  - item: No over-the-counter or herbal supplements
+    critical: false
   family_social:
-    - { item: "Mother has rheumatoid arthritis", critical: false }
-    - { item: "No family history of multiple sclerosis", critical: true }
-    - { item: "Works as an accountant, sits at a desk most of the day", critical: false }
-    - { item: "Does not smoke, drinks alcohol occasionally (1-2 glasses of wine per week)", critical: false }
+  - item: Mother has rheumatoid arthritis
+    critical: false
+  - item: No family history of multiple sclerosis
+    critical: true
+  - item: Works as an accountant, sits at a desk most of the day
+    critical: false
+  - item: Does not smoke, drinks alcohol occasionally (1-2 glasses of wine per week)
+    critical: false
   ice_fife:
-    - { item: "Ideas - I think I might have had a mini-stroke or pinched a nerve", critical: true }
-    - { item: "Concerns - I am worried this is something serious like a brain tumor or that I will be permanently disabled", critical: true }
-    - { item: "Expectations - I hope you can give me medicine to make it go away and tell me it is nothing bad", critical: false }
+  - item: Ideas - I think I might have had a mini-stroke or pinched a nerve
+    critical: true
+  - item: Concerns - I am worried this is something serious like a brain tumor or
+      that I will be permanently disabled
+    critical: true
+  - item: Expectations - I hope you can give me medicine to make it go away and tell
+      me it is nothing bad
+    critical: false
 red_flags:
-  - { item: "Sudden onset of unilateral weakness and numbness", critical: true }
-  - { item: "History of transient visual loss (optic neuritis)", critical: true }
-  - { item: "No headache or fever to suggest infection", critical: false }
+- item: Sudden onset of unilateral weakness and numbness
+  critical: true
+- item: History of transient visual loss (optic neuritis)
+  critical: true
+- item: No headache or fever to suggest infection
+  critical: false
 expected_ddx:
-  working_diagnosis: "Multiple sclerosis"
-  differentials: [ "Transient ischemic attack", "Cervical radiculopathy", "Functional neurological disorder" ]
+  working_diagnosis: Multiple sclerosis
+  differentials:
+  - Transient ischemic attack
+  - Cervical radiculopathy
+  - Functional neurological disorder
 investigations:
-  appropriate: [ { name: "MRI brain with and without contrast", expected: "Multiple periventricular white matter lesions, some enhancing" }, { name: "Lumbar puncture for oligoclonal bands", expected: "Positive oligoclonal bands in CSF not present in serum" } ]
-  inappropriate: [ "CT head without contrast" ]
+  appropriate:
+  - name: MRI brain with and without contrast
+    expected: Multiple periventricular white matter lesions, some enhancing
+  - name: Lumbar puncture for oligoclonal bands
+    expected: Positive oligoclonal bands in CSF not present in serum
+  inappropriate:
+  - CT head without contrast
 physical_exam_findings:
-  general: "Well-appearing woman in no acute distress"
-  vitals: { bp: "120/80", hr: 72, temp: 37.0, rr: 14, o2: 98 }
+  general: Well-appearing woman in no acute distress
+  vitals:
+    bp: 120/80
+    hr: 72
+    temp: 37.0
+    rr: 14
+    o2: 98
 management:
-  pharmacological: [ "High-dose intravenous methylprednisolone for acute relapse", "Disease-modifying therapy (e.g., interferon beta or glatiramer acetate) after diagnosis confirmed" ]
-  non_pharmacological: [ "Referral to neurology specialist", "Physical therapy for gait and strength", "Occupational therapy for energy conservation" ]
-  education_safety_netting: [ "Explain that multiple sclerosis is a chronic condition but many people live full lives", "Advise to avoid hot baths or saunas as heat can worsen symptoms", "Return if new weakness, vision loss, or difficulty breathing" ]
+  pharmacological:
+  - High-dose intravenous methylprednisolone for acute relapse
+  - Disease-modifying therapy (e.g., interferon beta or glatiramer acetate) after
+    diagnosis confirmed
+  non_pharmacological:
+  - Referral to neurology specialist
+  - Physical therapy for gait and strength
+  - Occupational therapy for energy conservation
+  education_safety_netting:
+  - Explain that multiple sclerosis is a chronic condition but many people live full
+    lives
+  - Advise to avoid hot baths or saunas as heat can worsen symptoms
+  - Return if new weakness, vision loss, or difficulty breathing
 scoring_weights_override: null
 ---
 

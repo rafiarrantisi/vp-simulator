@@ -4,93 +4,153 @@ schema_version: 2
 status: in_review
 specialty: emergency
 system: cardiovascular
-presentation: "Chest pain"
-presentation_id: "Nyeri dada terasa berat dan seperti ditekan sejak 1 jam yang lalu"
-first_impression: "Patient appears anxious, clutching chest, pale and diaphoretic."
-first_impression_id: "Pasien tampak cemas, memegangi dada, pucat dan berkeringat dingin."
-target_condition: "Acute coronary syndrome"
+presentation: Chest pain
+presentation_id: Nyeri dada terasa berat dan seperti ditekan sejak 1 jam yang lalu
+first_impression: Patient appears anxious, clutching chest, pale and diaphoretic.
+first_impression_id: Pasien tampak cemas, memegangi dada, pucat dan berkeringat dingin.
+target_condition: Acute coronary syndrome
 difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
-source_refs: ["PNPK Tata Laksana Angina Pektoris Stabil (KMK 1419/2023) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes14192023", "Guideline ACS internasional (ESC/AHA)"]
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have this heavy, squeezing pain in the middle of my chest that started about an hour ago."
+languages:
+- en
+source_refs:
+- PNPK Tata Laksana Angina Pektoris Stabil (KMK 1419/2023) — https://jdih.kemkes.go.id/documents/keputusan-menteri-kesehatan-nomor-hk0107menkes14192023
+- Guideline ACS internasional (ESC/AHA)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: Kurasi pilot candidate (plan §6.2). Belum ada clinical sign-off —
+    WAJIB direview dokter/pendidik sebelum pilot_verified/published (§11).
+chief_complaint: I have this heavy, squeezing pain in the middle of my chest that
+  started about an hour ago.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site of pain (central chest)", critical: true }
-    - { item: "Onset (sudden, about 1 hour ago)", critical: true }
-    - { item: "Character (heavy, squeezing, pressure)", critical: true }
-    - { item: "Radiation (to left arm and jaw)", critical: true }
-    - { item: "Associated symptoms (shortness of breath, nausea, cold sweat)", critical: true }
-    - { item: "Timing (constant since onset, not intermittent)", critical: false }
-    - { item: "Exacerbating factors (worse with walking up stairs)", critical: false }
-    - { item: "Relieving factors (nothing helps, rest doesn't change it)", critical: false }
-    - { item: "Severity (8 out of 10)", critical: false }
+  - item: Site of pain (central chest)
+    critical: true
+  - item: Onset (sudden, about 1 hour ago)
+    critical: true
+  - item: Character (heavy, squeezing, pressure)
+    critical: true
+  - item: Radiation (to left arm and jaw)
+    critical: true
+  - item: Associated symptoms (shortness of breath, nausea, cold sweat)
+    critical: true
+  - item: Timing (constant since onset, not intermittent)
+    critical: false
+  - item: Exacerbating factors (worse with walking up stairs)
+    critical: false
+  - item: Relieving factors (nothing helps, rest doesn't change it)
+    critical: false
+  - item: Severity (8 out of 10)
+    critical: false
   associated_symptoms:
-    - { item: "Shortness of breath", critical: true }
-    - { item: "Nausea", critical: false }
-    - { item: "Cold sweat", critical: true }
-    - { item: "Lightheadedness", critical: false }
+  - item: Shortness of breath
+    critical: true
+  - item: Nausea
+    critical: false
+  - item: Cold sweat
+    critical: true
+  - item: Lightheadedness
+    critical: false
   pmh:
-    - { item: "High blood pressure (for 10 years)", critical: true }
-    - { item: "High cholesterol", critical: true }
-    - { item: "Type 2 diabetes (diagnosed 5 years ago)", critical: true }
-    - { item: "Previous heart attack? (no)", critical: false }
+  - item: High blood pressure (for 10 years)
+    critical: true
+  - item: High cholesterol
+    critical: true
+  - item: Type 2 diabetes (diagnosed 5 years ago)
+    critical: true
+  - item: Previous heart attack? (no)
+    critical: false
   medications:
-    - { item: "Lisinopril 10 mg daily", critical: false }
-    - { item: "Atorvastatin 20 mg daily", critical: false }
-    - { item: "Metformin 500 mg twice daily", critical: false }
-    - { item: "Aspirin? (not taking)", critical: true }
+  - item: Lisinopril 10 mg daily
+    critical: false
+  - item: Atorvastatin 20 mg daily
+    critical: false
+  - item: Metformin 500 mg twice daily
+    critical: false
+  - item: Aspirin? (not taking)
+    critical: true
   family_social:
-    - { item: "Smoking history (1 pack per day for 30 years)", critical: true }
-    - { item: "Father had heart attack at age 55", critical: true }
-    - { item: "Alcohol use (2-3 beers on weekends)", critical: false }
-    - { item: "Occupation (construction foreman, physically active job)", critical: false }
+  - item: Smoking history (1 pack per day for 30 years)
+    critical: true
+  - item: Father had heart attack at age 55
+    critical: true
+  - item: Alcohol use (2-3 beers on weekends)
+    critical: false
+  - item: Occupation (construction foreman, physically active job)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Chest pain with radiation to left arm/jaw", critical: true }
-  - { item: "Chest pain with shortness of breath and diaphoresis", critical: true }
-  - { item: "Cardiac risk factors (smoking, diabetes, hypertension, family history)", critical: true }
+- item: Chest pain with radiation to left arm/jaw
+  critical: true
+- item: Chest pain with shortness of breath and diaphoresis
+  critical: true
+- item: Cardiac risk factors (smoking, diabetes, hypertension, family history)
+  critical: true
 expected_ddx:
-  working_diagnosis: "Acute coronary syndrome"
-  differentials: [ "Acute aortic dissection", "Pulmonary embolism", "Pericarditis", "Gastroesophageal reflux disease" ]
+  working_diagnosis: Acute coronary syndrome
+  differentials:
+  - Acute aortic dissection
+  - Pulmonary embolism
+  - Pericarditis
+  - Gastroesophageal reflux disease
 investigations:
   appropriate:
-    - { name: "12-lead ECG", expected: "ST-segment elevation in leads V2-V4" }
-    - { name: "High-sensitivity troponin I", expected: "Elevated above 99th percentile" }
-    - { name: "Chest X-ray", expected: "Normal heart size, no pulmonary edema" }
-    - { name: "Complete blood count", expected: "Normal" }
-    - { name: "Basic metabolic panel", expected: "Normal" }
-  inappropriate: [ "D-dimer", "CT coronary angiography in acute setting", "Exercise stress test" ]
+  - name: 12-lead ECG
+    expected: ST-segment elevation in leads V2-V4
+  - name: High-sensitivity troponin I
+    expected: Elevated above 99th percentile
+  - name: Chest X-ray
+    expected: Normal heart size, no pulmonary edema
+  - name: Complete blood count
+    expected: Normal
+  - name: Basic metabolic panel
+    expected: Normal
+  inappropriate:
+  - D-dimer
+  - CT coronary angiography in acute setting
+  - Exercise stress test
 physical_exam_findings:
-  general: "Patient appears anxious, clutching chest, pale and diaphoretic."
+  general: Patient appears anxious, clutching chest, pale and diaphoretic.
   vitals:
-    blood_pressure: "145/90 mmHg"
-    heart_rate: "105 bpm"
-    respiratory_rate: "22 breaths/min"
-    oxygen_saturation: "96% on room air"
-    temperature: "37.0°C"
+    blood_pressure: 145/90 mmHg
+    heart_rate: 105 bpm
+    respiratory_rate: 22 breaths/min
+    oxygen_saturation: 96% on room air
+    temperature: 37.0°C
 management:
   pharmacological:
-    - "Aspirin 325 mg chewed immediately"
-    - "Nitroglycerin 0.4 mg sublingual every 5 minutes up to 3 doses for pain"
-    - "Morphine 2-4 mg IV for persistent pain"
-    - "Heparin bolus and infusion per ACS protocol"
-    - "Ticagrelor 180 mg loading dose"
+  - Aspirin 325 mg chewed immediately
+  - Nitroglycerin 0.4 mg sublingual every 5 minutes up to 3 doses for pain
+  - Morphine 2-4 mg IV for persistent pain
+  - Heparin bolus and infusion per ACS protocol
+  - Ticagrelor 180 mg loading dose
   non_pharmacological:
-    - "Supplemental oxygen if SpO2 < 90%"
-    - "Cardiac monitoring"
-    - "IV access with two large-bore cannulas"
-    - "Prepare for emergent percutaneous coronary intervention"
+  - Supplemental oxygen if SpO2 < 90%
+  - Cardiac monitoring
+  - IV access with two large-bore cannulas
+  - Prepare for emergent percutaneous coronary intervention
   education_safety_netting:
-    - "Explain need for urgent cardiac catheterization"
-    - "Advise patient to call 911 if symptoms worsen or return after discharge"
-    - "Counsel on smoking cessation and lifestyle modification"
+  - Explain need for urgent cardiac catheterization
+  - Advise patient to call 911 if symptoms worsen or return after discharge
+  - Counsel on smoking cessation and lifestyle modification
 scoring_weights_override: null
+pilot_candidate: true
+competency:
+  standard: SKDI
+  authority: Konsil Kesehatan Indonesia (KKI)
+  version: '2012'
+  level: null
+  status: pending_review
 ---
 
 ## Identity

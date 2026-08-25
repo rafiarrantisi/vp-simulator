@@ -1,75 +1,116 @@
 ---
 id: derm_cellulitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: dermatology
 system: integumentary
-presentation: "Hot red swollen leg"
-presentation_id: "Kaki merah, panas, bengkak, dan nyeri saat berjalan"
-first_impression: "Patient appears to have skin concerns."
-first_impression_id: "Pasien tampak memiliki masalah kulit."
-target_condition: "Lower limb cellulitis"
+presentation: Hot red swollen leg
+presentation_id: Kaki merah, panas, bengkak, dan nyeri saat berjalan
+first_impression: Patient appears to have skin concerns.
+first_impression_id: Pasien tampak memiliki masalah kulit.
+target_condition: Lower limb cellulitis
 difficulty: 2
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline for cellulitis (2019)"
-  - "IDSA Skin and Soft Tissue Infections guideline (Stevens et al., 2014)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My left leg is red, hot, and swollen, and it hurts to walk."
+- NICE guideline for cellulitis (2019)
+- IDSA Skin and Soft Tissue Infections guideline (Stevens et al., 2014)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My left leg is red, hot, and swollen, and it hurts to walk.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - left lower leg", critical: true }
-    - { item: "Onset - started 3 days ago", critical: false }
-    - { item: "Character - redness and swelling", critical: true }
-    - { item: "Radiation - stays in the leg", critical: false }
-    - { item: "Associations - feels hot to touch", critical: true }
-    - { item: "Time course - getting worse", critical: false }
-    - { item: "Exacerbating factors - walking or standing makes it hurt more", critical: false }
-    - { item: "Severity - pain is 6/10", critical: false }
+  - item: Site - left lower leg
+    critical: true
+  - item: Onset - started 3 days ago
+    critical: false
+  - item: Character - redness and swelling
+    critical: true
+  - item: Radiation - stays in the leg
+    critical: false
+  - item: Associations - feels hot to touch
+    critical: true
+  - item: Time course - getting worse
+    critical: false
+  - item: Exacerbating factors - walking or standing makes it hurt more
+    critical: false
+  - item: Severity - pain is 6/10
+    critical: false
   associated_symptoms:
-    - { item: "Fever and chills", critical: true }
-    - { item: "Nausea", critical: false }
-    - { item: "Red streaks going up the leg", critical: true }
+  - item: Fever and chills
+    critical: true
+  - item: Nausea
+    critical: false
+  - item: Red streaks going up the leg
+    critical: true
   pmh:
-    - { item: "Type 2 diabetes", critical: true }
-    - { item: "Athlete's foot on the same foot", critical: true }
-    - { item: "Previous leg injury (scraped it on a rock 2 weeks ago)", critical: false }
+  - item: Type 2 diabetes
+    critical: true
+  - item: Athlete's foot on the same foot
+    critical: true
+  - item: Previous leg injury (scraped it on a rock 2 weeks ago)
+    critical: false
   medications:
-    - { item: "Metformin for diabetes", critical: false }
-    - { item: "Over-the-counter antifungal cream for athlete's foot", critical: false }
+  - item: Metformin for diabetes
+    critical: false
+  - item: Over-the-counter antifungal cream for athlete's foot
+    critical: false
   family_social:
-    - { item: "Lives alone, retired", critical: false }
-    - { item: "No smoking or alcohol", critical: false }
+  - item: Lives alone, retired
+    critical: false
+  - item: No smoking or alcohol
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Fever and chills suggesting systemic infection", critical: true }
-  - { item: "Rapid spread of redness or red streaks", critical: true }
+- item: Fever and chills suggesting systemic infection
+  critical: true
+- item: Rapid spread of redness or red streaks
+  critical: true
 expected_ddx:
-  working_diagnosis: "Lower limb cellulitis"
-  differentials: ["Deep vein thrombosis", "Erysipelas"]
+  working_diagnosis: Lower limb cellulitis
+  differentials:
+  - Deep vein thrombosis
+  - Erysipelas
 investigations:
   appropriate:
-    - { name: "Blood cultures", expected: "May show Streptococcus or Staphylococcus species" }
-    - { name: "Full blood count", expected: "Elevated white cell count" }
-    - { name: "C-reactive protein", expected: "Elevated" }
-  inappropriate: ["Venous duplex ultrasound (unless DVT suspected)"]
-physical_exam_findings: { general: "Patient appears unwell, flushed face, guarding the left leg.", vitals: { temperature: "38.5°C", heart_rate: "95 bpm", blood_pressure: "130/80 mmHg", respiratory_rate: "18/min", oxygen_saturation: "98% on room air" } }
+  - name: Blood cultures
+    expected: May show Streptococcus or Staphylococcus species
+  - name: Full blood count
+    expected: Elevated white cell count
+  - name: C-reactive protein
+    expected: Elevated
+  inappropriate:
+  - Venous duplex ultrasound (unless DVT suspected)
+physical_exam_findings:
+  general: Patient appears unwell, flushed face, guarding the left leg.
+  vitals:
+    temperature: 38.5°C
+    heart_rate: 95 bpm
+    blood_pressure: 130/80 mmHg
+    respiratory_rate: 18/min
+    oxygen_saturation: 98% on room air
 management:
   pharmacological:
-    - "Oral antibiotics (e.g., flucloxacillin or clindamycin if allergic)"
-    - "Paracetamol for pain and fever"
+  - Oral antibiotics (e.g., flucloxacillin or clindamycin if allergic)
+  - Paracetamol for pain and fever
   non_pharmacological:
-    - "Elevate the leg to reduce swelling"
-    - "Rest and avoid walking"
+  - Elevate the leg to reduce swelling
+  - Rest and avoid walking
   education_safety_netting:
-    - "Return if redness spreads, fever worsens, or you feel very unwell"
-    - "Complete the full course of antibiotics even if you feel better"
+  - Return if redness spreads, fever worsens, or you feel very unwell
+  - Complete the full course of antibiotics even if you feel better
 scoring_weights_override: null
 ---
 

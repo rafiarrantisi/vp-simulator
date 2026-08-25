@@ -1,78 +1,136 @@
 ---
 id: im_ana_macrocytic_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: hematologic
-presentation: "Feeling tired and short of breath on exertion"
-presentation_id: "Mudah lelah dan sesak napas saat naik tangga"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Pernicious anaemia"
+presentation: Feeling tired and short of breath on exertion
+presentation_id: Mudah lelah dan sesak napas saat naik tangga
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Pernicious anaemia
 difficulty: 1
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline NG24: Anaemia - B12 and folate deficiency"
-  - "British Committee for Standards in Haematology — vitamin B12/folate (2014)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I've been feeling really tired and get out of breath easily when I walk up stairs."
+- 'NICE guideline NG24: Anaemia - B12 and folate deficiency'
+- British Committee for Standards in Haematology — vitamin B12/folate (2014)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I've been feeling really tired and get out of breath easily when
+  I walk up stairs.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset - when did the tiredness start?", critical: true }
-    - { item: "Duration - how long have you had these symptoms?", critical: false }
-    - { item: "Severity - how bad is the tiredness on a scale of 1 to 10?", critical: false }
-    - { item: "Progression - has it gotten worse over time?", critical: false }
-    - { item: "Triggers - what makes it worse?", critical: false }
-    - { item: "Relieving factors - what helps?", critical: false }
-    - { item: "Timing - is it constant or does it come and go?", critical: false }
+  - item: Onset - when did the tiredness start?
+    critical: true
+  - item: Duration - how long have you had these symptoms?
+    critical: false
+  - item: Severity - how bad is the tiredness on a scale of 1 to 10?
+    critical: false
+  - item: Progression - has it gotten worse over time?
+    critical: false
+  - item: Triggers - what makes it worse?
+    critical: false
+  - item: Relieving factors - what helps?
+    critical: false
+  - item: Timing - is it constant or does it come and go?
+    critical: false
   associated_symptoms:
-    - { item: "Have you noticed any numbness, tingling, or pins and needles in your hands or feet?", critical: true }
-    - { item: "Have you had any trouble with balance or walking?", critical: false }
-    - { item: "Have you noticed any changes in your skin colour, like looking pale or yellow?", critical: false }
-    - { item: "Have you had any mouth sores or a sore, red tongue?", critical: false }
-    - { item: "Have you had any heart palpitations or a racing heart?", critical: false }
-    - { item: "Have you had any headaches or dizziness?", critical: false }
-    - { item: "Have you had any changes in your appetite or weight loss?", critical: false }
+  - item: Have you noticed any numbness, tingling, or pins and needles in your hands
+      or feet?
+    critical: true
+  - item: Have you had any trouble with balance or walking?
+    critical: false
+  - item: Have you noticed any changes in your skin colour, like looking pale or yellow?
+    critical: false
+  - item: Have you had any mouth sores or a sore, red tongue?
+    critical: false
+  - item: Have you had any heart palpitations or a racing heart?
+    critical: false
+  - item: Have you had any headaches or dizziness?
+    critical: false
+  - item: Have you had any changes in your appetite or weight loss?
+    critical: false
   pmh:
-    - { item: "Do you have any medical conditions, like diabetes, thyroid problems, or stomach issues?", critical: false }
-    - { item: "Have you ever had any stomach surgeries, like a gastric bypass or removal of part of your stomach?", critical: true }
-    - { item: "Do you have a history of autoimmune diseases, like rheumatoid arthritis or vitiligo?", critical: false }
+  - item: Do you have any medical conditions, like diabetes, thyroid problems, or
+      stomach issues?
+    critical: false
+  - item: Have you ever had any stomach surgeries, like a gastric bypass or removal
+      of part of your stomach?
+    critical: true
+  - item: Do you have a history of autoimmune diseases, like rheumatoid arthritis
+      or vitiligo?
+    critical: false
   medications:
-    - { item: "Are you taking any medications, including over-the-counter or supplements?", critical: false }
-    - { item: "Do you take any acid reflux medications, like omeprazole or ranitidine?", critical: true }
+  - item: Are you taking any medications, including over-the-counter or supplements?
+    critical: false
+  - item: Do you take any acid reflux medications, like omeprazole or ranitidine?
+    critical: true
   family_social:
-    - { item: "Does anyone in your family have pernicious anaemia or autoimmune conditions?", critical: false }
-    - { item: "What is your diet like? Do you eat meat, fish, and dairy?", critical: false }
-    - { item: "Do you drink alcohol? If so, how much?", critical: false }
+  - item: Does anyone in your family have pernicious anaemia or autoimmune conditions?
+    critical: false
+  - item: What is your diet like? Do you eat meat, fish, and dairy?
+    critical: false
+  - item: Do you drink alcohol? If so, how much?
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Neurological symptoms like numbness, tingling, or balance problems", critical: true }
-  - { item: "Severe shortness of breath at rest", critical: false }
-  - { item: "Chest pain or palpitations", critical: false }
+- item: Neurological symptoms like numbness, tingling, or balance problems
+  critical: true
+- item: Severe shortness of breath at rest
+  critical: false
+- item: Chest pain or palpitations
+  critical: false
 expected_ddx:
-  working_diagnosis: "Pernicious anaemia"
-  differentials: ["Iron deficiency anaemia", "Folate deficiency anaemia"]
+  working_diagnosis: Pernicious anaemia
+  differentials:
+  - Iron deficiency anaemia
+  - Folate deficiency anaemia
 investigations:
   appropriate:
-    - { name: "Full blood count", expected: "Macrocytic anaemia (elevated MCV), low haemoglobin" }
-    - { name: "Serum vitamin B12 level", expected: "Low" }
-    - { name: "Serum folate level", expected: "Normal" }
-    - { name: "Intrinsic factor antibody test", expected: "Positive" }
-    - { name: "Parietal cell antibody test", expected: "Positive" }
-  inappropriate: ["Serum ferritin", "Iron studies"]
+  - name: Full blood count
+    expected: Macrocytic anaemia (elevated MCV), low haemoglobin
+  - name: Serum vitamin B12 level
+    expected: Low
+  - name: Serum folate level
+    expected: Normal
+  - name: Intrinsic factor antibody test
+    expected: Positive
+  - name: Parietal cell antibody test
+    expected: Positive
+  inappropriate:
+  - Serum ferritin
+  - Iron studies
 physical_exam_findings:
-  general: "Pale skin, mild jaundice (pale yellow tinge to sclera), smooth red tongue"
-  vitals: { heart_rate: 95, blood_pressure: 110/70, respiratory_rate: 16, temperature: 36.8, oxygen_saturation: 98% }
+  general: Pale skin, mild jaundice (pale yellow tinge to sclera), smooth red tongue
+  vitals:
+    heart_rate: 95
+    blood_pressure: 110/70
+    respiratory_rate: 16
+    temperature: 36.8
+    oxygen_saturation: 98%
 management:
-  pharmacological: ["Intramuscular vitamin B12 (hydroxocobalamin) injections - loading dose then maintenance"]
-  non_pharmacological: ["Dietary advice: ensure adequate B12 intake from animal products, but injections are essential"]
-  education_safety_netting: ["Explain lifelong need for B12 injections", "Advise to report any worsening neurological symptoms", "Inform about increased risk of gastric cancer and need for surveillance"]
+  pharmacological:
+  - Intramuscular vitamin B12 (hydroxocobalamin) injections - loading dose then maintenance
+  non_pharmacological:
+  - 'Dietary advice: ensure adequate B12 intake from animal products, but injections
+    are essential'
+  education_safety_netting:
+  - Explain lifelong need for B12 injections
+  - Advise to report any worsening neurological symptoms
+  - Inform about increased risk of gastric cancer and need for surveillance
 scoring_weights_override: null
 ---
 ## Identity

@@ -1,74 +1,115 @@
 ---
 id: paed_hpylori_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: paediatrics
 system: gastrointestinal
-presentation: "Recurrent stomach pain in an adolescent"
-presentation_id: "Nyeri perut berulang pada remaja selama dua bulan"
-first_impression: "A child appears unwell."
-first_impression_id: "Seorang anak tampak tidak sehat."
-target_condition: "Helicobacter pylori gastritis"
+presentation: Recurrent stomach pain in an adolescent
+presentation_id: Nyeri perut berulang pada remaja selama dua bulan
+first_impression: A child appears unwell.
+first_impression_id: Seorang anak tampak tidak sehat.
+target_condition: Helicobacter pylori gastritis
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline on dyspepsia and peptic ulcer disease (NG30)"
-  - "ESPGHAN/NASPGHAN — Helicobacter pylori management (2016)"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My stomach hurts off and on for the past two months."
+- NICE guideline on dyspepsia and peptic ulcer disease (NG30)
+- ESPGHAN/NASPGHAN — Helicobacter pylori management (2016)
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My stomach hurts off and on for the past two months.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - where exactly does the pain hurt?", critical: true }
-    - { item: "Onset - when did the pain first start?", critical: false }
-    - { item: "Character - what does the pain feel like?", critical: false }
-    - { item: "Radiation - does the pain spread anywhere?", critical: false }
-    - { item: "Associations - does the pain come with nausea, vomiting, or other feelings?", critical: false }
-    - { item: "Timing - is the pain worse after meals or on an empty stomach?", critical: true }
-    - { item: "Exacerbating/relieving factors - does anything make the pain better or worse?", critical: false }
-    - { item: "Severity - on a scale of 0-10, how bad is the pain?", critical: false }
+  - item: Site - where exactly does the pain hurt?
+    critical: true
+  - item: Onset - when did the pain first start?
+    critical: false
+  - item: Character - what does the pain feel like?
+    critical: false
+  - item: Radiation - does the pain spread anywhere?
+    critical: false
+  - item: Associations - does the pain come with nausea, vomiting, or other feelings?
+    critical: false
+  - item: Timing - is the pain worse after meals or on an empty stomach?
+    critical: true
+  - item: Exacerbating/relieving factors - does anything make the pain better or worse?
+    critical: false
+  - item: Severity - on a scale of 0-10, how bad is the pain?
+    critical: false
   associated_symptoms:
-    - { item: "Nausea or vomiting", critical: false }
-    - { item: "Loss of appetite", critical: true }
-    - { item: "Weight loss", critical: true }
-    - { item: "Blood in vomit or dark stools", critical: true }
-    - { item: "Heartburn or burping", critical: false }
-    - { item: "Feeling full quickly after eating", critical: false }
+  - item: Nausea or vomiting
+    critical: false
+  - item: Loss of appetite
+    critical: true
+  - item: Weight loss
+    critical: true
+  - item: Blood in vomit or dark stools
+    critical: true
+  - item: Heartburn or burping
+    critical: false
+  - item: Feeling full quickly after eating
+    critical: false
   pmh:
-    - { item: "Any previous stomach problems or diagnoses", critical: false }
-    - { item: "Any hospitalizations or surgeries", critical: false }
-    - { item: "Any known allergies (especially to medications)", critical: false }
+  - item: Any previous stomach problems or diagnoses
+    critical: false
+  - item: Any hospitalizations or surgeries
+    critical: false
+  - item: Any known allergies (especially to medications)
+    critical: false
   medications:
-    - { item: "Any medications you take regularly (prescription, over-the-counter, supplements)", critical: true }
-    - { item: "Any antacids or pain relievers you've taken for the stomach pain", critical: false }
+  - item: Any medications you take regularly (prescription, over-the-counter, supplements)
+    critical: true
+  - item: Any antacids or pain relievers you've taken for the stomach pain
+    critical: false
   family_social:
-    - { item: "Family history of stomach ulcers or stomach cancer", critical: true }
-    - { item: "Do you drink alcohol or smoke?", critical: false }
-    - { item: "Stress at school or home", critical: false }
-    - { item: "Do you take any non-steroidal anti-inflammatory drugs (like ibuprofen)?", critical: true }
+  - item: Family history of stomach ulcers or stomach cancer
+    critical: true
+  - item: Do you drink alcohol or smoke?
+    critical: false
+  - item: Stress at school or home
+    critical: false
+  - item: Do you take any non-steroidal anti-inflammatory drugs (like ibuprofen)?
+    critical: true
   ice_fife:
-    - { item: "Ideas - what do you think is causing the pain?", critical: true }
-    - { item: "Concerns - what worries you most about this pain?", critical: true }
-    - { item: "Expectations - what were you hoping we could do today?", critical: false }
+  - item: Ideas - what do you think is causing the pain?
+    critical: true
+  - item: Concerns - what worries you most about this pain?
+    critical: true
+  - item: Expectations - what were you hoping we could do today?
+    critical: false
 red_flags:
-  - { item: "Vomiting blood or coffee-ground material", critical: true }
-  - { item: "Black, tarry, or bloody stools", critical: true }
-  - { item: "Unintentional weight loss", critical: true }
-  - { item: "Severe pain that wakes you from sleep", critical: false }
-  - { item: "Difficulty swallowing", critical: true }
+- item: Vomiting blood or coffee-ground material
+  critical: true
+- item: Black, tarry, or bloody stools
+  critical: true
+- item: Unintentional weight loss
+  critical: true
+- item: Severe pain that wakes you from sleep
+  critical: false
+- item: Difficulty swallowing
+  critical: true
 expected_ddx:
-  working_diagnosis: "Helicobacter pylori gastritis"
+  working_diagnosis: Helicobacter pylori gastritis
   differentials:
-    - "Functional abdominal pain"
-    - "Peptic ulcer disease (non-H. pylori)"
-    - "Celiac disease"
-    - "Gastroesophageal reflux disease"
-    - "Inflammatory bowel disease (early)"
+  - Functional abdominal pain
+  - Peptic ulcer disease (non-H. pylori)
+  - Celiac disease
+  - Gastroesophageal reflux disease
+  - Inflammatory bowel disease (early)
 investigations: []
-physical_exam_findings: { general: "", vitals: {} }
-management: { pharmacological: [], non_pharmacological: [], education_safety_netting: [] }
+physical_exam_findings:
+  general: ''
+  vitals: {}
+management:
+  pharmacological: []
+  non_pharmacological: []
+  education_safety_netting: []
 scoring_weights_override: null
 ---
 

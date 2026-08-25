@@ -1,66 +1,104 @@
 ---
 id: oph_posterior_vitreous_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: eye
-presentation: "Flash of light and floaters in one eye"
-presentation_id: "Kilatan cahaya dan floaters di satu mata"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Posterior vitreous detachment"
+presentation: Flash of light and floaters in one eye
+presentation_id: Kilatan cahaya dan floaters di satu mata
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Posterior vitreous detachment
 difficulty: 2
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American Academy of Ophthalmology Preferred Practice Pattern: Posterior Vitreous Detachment"
-  - "AAO Preferred Practice Pattern — posterior vitreous detachment"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I see flashes of light and floaters in my right eye."
+- 'American Academy of Ophthalmology Preferred Practice Pattern: Posterior Vitreous
+  Detachment'
+- AAO Preferred Practice Pattern — posterior vitreous detachment
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I see flashes of light and floaters in my right eye.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - which eye", critical: false }
-    - { item: "Onset - sudden or gradual", critical: true }
-    - { item: "Character of flashes - like lightning or camera flash", critical: false }
-    - { item: "Character of floaters - cobwebs, specks, or strands", critical: false }
-    - { item: "Radiation - do flashes move", critical: false }
-    - { item: "Associated symptoms - pain, vision loss", critical: false }
-    - { item: "Timing - constant or intermittent", critical: false }
-    - { item: "Exacerbating factors - bright light, eye movement", critical: false }
-    - { item: "Severity - how bothersome", critical: false }
+  - item: Site - which eye
+    critical: false
+  - item: Onset - sudden or gradual
+    critical: true
+  - item: Character of flashes - like lightning or camera flash
+    critical: false
+  - item: Character of floaters - cobwebs, specks, or strands
+    critical: false
+  - item: Radiation - do flashes move
+    critical: false
+  - item: Associated symptoms - pain, vision loss
+    critical: false
+  - item: Timing - constant or intermittent
+    critical: false
+  - item: Exacerbating factors - bright light, eye movement
+    critical: false
+  - item: Severity - how bothersome
+    critical: false
   associated_symptoms:
-    - { item: "Blurred vision", critical: false }
-    - { item: "Eye pain", critical: false }
-    - { item: "Shadows or curtain over vision", critical: true }
+  - item: Blurred vision
+    critical: false
+  - item: Eye pain
+    critical: false
+  - item: Shadows or curtain over vision
+    critical: true
   pmh:
-    - { item: "Nearsightedness (myopia)", critical: false }
-    - { item: "Age over 50", critical: false }
-    - { item: "Previous eye surgery or injury", critical: false }
+  - item: Nearsightedness (myopia)
+    critical: false
+  - item: Age over 50
+    critical: false
+  - item: Previous eye surgery or injury
+    critical: false
   medications:
-    - { item: "Any regular medications", critical: false }
+  - item: Any regular medications
+    critical: false
   family_social:
-    - { item: "Family history of retinal detachment", critical: false }
-    - { item: "Occupation and hobbies", critical: false }
+  - item: Family history of retinal detachment
+    critical: false
+  - item: Occupation and hobbies
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Curtain-like shadow over vision", critical: true }
-  - { item: "Sudden increase in number of floaters", critical: false }
+- item: Curtain-like shadow over vision
+  critical: true
+- item: Sudden increase in number of floaters
+  critical: false
 expected_ddx:
-  working_diagnosis: "Posterior vitreous detachment"
-  differentials: [ "Retinal tear", "Retinal detachment", "Migraine with aura" ]
+  working_diagnosis: Posterior vitreous detachment
+  differentials:
+  - Retinal tear
+  - Retinal detachment
+  - Migraine with aura
 investigations:
   appropriate: []
   inappropriate: []
-physical_exam_findings: { general: "Patient appears anxious but in no acute distress.", vitals: {} }
+physical_exam_findings:
+  general: Patient appears anxious but in no acute distress.
+  vitals: {}
 management:
   pharmacological: []
-  non_pharmacological: [ "Reassurance that this is usually benign", "Advise to monitor for warning signs" ]
-  education_safety_netting: [ "Return immediately if you see a curtain-like shadow, a sudden shower of new floaters, or any vision loss." ]
+  non_pharmacological:
+  - Reassurance that this is usually benign
+  - Advise to monitor for warning signs
+  education_safety_netting:
+  - Return immediately if you see a curtain-like shadow, a sudden shower of new floaters,
+    or any vision loss.
 scoring_weights_override: null
 ---
 

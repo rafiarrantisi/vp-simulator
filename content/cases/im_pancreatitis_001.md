@@ -1,95 +1,127 @@
 ---
 id: im_pancreatitis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: internal_medicine
 system: gastrointestinal
-presentation: "Severe epigastric pain radiating to the back"
-presentation_id: "Nyeri perut bagian atas yang hebat menjalar ke punggung"
-first_impression: "Patient appears uncomfortable."
-first_impression_id: "Pasien tampak tidak nyaman."
-target_condition: "Acute pancreatitis"
+presentation: Severe epigastric pain radiating to the back
+presentation_id: Nyeri perut bagian atas yang hebat menjalar ke punggung
+first_impression: Patient appears uncomfortable.
+first_impression_id: Pasien tampak tidak nyaman.
+target_condition: Acute pancreatitis
 difficulty: 3
 estimated_minutes: 15
 mode_default: osce_full
-languages: [en]
+languages:
+- en
 source_refs:
-  - "American College of Gastroenterology guidelines for acute pancreatitis"
-  - "IAP/APA evidence-based guidelines — acute pancreatitis (2013)"
-
+- American College of Gastroenterology guidelines for acute pancreatitis
+- IAP/APA evidence-based guidelines — acute pancreatitis (2013)
 authoring:
   drafted_by: ai_v1
-  model: "deepseek/deepseek-v4-flash"
+  model: deepseek/deepseek-v4-flash
   reviewed_by: null
   reviewed_at: null
   review_notes: null
-chief_complaint: "I have severe pain in the upper part of my belly that goes through to my back."
+chief_complaint: I have severe pain in the upper part of my belly that goes through
+  to my back.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Onset – when did the pain start?", critical: false }
-    - { item: "Location – where exactly is the pain?", critical: false }
-    - { item: "Duration – how long does it last?", critical: false }
-    - { item: "Character – what does the pain feel like?", critical: true }
-    - { item: "Radiation – does the pain go anywhere else?", critical: true }
-    - { item: "Aggravating factors – what makes it worse?", critical: true }
-    - { item: "Relieving factors – what makes it better?", critical: false }
-    - { item: "Timing – constant or comes and goes?", critical: false }
-    - { item: "Severity – how bad is it on a scale of 0-10?", critical: false }
+  - item: Onset – when did the pain start?
+    critical: false
+  - item: Location – where exactly is the pain?
+    critical: false
+  - item: Duration – how long does it last?
+    critical: false
+  - item: Character – what does the pain feel like?
+    critical: true
+  - item: Radiation – does the pain go anywhere else?
+    critical: true
+  - item: Aggravating factors – what makes it worse?
+    critical: true
+  - item: Relieving factors – what makes it better?
+    critical: false
+  - item: Timing – constant or comes and goes?
+    critical: false
+  - item: Severity – how bad is it on a scale of 0-10?
+    critical: false
   associated_symptoms:
-    - { item: "Nausea or vomiting", critical: true }
-    - { item: "Fever or chills", critical: false }
-    - { item: "Abdominal bloating or feeling full", critical: false }
-    - { item: "Jaundice (yellow skin or eyes)", critical: false }
+  - item: Nausea or vomiting
+    critical: true
+  - item: Fever or chills
+    critical: false
+  - item: Abdominal bloating or feeling full
+    critical: false
+  - item: Jaundice (yellow skin or eyes)
+    critical: false
   pmh:
-    - { item: "History of gallstones", critical: true }
-    - { item: "History of pancreatitis", critical: true }
-    - { item: "Alcohol use disorder", critical: true }
-    - { item: "High triglycerides", critical: false }
-    - { item: "Medications that can cause pancreatitis", critical: false }
+  - item: History of gallstones
+    critical: true
+  - item: History of pancreatitis
+    critical: true
+  - item: Alcohol use disorder
+    critical: true
+  - item: High triglycerides
+    critical: false
+  - item: Medications that can cause pancreatitis
+    critical: false
   medications:
-    - { item: "Current medications (prescription, OTC, supplements)", critical: false }
+  - item: Current medications (prescription, OTC, supplements)
+    critical: false
   family_social:
-    - { item: "Family history of pancreatitis or gallstones", critical: false }
-    - { item: "Alcohol consumption (type, amount, frequency)", critical: true }
-    - { item: "Smoking history", critical: false }
+  - item: Family history of pancreatitis or gallstones
+    critical: false
+  - item: Alcohol consumption (type, amount, frequency)
+    critical: true
+  - item: Smoking history
+    critical: false
   ice_fife:
-    - { item: "Ideas – what they think is wrong", critical: true }
-    - { item: "Concerns – what worries them", critical: true }
-    - { item: "Expectations – what they hope for", critical: false }
+  - item: Ideas – what they think is wrong
+    critical: true
+  - item: Concerns – what worries them
+    critical: true
+  - item: Expectations – what they hope for
+    critical: false
 red_flags:
-  - { item: "Severe unrelenting pain", critical: true }
-  - { item: "Fever", critical: false }
-  - { item: "Jaundice", critical: false }
+- item: Severe unrelenting pain
+  critical: true
+- item: Fever
+  critical: false
+- item: Jaundice
+  critical: false
 expected_ddx:
-  working_diagnosis: "Acute pancreatitis"
+  working_diagnosis: Acute pancreatitis
   differentials:
-    - "Acute cholecystitis"
-    - "Perforated peptic ulcer"
+  - Acute cholecystitis
+  - Perforated peptic ulcer
 investigations:
   appropriate:
-    - { name: "Serum lipase", expected: "Elevated >3 times upper limit of normal" }
-    - { name: "Abdominal CT scan with contrast", expected: "Pancreatic enlargement, peripancreatic fat stranding, possible necrosis" }
+  - name: Serum lipase
+    expected: Elevated >3 times upper limit of normal
+  - name: Abdominal CT scan with contrast
+    expected: Pancreatic enlargement, peripancreatic fat stranding, possible necrosis
   inappropriate:
-    - "Plain abdominal X-ray"
+  - Plain abdominal X-ray
 physical_exam_findings:
-  general: "Patient appears uncomfortable, in distress, lying still on the exam table."
+  general: Patient appears uncomfortable, in distress, lying still on the exam table.
   vitals:
-    bp: "110/70"
-    hr: "100"
-    rr: "18"
-    temp: "38.2°C"
+    bp: 110/70
+    hr: '100'
+    rr: '18'
+    temp: 38.2°C
 management:
   pharmacological:
-    - "IV crystalloid fluids"
-    - "Analgesics (e.g., morphine)"
-    - "Antiemetics"
+  - IV crystalloid fluids
+  - Analgesics (e.g., morphine)
+  - Antiemetics
   non_pharmacological:
-    - "NPO initially"
-    - "Nasogastric tube if persistent vomiting"
-    - "Monitor for complications (e.g., organ failure, necrosis)"
+  - NPO initially
+  - Nasogastric tube if persistent vomiting
+  - Monitor for complications (e.g., organ failure, necrosis)
   education_safety_netting:
-    - "Avoid alcohol and fatty foods"
-    - "Seek immediate care if pain worsens, you develop fever/chills, or cannot keep fluids down"
+  - Avoid alcohol and fatty foods
+  - Seek immediate care if pain worsens, you develop fever/chills, or cannot keep
+    fluids down
 scoring_weights_override: null
 ---
 

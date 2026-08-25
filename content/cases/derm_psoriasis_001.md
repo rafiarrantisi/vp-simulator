@@ -1,67 +1,110 @@
 ---
 id: derm_psoriasis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: dermatology
 system: integumentary
-presentation: "Red scaly patches on elbows and knees"
-presentation_id: "Bercak merah bersisik di siku dan lutut yang tidak kunjung hilang"
-first_impression: "Patient appears to have skin concerns."
-first_impression_id: "Pasien tampak memiliki masalah kulit."
-target_condition: "Plaque psoriasis"
+presentation: Red scaly patches on elbows and knees
+presentation_id: Bercak merah bersisik di siku dan lutut yang tidak kunjung hilang
+first_impression: Patient appears to have skin concerns.
+first_impression_id: Pasien tampak memiliki masalah kulit.
+target_condition: Plaque psoriasis
 difficulty: 2
 estimated_minutes: 15
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "NICE guideline CG153: Psoriasis: assessment and management"
-  - "AAD-NPF psoriasis clinical guidelines (2019); NICE psoriasis CG153"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "I have red, scaly patches on my elbows and knees that won't go away."
+- 'NICE guideline CG153: Psoriasis: assessment and management'
+- AAD-NPF psoriasis clinical guidelines (2019); NICE psoriasis CG153
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: I have red, scaly patches on my elbows and knees that won't go away.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - elbows and knees", critical: true }
-    - { item: "Onset - started about 6 months ago", critical: false }
-    - { item: "Character - red, raised, with silvery scales", critical: true }
-    - { item: "Duration - persistent, no improvement", critical: false }
-    - { item: "Exacerbating factors - cold weather makes it worse", critical: false }
-    - { item: "Relieving factors - moisturising cream helps a little", critical: false }
-    - { item: "Temporal pattern - constant, no clear pattern", critical: false }
+  - item: Site - elbows and knees
+    critical: true
+  - item: Onset - started about 6 months ago
+    critical: false
+  - item: Character - red, raised, with silvery scales
+    critical: true
+  - item: Duration - persistent, no improvement
+    critical: false
+  - item: Exacerbating factors - cold weather makes it worse
+    critical: false
+  - item: Relieving factors - moisturising cream helps a little
+    critical: false
+  - item: Temporal pattern - constant, no clear pattern
+    critical: false
   associated_symptoms:
-    - { item: "Itching - mild, not severe", critical: false }
-    - { item: "Joint pain - none", critical: true }
-    - { item: "Nail changes - none noticed", critical: false }
+  - item: Itching - mild, not severe
+    critical: false
+  - item: Joint pain - none
+    critical: true
+  - item: Nail changes - none noticed
+    critical: false
   pmh:
-    - { item: "No prior skin conditions", critical: false }
-    - { item: "No history of psoriasis", critical: false }
-    - { item: "No recent infections", critical: false }
+  - item: No prior skin conditions
+    critical: false
+  - item: No history of psoriasis
+    critical: false
+  - item: No recent infections
+    critical: false
   medications:
-    - { item: "No prescription medications", critical: false }
-    - { item: "Over-the-counter moisturiser used occasionally", critical: false }
+  - item: No prescription medications
+    critical: false
+  - item: Over-the-counter moisturiser used occasionally
+    critical: false
   family_social:
-    - { item: "No family history of psoriasis", critical: false }
-    - { item: "Works as a teacher, no known triggers at work", critical: false }
-    - { item: "No smoking", critical: true }
-    - { item: "Drinks alcohol occasionally - 1-2 units per week", critical: false }
+  - item: No family history of psoriasis
+    critical: false
+  - item: Works as a teacher, no known triggers at work
+    critical: false
+  - item: No smoking
+    critical: true
+  - item: Drinks alcohol occasionally - 1-2 units per week
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Joint pain or swelling (screen for psoriatic arthritis)", critical: true }
-  - { item: "Sudden widespread rash (screen for guttate psoriasis)", critical: false }
+- item: Joint pain or swelling (screen for psoriatic arthritis)
+  critical: true
+- item: Sudden widespread rash (screen for guttate psoriasis)
+  critical: false
 expected_ddx:
-  working_diagnosis: "Plaque psoriasis"
-  differentials: [ "Eczema (atopic dermatitis)", "Seborrhoeic dermatitis" ]
+  working_diagnosis: Plaque psoriasis
+  differentials:
+  - Eczema (atopic dermatitis)
+  - Seborrhoeic dermatitis
 investigations:
-  appropriate: [ { name: "Clinical diagnosis based on history and exam", expected: "Typical plaque psoriasis" } ]
-  inappropriate: [ "Skin biopsy" ]
-physical_exam_findings: { general: "Well-appearing adult in no distress", vitals: {} }
+  appropriate:
+  - name: Clinical diagnosis based on history and exam
+    expected: Typical plaque psoriasis
+  inappropriate:
+  - Skin biopsy
+physical_exam_findings:
+  general: Well-appearing adult in no distress
+  vitals: {}
 management:
-  pharmacological: [ "Topical corticosteroids (e.g., betamethasone)", "Vitamin D analogues (e.g., calcipotriol)" ]
-  non_pharmacological: [ "Emollients for dryness", "Sunlight exposure in moderation" ]
-  education_safety_netting: [ "Advise to avoid scratching", "Return if joint pain develops", "Explain chronic nature and treatment options" ]
+  pharmacological:
+  - Topical corticosteroids (e.g., betamethasone)
+  - Vitamin D analogues (e.g., calcipotriol)
+  non_pharmacological:
+  - Emollients for dryness
+  - Sunlight exposure in moderation
+  education_safety_netting:
+  - Advise to avoid scratching
+  - Return if joint pain develops
+  - Explain chronic nature and treatment options
 scoring_weights_override: null
 ---
 

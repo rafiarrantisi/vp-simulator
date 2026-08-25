@@ -1,64 +1,102 @@
 ---
 id: oph_trichiasis_001
 schema_version: 2
-status: in_review
+status: ai_generated
 specialty: ophthalmology
 system: ocular
-presentation: "Eye pain and foreign body sensation"
-presentation_id: "Nyeri mata dan sensasi seperti ada benda asing"
-first_impression: "Patient appears to have eye discomfort."
-first_impression_id: "Pasien tampak mengalami ketidaknyamanan pada mata."
-target_condition: "Trichiasis"
+presentation: Eye pain and foreign body sensation
+presentation_id: Nyeri mata dan sensasi seperti ada benda asing
+first_impression: Patient appears to have eye discomfort.
+first_impression_id: Pasien tampak mengalami ketidaknyamanan pada mata.
+target_condition: Trichiasis
 difficulty: 1
 estimated_minutes: 10
 mode_default: anamnesis
-languages: [en]
+languages:
+- en
 source_refs:
-  - "AAO Preferred Practice Pattern: Trichiasis"
-  - "WHO trachoma guidelines — trichiasis surgery"
-
-authoring: { drafted_by: ai_v1, model: "deepseek/deepseek-v4-flash", reviewed_by: null, reviewed_at: null, review_notes: null }
-chief_complaint: "My eye has been hurting and feels like something is stuck in it."
+- 'AAO Preferred Practice Pattern: Trichiasis'
+- WHO trachoma guidelines — trichiasis surgery
+authoring:
+  drafted_by: ai_v1
+  model: deepseek/deepseek-v4-flash
+  reviewed_by: null
+  reviewed_at: null
+  review_notes: null
+chief_complaint: My eye has been hurting and feels like something is stuck in it.
 anamnesis_checklist:
   hpi_socrates:
-    - { item: "Site - which eye is affected", critical: true }
-    - { item: "Onset - when did the pain start", critical: true }
-    - { item: "Character - describe the pain", critical: false }
-    - { item: "Radiation - does the pain spread", critical: false }
-    - { item: "Associated symptoms - tearing, redness, discharge", critical: true }
-    - { item: "Time course - constant or intermittent", critical: false }
-    - { item: "Exacerbating factors - blinking, wind, light", critical: false }
-    - { item: "Severity - rate pain on a scale of 1-10", critical: false }
+  - item: Site - which eye is affected
+    critical: true
+  - item: Onset - when did the pain start
+    critical: true
+  - item: Character - describe the pain
+    critical: false
+  - item: Radiation - does the pain spread
+    critical: false
+  - item: Associated symptoms - tearing, redness, discharge
+    critical: true
+  - item: Time course - constant or intermittent
+    critical: false
+  - item: Exacerbating factors - blinking, wind, light
+    critical: false
+  - item: Severity - rate pain on a scale of 1-10
+    critical: false
   associated_symptoms:
-    - { item: "Blurred vision", critical: false }
-    - { item: "Sensitivity to light (photophobia)", critical: false }
-    - { item: "Watery eyes (epiphora)", critical: true }
-    - { item: "Redness of the eye", critical: false }
-    - { item: "Mucus discharge", critical: false }
+  - item: Blurred vision
+    critical: false
+  - item: Sensitivity to light (photophobia)
+    critical: false
+  - item: Watery eyes (epiphora)
+    critical: true
+  - item: Redness of the eye
+    critical: false
+  - item: Mucus discharge
+    critical: false
   pmh:
-    - { item: "History of eye infections (e.g., conjunctivitis)", critical: false }
-    - { item: "History of eye trauma or surgery", critical: true }
-    - { item: "History of skin conditions (e.g., rosacea, blepharitis)", critical: true }
-    - { item: "Allergies", critical: false }
+  - item: History of eye infections (e.g., conjunctivitis)
+    critical: false
+  - item: History of eye trauma or surgery
+    critical: true
+  - item: History of skin conditions (e.g., rosacea, blepharitis)
+    critical: true
+  - item: Allergies
+    critical: false
   medications:
-    - { item: "Current eye drops or ointments", critical: false }
-    - { item: "Other medications", critical: false }
+  - item: Current eye drops or ointments
+    critical: false
+  - item: Other medications
+    critical: false
   family_social:
-    - { item: "Family history of eye problems", critical: false }
-    - { item: "Occupation and hobbies (e.g., welding, sawdust exposure)", critical: false }
+  - item: Family history of eye problems
+    critical: false
+  - item: Occupation and hobbies (e.g., welding, sawdust exposure)
+    critical: false
   ice_fife:
-    - { item: "Ideas - what they think is wrong", critical: true }
-    - { item: "Concerns - what worries them", critical: true }
-    - { item: "Expectations - what they hope for", critical: false }
+  - item: Ideas - what they think is wrong
+    critical: true
+  - item: Concerns - what worries them
+    critical: true
+  - item: Expectations - what they hope for
+    critical: false
 red_flags:
-  - { item: "Sudden vision loss", critical: true }
-  - { item: "Severe eye pain with nausea/vomiting", critical: true }
-  - { item: "Recent eye surgery or trauma", critical: true }
+- item: Sudden vision loss
+  critical: true
+- item: Severe eye pain with nausea/vomiting
+  critical: true
+- item: Recent eye surgery or trauma
+  critical: true
 expected_ddx:
-  working_diagnosis: "Trichiasis"
-  differentials: ["Corneal abrasion", "Conjunctivitis", "Dry eye syndrome"]
+  working_diagnosis: Trichiasis
+  differentials:
+  - Corneal abrasion
+  - Conjunctivitis
+  - Dry eye syndrome
 investigations: []
-physical_exam_findings: { general: "Patient appears uncomfortable, frequently blinking and rubbing the affected eye.", vitals: {} }
+physical_exam_findings:
+  general: Patient appears uncomfortable, frequently blinking and rubbing the affected
+    eye.
+  vitals: {}
 management: []
 scoring_weights_override: null
 ---
