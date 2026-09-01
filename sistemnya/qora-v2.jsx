@@ -233,9 +233,21 @@ function QV2Assess({ caseSummary, isOsce, busy, err, transcript, onBack, onSubmi
   const [tx, setTx] = React.useState([]);
   const [txSearch, setTxSearch] = React.useState('');
   const [edukasi, setEdukasi] = React.useState('');
+  const [localErr, setLocalErr] = React.useState('');
 
   const toggle = (set, max) => (item) => set((cur) => cur.indexOf(item) >= 0 ? cur.filter((x) => x !== item) : (max && cur.length >= max ? cur : cur.concat([item])));
-  const submit = () => onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang: inv.join(', '), terapi: tx.join(', '), edukasi });
+
+  const submit = () => {
+    // Fase 3 §J — submit lock: a working diagnosis is required before the score
+    // commits; empty assessment must not lock a meaningless result.
+    const dx = String(dx1 || '').trim();
+    if (!dx) {
+      setLocalErr(_t('session.require_working_dx'));
+      return;
+    }
+    setLocalErr('');
+    onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang: inv.join(', '), terapi: tx.join(', '), edukasi });
+  };
 
   const tabs = [['conversation', _t('session.assess_tab_conversation')], ['investigations', _t('session.assess_tab_investigations')], ['diagnosis', _t('session.assess_tab_diagnosis')], ['therapy', _t('session.assess_tab_therapy')]];
 
@@ -276,7 +288,47 @@ function QV2Assess({ caseSummary, isOsce, busy, err, transcript, onBack, onSubmi
     panel,
     !busy && err && React.createElement('div', { style: { marginTop: 14, padding: '10px 12px', borderRadius: 10, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5 } },
       '⚠️ ' + String(err) + ' — ' + _t('session.score_retry_hint')),
+    localErr && React.createElement('div', { style: { marginTop: 14, padding: '10px 12px', borderRadius: 10, background: 'var(--amber-l, var(--red-l))', border: '1px solid var(--amber)', color: 'var(--amber-d, var(--red-d))', fontSize: 12.5, lineHeight: 1.5 } },
+      '⚠️ ' + localErr),
     React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Scoring…' : 'Finish & reveal answer key'));
+}
+
+// ---- Session chat ----
+// ---- OSCE candidate brief (Fase 3 §8 stage A) ----
+// A proper OSCE "station" opening: candidate instruction + the only realistic
+// initial info (the patient's visible first impression) — diagnosis stays hidden.
+function QV2StationBrief({ caseSummary, mode, language, onBegin, onExit }) {
+  const isId = language === 'id';
+  const stationTitle = caseSummary.presentation_id || caseSummary.presentation || caseSummary.title || 'OSCE Station';
+  const imp = caseSummary.first_impression_id || caseSummary.first_impression;
+  const isOsce = mode === 'osce';
+  const tasks = isOsce
+    ? ['Take a focused history (anamnesis)', 'State the local/physical examination findings', 'Request appropriate investigations', 'Give a working diagnosis + 2 differentials', 'Propose management & safety-netting']
+    : ['Take a focused history', 'Screen for red-flag symptoms', 'Explore Ideas, Concerns & Expectations', 'Give a working diagnosis', 'Propose management'];
+
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(660px, calc(100% - 16px))', margin: '0 auto', padding: 16 } },
+    React.createElement('button', { onClick: onExit, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, isId ? '← Keluar' : '← Exit'),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 } },
+      React.createElement('span', { style: { fontSize: 10, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } }, isOsce ? 'OSCE Station' : 'Practice Station'),
+      React.createElement('div', { style: { fontSize: 13, color: 'var(--text-3)' } }, '· ' + (caseSummary.specialty || ''))),
+    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 6, lineHeight: 1.3 } }, stationTitle),
+    imp && React.createElement('div', { style: { fontSize: 13.5, color: 'var(--text-2)', fontStyle: 'italic', marginBottom: 18, lineHeight: 1.6 } },
+      (isId ? 'Kondisi pasien saat Anda masuk: ' : 'What you see as you enter: ') + imp),
+
+    React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', marginBottom: 16 } },
+      React.createElement('div', { style: { fontSize: 12, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.05em' } }, isId ? '📋 Instruksi kandidat' : '📋 Candidate instruction'),
+      tasks.map(function (t, i) {
+        return React.createElement('div', { key: i, style: { display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 13, color: 'var(--text-2)', padding: '4px 0', lineHeight: 1.5 } },
+          React.createElement('span', { style: { color: 'var(--primary)', fontWeight: 800 } }, (i + 1) + '.'),
+          React.createElement('span', null, t));
+      }),
+      React.createElement('div', { style: { marginTop: 10, padding: 10, borderRadius: 10, background: 'var(--surface-2)', border: '1px dashed var(--border)', fontSize: 12, color: 'var(--text-3)', lineHeight: 1.5 } },
+        isOsce
+          ? (isId ? '🔒 Diagnosis Anda dirahasiakan. Rencana penatalaksanaan & kunci jawaban hanya terungkap saat Anda mengunci submisi.' : '🔒 The diagnosis is hidden. The answer key is only revealed after you commit your submission.')
+          : (isId ? 'Mode latihan — Anda boleh melanjutkan kapan pun; tidak ada penalti waktu.' : 'Practice mode — proceed at your own pace; no time penalty.'))),
+
+    React.createElement('button', { onClick: onBegin, style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } },
+      isId ? (isOsce ? '🚪 Mulai stasiun →' : '🚪 Mulai →') : (isOsce ? '🚪 Begin station →' : '🚪 Begin →')));
 }
 
 // ---- Session chat ----
@@ -627,7 +679,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
   const [input, setInput] = React.useState('');
   const [busy, setBusy] = React.useState(false);
   const [err, setErr] = React.useState('');
-  const [stage, setStage] = React.useState('chat'); // chat | pf | assess
+  const [stage, setStage] = React.useState((mode === 'osce' && !initialSessionId) ? 'brief' : 'chat'); // brief | chat | pf | assess
   const [pf, setPf] = React.useState({ notes: '', areas: [] });
   const isOsce = mode === 'osce';
   const [secs, setSecs] = React.useState((caseSummary.estimated_minutes || 15) * 60);
@@ -875,6 +927,10 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
     }), 1000);
     return () => clearInterval(id);
   }, [timerOn, stage, isOsce, overtime]);
+
+  if (stage === 'brief') {
+    return React.createElement(QV2StationBrief, { caseSummary, mode, language, onExit, onBegin: () => { setStage('chat'); } });
+  }
 
   if (stage === 'pf') {
     return React.createElement(QV2PhysicalExam, { caseSummary, sessionId, language: language, onBack: () => setStage('chat'), onContinue: (pfData) => { setPf(pfData); setStage('assess'); } });

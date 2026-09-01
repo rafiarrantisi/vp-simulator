@@ -55,6 +55,7 @@ window.QORA_TRANSLATIONS = {
   'session.select_therapy': { en: 'Select your management plan.', id: 'Pilih rencana tatalaksana.' },
   'session.working_diagnosis': { en: 'Working diagnosis', id: 'Diagnosis kerja' },
   'session.score_retry_hint': { en: 'The score request did not return in time. Try again.', id: 'Permintaan nilai tidak selesai tepat waktu. Coba lagi.' },
+  'session.require_working_dx': { en: 'A working diagnosis is required before submitting the answer key.', id: 'Diagnosis kerja wajib diisi sebelum mengunci jawaban.' },
   'session.differential_2': { en: 'Differential 2', id: 'Diagnosis banding 2' },
   'session.differential_3': { en: 'Differential 3', id: 'Diagnosis banding 3' },
   'session.clinical_reasoning': { en: 'Clinical reasoning', id: 'Penalaran klinis' },
