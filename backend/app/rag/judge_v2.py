@@ -249,6 +249,20 @@ def build_judge_prompt(case: CaseV2, transcript: list[dict], mode: str,
             "A score of 8-12/12 means they identified and acted on all safety issues. "
             "4-7/12 means partial awareness but gaps. 0-3/12 means significant safety concern.\n"
         )
+        system += (
+            "\n=== SAFETY GATES (Fase 4 §9.2 Layer 3) ===\n"
+            "Independently of the dimension scores, identify EXPLICIT safety events. A "
+            "dangerous mistake must NOT be hidden inside a small point deduction — call it out. "
+            "Populate 'safety_gates' with a SHORT item for each of the following ONLY IF it "
+            "occurred:\n"
+            "  - {type:'missed_critical_red_flag', detail:'<the red flag they failed to screen or act on>'}\n"
+            "  - {type:'unsafe_management', detail:'<a contraindicated/unsafe treatment or failure to stabilize>'}\n"
+            "  - {type:'failed_urgent_referral', detail:'<a case that clearly warranted urgent referral and they did not>'}\n"
+            "If the candidate screened the relevant red flags, stayed safe, and acted with "
+            "appropriate urgency, output 'safety_gates': [] (empty array). NEVER invent a safety "
+            "gate that is not in the transcript. These gates are shown prominently to the learner, "
+            "so be accurate and specific.\n"
+        )
 
     system += (
         "\n=== COMMUNICATION ===\n"
@@ -320,7 +334,8 @@ def build_judge_prompt(case: CaseV2, transcript: list[dict], mode: str,
         '  "per_dimension": {\n'
         '    "<dim>": {"score": <int 0..max>, "feedback": "<2-sentence feedback>"}\n'
         "  },\n"
-        '  "summary": "<2-3 sentence overall examiner verdict>"\n'
+        '  "summary": "<2-3 sentence overall examiner verdict>",\n'
+        '  "safety_gates": [{"type": "missed_critical_red_flag|unsafe_management|failed_urgent_referral", "detail": "<short reason>"}]  // [] if none\n'
         "}\n"
         "The summary is what a real examiner would say at the end of a debrief: "
         "what the candidate did well, the key area for development, and an overall "
@@ -354,6 +369,7 @@ def _empty_report(mode: str, weights: dict[str, int], note: str) -> dict:
         "per_dimension": {d: {"score": 0, "max": w, "feedback": ""} for d, w in weights.items()},
         "overall": 0,
         "summary": "",
+        "safety_gates": [],
         "_note": note,
     }
 
@@ -408,7 +424,25 @@ def _normalize(raw: dict, mode: str, weights: dict[str, int]) -> dict:
         "per_dimension": per_dim,
         "overall": overall,
         "summary": str(raw.get("summary", "")).strip(),
+        "safety_gates": _normalize_gates(raw.get("safety_gates")),
     }
+
+
+def _normalize_gates(gates) -> list[dict]:
+    """Normalize safety_gates output to a stable list of {type, detail}."""
+    if not gates:
+        return []
+    out = []
+    for g in gates if isinstance(gates, list) else [gates]:
+        if not isinstance(g, dict):
+            continue
+        typ = str(g.get("type", "")).strip().lower()
+        if typ not in ("missed_critical_red_flag", "unsafe_management", "failed_urgent_referral"):
+            continue
+        detail = str(g.get("detail", "")).strip()
+        if detail:
+            out.append({"type": typ, "detail": detail})
+    return out
 
 
 def evaluate_v2(case: CaseV2, transcript: list[dict], *,

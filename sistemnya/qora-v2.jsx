@@ -1038,6 +1038,8 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
   var _t = window.__t || function(k) { return k; };
+  const gates = (report.safety_gates || []).filter(Boolean);
+  const gateLabel = { missed_critical_red_flag: _t('session.safety_missed_critical_red_flag'), unsafe_management: _t('session.safety_unsafe_management'), failed_urgent_referral: _t('session.safety_failed_urgent_referral') };
   const isMobile = useIsMobile();
   // Confetti ONLY for a meaningful milestone (high score) — routine
   // completion gets a quieter visual. §10 of the playfulness doc: don't
@@ -1105,6 +1107,18 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(820px, calc(100% - 16px))', margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, 'Debrief'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18 } }, caseSummary.presentation),
+    // Safety gates (§9.2 Layer 3) — surfaced before anything else so a dangerous
+    // mistake is never hidden inside small point deductions.
+    gates.length > 0 && React.createElement('div', { className: 'as', style: { marginBottom: 16, padding: 14, borderRadius: 'var(--r-lg)', background: 'rgba(239,68,68,0.10)', border: '1px solid var(--red)', boxShadow: 'var(--sh-sm)' } },
+      React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: 'var(--red-d)', marginBottom: 8 } }, _t('session.safety_gates')),
+      gates.map((g, i) => React.createElement('div', { key: i, style: { display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 12.5, color: 'var(--text-1)', padding: '3px 0', lineHeight: 1.45 } },
+        React.createElement('span', { style: { color: 'var(--red-d)', fontWeight: 800, flexShrink: 0 } }, '✕'),
+        React.createElement('span', null,
+          React.createElement('b', { style: { color: 'var(--red-d)' } }, String(gateLabel[g.type] || g.type) + ' · '),
+          String(g.detail || ''))))),
+    // Examiner verdict first (§10.1) — the debrief leads with what a real examiner
+    // would say, so the feedback is the first thing the learner reads.
+    report.summary && React.createElement('div', { className: 'as d1', style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, padding: 14, borderRadius: 'var(--r-md)', background: 'var(--primary-ll)', marginBottom: 16 } }, report.summary),
     // overall + dimensions
     React.createElement('div', { className: 'as', style: { display: 'flex', alignItems: 'center', gap: 18, padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
       React.createElement('div', { className: 'as', style: { fontSize: 38, fontWeight: 800, color: 'var(--primary)', minWidth: 56, textAlign: 'center' } }, React.createElement(QNumeric, { value: (report.overall != null ? report.overall : 0), ms: 800 })),
@@ -1121,7 +1135,6 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
     (strongest || weakest) && React.createElement('div', { className: 'as d1', style: { display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 16 } },
       strongest && React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 700, padding: '8px 14px', borderRadius: 999, background: 'var(--teal-l)', color: 'var(--teal-d)' } }, 'Strongest: ' + strongest.label + ' · ' + strongest.pct + '%'),
       weakest && React.createElement('span', { style: { display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 700, padding: '8px 14px', borderRadius: 999, background: 'var(--violet-l)', color: 'var(--violet)' } }, 'Focus next: ' + weakest.label)),
-    report.summary && React.createElement('div', { className: 'as d2', style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, padding: 14, borderRadius: 'var(--r-md)', background: 'var(--primary-ll)', marginBottom: 18 } }, report.summary),
     // answer key
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '6px 12px', alignItems: 'center', marginBottom: 10, fontSize: 11, color: 'var(--text-3)' } },
       React.createElement('span', { style: { marginRight: 2 } }, 'Status:'),

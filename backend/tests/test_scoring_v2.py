@@ -7,7 +7,7 @@ from app.domains.scoring.rubric_v2 import (
     validate_weights,
 )
 from app.rag.answer_key import build_answer_key
-from app.rag.judge_v2 import _normalize, build_judge_prompt, evaluate_v2
+from app.rag.judge_v2 import _normalize, _normalize_gates, build_judge_prompt, evaluate_v2
 from app.rag.prompt_v2 import build_patient_prompt
 from pipeline.case_v2 import parse_case_v2
 
@@ -110,3 +110,40 @@ def test_judge_prompt_is_conservative_and_leak_free():
     # Judge sees ground truth, never the persona's verbatim opening line.
     assert "really uncomfortable lately" not in content.lower()
     assert "really uncomfortable lately" in build_patient_prompt(_case()).lower()  # but the patient does
+
+
+def test_safety_gates_normalization():
+    """§9.2 Layer 3 — safety gates are normalized, filtered, and surface in _normalize."""
+    # _normalize passes valid gates through; drops unknown types / empty detail.
+    raw = {
+        "per_dimension": {},
+        "per_item": [],
+        "summary": "ok",
+        "safety_gates": [
+            {"type": "missed_critical_red_flag", "detail": "Never asked about the headache onset"},
+            {"type": "unsafe_management", "detail": "Prescribed an NSAID despite upper-GI bleed history"},
+            {"type": "bogus_type", "detail": "should be dropped"},
+            {"type": "failed_urgent_referral", "detail": ""},  # empty detail -> dropped
+        ],
+    }
+    normalized = _normalize(raw, "anamnesis", {"history_coverage": 25, "red_flags": 15})
+    assert normalized["safety_gates"] == [
+        {"type": "missed_critical_red_flag", "detail": "Never asked about the headache onset"},
+        {"type": "unsafe_management", "detail": "Prescribed an NSAID despite upper-GI bleed history"},
+    ]
+    # _normalize_gates directly: empty input -> [] ; single dict handled.
+    assert _normalize_gates(None) == []
+    assert _normalize_gates([]) == []
+    assert _normalize_gates({"type": "unsafe_management", "detail": "x"}) == [{"type": "unsafe_management", "detail": "x"}]
+    assert _normalize_gates("not-a-list") == []
+    # _empty_report carries an empty safety_gates array (stub path).
+    from app.rag.judge_v2 import _empty_report
+    empty = _empty_report("anamnesis", {"history_coverage": 25}, "stub")
+    assert empty["safety_gates"] == []
+
+
+def test_osce_prompt_instructs_safety_gates_when_assessing_safety():
+    system, _ = build_judge_prompt(_case(), [{"role": "user", "content": "hi"}],
+                                   "osce_full", RUBRICS["osce_full"])
+    assert "SAFETY GATES" in system
+    assert "safety_gates" in system
