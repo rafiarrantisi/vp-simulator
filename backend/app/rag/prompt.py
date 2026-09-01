@@ -55,11 +55,19 @@ _MEMORY_WINDOW = 10  # turn terakhir disimpan verbatim (rag-plan §7.3)
 
 
 def _summarize_old(old: list[dict]) -> str:
+    # NOTE: build_messages maps role 'patient'->'assistant' BEFORE calling us, so
+    # the patient's own turns arrive as 'assistant'. Accept both to be safe.
     asked = [m["content"] for m in old if m.get("role") == "user"]
-    if not asked:
-        return ""
-    joined = " | ".join(a[:60] for a in asked[-8:])
-    return f"[RINGKASAN turn awal — dokter sudah menanyakan: {joined}]"
+    stated = [m["content"] for m in old if m.get("role") in ("patient", "assistant")]
+    parts = []
+    if asked:
+        parts.append("sudah ditanyakan dok: " + " | ".join(a[:70] for a in asked[-10:]))
+    if stated:
+        # Keep what the patient ALREADY said so later turns stay consistent with it
+        # (master plan §7.6 — the same facts must survive paraphrased re-questions).
+        parts.append("sudah dijawab sendiri oleh kamu (harus tetap konsisten): "
+                     + " | ".join(s[:110] for s in stated[-10:]))
+    return ("[RINGKASAN turn awal percakapan — " + "; ".join(parts) + "]") if parts else ""
 
 
 def build_system_prompt(persona_bagian_b: str, disclosure_text: str,
