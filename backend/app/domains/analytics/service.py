@@ -96,10 +96,11 @@ def build_analytics(db: OrmSession) -> dict:
     try:
         from app.domains.cases.v2_catalog import list_v2_cases
         cases = list(list_v2_cases() or [])
-        spec_map = {getattr(c, "id", None): getattr(c, "specialty", "unknown") for c in cases}
+        spec_map = {c.id: (c.frontmatter or {}).get("specialty", "unknown") for c in cases}
         pres_map = {
-            getattr(c, "id", None):
-            (getattr(c, "presentation_id", None) or getattr(c, "presentation", None) or getattr(c, "id", None))
+            c.id:
+            ((c.frontmatter or {}).get("presentation_id")
+             or (c.frontmatter or {}).get("presentation") or c.id)
             for c in cases
         }
     except Exception:
