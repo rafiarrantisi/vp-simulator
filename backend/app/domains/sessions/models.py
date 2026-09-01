@@ -40,3 +40,5 @@ class SessionTurn(Base):
     role: Mapped[str] = mapped_column(String)  # user|patient|system
     content: Mapped[str] = mapped_column(Text)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+    # input medium for user turns — 'text' | 'voice' (Fase 5 §35.7 voice-vs-text)
+    input_type: Mapped[str] = mapped_column(String, default="text")

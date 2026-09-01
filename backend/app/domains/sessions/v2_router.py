@@ -168,6 +168,7 @@ def v2_start_session(req: V2StartReq, user: User = Depends(get_current_user),
 
 class V2TurnReq(BaseModel):
     text: str = Field(min_length=1, max_length=4000)
+    input_type: str = "text"  # 'text' | 'voice' (Fase 5 §35.7)
 
 
 @router.get("/sessions/{session_id}/turns")
@@ -191,7 +192,7 @@ def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_current_us
     s = _owned(db, session_id, user)
     history = _history(db, session_id)
     n = _next_turn_no(db, session_id)
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text))
+    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text, input_type=req.input_type))
     try:
         reply = engine_v2.respond(s.case_id, history, req.text, language=s.language)
     except FileNotFoundError:
@@ -222,7 +223,7 @@ def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(get_cur
     n = _next_turn_no(db, session_id)
     user_id = user.id
     case_id = s.case_id
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text))
+    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text, input_type=req.input_type))
     db.commit()
 
     def gen():

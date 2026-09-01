@@ -12,6 +12,7 @@ from app.config import get_settings
 from app.database import SessionLocal, init_db
 from app.domains.admin.router import router as admin_router
 from app.domains.ai.router import router as ai_router
+from app.domains.analytics.router import router as analytics_router
 from app.domains.auth.router import router as auth_router
 from app.domains.billing.router import router as billing_router
 from app.domains.cases.router import admin_router as cases_admin_router
@@ -112,7 +113,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_router, v2_router, exam_router, scoring_router, ai_router, eye_photos_router, admin_router, billing_router, mentor_router):
+for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_router, v2_router, exam_router, scoring_router, ai_router, eye_photos_router, admin_router, billing_router, mentor_router, analytics_router):
     app.include_router(r)
 
 

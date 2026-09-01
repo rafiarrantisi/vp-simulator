@@ -54,6 +54,7 @@ def init_db() -> None:
     # Import models so they register on Base.metadata.
     # (users domain pakai model dari auth — tidak punya models.py sendiri)
     from app.domains.admin import models as _admin  # noqa: F401
+    from app.domains.analytics import models as _analytics  # noqa: F401
     from app.domains.auth import models as _auth  # noqa: F401
     from app.domains.billing import models as _billing  # noqa: F401
     from app.domains.cases import models as _cases  # noqa: F401
@@ -78,6 +79,7 @@ def _ensure_runtime_columns() -> None:
 
     stmts = [
         "ALTER TABLE cases ADD COLUMN locked BOOLEAN DEFAULT 0",
+        "ALTER TABLE session_turns ADD COLUMN input_type VARCHAR DEFAULT 'text'",
     ]
     for s in stmts:
         try:

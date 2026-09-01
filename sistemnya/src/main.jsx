@@ -1812,6 +1812,15 @@ async function qv2Fetch(path, opts, _retried) {
   return json ? json.data : null;
 }
 
+// Fase 5 §35 — fire a pilot behavioural event (fire-and-forget, never blocks UI).
+function _pilotEvent(event, extra) {
+  try {
+    if (typeof window === 'undefined') return;
+    qv2Fetch('/api/v2/pilot/events', { method: 'POST', timeout: 8000,
+      body: Object.assign({ event: event }, extra || {}) }).catch(function () {});
+  } catch (e) { /* analytics must never break the app */ }
+}
+
 const QV2_SPEC_LABEL = {
   internal_medicine: 'Internal medicine', surgery: 'Surgery', paediatrics: 'Paediatrics',
   obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology',
@@ -2625,12 +2634,13 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
     return c;
   });
 
-  async function send(textArg) {
-    const text = (typeof textArg === 'string' ? textArg : input).trim();
-    if (!text || busy || !sessionId) return;
-    setInput(''); setBusy(true);
-    setMessages(m => m.concat([{ role: 'user', text }, { role: 'patient', text: '', streaming: true }]));
-    try {
+  async function send(textArg, source) {
+      const text = (typeof textArg === 'string' ? textArg : input).trim();
+      if (!text || busy || !sessionId) return;
+      const inputType = source === 'voice' ? 'voice' : 'text';
+      setInput(''); setBusy(true);
+      setMessages(m => m.concat([{ role: 'user', text }, { role: 'patient', text: '', streaming: true }]));
+      try {
         const doStream = async (retried) => {
         const tok = _qv2Token();
         const controller = new AbortController();
@@ -2640,7 +2650,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
           r = await fetch(_qv2Base() + '/api/v2/sessions/' + sessionId + '/turns/stream', {
             method: 'POST',
             headers: Object.assign({ 'Content-Type': 'application/json' }, tok ? { Authorization: 'Bearer ' + tok } : {}),
-            body: JSON.stringify({ text }),
+            body: JSON.stringify({ text: text, input_type: inputType }),
             signal: controller.signal,
           });
         } finally {
@@ -2676,6 +2686,13 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
     setBusy(false);
   }
 
+  // Fase 5 §35.1 — mark the pilot session as started once it exists.
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || !sessionId) return;
+    _pilotEvent('session_started', { session_id: sessionId, stage: 'chat',
+      meta: { case_id: caseSummary.id, mode: mode, language: language } });
+  }, [sessionId]);
+
   async function score(ddx, mgmt) {
     if (!sessionId) return;
     setBusy(true);
@@ -2708,7 +2725,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
   const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 140px)' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
-      React.createElement('button', { onClick: onExit, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
+      React.createElement('button', { onClick: () => { _pilotEvent('abandoned', { session_id: sessionId, stage: stage }); onExit(); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
       React.createElement(QV2Pill, { tone: isOsce ? 'violet' : 'teal' }, isOsce ? 'OSCE' : 'Practice'),
       React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, _qv2Title(caseSummary)),
       !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
@@ -2728,7 +2745,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
     React.createElement('div', { style: { padding: '12px 0 16px', display: 'flex', flexDirection: 'column', gap: 10 } },
       isOsce && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', textAlign: 'center' } }, '🩺 Done with your questions? Tap ' + (isMobile ? 'Exam' : 'Exam →') + ' to perform the physical examination before assessing.'),
       React.createElement('div', { style: { display: 'flex', justifyContent: 'center' } },
-        React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t), disabled: busy, sessionLang: language, compact: isMobile })),
+        React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t, 'voice'), disabled: busy, sessionLang: language, compact: isMobile })),
       React.createElement('div', { style: { display: 'flex', gap: 8 } },
         React.createElement('input', {
           value: input, onChange: e => setInput(e.target.value),
@@ -2837,6 +2854,13 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
     loadAutopsy();
     return function () { cancelled = true; };
   }, [sessionId]);
+  // Fase 5 §35.9-10 — the debrief (and its answer key) was opened.
+  React.useEffect(() => {
+    if (!sessionId) return;
+    _pilotEvent('debrief_opened', { session_id: sessionId, stage: 'result' });
+    _pilotEvent('answer_key_revealed', { session_id: sessionId, stage: 'result' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // map item text -> status from per_item (loose lowercase contains match)
   const statusFor = (text) => {
     const t = String(text || '').toLowerCase();
@@ -2926,7 +2950,7 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
     typeof QAutopsyCard === 'function' && autopsy && React.createElement(QAutopsyCard, { autopsy: autopsy }),
     // actions
     React.createElement('div', { style: { display: 'flex', gap: 10, marginTop: 22 } },
-      React.createElement('button', { onClick: onAgain, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Try another case'),
+      React.createElement('button', { onClick: () => { _pilotEvent('retry_attempt', { session_id: sessionId }); onAgain(); }, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Try another case'),
       React.createElement('button', { onClick: onLibrary, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Back to library'))
   );
 }
