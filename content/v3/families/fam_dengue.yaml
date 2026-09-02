@@ -1,0 +1,23 @@
+id: fam_dengue
+family_type: disease
+title_id: Dengue
+title_en: Dengue
+primary_specialty: internal_medicine
+cross_specialty_tags: [emergency, paediatrics, infectious_diseases]
+presenting_complaints: [Fever, Fever in a child, Body aches]
+population_tags: [adult, adolescent, child, endemic-area resident]
+target_stages: [preclinical, koas]
+skdi_mappings:
+  "3A": [demam, pemeriksaan_fisik_umum]
+  "3B": [demam_berdarah_dengue, syok_dengue]
+learning_objectives:
+  - Recognize dengue among acute febrile illnesses
+  - Stratify severity (dengue / dengue with warning signs / severe dengue)
+  - Manage fluid balance and recognize warning signs
+  - Identify indications for referral / intensive care
+common_differentials: [Influenza, Typhoid, Malaria, Acute leptospirosis, Measles]
+active_variant_ids: [dengue_001_mild, dengue_002_warning, dengue_003_severe]
+status: clinically_reviewed
+source_governance:
+  policy: "WHO SEARO dengue guidelines 2023; Kemenkes PNPK Dengue"
+  version: "2023"

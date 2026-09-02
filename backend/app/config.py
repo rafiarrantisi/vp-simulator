@@ -186,6 +186,8 @@ class Settings(BaseSettings):
     cases_dir: str = str(_REPO_ROOT / "data-kasus")
     # Schema-v2 cases (pivot-v4 §5.1) — English, multi-specialty
     content_cases_dir: str = str(_REPO_ROOT / "content" / "cases")
+    # Schema-v3 canonical case system (STEP 2) — families + variants
+    content_v3_dir: str = str(_REPO_ROOT / "content" / "v3")
 
 
 @lru_cache

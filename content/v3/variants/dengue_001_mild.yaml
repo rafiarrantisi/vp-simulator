@@ -1,0 +1,102 @@
+id: dengue_001_mild
+family_id: fam_dengue
+variation_level: persona
+title: Dengue fever without warning signs (typical, adult)
+supported_stages: [preclinical, koas]
+skdi_level: "3A"
+
+identity:
+  age_years: 24
+  age_range: 20-30
+  biological_sex: female
+  informant_type: patient
+  setting: primary care
+  population_tags: [adult, endemic-area resident]
+
+chief_complaint: "Fever for 4 days with body aches"
+opening_context: "Healthy young adult presents with high fever, retro-orbital pain, and severe myalgia"
+duration: "4 days"
+severity: moderate
+key_chronology: "Fever day 1 → myalgia + headache day 2-3 → fever persists day 4, no warning signs"
+
+history:
+  - name: onset_chronology
+    facts:
+      - { key: fever_onset, value: "4 days ago, continuous", disclosure: spontaneous }
+      - { key: fever_pattern, value: "persistent high fever 39-40 °C", disclosure: direct_question }
+      - { key: headache_onset, value: "day 2, retro-orbital", disclosure: direct_question }
+  - name: symptom
+    facts:
+      - { key: myalgia, value: true, disclosure: spontaneous }
+      - { key: retro_orbital_pain, value: true, disclosure: direct_question }
+      - { key: arthralgia, value: true, disclosure: direct_question }
+      - { key: rash, value: true, disclosure: follow_up_required, acceptable_intents: [skin_lesions, spots, rubella] }
+      - { key: nausea_vomiting, value: false, disclosure: direct_question }
+      - { key: abdominal_pain, value: false, disclosure: direct_question }
+      - { key: bleeding_gum, value: false, disclosure: direct_question, acceptable_intents: [blood_from_mouth, gum_bleeds] }
+  - name: exposure
+    facts:
+      - { key: travel_to_endemic_area, value: true, disclosure: direct_question, acceptable_intents: [mosquito_bites, travel, work_outside_city] }
+      - { key: prior_dengue_infection, value: false, disclosure: direct_question }
+      - { key: immunization_up_to_date, value: true, disclosure: direct_question }
+
+red_flags:
+  - { fact: "Severe abdominal pain / persistent vomiting", status: absent, criticality: critical, why_matters: "warning signs precede shock", disclosure: direct_question }
+  - { fact: "Mucosal bleeding (gum, nose, GI)", status: absent, criticality: critical, why_matters: "haemorrhagic tendency", disclosure: direct_question }
+  - { fact: "Clinical fluid accumulation / third spacing", status: absent, criticality: high, why_matters: "leak phase onset", disclosure: direct_question }
+  - { fact: "Lethargy / restlessness (impaired consciousness)", status: absent, criticality: critical, why_matters: "severe dengue", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Feverish but alert, walking with muscle discomfort"
+  consciousness: "Alert"
+  vitals:
+    - { name: temperature, value: 39.2, unit: "C" }
+    - { name: heart_rate, value: 104, unit: "bpm" }
+    - { name: blood_pressure, value: 110, unit: "mmHg", normal_range: "Systolic 90-120" }
+  system_findings:
+    skin: "Fine diffuse macular rash, flushing face"
+    tourniquet_test: "Negative"
+
+investigations:
+  - { name: Full blood count, expected_result: "WCC normal-low, platelet 130000, HCT 42%", appropriateness: essential, rationale: "assess leucopenia + thrombocytopenia + haemoconcentration", source: "WHO 2023" }
+  - { name: NS1 antigen, expected_result: "Positive", appropriateness: essential, rationale: "early dengue detection", source: "PNPK Dengue" }
+  - { name: Rapid dengue IgM/IgG, expected_result: "IgM positive (day 4)", appropriateness: appropriate, rationale: "confirms recent infection", source: "PNPK Dengue" }
+  - { name: AST/ALT, expected_result: "Mildly raised", appropriateness: optional, rationale: "liver involvement common", source: "WHO 2023" }
+
+diagnostic:
+  working_diagnosis: "Dengue fever without warning signs"
+  synonyms: [Dengue, Dengue fever, Demam berdarah dengue]
+  differentials:
+    - { name: "Influenza", discriminating_features: "prominent coryza, no platelet drop", reverting: false }
+    - { name: "Typhoid fever", discriminating_features: "relative bradycardia, stepwise fever, no myalgia", reverting: true }
+    - { name: "Malaria", discriminating_features: "periodic fever, splenomegaly, exposure to endemic Africa/PNG", reverting: true }
+  reasoning_anchors:
+    - "High fever + myalgia + retro-orbital pain + positive NS1 = dengue"
+    - "Absence of warning signs and normal HCT → outpatient dengue with advice"
+  icd10: "A90"
+
+management:
+  pharmacologic: ["Paracetamol for fever (avoid NSAIDs/aspirin — bleed risk)"]
+  non_pharmacologic: ["Encourage oral fluids (>2L/day)", "Daily platelet/HCT monitoring during febrile phase"]
+  follow_up: ["Review daily until 48h afebrile", "Repeat FBC to track HCT + platelets"]
+  education_safety_netting: ["Return immediately for abdominal pain, persistent vomiting, bleeding, lethargy, or reduced urine output"]
+
+assessment_items:
+  - { text: "Elicit fever timeline and exposure to mosquitoes", importance: critical, group: history }
+  - { text: "Screen for dengue warning signs", importance: critical, group: red_flags }
+  - { text: "Order NS1 + FBC and interpret thrombocytopenia/haemoconcentration", importance: critical, group: investigations }
+  - { text: "Recommend paracetamol and explain NSAID risk", importance: critical, group: management }
+  - { text: "Explain warning signs to return for", importance: critical, group: safety_netting }
+
+safety_critical_errors:
+  - "Missed warning signs leading to failure to refer for hospital care"
+  - "Advising NSAIDs/aspirin during dengue"
+
+sources:
+  - { title: "WHO SEARO Dengue Guidelines", authority: "WHO", year: "2023", kind: "guideline" }
+  - { title: "PNPK Dengue Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline" }
+  - { title: "SKDI level 3A: demam", authority: "KKI SKDI", year: "2012", kind: "competency" }
+
+status: clinically_reviewed
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"

@@ -1,0 +1,1 @@
+"""case_v3 — canonical clinical schema (STEP 2)."""

@@ -1,0 +1,25 @@
+id: fam_fever_child
+family_type: presentation
+title_id: Demam pada Anak
+title_en: Fever in a Child
+primary_specialty: paediatrics
+cross_specialty_tags: [emergency, internal_medicine]
+presenting_complaints:
+  - Fever in a child
+  - High fever with rash
+population_tags: [child]
+target_stages: [koas]
+skdi_mappings:
+  "3A": [demam_anak]
+learning_objectives:
+  - Approach the febrile child systematically
+  - Distinguish serious bacterial infection / dengue from self-limiting viral illness
+  - Institute appropriate investigations and safety-netting
+common_differentials: [Viral upper respiratory infection, Dengue, Urinary tract infection, Bacterial meningitis, Pneumonia]
+# cross-entry-point linking: fever_child (presentation) also surfaces a dengue variant
+# AND a UTI variant — both reachable from this presentation family.
+active_variant_ids: [dengue_001_mild, uti_child_001]
+status: in_review
+source_governance:
+  policy: "Kemenkes PNPK Febrile Illness; WHO/UNICEF IMCI"
+  version: "2021"

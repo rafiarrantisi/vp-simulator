@@ -1,0 +1,105 @@
+id: dengue_003_severe
+family_id: fam_dengue
+variation_level: complexity
+title: Severe dengue with shock (dengue shock syndrome)
+supported_stages: [koas]
+skdi_level: "3B"
+
+identity:
+  age_years: 16
+  biological_sex: male
+  informant_type: patient
+  setting: emergency department
+  population_tags: [adolescent, endemic-area resident]
+
+chief_complaint: "Child felt dizzy and collapsed at home after 5 days of fever"
+opening_context: "Teenager brought to ED unconscious-ish (lethargic), cold and clammy, after fever for 5 days and a day of abdominal pain"
+duration: "5 days"
+severity: critical
+key_chronology: "Fever day 1-4 → abdominal pain + vomiting day 4-5 → collapse + cold extremities day 5 (shock)"
+
+history:
+  - name: onset_chronology
+    facts:
+      - { key: fever_onset, value: "5 days ago", disclosure: spontaneous }
+      - { key: fever_pattern, value: "high fever then defervescence at day 4", disclosure: direct_question }
+  - name: symptom
+    facts:
+      - { key: abdominal_pain, value: true, disclosure: spontaneous }
+      - { key: persistent_vomiting, value: true, disclosure: spontaneous }
+      - { key: bleeding_gum, value: true, disclosure: direct_question }
+      - { key: reduced_urine, value: true, disclosure: follow_up_required, acceptable_intents: [not_peeing, low_output] }
+      - { key: lethargy, value: true, disclosure: spontaneous, acceptable_intents: [drowsy, hard_to_wake, not_responding] }
+  - name: exposure
+    facts:
+      - { key: travel_to_endemic_area, value: true, disclosure: direct_question }
+      - { key: prior_dengue_infection, value: true, disclosure: direct_question }
+
+red_flags:
+  - { fact: "Shock (cold/clammy, prolonged CRT, low BP)", status: present, criticality: critical, why_matters: "severe dengue shock — immediate resuscitation", disclosure: spontaneous }
+  - { fact: "Impaired consciousness / lethargy", status: present, criticality: critical, why_matters: "organ hypoperfusion", disclosure: spontaneous }
+  - { fact: "Persistent vomiting", status: present, criticality: critical, why_matters: "warning sign + fluid loss", disclosure: spontaneous }
+  - { fact: "Mucosal bleeding", status: present, criticality: critical, why_matters: "severe haemorrhage risk", disclosure: direct_question }
+  - { fact: "Significant clinical fluid accumulation", status: present, criticality: high, why_matters: "plasma leak with third spacing", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Lethargic, cold and clammy, pale, mottled skin"
+  consciousness: "Lethargic (GCS 12)"
+  vitals:
+    - { name: temperature, value: 36.8, unit: "C" }
+    - { name: heart_rate, value: 138, unit: "bpm", normal_range: "60-100 adult/child", note: "tachycardia" }
+    - { name: blood_pressure, value: 82, unit: "mmHg", normal_range: "Systolic >90", note: "hypotension" }
+    - { name: pulse_pressure, value: 18, unit: "mmHg", normal_range: ">20", note: "narrowed — shock" }
+    - { name: respiratory_rate, value: 30, unit: "/min" }
+    - { name: capillary_refill, value: 4, unit: "sec", normal_range: "<2", note: "prolonged" }
+  system_findings:
+    skin: "Mottled, cold, petechiae on lower limbs; positive tourniquet"
+    abdomen: "Diffuse tenderness, ascites (shifting dullness), tender hepatomegaly"
+    respiratory: "Bilateral crackles + reduced air entry (pleural effusions)"
+
+investigations:
+  - { name: Full blood count, expected_result: "Platelet 20000, HCT 55% (very high)", appropriateness: essential, rationale: "severe haemoconcentration + profound thrombocytopenia", source: "WHO 2023" }
+  - { name: Blood gas / lactate, expected_result: "Metabolic acidosis, raised lactate", appropriateness: essential, rationale: "shock assessment", source: "WHO 2023" }
+  - { name: NS1 antigen, expected_result: "Positive", appropriateness: essential, rationale: "early dengue detection", source: "PNPK Dengue" }
+  - { name: Dengue serology, expected_result: "IgG positive (secondary), IgM positive", appropriateness: appropriate, rationale: "secondary dengue = severe risk", source: "WHO 2023" }
+  - { name: Ultrasound chest/abdomen, expected_result: "Bilateral pleural effusions, ascites, gallbladder oedema", appropriateness: appropriate, rationale: "document plasma leak severity", source: "WHO 2023" }
+
+diagnostic:
+  working_diagnosis: "Severe dengue with shock (Dengue Shock Syndrome)"
+  synonyms: [Dengue shock syndrome, Severe dengue]
+  differentials:
+    - { name: "Septic shock (bacterial)", discriminating_features: "focus of infection, no characteristic dengue HCT-platelet pattern", reverting: true }
+    - { name: "Leptospirosis with shock", discriminating_features: "conjunctival suffusion, renal involvement pattern", reverting: true }
+  reasoning_anchors:
+    - "History of dengue + shock + marked haemoconcentration = severe dengue shock"
+    - "Compensated vs decompensated shock dictates fluid strategy"
+  icd10: "A91"
+
+management:
+  stabilization: ["IV resuscitation with isotonic crystalloid (rapid bolus 20 mL/kg, reassess)", "Oxygen, monitor vitals and urine output"]
+  pharmacologic: ["PANIC fluid protocol; NO NSAIDs/aspirin", "Consider colloid if refractory shock"]
+  non_pharmacologic: ["Close continuous monitoring of HCT, vitals, urine output", "Avoid unnecessary invasive procedures during bleeding risk"]
+  referral: ["Intensive care / specialist — severe dengue needs ICU-level care", "Blood product threshold per guideline if significant bleed (not prophylactic)"]
+  follow_up: ["Keep in ICU until haemodynamically stable + HCT normalising + platelets recovering"]
+  education_safety_netting: ["Explain that deterioration is possible even with treatment — escalate promptly"]
+
+assessment_items:
+  - { text: "Recognise compensated vs decompensated shock in dengue", importance: critical, group: red_flags }
+  - { text: "Initiate immediate isotonic crystalloid resuscitation", importance: critical, group: stabilization }
+  - { text: "Interpret severe haemoconcentration + thrombocytopenia", importance: critical, group: investigations }
+  - { text: "Determine need for ICU referral", importance: critical, group: management }
+  - { text: "Avoid prophylactic blood products", importance: helpful, group: management }
+
+safety_critical_errors:
+  - "Delaying fluid resuscitation in dengue shock"
+  - "Over-resuscitation causing fluid overload / pulmonary oedema"
+  - "Giving aspirin/NSAIDs in severe dengue — catastrophic bleeding risk"
+
+sources:
+  - { title: "WHO SEARO Dengue Guidelines", authority: "WHO", year: "2023", kind: "guideline" }
+  - { title: "PNPK Dengue Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline" }
+  - { title: "SKDI level 3B: demam berdarah dengue", authority: "KKI SKDI", year: "2012", kind: "competency" }
+
+status: clinically_reviewed
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"

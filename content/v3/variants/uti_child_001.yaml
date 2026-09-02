@@ -1,0 +1,98 @@
+id: uti_child_001
+family_id: fam_uti
+variation_level: presentation
+title: Urinary tract infection in a previously well child
+supported_stages: [koas]
+skdi_level: "3B"
+
+identity:
+  age_years: 3
+  biological_sex: female
+  informant_type: mother
+  setting: primary care
+  population_tags: [toddler]
+
+chief_complaint: "Child has had fever for 3 days, now fussy and passing cloudy urine"
+opening_context: "Mother brings child who is intermittently febrile, refuses to drink"
+duration: "3 days"
+severity: moderate
+key_chronology: "Fever day 1-2 → irritability + reduced appetite day 2 → cloudy urine day 3"
+
+history:
+  - name: onset_chronology
+    facts:
+      - { key: fever_onset, value: "3 days ago, peak 39.0 °C", disclosure: spontaneous }
+      - { key: fever_pattern, value: "persistent, peaked in evening", disclosure: direct_question }
+  - name: urinary
+    facts:
+      - { key: dysuria, value: true, disclosure: follow_up_required, acceptable_intents: [pain_when_peeing, cries_while_peeing, burning_urine] }
+      - { key: cloudy_malodorous_urine, value: true, disclosure: direct_question }
+      - { key: increased_frequency, value: true, disclosure: direct_question }
+  - name: gastrointestinal
+    facts:
+      - { key: vomiting, value: false, disclosure: direct_question }
+      - { key: diarrhoea, value: false, disclosure: direct_question }
+      - { key: poor_appetite, value: true, disclosure: direct_question }
+  - name: exposure
+    facts:
+      - { key: travel_to_endemic_area, value: false, disclosure: direct_question, acceptable_intents: [travel, recent_trip, outside_city] }
+      - { key: immunization_up_to_date, value: true, disclosure: direct_question }
+
+red_flags:
+  - { fact: "Non-blanching rash", status: absent, criticality: critical, why_matters: "raised for meningococcal sepsis", disclosure: direct_question }
+  - { fact: "Reduced consciousness", status: absent, criticality: critical, why_matters: "sign of CNS infection / severe sepsis", disclosure: direct_question }
+  - { fact: "Signs of dehydration", status: absent, criticality: moderate, why_matters: "risk from poor intake during fever", disclosure: direct_question }
+  - { fact: "Reduced urine output", status: absent, criticality: high, why_matters: "suggests deterioration / pyelonephritis", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Irritable but consolable, well-hydrated"
+  consciousness: "Alert"
+  vitals:
+    - { name: temperature, value: 38.6, unit: "C" }
+    - { name: heart_rate, value: 128, unit: "bpm" }
+    - { name: respiratory_rate, value: 26, unit: "/min" }
+  system_findings:
+    renal: "Suprapubic tenderness, otherwise non-tender abdomen"
+
+investigations:
+  - { name: Urinalysis, expected_result: "Positive nitrites, leukocytes", appropriateness: essential, rationale: "confirms UTI", source: "PNPK ISK" }
+  - { name: Urine culture, expected_result: "E. coli >10^5 CFU/mL", appropriateness: essential, rationale: "identify organism + resistance", source: "NICE NG224" }
+  - { name: Full blood count, expected_result: "Raised WCC with neutrophilia", appropriateness: appropriate, rationale: "supports bacterial infection", source: "PNPK ISK" }
+  - { name: Blood culture, expected_result: "Pending/Negative", appropriateness: appropriate, rationale: "rule out bacteraemia if febrile", source: "PNPK ISK" }
+  - { name: Renal ultrasound, expected_result: "Normal", appropriateness: optional, rationale: "consider after first febrile UTI", source: "NICE NG224" }
+
+diagnostic:
+  working_diagnosis: "Urinary tract infection"
+  synonyms: [UTI, Febrile UTI in child]
+  differentials:
+    - { name: "Viral upper respiratory tract infection", discriminating_features: "coryza, no urinary symptoms", reverting: true }
+    - { name: "Dengue", discriminating_features: "no urinary symptoms, myalgia, possible rash, positive tourniquet", reverting: true }
+  reasoning_anchors:
+    - "Fever + cloudy urine + suprapubic tenderness point to UTI"
+    - "Positive nitrites/leukocytes confirm bacteriuria"
+  icd10: "N39.0"
+
+management:
+  pharmacologic: ["Oral antibiotic per local formulary (e.g. amoxicillin-clavulanate or cefixime) for 7 days"]
+  non_pharmacologic: ["Encourage oral fluids", "Antipyretic for comfort"]
+  follow_up: ["Review response in 48-72h", "Repeat urinalysis if unresponsive"]
+  education_safety_netting: ["Return if vomiting, reduced urine output, shock-like appearance, or fever persists despite antibiotics"]
+
+assessment_items:
+  - { text: "Identify urinary symptoms through careful history", importance: critical, group: history }
+  - { text: "Indicate need for urinalysis + culture", importance: critical, group: investigations }
+  - { text: "Assess hydration status", importance: helpful, group: exam }
+  - { text: "Describe correct antibiotic choice and duration", importance: critical, group: management }
+  - { text: "Explain danger signs to return for", importance: helpful, group: safety_netting }
+
+safety_critical_errors:
+  - "Failing to investigate a febrile child with urinary symptoms"
+  - "Discharging without safety-netting for deterioration"
+
+sources:
+  - { title: "PNPK Infeksi Saluran Kemih Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline" }
+  - { title: "NICE NG224 urinary tract infection in under 16s", authority: "NICE", year: "2022", kind: "guideline" }
+
+status: clinically_reviewed
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"

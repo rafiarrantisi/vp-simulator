@@ -1,0 +1,22 @@
+id: fam_uti
+family_type: disease
+title_id: Infeksi Saluran Kemih
+title_en: Urinary Tract Infection
+primary_specialty: paediatrics
+cross_specialty_tags: [internal_medicine, emergency]
+presenting_complaints: [Fever in a child, Dysuria, Abdominal pain]
+population_tags: [child, infant]
+target_stages: [koas]
+skdi_mappings:
+  "3A": [demam_anak]
+  "3B": [iski]
+learning_objectives:
+  - Recognize UTI in a pre-verbal child
+  - Obtain and interpret urinalysis with culture
+  - Initiate appropriate antibiotics and safety-netting
+common_differentials: [Viral illness, Dengue, Meningitis, Gastroenteritis]
+active_variant_ids: [uti_child_001]
+status: clinically_reviewed
+source_governance:
+  policy: "Kemenkes PNPK ISK; NICE urinary tract infection in under 16s (NG224)"
+  version: "2022"

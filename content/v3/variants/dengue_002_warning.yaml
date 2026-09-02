@@ -1,0 +1,104 @@
+id: dengue_002_warning
+family_id: fam_dengue
+variation_level: presentation
+title: Dengue with warning signs (adult)
+supported_stages: [koas]
+skdi_level: "3B"
+
+identity:
+  age_years: 38
+  biological_sex: male
+  informant_type: patient
+  setting: emergency department
+  population_tags: [adult, endemic-area resident]
+
+chief_complaint: "Fever 5 days, now with abdominal pain and vomiting"
+opening_context: "Adult presents on day 5 of fever: now has mild abdominal pain, one episode of vomiting, and is anxious"
+duration: "5 days"
+severity: severe
+key_chronology: "Fever day 1-4 → defervescence day 4-5 with abdominal pain + vomiting (critical phase)"
+
+history:
+  - name: onset_chronology
+    facts:
+      - { key: fever_onset, value: "5 days ago", disclosure: spontaneous }
+      - { key: fever_pattern, value: "high fever first 4 days, now dropping today", disclosure: direct_question }
+  - name: symptom
+    facts:
+      - { key: abdominal_pain, value: true, disclosure: spontaneous, acceptable_intents: [stomach_ache, tummy_pain] }
+      - { key: vomiting, value: true, disclosure: spontaneous }
+      - { key: nausea, value: true, disclosure: direct_question }
+      - { key: bleeding_gum, value: true, disclosure: direct_question, acceptable_intents: [gum_bleeds, blood_in_mouth] }
+      - { key: melaena, value: false, disclosure: direct_question }
+      - { key: reduced_urine, value: false, disclosure: follow_up_required }
+  - name: exposure
+    facts:
+      - { key: travel_to_endemic_area, value: true, disclosure: direct_question }
+      - { key: prior_dengue_infection, value: true, disclosure: direct_question }
+
+red_flags:
+  - { fact: "Persistent vomiting (>=3 episodes/24h)", status: present, criticality: critical, why_matters: "classic dengue warning sign → risk of deterioration", disclosure: spontaneous }
+  - { fact: "Severe abdominal pain", status: present, criticality: critical, why_matters: "warning sign of plasma leak", disclosure: spontaneous }
+  - { fact: "Mucosal bleeding", status: present, criticality: critical, why_matters: "haemorrhagic tendency, needs monitoring", disclosure: direct_question }
+  - { fact: "Clinical fluid accumulation", status: absent, criticality: high, why_matters: "would indicate severe dengue", disclosure: direct_question }
+  - { fact: "Lethargy / restlessness", status: absent, criticality: critical, why_matters: "sign of shock or CNS involvement", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Appears tired, holding abdomen, alert but subdued"
+  consciousness: "Alert"
+  vitals:
+    - { name: temperature, value: 37.8, unit: "C" }
+    - { name: heart_rate, value: 112, unit: "bpm" }
+    - { name: blood_pressure, value: 100, unit: "mmHg", normal_range: "Systolic 90-120" }
+    - { name: pulse_pressure, value: 28, unit: "mmHg", normal_range: ">20" }
+  system_findings:
+    abdomen: "Mild right upper quadrant tenderness, no rebound"
+    skin: "No petechiae, mild flushing"
+    tourniquet_test: "Positive"
+
+investigations:
+  - { name: Full blood count, expected_result: "Platelet 45000, HCT 48% (rising)", appropriateness: essential, rationale: "rising HCT = plasma leak; falling platelets", source: "WHO 2023" }
+  - { name: NS1 antigen, expected_result: "Positive", appropriateness: essential, rationale: "early dengue detection", source: "PNPK Dengue" }
+  - { name: Dengue serology IgM/IgG, expected_result: "IgG positive (secondary infection), IgM positive", appropriateness: appropriate, rationale: "secondary dengue = higher severe risk", source: "WHO 2023" }
+  - { name: AST/ALT, expected_result: "Raised (~3x normal)", appropriateness: appropriate, rationale: "liver involvement typical in dengue", source: "WHO 2023" }
+  - { name: Abdominal ultrasound, expected_result: "Minimal gallbladder wall thickening, no free fluid", appropriateness: optional, rationale: "detect early plasma leak", source: "WHO 2023" }
+
+diagnostic:
+  working_diagnosis: "Dengue with warning signs"
+  synonyms: [Dengue with warning signs, Dengue haemorrhagic fever]
+  differentials:
+    - { name: "Typhoid fever", discriminating_features: "no platelet drop, relative bradycardia", reverting: true }
+    - { name: "Leptospirosis", discriminating_features: "conjunctival suffusion, calf tenderness, no NS1", reverting: true }
+    - { name: "Hepatitis", discriminating_features: "marked jaundice before haemodynamic changes", reverting: false }
+  reasoning_anchors:
+    - "Dengue history + rising HCT + dropping platelets = plasma leak (critical phase)"
+    - "Warning signs mandate hospital admission + close monitoring"
+  icd10: "A90"
+
+management:
+  stabilization: ["Admit for observation and fluid balance"]
+  pharmacologic: ["Paracetamol for fever (avoid NSAIDs/aspirin)"]
+  non_pharmacologic: ["Isotonic crystalloid maintenance, reassess fluid needs as HCT changes", "Monitor urine output + vital signs Q4h"]
+  referral: ["Refer to higher care if shock, bleeding, or organ impairment develops"]
+  follow_up: ["Keep in hospital until 24-48h after defervescence + improving platelets"]
+  education_safety_netting: ["Explain that defervescence may accompany deterioration — return urgency for worsening symptoms"]
+
+assessment_items:
+  - { text: "Identify the transition to critical phase (defervescence + warning signs)", importance: critical, group: red_flags }
+  - { text: "Interpret rising HCT + falling platelets as plasma leak", importance: critical, group: investigations }
+  - { text: "Decide admission based on warning signs", importance: critical, group: management }
+  - { text: "Plan fluid management to avoid over/under-resuscitation", importance: critical, group: management }
+
+safety_critical_errors:
+  - "Discharging a dengue patient with warning signs"
+  - "Ignoring rising HCT as incidental"
+  - "Giving NSAIDs/aspirin during critical phase"
+
+sources:
+  - { title: "WHO SEARO Dengue Guidelines", authority: "WHO", year: "2023", kind: "guideline" }
+  - { title: "PNPK Dengue Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline" }
+  - { title: "SKDI level 3B: demam berdarah dengue", authority: "KKI SKDI", year: "2012", kind: "competency" }
+
+status: clinically_reviewed
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"
