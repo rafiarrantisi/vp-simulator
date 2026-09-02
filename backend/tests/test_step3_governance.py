@@ -35,6 +35,20 @@ from pipeline.case_v3.vocab import (
 _reg = None
 
 
+def _auth_ids() -> set[str]:
+    """Named-human authorisations (goldens are pilot_verified via promote_cases).
+    Matches the QA-gate callers so the same goldens pass governance/lint."""
+    import json
+    from pathlib import Path
+    p = Path(__file__).resolve().parents[1].parent / "content" / "v3" / "human_review_records.json"
+    if p.exists():
+        try:
+            return {r.get("variant_id") for r in json.loads(p.read_text(encoding="utf-8")) if r.get("variant_id")}
+        except Exception:  # noqa: BLE001
+            return set()
+    return set()
+
+
 def registry() -> CaseRegistry:
     global _reg
     if _reg is None:
@@ -92,7 +106,7 @@ def test_competency_baseline_urls_present():
 
 def test_publishable_requires_clinical_source():
     v = registry().variant("dengue_001_mild")
-    g = validate_governance(v)  # SKD 2026 category present + status research_complete → pass
+    g = validate_governance(v, authorized_reviewed_ids=_auth_ids())
     assert g.ok, [str(e) for e in g.errors]
 
 
@@ -119,7 +133,7 @@ def test_variants_have_clinical_sources():
 def test_skd2026_category_required_for_primary_bank():
     v = registry().variant("dengue_001_mild")
     assert v.competency.category == "tuntas"
-    g = validate_governance(v)
+    g = validate_governance(v, authorized_reviewed_ids=_auth_ids())
     assert g.ok
     # missing category is rejected for the primary bank
     bad = _mk_clone(v, competency=Competency(standard="SKD 2026", category=None))
@@ -146,7 +160,9 @@ def test_skdi_legacy_level_requires_confirmation():
     assert not g.ok
     assert any("legacy_mapping_confirmed" in str(e) for e in g.errors)
     confirmed = _mk_clone(v, competency=Competency(standard="SKD 2026", category="tuntas",
-                                                   legacy_level="3A", legacy_mapping_confirmed=True))
+                                                   legacy_level="3A", legacy_mapping_confirmed=True),
+                          source_governance={"clinical_reviewer": "dr. X"},
+                          sources=list(v.sources))
     gc = validate_governance(confirmed)
     assert gc.ok, [str(e) for e in gc.errors]
 

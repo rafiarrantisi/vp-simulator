@@ -94,6 +94,6 @@ sources:
   - { title: "ISC 2018 (Indonesian hypertension guideline)", authority: "BP IH / PERHI", year: "2018", kind: "guideline" }
   - { title: "SKD 2026 Sistem Kardiovaskuler — hipertensi", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
 
-status: research_complete
+status: pilot_verified
 clinical_content_version: "v3.0"
 source_review_date: "2026-09-01"

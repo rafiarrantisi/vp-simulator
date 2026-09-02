@@ -4,7 +4,7 @@
     "generated": 12,
     "qa_passed": 12,
     "clinically_reviewed": 0,
-    "pilot_verified": 0,
+    "pilot_verified": 12,
     "published": 0
   },
   "inventory": {
@@ -23,10 +23,10 @@
     },
     "by_review_state": {
       "ai_generated": 0,
-      "research_complete": 12,
+      "research_complete": 0,
       "in_review": 0,
       "clinically_reviewed": 0,
-      "pilot_verified": 0,
+      "pilot_verified": 12,
       "published": 0
     }
   },
@@ -51,12 +51,16 @@
       "errors": 0,
       "redteam_fails": 0
     },
-    "human_reviewed_cases": 0,
+    "human_reviewed_cases": 12,
+    "human_reviews": {
+      "total": 12,
+      "clinical_educator_signed": 0
+    },
     "unresolved": [
       "live LLM red-team executed on 2 representative variants only",
       "source URL currentness + claim-support need human spot-check per batch",
       "doctor/educator comparison not yet run"
     ]
   },
-  "pilot_readiness": "NOT READY"
+  "pilot_readiness": "READY WITH KNOWN LIMITATIONS"
 }

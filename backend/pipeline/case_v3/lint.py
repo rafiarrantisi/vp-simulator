@@ -64,13 +64,18 @@ def _url_ok(u: str) -> bool:
     return bool(u and (u.startswith("http://") or u.startswith("https://")))
 
 
-def lint_variant(v: ClinicalVariant, *, require_sources: bool = True) -> LintReport:
+def lint_variant(v: ClinicalVariant, *, require_sources: bool = True,
+                 authorized_reviewed_ids: set[str] | None = None) -> LintReport:
     rep = LintReport()
     p = v.id
 
     # ── not auto-published ─────────────────────────────────────────────────
-    if v.status in ("pilot_verified", "clinically_reviewed", "published"):
-        rep.issues.append(LintIssue(p, "agent output must not self-reach a reviewed state", "error"))
+    # A reviewed/published state is only legal if a NAMED HUMAN reviewer record
+    # exists (promote_cases.py writes it; the AI/generation path never can).
+    if v.status in ("pilot_verified", "clinically_reviewed", "published") \
+            and not (authorized_reviewed_ids and v.id in authorized_reviewed_ids):
+        rep.issues.append(LintIssue(p, "agent output must not self-reach a reviewed state "
+                                       "(missing named human review record)", "error"))
 
     # ── SKD 2026 category ──────────────────────────────────────────────────
     comp = v.competency

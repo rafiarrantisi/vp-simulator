@@ -65,11 +65,24 @@ def test_golden_families_span_skd2026_categories():
 def test_golden_families_lint_clean():
     r = registry()
     err = []
+    auth = _auth_ids()
     for fid, fam in r.families.items():
         for v in r.variants_for_family(fid):
-            rep = lint_variant(v)
+            rep = lint_variant(v, authorized_reviewed_ids=auth)
             err += [f"{v.id}: {i}" for i in rep.errors]
     assert not err, err[:10]
+
+
+def _auth_ids() -> set[str]:
+    import json
+    from pathlib import Path
+    p = Path(__file__).resolve().parents[1].parent / "content" / "v3" / "human_review_records.json"
+    if p.exists():
+        try:
+            return {r.get("variant_id") for r in json.loads(p.read_text(encoding="utf-8")) if r.get("variant_id")}
+        except Exception:  # noqa: BLE001
+            return set()
+    return set()
 
 
 def test_presentation_family_cross_references_disease_variants():

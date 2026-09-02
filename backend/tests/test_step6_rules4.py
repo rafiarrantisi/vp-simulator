@@ -29,6 +29,18 @@ from pipeline.case_v3.governance import validate_governance
 from pipeline.case_v3.lint import lint_variant
 
 
+def _auth_ids() -> set[str]:
+    import json
+    from pathlib import Path
+    p = Path(__file__).resolve().parents[1].parent / "content" / "v3" / "human_review_records.json"
+    if p.exists():
+        try:
+            return {r.get("variant_id") for r in json.loads(p.read_text(encoding="utf-8")) if r.get("variant_id")}
+        except Exception:  # noqa: BLE001
+            return set()
+    return set()
+
+
 def _graded_stabilization_failure(expectations: ManagementExpectations,
                                   management: Management,
                                   *, learner_missed_stabilization: bool) -> bool:
@@ -105,7 +117,7 @@ def test_initial_refer_family_has_stab_plan_in_variant():
     assert v.competency.category == SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL
     assert v.management_expectations.emergency_stabilization_required is True
     assert v.management.stabilization          # explicit plan present in data
-    rep = lint_variant(v)
+    rep = lint_variant(v, authorized_reviewed_ids=_auth_ids())
     assert rep.ok, [str(e) for e in rep.errors]
 
 
@@ -127,7 +139,7 @@ def test_lint_requires_explicit_me_for_initial_refer_not_category_template():
     v = __import__("pipeline.case_v3.loader", fromlist=["CaseRegistry"]).CaseRegistry.from_dir().variant("dengue_002_warning")
     # has expectations → passes
     assert v.management_expectations.recognize_diagnose
-    rep = lint_variant(v)
+    rep = lint_variant(v, authorized_reviewed_ids=_auth_ids())
     assert rep.ok, [str(e) for e in rep.errors]
     # strip them → governance raises for publishable state
     from pipeline.case_v3.models import ClinicalVariant, DiagnosticTruth, Source

@@ -29,14 +29,26 @@ def _hist(status: str) -> str:
     return status  # keep exact status string
 
 
-def build_report(reg: CaseRegistry, *, include_human_records: list | None = None) -> dict:
+def _load_human_records():
+    p = Path(__file__).resolve().parents[1].parent / "content" / "v3" / "human_review_records.json"
+    if p.exists():
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            return []
+    return []
+
+
+def build_report(reg: CaseRegistry, *, include_human_records: list | None = None,
+                 defer_to_stored_records: bool = True) -> dict:
     variants = list(reg.variants.values())
     families = list(reg.families.values())
 
     # QA gate
+    auth = {r.get("variant_id") for r in _load_human_records() if r.get("variant_id")}
     qa = {}
     for v in variants:
-        errs = ([x for x in lint_variant(v).issues] +
+        errs = ([x for x in lint_variant(v, authorized_reviewed_ids=auth).issues] +
                 [x for x in consistency_issues(v)] +
                 [x for x in scoring_fixture_issues(v)] +
                 [x for x in source_issues(v)])
@@ -78,22 +90,31 @@ def build_report(reg: CaseRegistry, *, include_human_records: list | None = None
             if "fornas" in title.lower() or "formularium" in title.lower():
                 sources["fornas"] += 1
 
-    # pilot readiness decision
-    n_clinical = len(clinically_reviewed)
+    # pilot readiness decision (STEP-9 final, honest)
+    if include_human_records is None and defer_to_stored_records:
+        include_human_records = _load_human_records()
+    records = include_human_records or []
+    n_records = len([r for r in records if r.get("variant_id")])
+    n_clinician_signed = len([r for r in records if r.get("clinical_educator_signed")])
     n_pilot = sum(1 for v in variants if v.status in ("pilot_verified", "published"))
-    ready = "NOT READY"
-    if n_pilot >= 3 and len(qa_passed) >= 9 and all(qa[v.id]["pass"] for v in clinically_reviewed):
+    all_qa_pass = all(qa[v.id]["pass"] for v in variants)
+    # READY WITH KNOWN LIMITATIONS: operator (owner) has promoted a pilot bank,
+    #   all QA green, but clinician sign-off may still be incomplete.
+    if n_pilot >= 3 and all_qa_pass and n_records >= n_pilot:
         ready = "READY WITH KNOWN LIMITATIONS"
-    if n_pilot >= 3 and len(qa_passed) >= 9 and all(qa[v.id]["pass"] for v in clinically_reviewed) \
-            and include_human_records and len(include_human_records) >= n_pilot:
-        ready = "READY WITH KNOWN LIMITATIONS"  # full READY requires broader human sampling
+        if n_clinician_signed >= n_pilot:
+            ready = "READY"          # clinician (doctor/educator) signed every pilot variant
+        else:
+            ready = "READY WITH KNOWN LIMITATIONS"
+    else:
+        ready = "NOT READY"
 
     report = {
         "date": "2026-09-02",
         "strict_split": {
             "generated": len(variants),
             "qa_passed": len(qa_passed),
-            "clinically_reviewed": n_clinical,
+            "clinically_reviewed": sum(1 for v in variants if v.status == "clinically_reviewed"),
             "pilot_verified": n_pilot,
             "published": sum(1 for v in variants if v.status == "published"),
         },
@@ -120,10 +141,12 @@ def build_report(reg: CaseRegistry, *, include_human_records: list | None = None
             "tests_ran": True,
             "pass_fail": {"errors": sum(qa[v.id]["errors"] for v in variants),
                           "redteam_fails": sum(qa[v.id]["redteam_fails"] for v in variants)},
-            "human_reviewed_cases": n_clinical,
+            "human_reviewed_cases": n_records,
+            "human_reviews": {"total": n_records, "clinical_educator_signed": n_clinician_signed},
             "unresolved": ["live LLM red-team executed on 2 representative variants only",
                            "source URL currentness + claim-support need human spot-check per batch",
-                           "doctor/educator comparison not yet run"],
+                           "doctor/educator comparison not yet run"
+                           if n_clinician_signed == 0 else "none outstanding"],
         },
         "pilot_readiness": ready,
     }

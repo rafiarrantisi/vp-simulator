@@ -1,0 +1,122 @@
+[
+  {
+    "variant_id": "dengue_001_mild",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "dengue_002_warning",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "dengue_003_severe",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "htn_001_typical",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "htn_002_salt_sensitive",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "htn_003_urgency_diabetes",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "pyelo_adult_002",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "pyelo_preg_001",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "pyelo_septic_003",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "uti_adult_002",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "uti_child_001",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  },
+  {
+    "variant_id": "uti_male_003",
+    "from": "research_complete",
+    "to": "pilot_verified",
+    "reviewer": "Arran (yoarran)",
+    "role": "CEO / product owner (authorized pilot gate; NOT a clinical-educator sign-off)",
+    "date": "2026-09-02",
+    "notes": "Owner approval to launch internal pilot of the golden case bank. Clinical-educator medical review of each variant remains PENDING and is recorded as a known limitation.",
+    "clinical_educator_signed": false
+  }
+]

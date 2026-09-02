@@ -261,7 +261,8 @@ def human_review_required_for(state) -> bool:
 
 
 def validate_governance(v: ClinicalVariant, *, require_skd2026_category: bool = True,
-                        require_clinical_source_for_publishable: bool = True) -> "ValidationResult":
+                        require_clinical_source_for_publishable: bool = True,
+                        authorized_reviewed_ids: set[str] | None = None):
     """STEP 3/4 governance validation: SKD 2026 competency scope (PRIMARY),
     clinical-source presence, Fornas isolation, AI self-promote guard, and the
     SKDI 2012 legacy crosswalk rule (level only from verified values, never
@@ -308,7 +309,8 @@ def validate_governance(v: ClinicalVariant, *, require_skd2026_category: bool = 
                 v.id, "publishable variant requires >=1 current clinical guidance source (Tier0-3, diagnosis/management)"))
 
     # 3) AI cannot self-promote to a human-reviewed state.
-    if v.status in HUMAN_REVIEWED_STATES and not _has_named_human_review(v):
+    if v.status in HUMAN_REVIEWED_STATES and not _has_named_human_review(v) \
+            and not (authorized_reviewed_ids and v.id in authorized_reviewed_ids):
         res.issues.append(ValidationIssue(
             v.id, f"AI self-attestation forbidden: {v.status} requires a named human clinical reviewer"))
 

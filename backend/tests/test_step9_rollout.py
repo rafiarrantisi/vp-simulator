@@ -79,17 +79,18 @@ def test_generate_batch_caps_at_research_complete():
         assert b["ready_for_qa_gate"] is False
 
 
-def test_audit_strict_split_never_is_true_clinical_bank():
-    """Final audit must report generated vs QA-passed vs clinical vs pilot
-    separately, and must NOT claim pilot-readiness from counts alone."""
+def test_audit_strict_split_and_readiness():
+    """Final audit separates generated vs QA-passed vs clinical vs pilot, and
+    reflects the real human-review state: after Arran's owner-gate promotion the
+    bank is pilot_verified but clinical_educator_signed is still 0 -> the report
+    must say READY WITH KNOWN LIMITATIONS (never a false 'READY' or 'verified')."""
     from pipeline.case_v3.loader import CaseRegistry
     import tools.final_audit as fa
     reg = CaseRegistry.from_dir()
-    r = fa.build_report(reg)
+    r = fa.build_report(reg)     # auto-loads stored human review records
     split = r["strict_split"]
-    assert split["clinically_reviewed"] == 0          # no human sign-off yet
-    assert split["pilot_verified"] == 0
-    assert split["generated"] >= split["qa_passed"]    # QA-passed subset of generated
-    assert r["pilot_readiness"] in ("READY", "READY WITH KNOWN LIMITATIONS", "NOT READY")
-    # honest default: no human records -> NOT READY
-    assert r["pilot_readiness"] == "NOT READY" or "KNOWN" in r["pilot_readiness"]
+    assert split["generated"] >= split["qa_passed"]         # QA-passed subset
+    assert split["pilot_verified"] == 12                    # owner got pilot gate
+    # clinical-educator sign-off is genuinely absent -> honesty guard
+    assert r["qa"]["human_reviews"]["clinical_educator_signed"] == 0
+    assert r["pilot_readiness"] == "READY WITH KNOWN LIMITATIONS"

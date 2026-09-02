@@ -24,11 +24,23 @@ from pipeline.case_v3.redteam import run_red_team
 from pipeline.case_v3.sourceqa import source_issues
 
 
+def _human_reviewed_ids() -> set[str]:
+    """Named-human-review authorisations (from promote_cases.py records)."""
+    p = Path(__file__).resolve().parents[1].parent / "content" / "v3" / "human_review_records.json"
+    if p.exists():
+        try:
+            return {r.get("variant_id") for r in json.loads(p.read_text(encoding="utf-8")) if r.get("variant_id")}
+        except Exception:  # noqa: BLE001
+            return set()
+    return set()
+
+
 def run_all(reg: CaseRegistry) -> dict:
     report = {"variants": {}, "summary": {"total": 0, "errors": 0, "warnings": 0}}
+    auth = _human_reviewed_ids()
     for v in reg.variants.values():
         checks = {
-            "lint": [str(x) for x in lint_variant(v).issues],
+            "lint": [str(x) for x in lint_variant(v, authorized_reviewed_ids=auth).issues],
             "consistency": [str(x) for x in consistency_issues(v)],
             "scoring_fixtures": [str(x) for x in scoring_fixture_issues(v)],
             "source": [str(x) for x in source_issues(v)],
