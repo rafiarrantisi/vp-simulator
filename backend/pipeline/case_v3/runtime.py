@@ -89,6 +89,15 @@ class SelectionPolicy:
                 out.append(v)
         return out
 
+    def eligible_for(self, req: SelectionRequest) -> list[ClinicalVariant]:
+        """Rule 4 — the count shown to the user. Only variants actually
+        available for this learner/mode/release state are counted; 'unavailable'
+        (draft/unreviewed/incompatible learner-level/excluded) are NOT counted."""
+        return self._eligible(req)
+
+    def eligible_count(self, req: SelectionRequest) -> int:
+        return len(self.eligible_for(req))
+
     def select(self, req: SelectionRequest) -> SelectionResult:
         cands = self._eligible(req)
         if not cands:
@@ -107,6 +116,39 @@ class SelectionPolicy:
                   f"seed={req.seed}")
         return SelectionResult(variant=chosen, family_title=self.reg.families[chosen.family_id].title_en or "",
                                reason=reason)
+
+    def next_for_another_patient(self, req: SelectionRequest,
+                                 current_variant_id: str) -> dict:
+        """Rule 5 — 'another patient with the same disease' must be a genuinely
+        different ELIGIBLE clinical variant when one exists. If only the same
+        variant is eligible, return a replay/persona-variation marker instead of
+        pretending it is a new clinical presentation."""
+        req.exclude_recent_variant_ids = list(
+            dict.fromkeys(list(req.exclude_recent_variant_ids) + [current_variant_id]))
+        cands = self.eligible_for(req)
+        if cands:
+            # pick a different variant (deterministic)
+            import random
+            rng = random.Random(req.seed)
+            cands.sort(key=lambda v: (v.variation_level.value, v.id))
+            alt = cands[0]
+            return {
+                "kind": "new_clinical_variant",
+                "variant_id": alt.id,
+                "family_id": alt.family_id,
+                "different_from_current": alt.id != current_variant_id,
+            }
+        # no other eligible variant → honest replay/Persona variation
+        fid = req.family_id
+        if current_variant_id in self.reg.variants:
+            fid = fid or self.reg.variants[current_variant_id].family_id
+        return {
+            "kind": "replay_persona_variation",
+            "variant_id": current_variant_id,
+            "family_id": fid,
+            "different_from_current": False,
+            "note": "No other eligible clinical variant — this is a persona replay, not a new clinical presentation.",
+        }
 
 
 def _not_stage_compatible(v: ClinicalVariant, stage: str) -> bool:
@@ -178,6 +220,55 @@ def build_session(v: ClinicalVariant, *, persona_seed: int, learner_stage: str =
             "persona": persona,
             "mode_views": derive_mode_views(v, family_title=""),
             "session_reproducible_key": inst.reproducibility_key()}
+
+
+# Fields that must NEVER appear in a candidate-visible (pre-submit) DTO in blind
+# mode — they would leak the diagnosis / rubric / answer key / management truth.
+_LEAKY_PERSONA_KEYS = {"working_diagnosis", "red_flags", "vitals"}
+
+
+def candidate_safe_view(v: ClinicalVariant, persona: dict, *,
+                        mode: str, family_title: str = "") -> dict:
+    """Rule 6 — candidate-safe response/DTO for Blind Mode.
+
+    Before submit, the browser must NOT receive target diagnosis, hidden
+    differential answers, rubric, management key, answer key, or source content
+    that leaks the diagnosis. This builds a safe payload from a safe persona +
+    a minimal presentational view — it NEVER includes mode_views['targeted'],
+    never includes investigate/answer-key/management, and strips diagnosis-like
+    fields from the persona.
+    """
+    if mode != "blind":
+        # Targeted mode may show diagnosis (it is the point) — but still not
+        # rubric/answer-key/management before submit.
+        return {
+            "mode": mode,
+            "candidate_safe": True,
+            "family_title": family_title,
+            "overview_brief": v.opening_context or v.chief_complaint,
+            "persona": _strip_persona(persona, leaky=False),   # safe enough for targeted
+        }
+    return {
+        "mode": "blind",
+        "candidate_safe": True,
+        "diagnosis_hidden": True,
+        "candidate_brief": v.blind_candidate_brief or v.chief_complaint,
+        "persona": _strip_persona(persona, leaky=True),   # no dx/rubric/management/answer
+    }
+
+
+def _strip_persona(persona: dict, *, leaky: bool) -> dict:
+    if not isinstance(persona, dict):
+        return {}
+    p = dict(persona)
+    if leaky:
+        for k in _LEAKY_PERSONA_KEYS:
+            p.pop(k, None)
+    # never expose internal rubric/answer/management anywhere in a candidate DTO
+    for k in ("rubric", "answer_key", "management", "management_expectations",
+              "hidden_differentials", "source_truth", "investigations_truth"):
+        p.pop(k, None)
+    return p
 
 
 def _default_constraints():
@@ -259,9 +350,17 @@ def score_encounter(inp: ScoreInput) -> ScoreResult:
     ratio = (collected_crit / len(crit)) if crit else 1.0
     res.by_dimension["info_gathering"] = {"score": ratio, "notes": f"{collected_crit}/{len(crit)} critical items"}
 
-    # diagnostic quality
-    dx_match = _dx_match(inp.diagnosis_submitted, inp.variant.diagnostic.working_diagnosis)
-    res.by_dimension["diagnostic_quality"] = {"score": 1.0 if dx_match else 0.2, "notes": ("correct" if dx_match else "not target diagnosis")}
+    # diagnostic quality (rule 7: semantic, tolerant — not exact-string fail)
+    from pipeline.case_v3.semantic import diagnose_match
+    dm = diagnose_match(inp.diagnosis_submitted,
+                        inp.variant.diagnostic.working_diagnosis,
+                        inp.variant.diagnostic.synonyms)
+    res.by_dimension["diagnostic_quality"] = {
+        "score": 1.0 if dm["match"] else 0.2,
+        "notes": dm["note"],
+        "grade": dm.get("grade", "no_candidate"),
+        "grading_limit": dm.get("grading_limit", False),   # rule 7: advisory label
+    }
 
     # investigations strategy
     res.by_dimension["investigation_strategy"] = {"score": 1.0 if inp.variant.investigations else 0.0}
@@ -335,12 +434,6 @@ def _management_score(inp: ScoreInput, me: ManagementExpectations) -> float:
             tot += 1
             pts += 1.0 if inp.gave_referral else 0.0
     return (pts / tot) if tot else 0.4
-
-
-def _dx_match(submitted: str, target: str) -> bool:
-    if not submitted:
-        return False
-    return submitted.strip().lower() in target.lower() or target.lower() in submitted.strip().lower()
 
 
 def _mentions(s: str, found: str) -> bool:

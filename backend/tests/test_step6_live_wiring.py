@@ -92,9 +92,10 @@ def test_reload_returns_same_patient_and_truth():
     assert r.status_code == 200
     reloaded = r.json()["data"]
     assert reloaded["variantId"] == start["variantId"]       # same variant
+    persona = reloaded["candidateView"]["persona"]
     # same clinical truth (protected) — same patient after refresh
-    assert reloaded["persona"]["working_diagnosis"] == v.diagnostic.working_diagnosis
-    assert reloaded["persona"]["vitals"] == [x.to_dict() for x in v.physical_exam.vitals]
+    assert persona["working_diagnosis"] == v.diagnostic.working_diagnosis
+    assert persona["vitals"] == [x.to_dict() for x in v.physical_exam.vitals]
 
 
 def test_scoring_uses_persisted_variant_not_reselection():
@@ -124,7 +125,7 @@ def test_resume_after_refresh_gives_same_score_session():
     # reload on a fresh "page view" (like a browser refresh) — same persona
     r1 = client.get(f"/api/v3/sessions/{start['sessionId']}", headers=_auth(tok)).json()["data"]
     r2 = client.get(f"/api/v3/sessions/{start['sessionId']}", headers=_auth(tok)).json()["data"]
-    assert r1["persona"]["name"] == r2["persona"]["name"]      # no persona regeneration to a different person
+    assert r1["candidateView"]["persona"]["name"] == r2["candidateView"]["persona"]["name"]  # same person, no regeneration
     assert r1["variantId"] == r2["variantId"]
 
 
@@ -155,3 +156,73 @@ def test_v3_history_and_state_are_new_schema_only():
     assert hist["sessions"] and all(s["status"] in ("active", "completed") for s in hist["sessions"])
     state = client.get("/api/v3/state", headers=_auth(tok)).json()["data"]
     assert state["schema"] == "new" and state["variantId"]
+
+
+# ── Rule 4: eligible count shown, not all files ────────────────────────────
+
+def test_families_reports_eligible_not_raw_count():
+    tok = _new_user()
+    r = client.get("/api/v3/families?learner_level=koas", headers=_auth(tok))
+    fams = {f["id"]: f for f in r.json()["data"]["families"]}
+    # preclinical-aware count is smaller than raw file count for dengue
+    pre = client.get("/api/v3/families?learner_level=preclinical", headers=_auth(tok)).json()["data"]["families"]
+    premap = {f["id"]: f for f in pre}
+    assert fams["fam_dengue"]["eligibleVariantCount"] == 3       # koas -> all 3
+    assert fams["fam_dengue"]["totalVariantFiles"] == 3
+    assert premap["fam_dengue"]["eligibleVariantCount"] < 3        # preclinical -> fewer eligible
+    # unreviewed/draft NEVER counted as eligible in released/verified flows
+    # (covered by selection-release test below)
+
+
+def test_families_count_zero_for_released_only_since_none_verified():
+    # there's no released_only param on /families; but the underlying selection
+    # shows verified-only eligible == 0 (rule 4). Assert selection-level.
+    from pipeline.case_v3.loader import CaseRegistry
+    from pipeline.case_v3.runtime import SelectionPolicy, SelectionRequest
+    pol = SelectionPolicy(CaseRegistry.from_dir())
+    assert pol.eligible_count(SelectionRequest(family_id="fam_dengue", released_ids=set())) == 0
+
+
+# ── Rule 5: another-patient endpoint ───────────────────────────────────────
+
+def test_another_patient_endpoint_returns_different_variant():
+    tok = _new_user()
+    r = client.post("/api/v3/another-patient", headers=_auth(tok),
+                    json={"family_id": "fam_dengue", "current_variant_id": "dengue_001_mild",
+                          "learner_level": "koas"})
+    assert r.status_code == 200
+    d = r.json()["data"]
+    assert d["kind"] == "new_clinical_variant"
+    assert d["variant_id"] != "dengue_001_mild"
+
+
+def test_another_patient_released_only_is_replay():
+    tok = _new_user()
+    r = client.post("/api/v3/another-patient", headers=_auth(tok),
+                    json={"family_id": "fam_dengue", "current_variant_id": "dengue_001_mild",
+                          "released_only": True})
+    assert r.json()["data"]["kind"] == "replay_persona_variation"
+
+
+# ── Rule 6: blind start/resume never leak diagnosis in the DTO ─────────────
+
+def test_blind_start_dto_does_not_leak():
+    tok = _new_user()
+    r = client.post("/api/v3/sessions", headers=_auth(tok),
+                    json={"family_id": "fam_dengue", "learner_level": "koas",
+                          "interaction_mode": "blind"})
+    d = r.json()["data"]
+    payload = str(d)
+    assert "diagnosis" not in payload or d["candidateView"]["diagnosis_hidden"] is True
+    assert "Severe dengue" not in payload and "rubric" not in payload
+    cv = d["candidateView"]
+    assert cv["mode"] == "blind" and "candidate_brief" in cv
+
+
+def test_targeted_start_dto_keeps_diagnosis_but_hides_rubric():
+    tok = _new_user()
+    r = client.post("/api/v3/sessions", headers=_auth(tok),
+                    json={"family_id": "fam_dengue", "learner_level": "koas",
+                          "interaction_mode": "targeted"})
+    payload = str(r.json()["data"])
+    assert "answer_key" not in payload and "rubric" not in payload

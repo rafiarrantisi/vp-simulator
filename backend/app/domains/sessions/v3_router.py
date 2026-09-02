@@ -23,6 +23,7 @@ from app.domains.sessions.v3_service import (
 from app.shared.dependencies import get_current_user
 from app.shared.envelope import ok
 from app.shared.ratelimit import rate_limit
+from pipeline.case_v3.runtime import SelectionPolicy
 
 router = APIRouter(prefix="/api/v3", tags=["v3"])
 _ai_rl = Depends(rate_limit("ai", "rate_limit_ai"))
@@ -92,16 +93,49 @@ def v3_history(limit: int = 20, user: User = Depends(get_current_user),
         for r in rows], "total": len(rows)})
 
 
+class V3AnotherPatientReq(BaseModel):
+    family_id: str
+    current_variant_id: str
+    learner_level: str = "koas"
+    difficulty: str | None = None
+    released_only: bool = False
+    seed: int = 0
+
+
+@router.post("/another-patient")
+def v3_another_patient(req: V3AnotherPatientReq, user: User = Depends(get_current_user)):
+    """Rule 5 — 'another patient with the same disease': returns a genuinely
+    different ELIGIBLE clinical variant when one exists for this learner/mode/
+    release state; otherwise flags an honest persona-replay (not a new case)."""
+    from pipeline.case_v3.loader import CaseRegistry
+    from pipeline.case_v3.runtime import SelectionRequest
+    reg = CaseRegistry.from_dir()
+    pol = SelectionPolicy(reg)
+    released = None
+    if req.released_only:
+        released = set()
+    sreq = SelectionRequest(mode="targeted", family_id=req.family_id,
+                            learner_stage=req.learner_level,
+                            difficulty=req.difficulty, seed=req.seed,
+                            released_ids=released)
+    return ok(pol.next_for_another_patient(sreq, req.current_variant_id))
+
+
 @router.get("/families")
 def v3_families(competency: str | None = None, specialty: str | None = None,
+                learner_level: str = "koas",
                 user: User = Depends(get_current_user)):
     """SKD 2026 competency-filterable catalogue (superseding rule 3).
 
+    Rule 4: `eligibleVariantCount` counts variants actually available for this
+    learner/mode/release state (draft/unreviewed/incompatible NOT counted).
     Badge metadata is available for filtering/detail but the frontend is NOT
     forced to show it on every card.
     """
     from pipeline.case_v3.loader import CaseRegistry
+    from pipeline.case_v3.runtime import SelectionPolicy, SelectionRequest
     reg = CaseRegistry.from_dir()
+    pol = SelectionPolicy(reg)
     families = []
     for fid, fam in reg.families.items():
         if specialty and fam.primary_specialty != specialty \
@@ -109,9 +143,9 @@ def v3_families(competency: str | None = None, specialty: str | None = None,
             continue
         vs = reg.variants_for_family(fid)
         cats = sorted({v.competency.category for v in vs if v.competency and v.competency.category})
-        if competency and competency not in cats:
-            # note: family-level competency = union of variant categories
-            pass
+        # Rule 4 — eligible count for THIS learner level
+        elig = pol.eligible_for(SelectionRequest(
+            mode="targeted", family_id=fid, learner_stage=learner_level, released_ids=None))
         families.append({
             "id": fam.id, "familyType": fam.family_type.value,
             "titleId": fam.title_id, "titleEn": fam.title_en,
@@ -119,7 +153,8 @@ def v3_families(competency: str | None = None, specialty: str | None = None,
             "crossSpecialtyTags": fam.cross_specialty_tags,
             "presentingComplaints": fam.presenting_complaints,
             "competencyCategories": cats,      # SKD 2026 filtering/detail metadata
-            "variantCount": len(reg.variants_for_family(fid)),
+            "eligibleVariantCount": len(elig),  # Rule 4: eligible, not all files
+            "totalVariantFiles": len(vs),        # (diagnostic only)
         })
     if competency:
         families = [f for f in families if competency in f["competencyCategories"]]

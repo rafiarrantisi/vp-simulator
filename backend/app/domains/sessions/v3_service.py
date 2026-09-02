@@ -27,7 +27,7 @@ from pipeline.case_v3.loader import CaseRegistry
 from pipeline.case_v3.persona import persona_from_constraints
 from pipeline.case_v3.runtime import (
     SelectionPolicy, SelectionRequest, ScoreInput, VariantUnavailable,
-    build_debrief, score_encounter,
+    build_debrief, candidate_safe_view, score_encounter,
 )
 from pipeline.case_v3.derive import derive_mode_views, derive_answer_key
 
@@ -118,9 +118,9 @@ def start_v3_session(db: OrmSession, user: User, *, family_id: str | None = None
         "variantId": s.variant_id,
         "familyTitle": _family_title(reg, s.family_id),
         "personaUsedFallback": used_fallback,
-        "persona": persona,
-        "modeViews": derive_mode_views(v, _family_title(reg, v.family_id)),
-        "encounterStagesGuidance": _stage_guidance(v),
+        # Rule 6 — candidate-safe DTO (blind mode: no dx/rubric/answer/management)
+        "candidateView": candidate_safe_view(v, persona, mode=interaction_mode,
+                                             family_title=_family_title(reg, v.family_id)),
         "openingBrief": v.blind_candidate_brief or v.chief_complaint,
     }
 
@@ -150,8 +150,9 @@ def reload_v3_session(db: OrmSession, session_id: str, user: User) -> dict:
         "familyId": s.family_id,
         "variantId": s.variant_id,
         "familyTitle": _family_title(reg, s.family_id),
-        "persona": persona,
-        "modeViews": derive_mode_views(v, _family_title(reg, v.family_id)),
+        # Rule 6 — candidate-safe DTO on reload too (blind hides diagnosis)
+        "candidateView": candidate_safe_view(v, persona, mode=s.interaction_mode or "targeted",
+                                             family_title=_family_title(reg, s.family_id)),
         "openingBrief": v.blind_candidate_brief or v.chief_complaint,
         "turns": _history(db, session_id),
     }
