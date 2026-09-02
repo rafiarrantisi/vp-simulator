@@ -23,7 +23,13 @@ def post_event(req: PilotEventIn, user: User = Depends(get_current_user),
         db, user.id, req.session_id, req.event, req.stage, req.meta,
         competency_standard=req.competency_standard,
         competency_category=req.competency_category,
-        legacy_skdi_level=req.legacy_skdi_level))
+        legacy_skdi_level=req.legacy_skdi_level,
+        family_id=req.family_id, variant_id=req.variant_id,
+        presentation_path=req.presentation_path,
+        interaction_mode=req.interaction_mode,
+        learner_level=req.learner_level,
+        persona_fallback=req.persona_fallback,
+        content_schema=req.content_schema))
 
 
 @router.get("/analytics")

@@ -14,6 +14,14 @@ class PilotEventIn(BaseModel):
     competency_standard: str = "SKD 2026"
     competency_category: str | None = None
     legacy_skdi_level: str | None = None
+    # STEP-6 §11 behavioural context
+    family_id: str | None = None
+    variant_id: str | None = None
+    presentation_path: str | None = None
+    interaction_mode: str | None = None
+    learner_level: str | None = None
+    persona_fallback: bool = False
+    content_schema: str = "new"   # legacy | new (STEP-6 §12)
 
     def validate_event(self) -> None:
         if self.event not in ALLOWED_EVENTS:

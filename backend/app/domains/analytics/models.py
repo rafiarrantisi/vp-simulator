@@ -8,7 +8,7 @@ domain rows.
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, DateTime, Integer, String
+from sqlalchemy import JSON, Boolean, DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
@@ -39,6 +39,14 @@ class PilotEvent(Base):
     competency_standard: Mapped[str | None] = mapped_column(String, default="SKD 2026")
     competency_category: Mapped[str | None] = mapped_column(String, default=None)  # tuntas | initial_management_and_referral
     legacy_skdi_level: Mapped[str | None] = mapped_column(String, index=True, default=None)  # optional 3A/3B/4A
+    # STEP-6 §11 new-case behavioural context
+    family_id: Mapped[str | None] = mapped_column(String, index=True, default=None)
+    variant_id: Mapped[str | None] = mapped_column(String, index=True, default=None)
+    presentation_path: Mapped[str | None] = mapped_column(String, default=None)   # e.g. "disease:dengue" | "presentation:fever"
+    interaction_mode: Mapped[str | None] = mapped_column(String, default=None)     # targeted | blind | random
+    learner_level: Mapped[str | None] = mapped_column(String, default=None)        # preclinical | koas
+    persona_fallback: Mapped[bool] = mapped_column(Boolean, default=False)
+    content_schema: Mapped[str | None] = mapped_column(String, default="new")      # legacy | new (STEP-6 §12)
 
 
 # Whitelist — keeps the event table clean and queryable. Client may only send these.

@@ -13,13 +13,25 @@ def record_event(db: OrmSession, user_id: str, session_id: str | None,
                  event: str, stage: str | None, meta: dict,
                  *, competency_standard: str = "SKD 2026",
                  competency_category: str | None = None,
-                 legacy_skdi_level: str | None = None) -> dict:
+                 legacy_skdi_level: str | None = None,
+                 family_id: str | None = None, variant_id: str | None = None,
+                 presentation_path: str | None = None,
+                 interaction_mode: str | None = None,
+                 learner_level: str | None = None,
+                 persona_fallback: bool = False,
+                 content_schema: str = "new") -> dict:
     case_id = (meta or {}).get("case_id") if isinstance(meta, dict) else None
     row = PilotEvent(user_id=user_id, session_id=session_id, event=event,
                      stage=stage, meta=meta or {}, case_id=case_id,
                      competency_standard=competency_standard,
                      competency_category=competency_category,
-                     legacy_skdi_level=legacy_skdi_level)
+                     legacy_skdi_level=legacy_skdi_level,
+                     family_id=family_id, variant_id=variant_id,
+                     presentation_path=presentation_path,
+                     interaction_mode=interaction_mode,
+                     learner_level=learner_level,
+                     persona_fallback=persona_fallback,
+                     content_schema=content_schema)
     db.add(row)
     db.commit()
     return {"id": row.id, "event": event, "recorded": True}
