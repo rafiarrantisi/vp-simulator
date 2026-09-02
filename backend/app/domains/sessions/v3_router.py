@@ -48,6 +48,11 @@ class V3ScoreReq(BaseModel):
     mode: str | None = None
 
 
+class V3TurnReq(BaseModel):
+    text: str = Field(..., min_length=1, max_length=4000)
+    input_type: str | None = None
+
+
 @router.post("/sessions")
 def v3_start(req: V3StartReq, user: User = Depends(get_current_user),
              db: Session = Depends(get_db)):
@@ -65,6 +70,13 @@ def v3_start(req: V3StartReq, user: User = Depends(get_current_user),
 def v3_get(session_id: str, user: User = Depends(get_current_user),
            db: Session = Depends(get_db)):
     return ok(reload_v3_session(db, session_id, user))
+
+
+@router.post("/sessions/{session_id}/turns", dependencies=[_ai_rl])
+def v3_turn(session_id: str, req: V3TurnReq, user: User = Depends(get_current_user),
+            db: Session = Depends(get_db)):
+    from app.domains.sessions.v3_service import turn_v3_session
+    return ok(turn_v3_session(db, user, session_id, req.text))
 
 
 @router.post("/sessions/{session_id}/score", dependencies=[_ai_rl])

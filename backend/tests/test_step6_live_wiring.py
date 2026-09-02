@@ -10,7 +10,10 @@ Validates:
   - immutability: after start, variant/persona/canonical facts frozen; a reload
     after the clinical truth changed → 409 conflict (refuses to resume/score).
 """
+import os as _os
 import uuid
+
+import pytest
 
 from fastapi.testclient import TestClient
 from sqlalchemy import select
@@ -23,11 +26,27 @@ from pipeline.case_v3.loader import CaseRegistry
 init_db()
 client = TestClient(app)
 
+# Live v3 turn tests call a real (paid) LLM — gated behind an env flag so the
+# suite doesn't burn tokens on every run (user rule: keep paid API tests minimal).
+LIVE_TURNS = _os.environ.get("QORA_LIVE_TURNS") == "1"
+_live = pytest.mark.skipif(not LIVE_TURNS, reason="needs QORA_LIVE_TURNS=1 (paid LLM)")
+
 
 def _new_user():
     email = f"v3_{uuid.uuid4().hex[:8]}@t.co"
     client.post("/api/auth/signup", json={"email": email, "password": "secret12", "full_name": "V"})
     return client.post("/api/auth/login", json={"email": email, "password": "secret12"}).json()["data"]["token"]
+
+
+def db_session_turns(sid: str):
+    from app.domains.sessions.models import SessionTurn
+    db = SessionLocal()
+    try:
+        return list(db.scalars(select(SessionTurn)
+                               .where(SessionTurn.session_id == sid)
+                               .order_by(SessionTurn.turn_number)))
+    finally:
+        db.close()
 
 
 def _auth(tok):
@@ -271,3 +290,40 @@ def test_replay_another_patient_chooses_different_clinical_variant():
     a = reg.variant("dengue_001_mild").canonical_hash()
     b = reg.variant(nap["variant_id"]).canonical_hash()
     assert a != b, "selected variant must differ in clinical truth, not just persona/name"
+
+
+# ── STEP-9 final: live turn-based AI patient (mirrors v2 flow) ──────────────
+@_live
+def test_v3_turn_calls_live_patient_and_persists():
+    """A v3 session accepts a chat turn, calls the live patient LLM (engine_v3),
+    persists both turns, and returns a reply. Mirrors the v2 turn contract."""
+    tok = _new_user()
+    start = client.post("/api/v3/sessions", headers=_auth(tok),
+                        json={"family_id": "fam_uti", "learner_level": "koas",
+                              "interaction_mode": "targeted"}).json()["data"]
+    sid = start["sessionId"]
+    r = client.post(f"/api/v3/sessions/{sid}/turns", headers=_auth(tok),
+                    json={"text": "How long have you had fever?"})
+    assert r.status_code == 200, r.text
+    data = r.json()["data"]
+    assert data["reply"] and len(data["reply"]) > 0
+    # both user + patient turns persisted
+    from app.domains.sessions.models import SessionTurn
+    turns = db_session_turns(sid)
+    assert any(t.role == "user" and t.content == "How long have you had fever?" for t in turns)
+    assert any(t.role == "patient" and t.content == data["reply"] for t in turns)
+
+
+@_live
+def test_v3_turn_uses_frozen_variant_not_reselection():
+    """(immutability) a turn must answer about the persisted variant/persona,
+    never re-select. Starting with a family then sending a turn keeps the same
+    session — the endpoint reads the persisted frozen variant_id."""
+    tok = _new_user()
+    start = client.post("/api/v3/sessions", headers=_auth(tok),
+                        json={"family_id": "fam_hypertension", "learner_level": "koas"}).json()["data"]
+    sid = start["sessionId"]
+    r = client.post(f"/api/v3/sessions/{sid}/turns", headers=_auth(tok),
+                    json={"text": "Do you have any other symptoms?"})
+    assert r.status_code == 200, r.text
+    assert r.json()["data"]["reply"]

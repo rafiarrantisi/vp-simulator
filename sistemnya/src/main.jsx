@@ -3733,90 +3733,124 @@ function QoraV3Family({ familyId }) {
         isPresentation || targeted === 'osce' ? 'Start blind practice' : 'Start practising')));
 }
 
-// ── Session (targeted + blind share the shell; blind hides diagnosis) ────
+// ── Session (live AI-patient CHAT — mirrors v2 flow; blind hides diagnosis) ─
 function QoraV3Session({ sessionStart, onExit }) {
-  const sessionIdRef = React.useRef(null);
   const [sid, setSid] = React.useState(null);
   const [data, setData] = React.useState(null);
   const [err, setErr] = React.useState('');
-  const [stage, setStage] = React.useState('brief');
-  // short free-text inputs (STEP 7 §11 low-friction)
+  // chat conversation with the AI patient (mirrors QV2Session messages)
+  const [messages, setMessages] = React.useState([]);   // {role, text}
+  const [input, setInput] = React.useState('');
+  const [busy, setBusy] = React.useState(false);
+  const [assessOpen, setAssessOpen] = React.useState(false);
+  // final assessment (free-text + flags, submitted at end)
   const [dxInput, setDxInput] = React.useState('');
   const [diffInput, setDiffInput] = React.useState('');
   const [rxInput, setRxInput] = React.useState('');
   const [stabilized, setStabilized] = React.useState(null);
   const [referral, setReferral] = React.useState(null);
+  const endRef = React.useRef(null);
 
-  const mode = (sessionStart && sessionStart[1]) || 'targeted'; // from route: family/mode
+  const mode = (sessionStart && sessionStart[1]) || 'targeted';
   const familyId = (sessionStart && sessionStart[0]) || null;
+  const blind = mode === 'blind';
 
   React.useEffect(function () {
     qv2Fetch('/api/v3/sessions', {
       method: 'POST',
       body: { family_id: familyId, learner_level: 'koas', interaction_mode: mode },
     }).then(function (d) {
-      setSid(d.sessionId); sessionIdRef.current = d.sessionId; setData(d);
-      setStage(mode === 'blind' ? 'brief' : 'vitals');
+      setSid(d.sessionId); setData(d);
+      const persona = (d.candidateView && d.candidateView.persona) || {};
+      const brief = d.openingBrief || (d.candidateView && d.candidateView.candidate_brief) || '';
+      const opening = { role: 'patient', text: brief || 'You may ask me about my condition.' };
+      setMessages([opening]);
     }).catch(function (e) { setErr(String(e.message || e)); });
   }, [familyId, mode]);
 
-  if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Error: ' + err);
-  if (!data) return React.createElement('div', { style: { padding: 60, textAlign: 'center', color: 'var(--text-3)' } }, 'Starting a new session…');
+  React.useEffect(function () {
+    if (endRef.current) endRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [messages]);
 
-  const persona = (data.candidateView && data.candidateView.persona) || {};
-  const brief = data.openingBrief || (data.candidateView && data.candidateView.candidate_brief) || '';
-  const blind = mode === 'blind';
+  function sendMessage() {
+    const text = input.trim();
+    if (!text || busy || !sid) return;
+    setInput('');
+    setBusy(true);
+    setMessages(function (m) { return m.concat([{ role: 'user', text: text }]); });
+    qv2Fetch('/api/v3/sessions/' + sid + '/turns', { method: 'POST', body: { text: text } })
+      .then(function (r) {
+        setMessages(function (m) { return m.concat([{ role: 'patient', text: r.reply }]); });
+        setBusy(false);
+      })
+      .catch(function (e) { setMessages(function (m) { return m.concat([{ role: 'patient', text: '…' }]); }); setErr(String(e.message || e)); setBusy(false); });
+  }
 
   function submit() {
     if (!sid) return;
     qv2Fetch('/api/v3/sessions/' + sid + '/score', {
       method: 'POST',
       body: { diagnosis_submitted: dxInput, stabilized: stabilized, gave_referral: referral },
-    }).then(function (r) {
-      v3SetHash('result/' + sid);
-    }).catch(function (e) { setErr(String(e.message || e)); });
+    }).then(function () { v3SetHash('result/' + sid); })
+      .catch(function (e) { setErr(String(e.message || e)); });
   }
 
-  const btn = { flex: 1, padding: '12px', borderRadius: 12, fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' };
+  if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, 'Error: ' + err);
+  if (!data) return React.createElement('div', { style: { padding: 60, textAlign: 'center', color: 'var(--text-3)' } }, 'Starting a new session…');
 
-  return React.createElement('div', { style: { maxWidth: 'min(720px, calc(100% - 24px))', margin: '0 auto', padding: '20px 16px' } },
-    React.createElement(QAMoodBand, { scene: blind ? 'malam' : 'pagi', kicker: blind ? 'BLIND OSCE' : 'TARGETED PRACTICE', title: blind ? 'Candidate assessment' : 'Patient encounter' }),
+  const persona = (data.candidateView && data.candidateView.persona) || {};
+  const btn = { padding: '12px 16px', borderRadius: 12, fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' };
 
-    React.createElement('div', { className: 'as', style: { position: 'relative', zIndex: 5, marginTop: -40, padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
-      // Candidate brief (blind hides diagnosis; shows age/sex/setting/complaint/task)
-      React.createElement('div', { style: { fontSize: 14, lineHeight: 1.6, color: 'var(--text-1)', marginBottom: 16 } },
-        brief || 'Patient here with a clinical problem.'),
-      blind && React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', marginBottom: 14, fontStyle: 'italic' } }, 'Diagnosis hidden — assess, investigate, then propose your diagnosis and management.'),
+  return React.createElement('div', { style: { maxWidth: 'min(760px, calc(100% - 24px))', margin: '0 auto', padding: '16px 16px 40px' } },
+    React.createElement(QAMoodBand, { scene: blind ? 'malam' : 'pagi', kicker: blind ? 'BLIND OSCE' : 'TARGETED PRACTICE', title: blind ? 'Ask the patient' : 'Patient encounter' }),
+    blind && React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', margin: '6px 0 12px', fontStyle: 'italic' } }, 'Diagnosis hidden — interview the patient, then submit your assessment.'),
 
-      // Vitals from canonical backend
-      React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } }, 'Vitals & status'),
-      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 8, marginBottom: 16 } },
-        (persona.vitals || []).map(function (v, i) {
-          return React.createElement('div', { key: i, style: { padding: 10, borderRadius: 12, background: 'var(--surface-2, var(--surface))', border: '1px solid var(--border)' } },
-            React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: 0.4 } }, v.name),
-            React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', marginTop: 2 } }, v.value + (v.unit ? ' ' + v.unit : '')));
-        })),
+    // Vitals (canonical backend) always visible for reference
+    React.createElement('div', { className: 'as', style: { position: 'relative', zIndex: 5, marginTop: -6, padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' } },
+      React.createElement('div', { style: { fontSize: 12, fontWeight: 800, color: 'var(--text-1)', textTransform: 'uppercase', letterSpacing: 0.4 } }, 'Vitals'),
+      (persona.vitals || []).slice(0, 6).map(function (v, i) {
+        return React.createElement('div', { key: i, style: { fontSize: 12, color: 'var(--text-2)' } },
+          React.createElement('span', { style: { color: 'var(--text-3)', marginRight: 5 } }, v.name.replace(/_/g, ' ')),
+          React.createElement('b', { style: { fontWeight: 700 } }, String(v.value) + (v.unit ? ' ' + v.unit : '')));
+      })),
 
-      // Inputs (free-text, low-friction)
-      React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: 'var(--text-1)', margin: '14px 0 8px' } }, 'Your assessment'),
-      React.createElement(V3Field, { label: 'Working diagnosis', value: dxInput, set: setDxInput, ph: 'e.g. dengue with warning signs' }),
-      React.createElement(V3Field, { label: 'Differentials', value: diffInput, set: setDiffInput, ph: 'list differentials (optional)' }),
-      React.createElement(V3Field, { label: 'Initial management / prescription', value: rxInput, set: setRxInput, ph: 'treatment, fluids, actions' }),
+    // Chat with the AI patient
+    React.createElement('div', { style: { marginTop: 14, display: 'flex', flexDirection: 'column', gap: 8 } },
+      messages.map(function (m, i) {
+        const isUser = m.role === 'user';
+        return React.createElement('div', { key: i, style: { display: 'flex', justifyContent: isUser ? 'flex-end' : 'flex-start' } },
+          React.createElement('div', { style: Object.assign({ maxWidth: '80%', padding: '11px 14px', borderRadius: 16, fontSize: 14, lineHeight: 1.5, fontFamily: 'Plus Jakarta Sans', whiteSpace: 'pre-wrap' }, isUser ? { background: 'var(--primary)', color: '#fff', borderTopRightRadius: 4 } : { background: 'var(--surface)', color: 'var(--text-1)', border: '1px solid var(--border)', borderTopLeftRadius: 4 }) },
+            m.text));
+      }),
+      busy && React.createElement('div', { style: { fontSize: 13, color: 'var(--text-3)', padding: '4px 4px' } }, '…'),
+      React.createElement('div', { ref: endRef })),
 
-      React.createElement('div', { style: { display: 'flex', gap: 8, margin: '12px 0' } },
-        React.createElement('button', { onClick: function(){ setStabilized(true); }, style: Object.assign({}, btn, { border: '1px solid var(--border)', background: stabilized === true ? 'var(--primary)' : 'var(--surface)', color: stabilized === true ? '#fff' : 'var(--text-2)' }) }, 'Stabilised'),
-        React.createElement('button', { onClick: function(){ setStabilized(false); }, style: Object.assign({}, btn, { border: '1px solid var(--border)', background: stabilized === false ? '#C0392B' : 'var(--surface)', color: stabilized === false ? '#fff' : 'var(--text-2)' }) }, 'No stabilisation')),
-      React.createElement('div', { style: { display: 'flex', gap: 8, marginBottom: 16 } },
-        React.createElement('button', { onClick: function(){ setReferral(true); }, style: Object.assign({}, btn, { border: '1px solid var(--border)', background: referral === true ? 'var(--primary)' : 'var(--surface)', color: referral === true ? '#fff' : 'var(--text-2)' }) }, 'Referral arranged'),
-        React.createElement('button', { onClick: function(){ setReferral(false); }, style: Object.assign({}, btn, { border: '1px solid var(--border)', background: referral === false ? '#C0392B' : 'var(--surface)', color: referral === false ? '#fff' : 'var(--text-2)' }) }, 'No referral')),
+    // Input
+    React.createElement('div', { style: { display: 'flex', gap: 8, marginTop: 10 } },
+      React.createElement('input', { value: input, onChange: function (e) { setInput(e.target.value); }, onKeyDown: function (e) { if (e.key === 'Enter') sendMessage(); }, placeholder: 'Ask the patient something…', disabled: busy, style: { flex: 1, boxSizing: 'border-box', padding: '12px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' } }),
+      React.createElement('button', { onClick: sendMessage, disabled: busy || !input.trim(), style: Object.assign({}, btn, { border: 'none', background: 'var(--primary)', color: '#fff' }) }, 'Ask')),
 
-      React.createElement('button', { onClick: submit, style: { width: '100%', padding: '13px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, blind ? 'Submit assessment' : 'Submit')));
+    // Finish → assessment (collect diagnosis/management, submit → debrief)
+    !assessOpen
+      ? React.createElement('button', { onClick: function () { setAssessOpen(true); }, style: Object.assign({}, btn, { width: '100%', marginTop: 14, border: '1px solid var(--primary)', background: 'var(--surface)', color: 'var(--primary)' }) }, 'Finish interview — write your assessment')
+      : React.createElement('div', { className: 'as', style: { marginTop: 14, padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
+          React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10 } }, 'Your assessment'),
+          React.createElement(V3Field, { label: 'Working diagnosis', value: dxInput, set: setDxInput, ph: 'e.g. dengue with warning signs' }),
+          React.createElement(V3Field, { label: 'Differentials', value: diffInput, set: setDiffInput, ph: 'list differentials (optional)' }),
+          React.createElement(V3Field, { label: 'Initial management / prescription', value: rxInput, set: setRxInput, ph: 'treatment, fluids, actions' }),
+          React.createElement('div', { style: { display: 'flex', gap: 8, margin: '12px 0' } },
+            React.createElement('button', { onClick: function () { setStabilized(true); }, style: Object.assign({}, btn, { border: '1px solid var(--border)', background: stabilized === true ? 'var(--primary)' : 'var(--surface)', color: stabilized === true ? '#fff' : 'var(--text-2)' }) }, 'Stabilised'),
+            React.createElement('button', { onClick: function () { setStabilized(false); }, style: Object.assign({}, btn, { border: '1px solid var(--border)', background: stabilized === false ? '#C0392B' : 'var(--surface)', color: stabilized === false ? '#fff' : 'var(--text-2)' }) }, 'No stabilisation')),
+          React.createElement('div', { style: { display: 'flex', gap: 8, marginBottom: 16 } },
+            React.createElement('button', { onClick: function () { setReferral(true); }, style: Object.assign({}, btn, { border: '1px solid var(--border)', background: referral === true ? 'var(--primary)' : 'var(--surface)', color: referral === true ? '#fff' : 'var(--text-2)' }) }, 'Referral arranged'),
+            React.createElement('button', { onClick: function () { setReferral(false); }, style: Object.assign({}, btn, { border: '1px solid var(--border)', background: referral === false ? '#C0392B' : 'var(--surface)', color: referral === false ? '#fff' : 'var(--text-2)' }) }, 'No referral')),
+          React.createElement('button', { onClick: submit, style: Object.assign({}, btn, { width: '100%', border: 'none', background: 'var(--primary)', color: '#fff' }) }, 'Submit assessment → debrief')));
+}
 
-  function V3Field({ label, value, set, ph }) {
-    return React.createElement('label', { style: { display: 'block', marginBottom: 10 } },
-      React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', marginBottom: 4 } }, label),
-      React.createElement('input', { value: value, onChange: function(e){ set(e.target.value); }, placeholder: ph, style: { width: '100%', boxSizing: 'border-box', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' } }));
-  }
+function V3Field({ label, value, set, ph }) {
+  return React.createElement('label', { style: { display: 'block', marginBottom: 10 } },
+    React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', marginBottom: 4 } }, label),
+    React.createElement('input', { value: value, onChange: function (e) { set(e.target.value); }, placeholder: ph, style: { width: '100%', boxSizing: 'border-box', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' } }));
 }
 
 // ── Debrief (STEP 7 §12 hero ordering) ────────────────────────────────────
@@ -5095,10 +5129,10 @@ window.__goCheckout = function (planId) {
       const [screen, setScreen] = React.useState(() => {
         var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
         var authed = loadAuth();
-        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout', 'v3'].indexOf(h) >= 0;
+        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout', 'v3', 'v2cases'].indexOf(h) >= 0;
         if (!authed && protectedHash) return 'qora-landing';
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
-        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'v3'].indexOf(h) >= 0) return h;
+        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'v3', 'v2cases'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
       });
       const [screenKey, setScreenKey] = React.useState(0);
@@ -5131,10 +5165,10 @@ window.__goCheckout = function (planId) {
         var fn = function () {
           var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
           var next = null;
-          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout', 'v3'].indexOf(h) >= 0;
+          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout', 'v3', 'v2cases'].indexOf(h) >= 0;
                   if (protectedHash && !loadAuth()) next = 'qora-landing';
                   else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
-                  else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'v3'].indexOf(h) >= 0) next = h;
+                  else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'v3', 'v2cases'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
@@ -5247,8 +5281,9 @@ window.__goCheckout = function (planId) {
         React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
-          screen === 'cases' && React.createElement(QoraV2Screen, null),
+          screen === 'cases' && React.createElement(QoraV3App, null),
           screen === 'v3' && React.createElement(QoraV3App, null),
+          screen === 'v2cases' && React.createElement(QoraV2Screen, null),
           screen === 'mentor' && React.createElement(QMentorScreen, { onNav: navigate }),
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
           screen === 'sessions' && React.createElement(QoraSessions, { onNav: navigate }),

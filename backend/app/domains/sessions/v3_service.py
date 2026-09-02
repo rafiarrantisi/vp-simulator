@@ -251,3 +251,47 @@ def latest_persisted_session(db: OrmSession, user: User) -> dict | None:
         return None
     return {"sessionId": s.id, "schema": s.content_schema, "variantId": s.variant_id,
             "familyId": s.family_id, "status": s.status}
+
+
+# ── STEP-9 final: LIVE turn-based AI patient (mirrors v2_turn exactly) ─────
+def turn_v3_session(db: OrmSession, user: User, session_id: str, text: str):
+    """Persist the user turn, call the live v3 patient LLM (engine_v3) using the
+    FROZEN persisted variant + persona, persist the patient reply, bill, return."""
+    from app.rag.engine_v3 import respond as v3_patient_respond
+    s = _owned(db, session_id, user)
+    history = _history(db, session_id)
+    n = _next_turn_no(db, session_id)
+    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=text))
+    # resolve the frozen variant by its persisted id (immutability — no re-select)
+    if not s.variant_id:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            "v3 session has no frozen variant")
+    reg = _registry()
+    v = reg.variants.get(s.variant_id)
+    if v is None:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            f"v3 variant '{s.variant_id}' not found")
+    # persona: persisted rendered persona (same patient every turn)
+    persona = None
+    if s.persona:
+        try:
+            import json as _json
+            persona = _json.loads(s.persona) if isinstance(s.persona, str) else s.persona
+        except Exception:  # noqa: BLE001
+            persona = None
+    try:
+        reply = v3_patient_respond(v, history, text, language=s.language or "en",
+                                   persona=persona)
+    except Exception as e:  # noqa: BLE001
+        db.rollback()
+        raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"patient LLM failed: {e}")
+    db.add(SessionTurn(session_id=s.id, turn_number=n + 1, role="patient", content=reply))
+    db.commit()
+    try:  # best-effort cost guardrail (mirror v2)
+        from app.domains.billing import service as billing
+        tokens_in = (sum(len(h.get("content") or "") for h in history) + len(text)) // 4
+        billing.record_session_cost(db, s.id, user.id, tokens_in, len(reply) // 4)
+        db.commit()
+    except Exception:
+        db.rollback()
+    return {"reply": reply, "audioUrl": None}
