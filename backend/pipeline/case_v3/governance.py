@@ -82,14 +82,27 @@ class SourceRecord:
 
 
 # ── SKD 2026 registry (PRIMARY competency authority, STEP 4) ───────────────
-# SKD 2026 (HK.01.02/KKI/2183/2026) — Tab. 4 Spektrum Penyakit, 16 systems,
-# each entry classified 'tuntas' or 'initial_management_and_referral'.
-_WORDS_TUNTAS = ("managed independently to resolution (SKD 2026 'tuntas')",)
-_WORDS_INITIAL_REFER = ("diagnosis + initial/stabilising management + referral as appropriate "
-                        "(SKD 2026 'tatalaksana awal dan rujuk')",)
+# SKD 2026 (HK.01.02/KKI/2183/2026) — Tab. 4 Spektrum Penyakit, 16 systems.
+# IMPORTANT (rule STEP-4): the two official classifications are nominal SKD 2026
+# labels — 'Tuntas' vs 'Tatalaksana awal dan rujuk'. They are NOT a universal
+# clinical protocol. For non-emergency conditions, "tatalaksana awal" is not
+# necessarily stabilisation/resuscitation. Exact expected actions, urgency,
+# stabilisation need, and referral behaviour are defined PER DISEASE from the
+# current clinical guideline (PNPK etc.) at authoring time — never inferred
+# purely from the category. These definitions only record what the 2026 labels
+# mean at authority level; they are not an executable treatment pathway.
 SKD2026_CATEGORY_DEFINITIONS = {
-    SKD2026_CATEGORY_TUNTAS: _WORDS_TUNTAS[0],
-    SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL: _WORDS_INITIAL_REFER[0],
+    SKD2026_CATEGORY_TUNTAS: (
+        "SKD 2026 'Tuntas' — the physician may manage the condition to "
+        "resolution at primary level, per the current clinical guideline."
+    ),
+    SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL: (
+        "SKD 2026 'Tatalaksana awal dan rujuk' — the physician provides "
+        "initial management and refers onward as appropriate. The exact "
+        "initial actions, urgency, stabilisation need and referral behaviour "
+        "are PER-DISEASE, defined from the current clinical guideline at "
+        "authoring time — not universally 'stabilise + refer'."
+    ),
 }
 _VERIFICATION_DATE = "2026-09-01"  # date the baseline was recorded / re-checked
 
@@ -304,6 +317,33 @@ def validate_governance(v: ClinicalVariant, *, require_skd2026_category: bool = 
         if r.is_formulary and SourceKind.MANAGEMENT in r.relevance:
             res.issues.append(ValidationIssue(
                 v.id, "formulary (Fornas) source must not be typed as a management guideline"))
+
+    # 5) Management expectations for 'initial_management_and_referral' families
+    #    must be EXPLICIT and source-backed (rule: never inferred from category).
+    #    A publishable variant with that category must spell out recognize/
+    #    diagnose, initial management, stabilisation need, referral urgency/
+    #    indication and do-not-miss — determined from the current guideline.
+    from pipeline.case_v3.vocab import SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL
+    if (v.publishable and comp and comp.category == SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL):
+        me = v.management_expectations
+        missing = []
+        if not (me.recognize_diagnose or "").strip():
+            missing.append("recognize_diagnose")
+        if not (me.initial_management or "").strip():
+            missing.append("initial_management")
+        if me.emergency_stabilization_required is None:
+            missing.append("emergency_stabilization_required")
+        if not (me.referral_urgency or "").strip():
+            missing.append("referral_urgency")
+        if not (me.referral_indication or "").strip():
+            missing.append("referral_indication")
+        if not me.do_not_miss_actions:
+            missing.append("do_not_miss_actions")
+        if missing:
+            res.issues.append(ValidationIssue(
+                v.id,
+                "management_expectations must be explicitly sourced for a publishable "
+                f"'initial_management_and_referral' variant; missing: {', '.join(missing)}"))
 
     return res
 

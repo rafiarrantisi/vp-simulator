@@ -29,6 +29,7 @@ from pipeline.case_v3.models import (
     ItemImportance,
     LearnerStage,
     Management,
+    ManagementExpectations,
     PersonaConstraints,
     PhysicalExam,
     RedFlag,
@@ -113,6 +114,43 @@ def load_variant(raw: dict) -> ClinicalVariant:
             disclosure=_enum(DisclosureMode, rr.get("disclosure"), DisclosureMode.DIRECT_QUESTION),
             acceptable_intents=list(rr.get("acceptable_intents") or []),
         ))
+    # management_expectations (rule: per-disease, not inferred from category)
+    me = raw.get("management_expectations") or {}
+    v.management_expectations = ManagementExpectations(
+        recognize_diagnose=str(me.get("recognize_diagnose") or ""),
+        initial_management=str(me.get("initial_management") or ""),
+        emergency_stabilization_required=me.get("emergency_stabilization_required"),
+        referral_urgency=str(me.get("referral_urgency") or ""),
+        referral_indication=str(me.get("referral_indication") or ""),
+        do_not_miss_actions=list(me.get("do_not_miss_actions") or []),
+        source_refs=list(me.get("source_refs") or []),
+    )
+    # epidemiology 3-layer (evidence / variant constraints / persona vars)
+    epi = raw.get("epidemiology") or {}
+    ev = epi.get("evidence") or {}
+    v.epidemiology.evidence.facts = dict(ev.get("facts") or {})
+    for sr in ev.get("sources") or []:
+        v.epidemiology.evidence.sources.append(Source(
+            title=str(sr.get("title") or ""), authority=str(sr.get("authority") or ""),
+            version=str(sr.get("version") or ""), year=str(sr.get("year") or ""),
+            url=str(sr.get("url") or ""), kind=str(sr.get("kind") or "")))
+    vc = epi.get("variant_constraints") or {}
+    from pipeline.case_v3.models import VariantDemographicConstraints
+    v.epidemiology.variant_constraints = VariantDemographicConstraints(
+        age_range=vc.get("age_range"), biological_sex=vc.get("biological_sex"),
+        pregnancy_status=vc.get("pregnancy_status"),
+        geographic_endemicity=vc.get("geographic_endemicity"),
+        occupation_risk=vc.get("occupation_risk"))
+    pv = epi.get("persona_variables") or {}
+    from pipeline.case_v3.models import RuntimePersonaVariables
+    v.epidemiology.persona_variables = RuntimePersonaVariables(
+        name=bool(pv.get("name", True)),
+        occupation_set=list(pv.get("occupation_set") or []),
+        harmless_hobbies=list(pv.get("harmless_hobbies") or []),
+        verbosity=str(pv.get("verbosity") or "range"),
+        emotional_tone=str(pv.get("emotional_tone") or "range"),
+        cultural_context=str(pv.get("cultural_context") or "range"))
+    v.canonical_entity_id = str(raw.get("canonical_entity_id") or "")
     pe = raw.get("physical_exam") or {}
     v.physical_exam = PhysicalExam(
         general_appearance=str(pe.get("general_appearance") or ""),

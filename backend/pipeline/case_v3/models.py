@@ -266,6 +266,103 @@ class Competency:
         return asdict(self)
 
 
+# ── Epidemiology architecture (rule STEP-4: separated from persona gen) ────
+@dataclass
+class EpidemiologyEvidence:
+    """Epidemiology constrains plausibility; it does NOT force every patient
+    into a demographic stereotype. Each item is a sourced plausibility bound."""
+    facts: dict[str, Any] = field(default_factory=dict)   # key -> value/range
+    sources: list[Source] = field(default_factory=list)   # SKI/Profil/PNPK/WHO etc.
+
+    def to_dict(self) -> dict:
+        return {"facts": self.facts, "sources": [s.to_dict() for s in self.sources]}
+
+
+@dataclass
+class VariantDemographicConstraints:
+    """Clinically meaningful demographic bounds for a SPECIFIC variant, derived
+    at authoring time from epidemiology + disease reality (may be broad)."""
+    age_range: Optional[str] = None
+    biological_sex: Optional[str] = None
+    pregnancy_status: Optional[str] = None
+    geographic_endemicity: Optional[str] = None
+    occupation_risk: Optional[str] = None
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass
+class RuntimePersonaVariables:
+    """Variables the runtime persona generator MAY randomise within safe ranges.
+    These are NEVER clinical truth; they are presentation skin only."""
+    name: bool = True
+    occupation_set: list[str] = field(default_factory=list)
+    harmless_hobbies: list[str] = field(default_factory=list)
+    verbosity: str = "range"
+    emotional_tone: str = "range"
+    cultural_context: str = "range"
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass
+class Epidemiology:
+    """Three-tier epidemiology model (rule STEP-4):
+      * evidence          — sourced plausibility bounds (never dictates a stereotype)
+      * variant_constraints — clinically meaningful per-variant demographic bounds
+      * persona_variables   — runtime randomisable, clinically-irrelevant skin
+    """
+    evidence: EpidemiologyEvidence = field(default_factory=EpidemiologyEvidence)
+    variant_constraints: VariantDemographicConstraints = field(default_factory=VariantDemographicConstraints)
+    persona_variables: RuntimePersonaVariables = field(default_factory=RuntimePersonaVariables)
+
+    def to_dict(self) -> dict:
+        return {"evidence": self.evidence.to_dict(),
+                "variant_constraints": self.variant_constraints.to_dict(),
+                "persona_variables": self.persona_variables.to_dict()}
+
+
+# ── Management expectations (rule STEP-4: decide per disease, not category) ─
+@dataclass
+class ManagementExpectations:
+    """Explicit, source-backed management expectations for an
+    `initial_management_and_referral` (tatalaksana awal dan rujuk) family.
+    NOT derived from the competency category alone — each field is determined
+    from the current clinical guideline (PNPK etc.) at authoring time."""
+    recognize_diagnose: str = ""        # what the GP/first-line MD must recognise/diagnose
+    initial_management: str = ""        # what initial management they provide
+    emergency_stabilization_required: Optional[bool] = None  # true/false/unknown
+    referral_urgency: str = ""          # e.g. "immediate/ED", "urgent <24h", "routine", "none"
+    referral_indication: str = ""       # when & why to refer
+    do_not_miss_actions: list[str] = field(default_factory=list)  # critical, must-not-miss
+    source_refs: list[str] = field(default_factory=list)
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+# ── Canonical clinical entity / case-family candidate (rule STEP-4) ────────
+@dataclass
+class CanonicalEntity:
+    """One canonical clinical entity may be referenced by MULTIPLE raw SKD 2026
+    source rows (source_occurrences). Keeps raw catalog rows intact while
+    de-duplicating user-facing disease cards. Do NOT silently delete any source
+    row and do NOT resolve uncertainty via medical guess."""
+    id: str
+    display_name: str
+    primary_category: str = ""                       # nominal SKD 2026 tag
+    systems: list[str] = field(default_factory=list)
+    source_occurrences: list[dict] = field(default_factory=list)  # {entry_id, system, category, official_name}
+    main_entry_id: str = ""                          # the canonical/primary source row
+    mapping_uncertainty: list[str] = field(default_factory=list)  # ambiguous flags, not resolved here
+    candidate_family_status: str = "unclassified"
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
 @dataclass
 class ClinicalVariant:
     id: str
@@ -288,6 +385,9 @@ class ClinicalVariant:
     history: list[HistoryGroup] = field(default_factory=list)
 
     competency: Competency = field(default_factory=Competency)
+    epidemiology: Epidemiology = field(default_factory=Epidemiology)
+    management_expectations: ManagementExpectations = field(default_factory=ManagementExpectations)
+    canonical_entity_id: str = ""       # link to a CanonicalEntity / family candidate
     red_flags: list[RedFlag] = field(default_factory=list)
     physical_exam: PhysicalExam = field(default_factory=PhysicalExam)
     investigations: list[Investigation] = field(default_factory=list)
@@ -338,6 +438,9 @@ class ClinicalVariant:
             "variation_level": self.variation_level.value, "title": self.title,
             "supported_stages": [s.value for s in self.supported_stages],
             "competency": self.competency.to_dict() if self.competency else {"standard": "SKD 2026"},
+            "epidemiology": self.epidemiology.to_dict(),
+            "management_expectations": self.management_expectations.to_dict(),
+            "canonical_entity_id": self.canonical_entity_id,
             "identity": asdict(self.identity),
             "chief_complaint": self.chief_complaint,
             "opening_context": self.opening_context, "duration": self.duration,
@@ -380,6 +483,9 @@ class CaseFamily:
     population_tags: list[str] = field(default_factory=list)
     target_stages: list[LearnerStage] = field(default_factory=lambda: [LearnerStage.KOAS])
     skdi_mappings: dict = field(default_factory=dict)   # {level: [competency_codes]}
+    skd2026_mapping: dict = field(default_factory=dict)  # {category, system} SKD 2026 primary
+    source_occurrences: list[dict] = field(default_factory=list)  # raw SKD rows folded here
+    mapping_uncertainty: list[str] = field(default_factory=list)  # ambiguous, not resolved
     learning_objectives: list[str] = field(default_factory=list)
     common_differentials: list[str] = field(default_factory=list)
     active_variant_ids: list[str] = field(default_factory=list)  # refs (not copies)
@@ -396,6 +502,9 @@ class CaseFamily:
             "population_tags": self.population_tags,
             "target_stages": [s.value for s in self.target_stages],
             "skdi_mappings": self.skdi_mappings,
+            "skd2026_mapping": self.skd2026_mapping,
+            "source_occurrences": self.source_occurrences,
+            "mapping_uncertainty": self.mapping_uncertainty,
             "learning_objectives": self.learning_objectives,
             "common_differentials": self.common_differentials,
             "active_variant_ids": self.active_variant_ids,
