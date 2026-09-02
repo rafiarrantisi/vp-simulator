@@ -22,13 +22,18 @@ def load_v2_case(case_id: str) -> CaseV2:
 
 
 @lru_cache(maxsize=8)
-def _catalog_cached(specialty: str | None, published_only: bool, status: str | None = None) -> tuple[CaseV2, ...]:
+def _catalog_cached(specialty: str | None, published_only: bool, status: str | None = None,
+                    exclude_legacy: bool = False) -> tuple[CaseV2, ...]:
     """Catalog parses 80+ markdown files — cache by (specialty, published_only, status).
 
     v0.16.1: sebelumnya parse ulang SEMUA file per request (~2s + 2x per call
     via specialties_present) -> bottleneck concurrency. Kasus berubah hanya
     saat deploy (backend restart) → lru_cache aman. CaseV2 read-only di path
     catalog (summary/lint tidak memutasi).
+
+    `exclude_legacy` (STEP 1 rebuild): drop cases that belong to the legacy
+    prototype cohort (`CaseV2.is_legacy()`), so a verified-only query can never
+    surface unverified/legacy content. Default False preserves the existing flow.
     """
     out: list[CaseV2] = []
     for fp in sorted(_dir().glob("*.md")):
@@ -44,13 +49,15 @@ def _catalog_cached(specialty: str | None, published_only: bool, status: str | N
             continue
         if status and c.frontmatter.get("status") != status:
             continue
+        if exclude_legacy and c.is_legacy():
+            continue
         out.append(c)
     return tuple(out)
 
 
 def list_v2_cases(*, specialty: str | None = None, published_only: bool = False,
-                  status: str | None = None) -> list[CaseV2]:
-    return list(_catalog_cached(specialty, published_only, status))
+                  status: str | None = None, exclude_legacy: bool = False) -> list[CaseV2]:
+    return list(_catalog_cached(specialty, published_only, status, exclude_legacy))
 
 
 def summary(c: CaseV2) -> dict:
@@ -73,6 +80,11 @@ def summary(c: CaseV2) -> dict:
         "review_state": c.review_state,
         "pilot_candidate": c.pilot_candidate,
         "released": c.is_released(),
+        "legacy": c.is_legacy(),
+        "schema_origin": c.schema_origin(),
+        "clinical_content_version": c.clinical_content_version() or None,
+        "source_review_date": c.source_review_date() or None,
+        "superseded_by": c.superseded_by() or None,
         "reviewed_by": au.get("reviewed_by") or None,
         "reviewed_at": au.get("reviewed_at") or None,
         "variant_family": c.variant_family or None,

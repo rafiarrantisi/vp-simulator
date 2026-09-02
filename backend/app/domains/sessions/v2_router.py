@@ -44,11 +44,17 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 @router.get("/cases")
 def v2_list_cases(specialty: str | None = None, status: str | None = None,
                   scope: str | None = None, user: User = Depends(get_current_user)):
-    cases = list_v2_cases(specialty=specialty, status=status)
+    # The rebuilt bank (STEP 2+) filters EXCLUSIVELY to verified, non-legacy
+    # content. The default (no scope / status) preserves the existing live flow
+    # so the current catalogue keeps working untouched.
+    exclude_legacy = scope in ("verified", "pilot")
+    cases = list_v2_cases(specialty=specialty, status=status, exclude_legacy=exclude_legacy)
     if scope == "pilot":  # kurasi pre-pilot: hanya kasus yang ditandai pilot_candidate
         cases = [c for c in cases if c.pilot_candidate]
+    elif scope == "verified":  # STEP 1: hanya kasus yang sudah released & non-legacy
+        cases = [c for c in cases if c.is_released() and not c.is_legacy()]
     elif scope == "released":
-        cases = [c for c in cases if c.is_released()]
+        cases = [c for c in cases if c.is_released() and not c.is_legacy()]
     return ok({"cases": [summary(c) for c in cases], "total": len(cases),
                "specialties": specialties_present()})
 

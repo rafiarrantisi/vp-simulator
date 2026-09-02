@@ -1,0 +1,4528 @@
+{
+  "generated_at": "2026-09-02T17:53:00",
+  "summary": {
+    "total_cases": 123,
+    "v2_bank": 92,
+    "legacy_ophthalmology_bank": 31,
+    "legacy_cohort": 123,
+    "non_legacy": 0,
+    "source_backed": 123,
+    "with_clinical_reviewer": 0,
+    "structural_issues": 0,
+    "duplicate_ids": [],
+    "duplicated_truth_flags": [
+      {
+        "case_id": "derm_cellulitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "derm_eczema_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "derm_psoriasis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "derm_suspected_melanoma_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "derm_tinea_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_acs_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_bacterial_meningitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_dengue_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temperature=38.7` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_dengue_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=110` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_dengue_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=22` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_dengue_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_dengue_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_diabetic_ketoacidosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `HR=110` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_diabetic_ketoacidosis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_hypertensive_emergency_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=100` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_hypertensive_emergency_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `rr=18` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_hypertensive_emergency_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temp=36.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_hypertensive_emergency_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `spo2=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_hypertensive_emergency_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_leptospirosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temperature=39.5` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_leptospirosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=100` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_leptospirosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=20` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_leptospirosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=97` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_leptospirosis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_paracetamol_overdose_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=88` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_paracetamol_overdose_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `rr=16` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_paracetamol_overdose_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_pulmonary_embolism_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=110` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_pulmonary_embolism_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=24` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_status_asthmaticus_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `RR=32` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_status_asthmaticus_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "em_traumatic_brain_injury_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temperature=36.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_traumatic_brain_injury_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=90` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_traumatic_brain_injury_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=18` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_traumatic_brain_injury_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "em_traumatic_brain_injury_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "ent_bppv_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=72` appears in Part A and persona body"
+      },
+      {
+        "case_id": "ent_bppv_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "ent_epistaxis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "ent_hearing_loss_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "ent_hoarseness_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temp=36.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "ent_hoarseness_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "ent_otitis_media_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "ent_sinusitis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temp=37.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "ent_sinusitis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=80` appears in Part A and persona body"
+      },
+      {
+        "case_id": "ent_sinusitis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `o2=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "ent_sinusitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "ent_tonsillitis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "ent_tonsillitis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "ent_tonsillitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_ana_macrocytic_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=16` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_ana_macrocytic_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_ckd_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_community_acquired_pneumonia_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temperature=38.5` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_community_acquired_pneumonia_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=22` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_community_acquired_pneumonia_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=94` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_community_acquired_pneumonia_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_gi_appendicitis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_gi_appendicitis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `rr=18` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_gi_appendicitis_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Appendicitis' != expected_ddx.working_diagnosis='Acute appendicitis'"
+      },
+      {
+        "case_id": "im_gord_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_gout_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_hyperthyroid_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temperature=37.2` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_hyperthyroid_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_new_t2dm_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `rr=16` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_new_t2dm_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `weight=90` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_new_t2dm_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_pye_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_tuberculosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=20` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_tuberculosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temperature=37.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_tuberculosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=97` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_tuberculosis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_typhoid_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "im_uta_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=88` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_uta_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=16` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_uta_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "im_uta_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "neuro_first_seizure_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "neuro_gb_syndrome_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "neuro_multiple_sclerosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `o2=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "neuro_multiple_sclerosis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "neuro_parkinsons_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=72` appears in Part A and persona body"
+      },
+      {
+        "case_id": "neuro_parkinsons_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "neuro_tia_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `RR=16` appears in Part A and persona body"
+      },
+      {
+        "case_id": "neuro_tia_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "og_early_pregnancy_bleeding_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=78` appears in Part A and persona body"
+      },
+      {
+        "case_id": "og_early_pregnancy_bleeding_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `spo2=99` appears in Part A and persona body"
+      },
+      {
+        "case_id": "og_early_pregnancy_bleeding_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "og_endometriosis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temp=36.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "og_endometriosis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "og_menorrhagia_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temp=36.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "og_menorrhagia_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "og_pelvic_inflammatory_disease_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=95` appears in Part A and persona body"
+      },
+      {
+        "case_id": "og_pelvic_inflammatory_disease_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=18` appears in Part A and persona body"
+      },
+      {
+        "case_id": "og_pelvic_inflammatory_disease_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "og_pre_eclampsia_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `HR=88` appears in Part A and persona body"
+      },
+      {
+        "case_id": "og_pre_eclampsia_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `Temp=37.0` appears in Part A and persona body"
+      },
+      {
+        "case_id": "og_pre_eclampsia_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_acute_angle_closure_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Acute angle-closure glaucoma' != expected_ddx.working_diagnosis='Acute primary angle-closure glaucoma, right eye'"
+      },
+      {
+        "case_id": "oph_acute_angle_closure_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_anterior_uveitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_bacterial_conjunctivitis_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Bacterial conjunctivitis' != expected_ddx.working_diagnosis='Acute bacterial conjunctivitis (both eyes)'"
+      },
+      {
+        "case_id": "oph_bacterial_conjunctivitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_blepharitis_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Chronic blepharitis' != expected_ddx.working_diagnosis='Chronic blepharitis (seborrhoeic/mixed), both eyes'"
+      },
+      {
+        "case_id": "oph_cataract_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Senile cataract' != expected_ddx.working_diagnosis='Immature senile cataract, both eyes'"
+      },
+      {
+        "case_id": "oph_crao_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `o2_sat=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "oph_crao_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_dry_eye_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Dry eye disease' != expected_ddx.working_diagnosis='Dry eye disease (evaporative, screen-use related)'"
+      },
+      {
+        "case_id": "oph_dry_eye_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_episcleritis_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Episcleritis' != expected_ddx.working_diagnosis='Simple episcleritis, right eye'"
+      },
+      {
+        "case_id": "oph_episcleritis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_hordeolum_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Hordeolum (stye)' != expected_ddx.working_diagnosis='External hordeolum (stye), right upper eyelid'"
+      },
+      {
+        "case_id": "oph_hyphaema_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Traumatic hyphaema' != expected_ddx.working_diagnosis='Traumatic hyphaema, right eye'"
+      },
+      {
+        "case_id": "oph_hyphaema_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_night_blindness_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Vitamin A deficiency (night blindness)' != expected_ddx.working_diagnosis='Night blindness due to vitamin A deficiency'"
+      },
+      {
+        "case_id": "oph_optic_neuritis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_posterior_vitreous_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_strabismus_001",
+        "kind": "diagnosis_mismatch",
+        "detail": "target_condition='Strabismus' != expected_ddx.working_diagnosis='Strabismus (esotropia)'"
+      },
+      {
+        "case_id": "oph_strabismus_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "oph_trichiasis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "paed_acute_gastroenteritis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temperature=37.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_acute_gastroenteritis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=130` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_acute_gastroenteritis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=30` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_acute_gastroenteritis_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_bronchiolitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "paed_coeliac_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "paed_febrile_child_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_febrile_seizure_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "paed_hpylori_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "paed_kawasaki_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=140` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_kawasaki_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=28` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_measles_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "paed_stunting_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temperature=36.5` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_stunting_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `heart_rate=100` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_stunting_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `respiratory_rate=24` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_stunting_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+      },
+      {
+        "case_id": "paed_stunting_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "psych_adhd_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "psych_bipolar_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `temp=36.8` appears in Part A and persona body"
+      },
+      {
+        "case_id": "psych_bipolar_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "psych_ocd_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=92` appears in Part A and persona body"
+      },
+      {
+        "case_id": "psych_ocd_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `rr=16` appears in Part A and persona body"
+      },
+      {
+        "case_id": "psych_ocd_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `o2sat=99` appears in Part A and persona body"
+      },
+      {
+        "case_id": "psych_panic_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=88` appears in Part A and persona body"
+      },
+      {
+        "case_id": "psych_panic_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `rr=16` appears in Part A and persona body"
+      },
+      {
+        "case_id": "psych_panic_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "surg_acute_cholecystitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "surg_breast_lump_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "surg_diverticulitis_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "surg_inguinal_hernia_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "surg_renal_colic_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "surg_thyroid_nodule_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `hr=78` appears in Part A and persona body"
+      },
+      {
+        "case_id": "surg_thyroid_nodule_001",
+        "kind": "vital_in_both_parts",
+        "detail": "vital `rr=14` appears in Part A and persona body"
+      },
+      {
+        "case_id": "surg_thyroid_nodule_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      },
+      {
+        "case_id": "surg_varicose_veins_001",
+        "kind": "chief_complaint_not_in_opening",
+        "detail": "chief_complaint wording not reflected in opening line"
+      }
+    ]
+  },
+  "entries": [
+    {
+      "id": "derm_cellulitis_001",
+      "filename": "derm_cellulitis_001.md",
+      "bank": "v2",
+      "specialty": "dermatology",
+      "system": "integumentary",
+      "presentation": "Hot red swollen leg",
+      "target_condition": "Lower limb cellulitis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "derm_cellulitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "derm_eczema_001",
+      "filename": "derm_eczema_001.md",
+      "bank": "v2",
+      "specialty": "dermatology",
+      "system": "dermatology",
+      "presentation": "Itchy rash",
+      "target_condition": "Atopic eczema",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Exacerbating factors - stress, weather, soaps?'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "derm_eczema_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "derm_psoriasis_001",
+      "filename": "derm_psoriasis_001.md",
+      "bank": "v2",
+      "specialty": "dermatology",
+      "system": "integumentary",
+      "presentation": "Red scaly patches on elbows and knees",
+      "target_condition": "Plaque psoriasis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'No smoking'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "derm_psoriasis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "derm_rosacea_001",
+      "filename": "derm_rosacea_001.md",
+      "bank": "v2",
+      "specialty": "dermatology",
+      "system": "integumentary",
+      "presentation": "Facial redness and flushing",
+      "target_condition": "Acne rosacea",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "derm_suspected_melanoma_001",
+      "filename": "derm_suspected_melanoma_001.md",
+      "bank": "v2",
+      "specialty": "dermatology",
+      "system": "integumentary",
+      "presentation": "Changing mole",
+      "target_condition": "Suspected melanoma",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Onset of changes'",
+        "consistency: critical item may lack persona grounding: 'Associated symptoms (itching, bleeding, pain)'",
+        "consistency: critical item may lack persona grounding: 'Any bleeding or oozing'",
+        "consistency: critical item may lack persona grounding: 'Personal history of melanoma'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "derm_suspected_melanoma_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "derm_tinea_001",
+      "filename": "derm_tinea_001.md",
+      "bank": "v2",
+      "specialty": "dermatology",
+      "system": "integumentary",
+      "presentation": "Round itchy patches on the torso",
+      "target_condition": "Tinea corporis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Onset and duration'",
+        "consistency: critical item may lack persona grounding: 'Itching'",
+        "consistency: critical item may lack persona grounding: 'Topical steroids or antifungals used'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "derm_tinea_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "derm_urticaria_001",
+      "filename": "derm_urticaria_001.md",
+      "bank": "v2",
+      "specialty": "dermatology",
+      "system": "dermatologic",
+      "presentation": "Recurrent raised itchy welts",
+      "target_condition": "Chronic urticaria",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "em_acs_001",
+      "filename": "em_acs_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "cardiovascular",
+      "presentation": "Chest pain",
+      "target_condition": "Acute coronary syndrome",
+      "difficulty": 3,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_acs_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "em_anaphylaxis_001",
+      "filename": "em_anaphylaxis_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "immune",
+      "presentation": "Sudden rash and breathing difficulty",
+      "target_condition": "Anaphylaxis",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Dizziness or feeling faint'",
+        "consistency: critical item may lack persona grounding: 'Previous similar reactions'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "em_bacterial_meningitis_001",
+      "filename": "em_bacterial_meningitis_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "nervous",
+      "presentation": "High fever, severe headache and neck stiffness",
+      "target_condition": "Bacterial meningitis",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_bacterial_meningitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "em_dengue_001",
+      "filename": "em_dengue_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "infectious disease",
+      "presentation": "Fever, headache and body aches for 3 days",
+      "target_condition": "Dengue fever with warning signs",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_dengue_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temperature=38.7` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_dengue_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=110` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_dengue_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=22` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_dengue_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_dengue_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "em_diabetic_ketoacidosis_001",
+      "filename": "em_diabetic_ketoacidosis_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "endocrine",
+      "presentation": "Confusion fruity breath and deep breathing",
+      "target_condition": "Diabetic ketoacidosis",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'character - confusion'",
+        "consistency: critical item may lack persona grounding: 'severity - confusion level'",
+        "consistency: critical item may lack persona grounding: 'polyuria'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_diabetic_ketoacidosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `HR=110` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_diabetic_ketoacidosis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "em_heat_stroke_001",
+      "filename": "em_heat_stroke_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "thermoregulatory",
+      "presentation": "Collapse during a marathon \u2014 hot red and confused",
+      "target_condition": "Exertional heat stroke",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "em_hypertensive_emergency_001",
+      "filename": "em_hypertensive_emergency_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "cardiovascular",
+      "presentation": "Severe headache and blurred vision with very high blood pressure",
+      "target_condition": "Hypertensive emergency",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Numbness or weakness in arms or legs'",
+        "consistency: critical item may lack persona grounding: 'Difficulty speaking'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_hypertensive_emergency_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=100` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_hypertensive_emergency_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `rr=18` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_hypertensive_emergency_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temp=36.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_hypertensive_emergency_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `spo2=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_hypertensive_emergency_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "em_leptospirosis_001",
+      "filename": "em_leptospirosis_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "infectious",
+      "presentation": "High fever, muscle pain and jaundice after flooding",
+      "target_condition": "Leptospirosis",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_leptospirosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temperature=39.5` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_leptospirosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=100` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_leptospirosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=20` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_leptospirosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=97` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_leptospirosis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "em_paracetamol_overdose_001",
+      "filename": "em_paracetamol_overdose_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "gastrointestinal",
+      "presentation": "Overdose",
+      "target_condition": "Paracetamol overdose",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Associated symptoms - nausea, vomiting'",
+        "consistency: critical item may lack persona grounding: 'Nausea'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_paracetamol_overdose_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=88` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_paracetamol_overdose_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `rr=16` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_paracetamol_overdose_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "em_pulmonary_embolism_001",
+      "filename": "em_pulmonary_embolism_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "respiratory",
+      "presentation": "Sudden chest pain and shortness of breath after long flight",
+      "target_condition": "Pulmonary embolism",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Onset - sudden or gradual'",
+        "consistency: critical item may lack persona grounding: 'Hormonal contraceptives or HRT'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_pulmonary_embolism_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=110` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_pulmonary_embolism_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=24` appears in Part A and persona body"
+        }
+      ]
+    },
+    {
+      "id": "em_status_asthmaticus_001",
+      "filename": "em_status_asthmaticus_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "respiratory",
+      "presentation": "Worsening shortness of breath unresponsive to inhalers",
+      "target_condition": "Acute severe asthma",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_status_asthmaticus_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `RR=32` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_status_asthmaticus_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "em_traumatic_brain_injury_001",
+      "filename": "em_traumatic_brain_injury_001.md",
+      "bank": "v2",
+      "specialty": "emergency",
+      "system": "nervous",
+      "presentation": "Head injury with loss of consciousness",
+      "target_condition": "Traumatic brain injury",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Duration of loss of consciousness (how long were you out?)'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "em_traumatic_brain_injury_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temperature=36.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_traumatic_brain_injury_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=90` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_traumatic_brain_injury_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=18` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_traumatic_brain_injury_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "em_traumatic_brain_injury_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "ent_bppv_001",
+      "filename": "ent_bppv_001.md",
+      "bank": "v2",
+      "specialty": "ent",
+      "system": "vestibular",
+      "presentation": "Dizziness",
+      "target_condition": "Benign paroxysmal positional vertigo",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "ent_bppv_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=72` appears in Part A and persona body"
+        },
+        {
+          "case_id": "ent_bppv_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "ent_epistaxis_001",
+      "filename": "ent_epistaxis_001.md",
+      "bank": "v2",
+      "specialty": "ent",
+      "system": "ent",
+      "presentation": "Nosebleed",
+      "target_condition": "Epistaxis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "ent_epistaxis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "ent_hearing_loss_001",
+      "filename": "ent_hearing_loss_001.md",
+      "bank": "v2",
+      "specialty": "ent",
+      "system": "auditory",
+      "presentation": "Gradual hearing loss in both ears",
+      "target_condition": "Presbycusis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "ent_hearing_loss_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "ent_hoarseness_001",
+      "filename": "ent_hoarseness_001.md",
+      "bank": "v2",
+      "specialty": "ent",
+      "system": "ent",
+      "presentation": "Horse voice for 4 weeks",
+      "target_condition": "Laryngeal carcinoma",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "ent_hoarseness_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temp=36.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "ent_hoarseness_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "ent_otitis_media_001",
+      "filename": "ent_otitis_media_001.md",
+      "bank": "v2",
+      "specialty": "ent",
+      "system": "ear",
+      "presentation": "Ear pain in a child",
+      "target_condition": "Acute otitis media",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "ent_otitis_media_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "ent_sinusitis_001",
+      "filename": "ent_sinusitis_001.md",
+      "bank": "v2",
+      "specialty": "ent",
+      "system": "ent",
+      "presentation": "Facial pain and nasal congestion",
+      "target_condition": "Acute sinusitis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "ent_sinusitis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temp=37.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "ent_sinusitis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=80` appears in Part A and persona body"
+        },
+        {
+          "case_id": "ent_sinusitis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `o2=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "ent_sinusitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "ent_tonsillitis_001",
+      "filename": "ent_tonsillitis_001.md",
+      "bank": "v2",
+      "specialty": "ent",
+      "system": "ent",
+      "presentation": "Sore throat and difficulty swallowing",
+      "target_condition": "Acute tonsillitis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "ent_tonsillitis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "ent_tonsillitis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "ent_tonsillitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_ana_macrocytic_001",
+      "filename": "im_ana_macrocytic_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "hematologic",
+      "presentation": "Feeling tired and short of breath on exertion",
+      "target_condition": "Pernicious anaemia",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_ana_macrocytic_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=16` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_ana_macrocytic_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_ckd_001",
+      "filename": "im_ckd_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "renal",
+      "presentation": "Swollen ankles and foamy urine",
+      "target_condition": "Chronic kidney disease stage 4",
+      "difficulty": 3,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Fatigue or low energy'",
+        "consistency: critical item may lack persona grounding: 'Hypertension'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_ckd_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_community_acquired_pneumonia_001",
+      "filename": "im_community_acquired_pneumonia_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "respiratory",
+      "presentation": "Cough and breathlessness",
+      "target_condition": "Community-acquired pneumonia",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Severity - how bad is the breathlessness'",
+        "consistency: critical item may lack persona grounding: 'Smoking history'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_community_acquired_pneumonia_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temperature=38.5` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_community_acquired_pneumonia_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=22` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_community_acquired_pneumonia_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=94` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_community_acquired_pneumonia_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_gi_appendicitis_001",
+      "filename": "im_gi_appendicitis_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "gastrointestinal",
+      "presentation": "Acute abdominal pain",
+      "target_condition": "Appendicitis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_gi_appendicitis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_gi_appendicitis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `rr=18` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_gi_appendicitis_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Appendicitis' != expected_ddx.working_diagnosis='Acute appendicitis'"
+        }
+      ]
+    },
+    {
+      "id": "im_gord_001",
+      "filename": "im_gord_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "digestive",
+      "presentation": "Heartburn",
+      "target_condition": "Gastro-oesophageal reflux disease",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Smoking history'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries you most?'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_gord_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_gout_001",
+      "filename": "im_gout_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "musculoskeletal",
+      "presentation": "Acute joint pain",
+      "target_condition": "Gout",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Associations - swelling, redness, warmth'",
+        "consistency: critical item may lack persona grounding: 'Current medications - thiazide diuretic'",
+        "consistency: critical item may lack persona grounding: 'Family history of gout'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_gout_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_hyperthyroid_001",
+      "filename": "im_hyperthyroid_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "endocrine",
+      "presentation": "Tremor weight loss and palpitations",
+      "target_condition": "Hyperthyroidism",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Weight loss despite normal or increased appetite'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_hyperthyroid_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temperature=37.2` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_hyperthyroid_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+        }
+      ]
+    },
+    {
+      "id": "im_new_t2dm_001",
+      "filename": "im_new_t2dm_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "endocrine",
+      "presentation": "Polyuria and thirst",
+      "target_condition": "Type 2 diabetes mellitus",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_new_t2dm_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `rr=16` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_new_t2dm_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `weight=90` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_new_t2dm_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_pancreatitis_001",
+      "filename": "im_pancreatitis_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "gastrointestinal",
+      "presentation": "Severe epigastric pain radiating to the back",
+      "target_condition": "Acute pancreatitis",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Nausea or vomiting'",
+        "consistency: critical item may lack persona grounding: 'Alcohol use disorder'",
+        "consistency: critical item may lack persona grounding: 'Alcohol consumption (type, amount, frequency)'",
+        "consistency: critical item may lack persona grounding: 'Concerns \u2013 what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "im_pye_001",
+      "filename": "im_pye_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "urinary",
+      "presentation": "Cramping flank pain and dysuria",
+      "target_condition": "Acute pyelonephritis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_pye_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_tuberculosis_001",
+      "filename": "im_tuberculosis_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "respiratory",
+      "presentation": "Productive cough weight loss and night sweats",
+      "target_condition": "Pulmonary tuberculosis",
+      "difficulty": 3,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'HIV status or risk factors'",
+        "consistency: critical item may lack persona grounding: 'Any prior TB treatment'",
+        "consistency: critical item may lack persona grounding: 'Occupation and living conditions (crowding)'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_tuberculosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=20` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_tuberculosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temperature=37.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_tuberculosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=97` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_tuberculosis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_typhoid_001",
+      "filename": "im_typhoid_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "gastrointestinal",
+      "presentation": "Sustained fever and abdominal discomfort for 5 days",
+      "target_condition": "Typhoid fever",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_typhoid_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "im_uta_001",
+      "filename": "im_uta_001.md",
+      "bank": "v2",
+      "specialty": "internal_medicine",
+      "system": "cardiovascular",
+      "presentation": "Unilateral leg swelling and pain",
+      "target_condition": "Deep vein thrombosis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Site - which leg'",
+        "consistency: critical item may lack persona grounding: 'Associations - any redness or warmth'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "im_uta_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=88` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_uta_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=16` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_uta_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "im_uta_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "neuro_acute_stroke_001",
+      "filename": "neuro_acute_stroke_001.md",
+      "bank": "v2",
+      "specialty": "neurology",
+      "system": "nervous",
+      "presentation": "Sudden weakness of the right side of the body",
+      "target_condition": "Acute ischaemic stroke in thrombolysis window",
+      "difficulty": 3,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Location \u2014 which body parts are affected?'",
+        "consistency: critical item may lack persona grounding: 'Duration \u2014 how long has it been going on?'",
+        "consistency: critical item may lack persona grounding: 'Hypertension'",
+        "consistency: critical item may lack persona grounding: 'Ideas \u2014 what do you think is wrong?'",
+        "consistency: critical item may lack persona grounding: 'Concerns \u2014 what worries you most?'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "neuro_first_seizure_001",
+      "filename": "neuro_first_seizure_001.md",
+      "bank": "v2",
+      "specialty": "neurology",
+      "system": "nervous",
+      "presentation": "First seizure",
+      "target_condition": "First unprovoked seizure",
+      "difficulty": 3,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Duration of the episode'",
+        "consistency: critical item may lack persona grounding: 'Any history of similar episodes'",
+        "consistency: critical item may lack persona grounding: 'Confusion'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "neuro_first_seizure_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "neuro_gb_syndrome_001",
+      "filename": "neuro_gb_syndrome_001.md",
+      "bank": "v2",
+      "specialty": "neurology",
+      "system": "nervous system",
+      "presentation": "Progressive weakness after a stomach bug",
+      "target_condition": "Guillain-Barre syndrome",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Location: Which body parts are affected first?'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "neuro_gb_syndrome_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "neuro_migraine_001",
+      "filename": "neuro_migraine_001.md",
+      "bank": "v2",
+      "specialty": "neurology",
+      "system": "nervous",
+      "presentation": "Recurrent headache",
+      "target_condition": "Migraine",
+      "difficulty": 1,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Severity (on a scale of 0-10, impact on daily life)'",
+        "consistency: critical item may lack persona grounding: 'Nausea or vomiting'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "neuro_multiple_sclerosis_001",
+      "filename": "neuro_multiple_sclerosis_001.md",
+      "bank": "v2",
+      "specialty": "neurology",
+      "system": "nervous",
+      "presentation": "Weakness and numbness on one side of the body",
+      "target_condition": "Multiple sclerosis",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'No history of stroke or seizures'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "neuro_multiple_sclerosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `o2=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "neuro_multiple_sclerosis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "neuro_parkinsons_001",
+      "filename": "neuro_parkinsons_001.md",
+      "bank": "v2",
+      "specialty": "neurology",
+      "system": "nervous",
+      "presentation": "Trembling hands and slow movement",
+      "target_condition": "Parkinson disease",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "neuro_parkinsons_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=72` appears in Part A and persona body"
+        },
+        {
+          "case_id": "neuro_parkinsons_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "neuro_tia_001",
+      "filename": "neuro_tia_001.md",
+      "bank": "v2",
+      "specialty": "neurology",
+      "system": "nervous",
+      "presentation": "Transient weakness or speech disturbance",
+      "target_condition": "Transient ischaemic attack",
+      "difficulty": 3,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Site \u2013 which body part affected'",
+        "consistency: critical item may lack persona grounding: 'Hypertension'",
+        "consistency: critical item may lack persona grounding: 'Antihypertensives \u2013 name and dose'",
+        "consistency: critical item may lack persona grounding: 'Antiplatelet or anticoagulant'",
+        "consistency: critical item may lack persona grounding: 'Alcohol consumption'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "neuro_tia_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `RR=16` appears in Part A and persona body"
+        },
+        {
+          "case_id": "neuro_tia_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "og_early_pregnancy_bleeding_001",
+      "filename": "og_early_pregnancy_bleeding_001.md",
+      "bank": "v2",
+      "specialty": "obstetrics_gynaecology",
+      "system": "reproductive",
+      "presentation": "Bleeding in early pregnancy",
+      "target_condition": "Threatened miscarriage",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Previous pregnancies and outcomes'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "og_early_pregnancy_bleeding_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=78` appears in Part A and persona body"
+        },
+        {
+          "case_id": "og_early_pregnancy_bleeding_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `spo2=99` appears in Part A and persona body"
+        },
+        {
+          "case_id": "og_early_pregnancy_bleeding_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "og_endometriosis_001",
+      "filename": "og_endometriosis_001.md",
+      "bank": "v2",
+      "specialty": "obstetrics_gynaecology",
+      "system": "reproductive",
+      "presentation": "Cyclical pelvic pain and subfertility",
+      "target_condition": "Endometriosis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "og_endometriosis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temp=36.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "og_endometriosis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "og_menorrhagia_001",
+      "filename": "og_menorrhagia_001.md",
+      "bank": "v2",
+      "specialty": "obstetrics_gynaecology",
+      "system": "reproductive",
+      "presentation": "Heavy painful periods",
+      "target_condition": "Menorrhagia",
+      "difficulty": 1,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "og_menorrhagia_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temp=36.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "og_menorrhagia_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "og_pelvic_inflammatory_disease_001",
+      "filename": "og_pelvic_inflammatory_disease_001.md",
+      "bank": "v2",
+      "specialty": "obstetrics_gynaecology",
+      "system": "reproductive",
+      "presentation": "Pelvic pain and discharge",
+      "target_condition": "Pelvic inflammatory disease",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'History of sexually transmitted infections'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "og_pelvic_inflammatory_disease_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=95` appears in Part A and persona body"
+        },
+        {
+          "case_id": "og_pelvic_inflammatory_disease_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=18` appears in Part A and persona body"
+        },
+        {
+          "case_id": "og_pelvic_inflammatory_disease_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "og_pre_eclampsia_001",
+      "filename": "og_pre_eclampsia_001.md",
+      "bank": "v2",
+      "specialty": "obstetrics_gynaecology",
+      "system": "reproductive",
+      "presentation": "Swelling and headache in late pregnancy",
+      "target_condition": "Pre-eclampsia",
+      "difficulty": 3,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Current medications (including over-the-counter and supplements)'",
+        "consistency: critical item may lack persona grounding: 'Smoking, alcohol, or drug use'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "og_pre_eclampsia_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `HR=88` appears in Part A and persona body"
+        },
+        {
+          "case_id": "og_pre_eclampsia_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `Temp=37.0` appears in Part A and persona body"
+        },
+        {
+          "case_id": "og_pre_eclampsia_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_acute_angle_closure_001",
+      "filename": "oph_acute_angle_closure_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "glaucoma",
+      "presentation": "Acute painful red eye with visual loss",
+      "target_condition": "Acute angle-closure glaucoma",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_acute_angle_closure_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Acute angle-closure glaucoma' != expected_ddx.working_diagnosis='Acute primary angle-closure glaucoma, right eye'"
+        },
+        {
+          "case_id": "oph_acute_angle_closure_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_anterior_uveitis_001",
+      "filename": "oph_anterior_uveitis_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "eye",
+      "presentation": "Painful red eye with photophobia",
+      "target_condition": "Anterior uveitis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Location - is it one eye or both?'",
+        "consistency: critical item may lack persona grounding: 'Previous episodes of red eye or uveitis'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_anterior_uveitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_bacterial_conjunctivitis_001",
+      "filename": "oph_bacterial_conjunctivitis_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "ocular_surface",
+      "presentation": "Red eye with discharge",
+      "target_condition": "Bacterial conjunctivitis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_bacterial_conjunctivitis_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Bacterial conjunctivitis' != expected_ddx.working_diagnosis='Acute bacterial conjunctivitis (both eyes)'"
+        },
+        {
+          "case_id": "oph_bacterial_conjunctivitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_blepharitis_001",
+      "filename": "oph_blepharitis_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "adnexa",
+      "presentation": "Itchy, crusty eyelid margins",
+      "target_condition": "Chronic blepharitis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_blepharitis_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Chronic blepharitis' != expected_ddx.working_diagnosis='Chronic blepharitis (seborrhoeic/mixed), both eyes'"
+        }
+      ]
+    },
+    {
+      "id": "oph_cataract_001",
+      "filename": "oph_cataract_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "lens",
+      "presentation": "Gradual painless blurring of vision",
+      "target_condition": "Senile cataract",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_cataract_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Senile cataract' != expected_ddx.working_diagnosis='Immature senile cataract, both eyes'"
+        }
+      ]
+    },
+    {
+      "id": "oph_crao_001",
+      "filename": "oph_crao_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "visual",
+      "presentation": "Sudden painless loss of vision",
+      "target_condition": "Central retinal artery occlusion",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_crao_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `o2_sat=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "oph_crao_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_dry_eye_001",
+      "filename": "oph_dry_eye_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "ocular_surface",
+      "presentation": "Dry, gritty, irritable eyes",
+      "target_condition": "Dry eye disease",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_dry_eye_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Dry eye disease' != expected_ddx.working_diagnosis='Dry eye disease (evaporative, screen-use related)'"
+        },
+        {
+          "case_id": "oph_dry_eye_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_episcleritis_001",
+      "filename": "oph_episcleritis_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "ocular_surface",
+      "presentation": "Sectoral red eye, painless, normal vision",
+      "target_condition": "Episcleritis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_episcleritis_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Episcleritis' != expected_ddx.working_diagnosis='Simple episcleritis, right eye'"
+        },
+        {
+          "case_id": "oph_episcleritis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_hordeolum_001",
+      "filename": "oph_hordeolum_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "adnexa",
+      "presentation": "Painful eyelid lump",
+      "target_condition": "Hordeolum (stye)",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_hordeolum_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Hordeolum (stye)' != expected_ddx.working_diagnosis='External hordeolum (stye), right upper eyelid'"
+        }
+      ]
+    },
+    {
+      "id": "oph_hyphaema_001",
+      "filename": "oph_hyphaema_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "trauma",
+      "presentation": "Blood in the front of the eye after blunt trauma",
+      "target_condition": "Traumatic hyphaema",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_hyphaema_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Traumatic hyphaema' != expected_ddx.working_diagnosis='Traumatic hyphaema, right eye'"
+        },
+        {
+          "case_id": "oph_hyphaema_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_night_blindness_001",
+      "filename": "oph_night_blindness_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "retina",
+      "presentation": "Difficulty seeing in the dark",
+      "target_condition": "Vitamin A deficiency (night blindness)",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_night_blindness_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Vitamin A deficiency (night blindness)' != expected_ddx.working_diagnosis='Night blindness due to vitamin A deficiency'"
+        }
+      ]
+    },
+    {
+      "id": "oph_optic_neuritis_001",
+      "filename": "oph_optic_neuritis_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "nervous",
+      "presentation": "Sudden vision loss with pain on eye movement",
+      "target_condition": "Optic neuritis",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'No history of neurological disease'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_optic_neuritis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_posterior_vitreous_001",
+      "filename": "oph_posterior_vitreous_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "eye",
+      "presentation": "Flash of light and floaters in one eye",
+      "target_condition": "Posterior vitreous detachment",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_posterior_vitreous_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_strabismus_001",
+      "filename": "oph_strabismus_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "visual",
+      "presentation": "Crossed eye since childhood",
+      "target_condition": "Strabismus",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Timing - has it changed recently?'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_strabismus_001",
+          "kind": "diagnosis_mismatch",
+          "detail": "target_condition='Strabismus' != expected_ddx.working_diagnosis='Strabismus (esotropia)'"
+        },
+        {
+          "case_id": "oph_strabismus_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "oph_trichiasis_001",
+      "filename": "oph_trichiasis_001.md",
+      "bank": "v2",
+      "specialty": "ophthalmology",
+      "system": "ocular",
+      "presentation": "Eye pain and foreign body sensation",
+      "target_condition": "Trichiasis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Site - which eye is affected'",
+        "consistency: critical item may lack persona grounding: 'History of eye trauma or surgery'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "oph_trichiasis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "paed_acute_gastroenteritis_001",
+      "filename": "paed_acute_gastroenteritis_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "gastrointestinal",
+      "presentation": "Watery diarrhoea and vomiting in a toddler",
+      "target_condition": "Acute gastroenteritis with dehydration",
+      "difficulty": 1,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Lethargy or reduced activity'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_acute_gastroenteritis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temperature=37.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "paed_acute_gastroenteritis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=130` appears in Part A and persona body"
+        },
+        {
+          "case_id": "paed_acute_gastroenteritis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=30` appears in Part A and persona body"
+        },
+        {
+          "case_id": "paed_acute_gastroenteritis_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+        }
+      ]
+    },
+    {
+      "id": "paed_asthma_001",
+      "filename": "paed_asthma_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "respiratory",
+      "presentation": "Recurrent wheeze and cough in a 6-year-old",
+      "target_condition": "Paediatric asthma",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Any current medications (including inhalers, antihistamines)?'",
+        "consistency: critical item may lack persona grounding: 'Smoking exposure at home or in car'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "paed_bronchiolitis_001",
+      "filename": "paed_bronchiolitis_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "respiratory",
+      "presentation": "Wheeze in an infant",
+      "target_condition": "Bronchiolitis",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Irritability or lethargy'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_bronchiolitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "paed_coeliac_001",
+      "filename": "paed_coeliac_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "gastrointestinal",
+      "presentation": "Failing to thrive and loose stools",
+      "target_condition": "Coeliac disease",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Abdominal pain or bloating'",
+        "consistency: critical item may lack persona grounding: 'Current medications or supplements'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_coeliac_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "paed_febrile_child_001",
+      "filename": "paed_febrile_child_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "general",
+      "presentation": "Fever in a child",
+      "target_condition": "Febrile illness in a child",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Severity: measured up to 39.5\u00b0C'",
+        "consistency: critical item may lack persona grounding: 'Irritability'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_febrile_child_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+        }
+      ]
+    },
+    {
+      "id": "paed_febrile_seizure_001",
+      "filename": "paed_febrile_seizure_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "nervous",
+      "presentation": "Convulsion in a febrile toddler",
+      "target_condition": "Febrile seizure",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Did he lose consciousness?'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_febrile_seizure_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "paed_hpylori_001",
+      "filename": "paed_hpylori_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "gastrointestinal",
+      "presentation": "Recurrent stomach pain in an adolescent",
+      "target_condition": "Helicobacter pylori gastritis",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Loss of appetite'",
+        "consistency: critical item may lack persona grounding: 'Weight loss'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_hpylori_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "paed_kawasaki_001",
+      "filename": "paed_kawasaki_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "cardiovascular",
+      "presentation": "Prolonged fever and red eyes in a toddler",
+      "target_condition": "Kawasaki disease",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_kawasaki_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=140` appears in Part A and persona body"
+        },
+        {
+          "case_id": "paed_kawasaki_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=28` appears in Part A and persona body"
+        }
+      ]
+    },
+    {
+      "id": "paed_measles_001",
+      "filename": "paed_measles_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "infectious_disease",
+      "presentation": "Fever and rash in a child",
+      "target_condition": "Morbilli (measles)",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Unvaccinated (no MMR)'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_measles_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "paed_stunting_001",
+      "filename": "paed_stunting_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "growth_and_development",
+      "presentation": "Short stature and poor growth in a 3-year-old",
+      "target_condition": "Stunting (chronic malnutrition)",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "paed_stunting_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temperature=36.5` appears in Part A and persona body"
+        },
+        {
+          "case_id": "paed_stunting_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `heart_rate=100` appears in Part A and persona body"
+        },
+        {
+          "case_id": "paed_stunting_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `respiratory_rate=24` appears in Part A and persona body"
+        },
+        {
+          "case_id": "paed_stunting_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `oxygen_saturation=98` appears in Part A and persona body"
+        },
+        {
+          "case_id": "paed_stunting_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "paed_uti_001",
+      "filename": "paed_uti_001.md",
+      "bank": "v2",
+      "specialty": "paediatrics",
+      "system": "urinary",
+      "presentation": "Feverish 4-year-old with smelly urine",
+      "target_condition": "Urinary tract infection in a child",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "psych_adhd_001",
+      "filename": "psych_adhd_001.md",
+      "bank": "v2",
+      "specialty": "psychiatry",
+      "system": "nervous",
+      "presentation": "Difficulty concentrating and fidgety",
+      "target_condition": "Adult attention deficit hyperactivity disorder",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Severity - how much does it affect your daily life?'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "psych_adhd_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "psych_alcohol_misuse_001",
+      "filename": "psych_alcohol_misuse_001.md",
+      "bank": "v2",
+      "specialty": "psychiatry",
+      "system": "psychiatric",
+      "presentation": "Wanting to cut down drinking",
+      "target_condition": "Alcohol dependence",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Previous treatments for alcohol use'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "psych_bipolar_001",
+      "filename": "psych_bipolar_001.md",
+      "bank": "v2",
+      "specialty": "psychiatry",
+      "system": "nervous",
+      "presentation": "Episodes of high mood and reckless behaviour",
+      "target_condition": "Bipolar I disorder",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Are you more talkative than usual?'",
+        "consistency: critical item may lack persona grounding: 'Any previous diagnosis of depression or anxiety?'",
+        "consistency: critical item may lack persona grounding: 'Any hospitalizations for mental health?'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "psych_bipolar_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `temp=36.8` appears in Part A and persona body"
+        },
+        {
+          "case_id": "psych_bipolar_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "psych_depression_001",
+      "filename": "psych_depression_001.md",
+      "bank": "v2",
+      "specialty": "psychiatry",
+      "system": "nervous",
+      "presentation": "Low mood",
+      "target_condition": "Depression",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "psych_generalised_anxiety_001",
+      "filename": "psych_generalised_anxiety_001.md",
+      "bank": "v2",
+      "specialty": "psychiatry",
+      "system": "nervous system",
+      "presentation": "Worry and restlessness",
+      "target_condition": "Generalised anxiety disorder",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Muscle tension'",
+        "consistency: critical item may lack persona grounding: 'Recent life stressors'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "psych_ocd_001",
+      "filename": "psych_ocd_001.md",
+      "bank": "v2",
+      "specialty": "psychiatry",
+      "system": "nervous",
+      "presentation": "Intrusive thoughts and repetitive rituals",
+      "target_condition": "Obsessive-compulsive disorder",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Family history - any relatives with similar problems or mental health issues'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "psych_ocd_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=92` appears in Part A and persona body"
+        },
+        {
+          "case_id": "psych_ocd_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `rr=16` appears in Part A and persona body"
+        },
+        {
+          "case_id": "psych_ocd_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `o2sat=99` appears in Part A and persona body"
+        }
+      ]
+    },
+    {
+      "id": "psych_panic_001",
+      "filename": "psych_panic_001.md",
+      "bank": "v2",
+      "specialty": "psychiatry",
+      "system": "nervous",
+      "presentation": "Sudden attacks of overwhelming fear",
+      "target_condition": "Panic disorder",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Dizziness or lightheadedness'",
+        "consistency: critical item may lack persona grounding: 'Any past mental health problems'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "psych_panic_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=88` appears in Part A and persona body"
+        },
+        {
+          "case_id": "psych_panic_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `rr=16` appears in Part A and persona body"
+        },
+        {
+          "case_id": "psych_panic_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "surg_acute_cholecystitis_001",
+      "filename": "surg_acute_cholecystitis_001.md",
+      "bank": "v2",
+      "specialty": "surgery",
+      "system": "gastrointestinal",
+      "presentation": "Right upper quadrant pain",
+      "target_condition": "Acute cholecystitis",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Associated nausea or vomiting'",
+        "consistency: critical item may lack persona grounding: 'Severity (7/10, bad enough to come to ER)'",
+        "consistency: critical item may lack persona grounding: 'Nausea and vomiting'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "surg_acute_cholecystitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "surg_breast_lump_001",
+      "filename": "surg_breast_lump_001.md",
+      "bank": "v2",
+      "specialty": "surgery",
+      "system": "breast",
+      "presentation": "Painless lump in the right breast",
+      "target_condition": "Invasive ductal carcinoma",
+      "difficulty": 3,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "surg_breast_lump_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "surg_diverticulitis_001",
+      "filename": "surg_diverticulitis_001.md",
+      "bank": "v2",
+      "specialty": "surgery",
+      "system": "gastrointestinal",
+      "presentation": "Lower left abdominal pain and fever",
+      "target_condition": "Acute diverticulitis",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Previous diverticulitis or diverticulosis'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "surg_diverticulitis_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "surg_inguinal_hernia_001",
+      "filename": "surg_inguinal_hernia_001.md",
+      "bank": "v2",
+      "specialty": "surgery",
+      "system": "gastrointestinal",
+      "presentation": "Groin lump",
+      "target_condition": "Inguinal hernia",
+      "difficulty": 1,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Character - reducible or not'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "surg_inguinal_hernia_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "surg_renal_colic_001",
+      "filename": "surg_renal_colic_001.md",
+      "bank": "v2",
+      "specialty": "surgery",
+      "system": "urinary",
+      "presentation": "Loin pain",
+      "target_condition": "Ureteric (renal) colic",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "consistency: critical item may lack persona grounding: 'Associated nausea or vomiting'",
+        "consistency: critical item may lack persona grounding: 'Ideas - what they think is wrong'",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "surg_renal_colic_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "surg_testicular_torsion_001",
+      "filename": "surg_testicular_torsion_001.md",
+      "bank": "v2",
+      "specialty": "surgery",
+      "system": "genitourinary",
+      "presentation": "Sudden severe testicular pain",
+      "target_condition": "Testicular torsion",
+      "difficulty": 2,
+      "status": "in_review",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Associated symptoms - nausea, vomiting'",
+        "consistency: critical item may lack persona grounding: 'Nausea and vomiting'"
+      ],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "surg_thyroid_nodule_001",
+      "filename": "surg_thyroid_nodule_001.md",
+      "bank": "v2",
+      "specialty": "surgery",
+      "system": "endocrine",
+      "presentation": "Anterior neck lump",
+      "target_condition": "Solitary thyroid nodule",
+      "difficulty": 2,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none",
+        "consistency: critical item may lack persona grounding: 'Concerns - what worries them'"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "surg_thyroid_nodule_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `hr=78` appears in Part A and persona body"
+        },
+        {
+          "case_id": "surg_thyroid_nodule_001",
+          "kind": "vital_in_both_parts",
+          "detail": "vital `rr=14` appears in Part A and persona body"
+        },
+        {
+          "case_id": "surg_thyroid_nodule_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "surg_varicose_veins_001",
+      "filename": "surg_varicose_veins_001.md",
+      "bank": "v2",
+      "specialty": "surgery",
+      "system": "cardiovascular",
+      "presentation": "Painful bulging veins in both legs",
+      "target_condition": "Chronic venous insufficiency",
+      "difficulty": 1,
+      "status": "ai_generated",
+      "schema_origin": "v2-legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": false,
+      "clinical_reviewer": "",
+      "source_count": 2,
+      "lint_ok": true,
+      "warnings": [
+        "no Indonesian official grounding (PNPK/KMK/JDIH) in `source_refs` \u2014 internasional-only or none"
+      ],
+      "errors": [],
+      "duplicated_truth": [
+        {
+          "case_id": "surg_varicose_veins_001",
+          "kind": "chief_complaint_not_in_opening",
+          "detail": "chief_complaint wording not reflected in opening line"
+        }
+      ]
+    },
+    {
+      "id": "kasus-01",
+      "filename": "kasus-01-glaukoma-akut-sudut-tertutup.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "ACUTE ANGLE CLOSURE GLAUCOMA",
+      "target_condition": "GLAUKOMA AKUT SUDUT TERTUTUP",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-02",
+      "filename": "kasus-02-konjungtivitis-viral.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "VIRAL CONJUNCTIVITIS",
+      "target_condition": "KONJUNGTIVITIS VIRAL",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-03",
+      "filename": "kasus-03-abrasi-kornea-traumatik.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "TRAUMATIC CORNEAL ABRASION",
+      "target_condition": "ABRASI KORNEA TRAUMATIK",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-04",
+      "filename": "kasus-04-endoftalmitis-pasca-operasi.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "POSTOPERATIVE ENDOPHTHALMITIS",
+      "target_condition": "ENDOFTALMITIS PASCA OPERASI",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-05",
+      "filename": "kasus-05-ruptur-bola-mata-trauma.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "OPEN GLOBE / GLOBE RUPTURE",
+      "target_condition": "RUPTUR BOLA MATA AKIBAT TRAUMA",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-06",
+      "filename": "kasus-06-hifema-traumatik.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "HIFEMA TRAUMATIK (TRAUMATIC HYPHEMA) \u2014 GRADE I",
+      "target_condition": "HIFEMA TRAUMATIK (TRAUMATIC HYPHEMA) \u2014 GRADE I",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-07",
+      "filename": "kasus-07-ablasio-retina-regmatogenosa.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "RHEGMATOGENOUS RETINAL DETACHMENT",
+      "target_condition": "ABLASIO RETINA REGMATOGENOSA",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-08",
+      "filename": "kasus-08-esotropia-infantil-ambliopia.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "INFANTILE ESOTROPIA WITH STRABISMIC AMBLYOPIA",
+      "target_condition": "ESOTROPIA INFANTIL DENGAN AMBLIOPIA STRABISMIK",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-09",
+      "filename": "kasus-09-katarak-kongenital-leukokoria.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "CONGENITAL CATARACT PRESENTING AS LEUKOCORIA",
+      "target_condition": "LEUKOKORIA AKIBAT KATARAK KONGENITAL",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-10",
+      "filename": "kasus-10-amd-basah.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "WET AGE-RELATED MACULAR DEGENERATION",
+      "target_condition": "DEGENERASI MAKULA TERKAIT USIA TIPE BASAH",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-101",
+      "filename": "kasus-101-dry-eye.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "DRY EYE",
+      "target_condition": "MATA KERING",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-102",
+      "filename": "kasus-102-buta-senja.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "RABUN SENJA",
+      "target_condition": "BUTA SENJA",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-103",
+      "filename": "kasus-103-hordeolum.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "BINTITAN",
+      "target_condition": "HORDEOLUM",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-104",
+      "filename": "kasus-104-konjungtivitis.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "KONJUNGTIVITIS BAKTERI",
+      "target_condition": "KONJUNGTIVITIS BAKTERI",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-105",
+      "filename": "kasus-105-blefaritis.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "BLEFARITIS",
+      "target_condition": "BLEFARITIS",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-106",
+      "filename": "kasus-106-katarak.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "KATARAK SENILIS",
+      "target_condition": "KATARAK SENILIS",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-107",
+      "filename": "kasus-107-glaukoma.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "GLAUKOMA AKUT",
+      "target_condition": "GLAUKOMA AKUT",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-108",
+      "filename": "kasus-108-episkleritis.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "EPISKLERITIS",
+      "target_condition": "EPISKLERITIS",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-109",
+      "filename": "kasus-109-hifema.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "HIFEMA",
+      "target_condition": "HIFEMA",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 1,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-11",
+      "filename": "kasus-11-luka-bakar-kimia-mata.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "CHEMICAL BURN TO THE EYE",
+      "target_condition": "LUKA BAKAR KIMIA PADA MATA",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-12",
+      "filename": "kasus-12-edema-papil-massa-intrakranial.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "BILATERAL OPTIC DISC SWELLING SECONDARY TO INTRACRANIAL MASS",
+      "target_condition": "EDEMA PAPIL BILATERAL AKIBAT MASSA INTRAKRANIAL",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-13",
+      "filename": "kasus-13-oklusi-vena-retina-sentral.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "CENTRAL RETINAL VEIN OCCLUSION / CRVO",
+      "target_condition": "OKLUSI VENA RETINA SENTRAL",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-14",
+      "filename": "kasus-14-retinopati-diabetik-proliferatif.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "PROLIFERATIVE DIABETIC RETINOPATHY / PDR",
+      "target_condition": "RETINOPATI DIABETIK PROLIFERATIF",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-15",
+      "filename": "kasus-15-oftalmopati-graves.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "GRAVES' / THYROID OPHTHALMOPATHY",
+      "target_condition": "OFTALMOPATI GRAVES",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-16",
+      "filename": "kasus-16-arteritis-sel-raksasa.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "GIANT CELL / TEMPORAL ARTERITIS",
+      "target_condition": "ARTERITIS SEL RAKSASA",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-17",
+      "filename": "kasus-17-glaukoma-sudut-terbuka-primer.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "PRIMARY OPEN-ANGLE GLAUCOMA / POAG",
+      "target_condition": "GLAUKOMA SUDUT TERBUKA PRIMER",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-18",
+      "filename": "kasus-18-albinisme-okular-x-linked.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "X-LINKED OCULAR ALBINISM",
+      "target_condition": "ALBINISME OKULAR X-LINKED",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-19",
+      "filename": "kasus-19-monocular-elevation-deficiency.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "MONOCULAR ELEVATION DEFICIENCY / MED",
+      "target_condition": "DEFISIENSI ELEVASI MONOKULAR",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-20",
+      "filename": "kasus-20-hemangioma-infantil-kelopak.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "INFANTILE HEMANGIOMA OF THE EYELID",
+      "target_condition": "HEMANGIOMA INFANTIL KELOPAK MATA",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-21",
+      "filename": "kasus-21-drusen-nervus-optikus.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "OPTIC NERVE DRUSEN / OND",
+      "target_condition": "DRUSEN NERVUS OPTIKUS",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    },
+    {
+      "id": "kasus-22",
+      "filename": "kasus-22-penyakit-behcet.md",
+      "bank": "legacy-opth",
+      "specialty": "ophthalmology",
+      "system": "ophthalmology",
+      "presentation": "BEH\u00c7ET'S DISEASE",
+      "target_condition": "PENYAKIT BEH\u00c7ET DENGAN PANUVEITIS",
+      "difficulty": null,
+      "status": "legacy",
+      "schema_origin": "legacy",
+      "is_legacy": true,
+      "source_refs": true,
+      "competency": true,
+      "clinical_reviewer": "",
+      "source_count": 3,
+      "lint_ok": true,
+      "warnings": [],
+      "errors": [],
+      "duplicated_truth": []
+    }
+  ]
+}

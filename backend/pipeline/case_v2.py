@@ -23,9 +23,23 @@ SPECIALTIES = frozenset({
 })
 STATUSES = frozenset({
     "draft", "ai_generated", "in_review", "clinically_reviewed",
-    "pilot_verified", "needs_update", "published", "retired",
+    "pilot_verified", "needs_update", "published", "retired", "legacy",
 })
 MODES = frozenset({"anamnesis", "osce_full"})
+
+# Schema versions understood by this codebase. v2 = legacy prototype bank
+# (88/92 in content/cases are v2); v3 = the rebuilt, clinically governed bank
+# (STEP 2+). `schema_origin()` maps a case to its cohort.
+CURRENT_SCHEMA_VERSION = 3
+LEGACY_SCHEMA_VERSIONS = frozenset({2})
+# Statuses that describe verified/signed-off content (safe for pilot/public).
+VERIFIED_STATUSES = frozenset({
+    "clinically_reviewed", "pilot_verified", "published",
+})
+# Statuses that explicitly mark a case as legacy-era / not part of the new bank.
+LEGACY_STATUSES = frozenset({
+    "legacy", "ai_generated", "in_review", "draft", "needs_update", "retired", "requires_review",
+})
 
 # Clinical review workflow (§11 of master plan). `status` doubles as the
 # review state; "published"/"retired" are terminal catalog states.
@@ -140,6 +154,48 @@ class CaseV2:
         if st in ("published", "retired"):
             return True
         return st in ("clinically_reviewed", "pilot_verified") and bool(self.reviewed_by())
+
+    # ---- Legacy cohort / backward-compat boundary (STEP 1 rebuild) ----
+    def schema_origin(self) -> str:
+        """Cohort tag: 'v2-legacy' | 'v3' | 'unknown'. Runtime must know which
+        schema it is processing (no silent interpretation of missing fields)."""
+        sv = self.frontmatter.get("schema_version")
+        try:
+            n = int(sv)
+        except (TypeError, ValueError):
+            return "unknown" if sv is not None else "v2-legacy"
+        return "v3" if n >= CURRENT_SCHEMA_VERSION else "v2-legacy"
+
+    def is_legacy(self) -> bool:
+        """True when a case belongs to the legacy/prototype cohort and is NOT
+        part of the rebuilt, clinically governed bank. Conversely a case is
+        non-legacy when it is formally released (published) or carries a
+        verified status WITH a clinical sign-off, or opts out via
+        frontmatter `legacy: false`."""
+        # Explicit override: a maintained case may opt out of the legacy cohort.
+        # `legacy: true` → legacy; `legacy: false` → maintained. Absent = fall through.
+        if "legacy" in self.frontmatter:
+            return bool(self.frontmatter.get("legacy", False))
+        # `published` is the terminal released state — never part of legacy.
+        if self.review_state == "published":
+            return False
+        # Verified status WITH sign-off = maintained content, not legacy.
+        if self.review_state in VERIFIED_STATUSES and bool(self.reviewed_by()):
+            return False
+        return True
+
+    # ---- Versioning (STEP 1 §6) ----
+    def clinical_content_version(self) -> str:
+        return str(self.frontmatter.get("clinical_content_version") or "").strip()
+
+    def source_review_date(self) -> str:
+        return str(self.frontmatter.get("source_review_date") or "").strip()
+
+    def superseded_by(self) -> str:
+        return str(self.frontmatter.get("superseded_by") or "").strip()
+
+    def previous_version(self) -> str:
+        return str(self.frontmatter.get("previous_version") or "").strip()
 
     # ---- Source / grounding (plan §11 Tier hierarchy) ----
     def source_refs(self) -> list:
