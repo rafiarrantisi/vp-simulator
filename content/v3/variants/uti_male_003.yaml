@@ -1,0 +1,104 @@
+id: uti_male_003
+family_id: fam_uti
+variation_level: population
+title: Complicated lower UTI in an older man (prostatic obstruction context)
+supported_stages: [koas]
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: initial_management_and_referral
+
+identity:
+  age_years: 68
+  biological_sex: male
+  informant_type: patient
+  setting: primary care / GP
+  population_tags: [elderly, male]
+
+chief_complaint: "Painful urination, feeling of incomplete voiding, low-grade fever"
+opening_context: "68yo man with dysuria, hesitancy, weak stream and incomplete emptying; on top of low-grade fever; GU symptoms in a man = COMPLICATED UTI by definition"
+duration: "1 week, worsening"
+severity: moderate
+key_chronology: "Progressive urinary hesitancy over months → acute dysuria + incomplete emptying + fever this week"
+
+history:
+  - name: urinary
+    facts:
+      - { key: dysuria, value: true, disclosure: spontaneous }
+      - { key: hesitancy_weak_stream, value: true, disclosure: spontaneous, acceptable_intents: [start_slowly, weak_flow] }
+      - { key: incomplete_emptying, value: true, disclosure: spontaneous }
+      - { key: low_grade_fever, value: true, disclosure: direct_question }
+      - { key: flank_pain, value: false, disclosure: direct_question }
+  - name: risk
+    facts:
+      - { key: prior_uti, value: false, disclosure: direct_question, note: "first UTI" }
+      - { key: diabetes, value: false, disclosure: direct_question }
+      - { key: catheter, value: false, disclosure: direct_question }
+      - { key: bph_symptoms, value: true, disclosure: direct_question }
+
+red_flags:
+  - { fact: "Upper tract / pyelonephritis (flank pain, high fever, rigors)", status: absent, criticality: critical, why_matters: "complicates + changes to admission", disclosure: direct_question }
+  - { fact: "Acute urinary retention / febrile urinary tract obstruction", status: absent, criticality: critical, why_matters: "urological emergency", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Comfortable, low-grade fever"
+  consciousness: "Alert"
+  vitals:
+    - { name: temperature, value: 37.9, unit: "C" }
+    - { name: heart_rate, value: 88, unit: "bpm" }
+  system_findings:
+    abdomen: "Palpable bladder (mild distension), non-tender; no CVA tenderness"
+
+investigations:
+  - { name: Urinalysis, expected_result: "Leukocytes, nitrites", appropriateness: essential, rationale: "confirm UTI", source: "guideline" }
+  - { name: Urine culture + sensitivity, expected_result: "Await; complicated requires it", appropriateness: essential, rationale: "male UTI is complicated", source: "guideline" }
+  - { name: Serum creatinine / PSA context, expected_result: "Elevated creatinine if retention; note PSA in context", appropriateness: appropriate, rationale: "obstructive component", source: "guideline" }
+
+diagnostic:
+  working_diagnosis: "Complicated lower urinary tract infection (male)"
+  synonyms: [Male UTI, Complicated cystitis]
+  differentials:
+    - { name: "Prostatitis / epididymo-orchitis", discriminating_features: "localising prostate tenderness, frequency, sex history", reverting: true }
+    - { name: "Obstructed (retention) with infection", discriminating_features: "palpable distended bladder, high residual", reverting: true }
+  reasoning_anchors:
+    - "UTI in a male is complicated by definition — treat longer, culture mandatory"
+    - "Prostatic obstruction predisposes → address voiding to prevent recurrence"
+  icd10: "N39.0 (complicated)"
+
+management:
+  stabilization: ["No acute emergency if no retention"]
+  pharmacologic: ["Longer-course antibiotic (e.g. 7-14d) per guideline for complicated/male UTI", "Post-void residual if retention suspected"]
+  non_pharmacologic: ["Hydration, review voiding symptoms"]
+  referral: ["Refer if upper tract, retention unresolved, or recurrent — Urology assessment of obstruction"]
+  follow_up: ["Repeat urine in complicated; review prostate/voiding"]
+  education_safety_netting: ["Return if high fever, flank pain, inability to void"]
+
+assessment_items:
+  - { text: "Recognise male UTI as complicated (longer course, culture, rule out obstruction)", importance: critical, group: management }
+  - { text: "Exclude prostatitis / retention", importance: critical, group: safety }
+  - { text: "Arrange follow-up and assess underlying voiding cause", importance: helpful, group: management }
+
+safety_critical_errors:
+  - "Treating male UTI as short-course uncomplicated female cystitis"
+  - "Missing acute urinary retention or upper tract involvement"
+
+sources:
+  - { title: "PNPK Infeksi Saluran Kemih", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "European Association of Urology UTI guidance", authority: "EAU", year: "2023", kind: "guideline" }
+  - { title: "SKD 2026 Sistem Ginjal dan Saluran Kemih", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
+
+status: research_complete
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"
+
+blind_candidate_brief: "An older man with painful urination, a weak stream and low-grade fever for a week."
+targeted_title: "Complicated UTI (male)"
+
+management_expectations:
+  recognize_diagnose: "Recognise a male UTI as complicated (risk of prostatic obstruction, upper-tract or retention)"
+  initial_management: "Culture + longer oral antibiotic; assess voiding/retention"
+  emergency_stabilization_required: false
+  referral_urgency: "routine/urgent"
+  referral_indication: "Upper tract, unresolved retention, or recurrent UTI → Urology"
+  do_not_miss_actions: ["Treat as complicated (culture + longer course)", "Assess for retention", "Consider prostatitis/upper tract"]
+  source_refs: ["PNPK 2021", "EAU 2023"]

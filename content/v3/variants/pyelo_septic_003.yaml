@@ -1,0 +1,109 @@
+id: pyelo_septic_003
+family_id: fam_pyelonephritis
+variation_level: complexity
+title: Severe pyelonephritis with sepsis / obstructed (emphysematous risk)
+supported_stages: [koas]
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: initial_management_and_referral
+
+identity:
+  age_years: 70
+  biological_sex: male
+  informant_type: patient
+  setting: emergency department / ICU
+  population_tags: [elderly, diabetic]
+
+chief_complaint: "Collapsed at home with high fever, rigors and severe right flank pain"
+opening_context: "70yo male with poorly-controlled diabetes, acute confusion, fever, right flank pain; tachycardic, hypotensive — septic shock with suspected obstructed/emphysematous pyelonephritis"
+duration: "acute, under 24h"
+severity: critical
+key_chronology: "Diabetic foot + poor control → acute severe flank pain + fever → collapse/confusion (sepsis) within a day"
+
+history:
+  - name: urinary
+    facts:
+      - { key: flank_pain, value: true, disclosure: spontaneous, note: "right, severe" }
+      - { key: fever_chills, value: true, disclosure: spontaneous }
+      - { key: confusion, value: true, disclosure: spontaneous, acceptable_intents: [not_right, disoriented] }
+      - { key: reduced_urine, value: true, disclosure: direct_question }
+  - name: comorbidity
+    facts:
+      - { key: diabetes_poor_control, value: true, disclosure: direct_question, note: "HbA1c 11%" }
+      - { key: prior_stone_disease, value: true, disclosure: direct_question, note: "known renal stone, right" }
+
+red_flags:
+  - { fact: "Septic shock (hypotension, raised lactate, confusion, high fever)", status: present, criticality: critical, why_matters: "immediate resuscitation — septic emergency", disclosure: spontaneous }
+  - { fact: "Obstructed / emphysematous pyelonephritis (gas in renal tissue, stone)", status: present, criticality: critical, why_matters: "needs drainage/surgical/urgent urology", disclosure: spontaneous }
+
+physical_exam:
+  general_appearance: "Acutely unwell, confused, febrile, cold peripheries"
+  consciousness: "Confused (GCS 13)"
+  vitals:
+    - { name: temperature, value: 39.4, unit: "C" }
+    - { name: heart_rate, value: 124, unit: "bpm" }
+    - { name: blood_pressure, value: 82, unit: "mmHg", note: "hypotension — shock" }
+    - { name: respiratory_rate, value: 26, unit: "/min" }
+  system_findings:
+    abdomen: "Right flank tenderness, guarding; diabetic foot wound"
+    renal: "Severe right CVA tenderness"
+
+investigations:
+  - { name: Blood gas / lactate, expected_result: "Metabolic acidosis, lactate elevated", appropriateness: essential, rationale: "sepsis severity + resuscitation targeting", source: "surviving sepsis" }
+  - { name: CT/ultrasound renal, expected_result: "Obstructing stone; gas bubbles in renal parenchyma (emphysematous risk)", appropriateness: essential, rationale: "detect obstruction/emphysematous — urgent drainage", source: "guideline" }
+  - { name: Blood/urine culture, expected_result: "Await; likely Gram-neg", appropriateness: essential, rationale: "targeted antibiotics", source: "guideline" }
+  - { name: Full blood count / CRP / glucose, expected_result: "Marked leucocytosis, hyperglycaemia", appropriateness: essential, rationale: "sepsis + metabolic emergency", source: "guideline" }
+
+diagnostic:
+  working_diagnosis: "Severe pyelonephritis with sepsis / obstructing stone (emphysematous risk)"
+  synonyms: [Septic renal infection, Obstructed pyelonephritis]
+  differentials:
+    - { name: "Perforated viscus / appendicitis", discriminating_features: "peritoneal signs, normal urine, imaging", reverting: true }
+    - { name: "Diabetic ketoacidosis alone", discriminating_features: "acidosis but no localizing flank/gas; both may co-exist", reverting: true }
+  reasoning_anchors:
+    - "Sepsis + gas in renal tissue + diabetes = emphysematous pyelonephritis — combined medical + urgent drainage"
+    - "Stabilise septic shock AND decompress obstruction simultaneously"
+  icd10: "N10 + A41.9 (sepsis)"
+
+management:
+  stabilization: ["Resuscitate septic shock: IV fluids, broad-spectrum IV antibiotics, lactate-guided, oxygen", "Urgent decompression (percutaneous nephrostomy / stent) for obstructed collecting system"]
+  pharmacologic: ["Early broad-spectrum IV (e.g. carbapenem/piperacillin-tazobactam per local) + adjust for renal", "Manage hyperglycaemia/DKA"]
+  non_pharmacologic: ["ICU-level monitoring, source control"]
+  referral: ["Immediate referral to Urology + ICU — combined emergency", "Percutaneous drainage for obstruction"]
+  follow_up: ["ICU until stable, repeat imaging, complete antibiotic course"]
+  education_safety_netting: ["Explain the life-threatening nature and need for urgent drainage"]
+
+assessment_items:
+  - { text: "Recognise septic shock + suspected obstructed pyelonephritis as combined emergency", importance: critical, group: safety }
+  - { text: "Initiate resuscitative fluids + broad-spectrum antibiotics early", importance: critical, group: management }
+  - { text: "Urgently arrange drainage/referral for obstruction", importance: critical, group: management }
+  - { text: "Manage diabetic metabolic emergency concurrently", importance: critical, group: management }
+
+safety_critical_errors:
+  - "Delaying drainage of an obstructed infected kidney"
+  - "Under-resuscitating septic shock"
+  - "Missing emphysematous pyelonephritis on imaging"
+  - "Delaying ICU/urology referral"
+
+sources:
+  - { title: "PNPK Infeksi Saluran Kemih Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "Surviving Sepsis Campaign", authority: "SSC", year: "2021", kind: "guideline" }
+  - { title: "European Association of Urology urosepsis guidance", authority: "EAU", year: "2023", kind: "guideline" }
+  - { title: "SKD 2026 Sistem Ginjal dan Saluran Kemih", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
+
+status: research_complete
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"
+
+blind_candidate_brief: "A diabetic man who collapsed at home with high fever, rigors and severe right flank pain."
+targeted_title: "Severe pyelonephritis with sepsis / obstruction"
+
+management_expectations:
+  recognize_diagnose: "Recognise septic shock with obstructed/emphysematous pyelonephritis as a combined urologic + critical emergency"
+  initial_management: "Resuscitation (fluids, broad-spectrum IV antibiotics), urgent urology drainage, ICU"
+  emergency_stabilization_required: true
+  referral_urgency: "immediate"
+  referral_indication: "Septic shock + obstruction/gas — emergency Urology + ICU"
+  do_not_miss_actions: ["Resuscitate septic shock early", "Decompress obstruction urgently", "CT/US for emphysematous", "Manage diabetes/DKA"]
+  source_refs: ["PNPK 2021", "SSC 2021", "EAU 2023"]

@@ -1,5 +1,5 @@
-id: uti_pyelonephritis_003
-family_id: fam_uti
+id: pyelo_preg_001
+family_id: fam_pyelonephritis
 variation_level: complexity
 title: Acute pyelonephritis in pregnancy — complicated UTI, high-stakes
 supported_stages: [koas]

@@ -34,6 +34,11 @@ class PilotEvent(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
     # denormalised for cheap funnel counts without joining sessions
     case_id: Mapped[str | None] = mapped_column(String, index=True, default=None)
+    # STEP-6 rule 3: competency recorded as SKD 2026 standard+category (primary),
+    # NOT SKDI 2012 level. legacy_skdi_level is optional, only when verified.
+    competency_standard: Mapped[str | None] = mapped_column(String, default="SKD 2026")
+    competency_category: Mapped[str | None] = mapped_column(String, default=None)  # tuntas | initial_management_and_referral
+    legacy_skdi_level: Mapped[str | None] = mapped_column(String, index=True, default=None)  # optional 3A/3B/4A
 
 
 # Whitelist — keeps the event table clean and queryable. Client may only send these.

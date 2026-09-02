@@ -10,10 +10,16 @@ from app.domains.sessions.models import SessionRow, SessionTurn
 
 
 def record_event(db: OrmSession, user_id: str, session_id: str | None,
-                 event: str, stage: str | None, meta: dict) -> dict:
+                 event: str, stage: str | None, meta: dict,
+                 *, competency_standard: str = "SKD 2026",
+                 competency_category: str | None = None,
+                 legacy_skdi_level: str | None = None) -> dict:
     case_id = (meta or {}).get("case_id") if isinstance(meta, dict) else None
     row = PilotEvent(user_id=user_id, session_id=session_id, event=event,
-                     stage=stage, meta=meta or {}, case_id=case_id)
+                     stage=stage, meta=meta or {}, case_id=case_id,
+                     competency_standard=competency_standard,
+                     competency_category=competency_category,
+                     legacy_skdi_level=legacy_skdi_level)
     db.add(row)
     db.commit()
     return {"id": row.id, "event": event, "recorded": True}
@@ -91,6 +97,12 @@ def build_analytics(db: OrmSession) -> dict:
         select(SessionRow.language, func.count(SessionRow.id)).group_by(SessionRow.language)).all() or {})
     out["by_mode"] = dict(db.execute(
         select(SessionRow.mode, func.count(SessionRow.id)).group_by(SessionRow.mode)).all() or {})
+
+    # --- competency distribution (STEP-6 rule 3: SKD 2026, not SKDI primary) ---
+    out["by_competency"] = dict(db.execute(
+        select(PilotEvent.competency_category, func.count(PilotEvent.id))
+        .group_by(PilotEvent.competency_category)).all() or {})
+    out["competency_standard"] = "SKD 2026"
 
     # --- top specialties + presentations (§35.6) ---
     try:

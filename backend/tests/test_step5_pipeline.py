@@ -126,7 +126,7 @@ def test_blind_mode_hides_diagnosis():
 # ── scoring / rubric / answer key / debrief ────────────────────────────────
 
 def test_scoring_and_debrief_derive_from_canonical():
-    v = registry().variant("uti_pyelonephritis_003")
+    v = registry().variant("pyelo_preg_001")
     bundle = derive_generation_bundle(v, family_title="Urinary tract infection")
     assert bundle["answer_key"]["working_diagnosis"] == v.diagnostic.working_diagnosis
     assert bundle["debrief"]["working_diagnosis"] == v.diagnostic.working_diagnosis

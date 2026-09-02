@@ -1,0 +1,109 @@
+id: pyelo_adult_002
+family_id: fam_pyelonephritis
+variation_level: presentation
+title: Acute pyelonephritis — non-pregnant adult woman (uncomplicated upper UTI)
+supported_stages: [koas]
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: initial_management_and_referral
+
+identity:
+  age_years: 42
+  biological_sex: female
+  informant_type: patient
+  setting: emergency department
+  population_tags: [adult]
+
+chief_complaint: "Fever with pain in the lower back/flank for 2 days"
+opening_context: "42yo non-pregnant woman with high fever, rigors, left flank pain, dysuria; unwell-appearing"
+duration: "2 days"
+severity: moderate
+key_chronology: "Dysuria + frequency for 3 days → today high fever, rigors, left flank/loin pain"
+
+history:
+  - name: urinary
+    facts:
+      - { key: fever_chills, value: true, disclosure: spontaneous }
+      - { key: flank_pain, value: true, disclosure: spontaneous, note: "left, costovertebral" }
+      - { key: dysuria, value: true, disclosure: direct_question }
+      - { key: vomiting, value: true, disclosure: direct_question }
+  - name: risk
+    facts:
+      - { key: pregnancy, value: false, disclosure: direct_question, note: "not pregnant, using her preferred method" }
+      - { key: diabetes, value: true, disclosure: direct_question, note: "known T2DM" }
+      - { key: prior_uti, value: true, disclosure: direct_question }
+
+red_flags:
+  - { fact: "Sepsis (tachycardia, hypotension, confusion, raised lactate)", status: absent, criticality: critical, why_matters: "septic shock — aggressive resuscitation", disclosure: direct_question }
+  - { fact: "Obstructed kidney (hydronephrosis, renal colic history, anuria)", status: absent, criticality: critical, why_matters: "obstructive pyelonephritis needs drainage referral", disclosure: direct_question }
+  - { fact: "Diabetes comorbidity worsens severity", status: present, criticality: high, why_matters: "higher complication/abscess risk", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Feverish, in moderate distress, shivering"
+  consciousness: "Alert"
+  vitals:
+    - { name: temperature, value: 39.2, unit: "C" }
+    - { name: heart_rate, value: 114, unit: "bpm" }
+    - { name: blood_pressure, value: 104, unit: "mmHg", normal_range: "Systolic >90" }
+  system_findings:
+    abdomen: "Left costovertebral angle tenderness; no peritonism"
+    renal: "Clear flank tenderness on percussion (left)"
+
+investigations:
+  - { name: Urinalysis, expected_result: "Pyuria, nitrites, possibly WBC casts", appropriateness: essential, rationale: "confirm pyelonephritis", source: "PNPK ISK" }
+  - { name: Blood/urine culture, expected_result: "Await; likely coliform", appropriateness: essential, rationale: "target + gram stain", source: "PNPK ISK" }
+  - { name: Serum creatinine, expected_result: "Nearly baseline", appropriateness: appropriate, rationale: "AKI assessment + dosing", source: "guideline" }
+  - { name: Renal ultrasound, expected_result: "No obstruction", appropriateness: appropriate, rationale: "exclude obstructed kidney", source: "guideline" }
+
+diagnostic:
+  working_diagnosis: "Acute pyelonephritis (upper UTI)"
+  synonyms: [Upper tract UTI, Pyelonephritis in non-pregnant adult]
+  differentials:
+    - { name: "Urolithiasis with infection", discriminating_features: "colicky pain, haematuria, US shows stone/hydronephrosis", reverting: true }
+    - { name: "Lower UTI only", discriminating_features: "no fever/flank pain, localising to bladder", reverting: true }
+    - { name: "Renal abscess", discriminating_features: "persistent fever despite therapy, imaging", reverting: true }
+  reasoning_anchors:
+    - "Fever + CVA tenderness + pyuria = pyelonephritis (upper tract, unlike cystitis)"
+    - "In diabetic/elderly, severity + need for admission higher"
+  icd10: "N10"
+
+management:
+  stabilization: ["IV fluids, antipyretics, monitor vitals for sepsis"]
+  pharmacologic: ["Inpatient IV broad-spectrum then oral step-down per culture (diabetic: closer monitoring)"]
+  non_pharmacologic: ["Hydration, analgesia"]
+  referral: ["Admit/refer for IV therapy unless clearly mild and reliable for oral outpatient (controversial) — guideline-directed", "Exclude obstruction before discharge"]
+  follow_up: ["IV until afebrile 24-48h, then oral to complete course", "Repeat culture in complicated/recurrent"]
+  education_safety_netting: ["Return if fever persists, worsening loin pain, confusion, or reduced urine output"]
+
+assessment_items:
+  - { text: "Localise upper vs lower tract UTI", importance: critical, group: diagnosis }
+  - { text: "Assess sepsis risk and diabetes comorbidity", importance: critical, group: safety }
+  - { text: "Choose IV parenteral treatment + decide admission/referral", importance: critical, group: management }
+  - { text: "Exclude obstruction before discharge", importance: critical, group: management }
+
+safety_critical_errors:
+  - "Sending pyelonephritis with sepsis home on oral antibiotics"
+  - "Missing obstructed kidney → delays drainage"
+  - "Ignoring diabetic risk of complications"
+
+sources:
+  - { title: "PNPK Infeksi Saluran Kemih Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "WHO antibiotic stewardship guidance", authority: "WHO", year: "2023", kind: "guideline" }
+  - { title: "SKD 2026 Sistem Ginjal dan Saluran Kemih", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
+
+status: research_complete
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"
+
+blind_candidate_brief: "A 42-year-old diabetic woman with fever, rigors and left flank pain for 2 days."
+targeted_title: "Acute pyelonephritis (upper UTI)"
+
+management_expectations:
+  recognize_diagnose: "Recognise acute pyelonephritis (fever + CVA tenderness + pyuria) vs lower-tract UTI"
+  initial_management: "IV broad-spectrum antibiotic + fluids; assess sepsis & obstructive uropathy"
+  emergency_stabilization_required: false
+  referral_urgency: "urgent"
+  referral_indication: "Needs inpatient IV therapy (esp. diabetic/complicated); refer/exclude obstruction"
+  do_not_miss_actions: ["Exclude sepsis", "Exclude obstructed kidney", "IV not oral for moderate/severe", "Manage diabetes comorbidity"]
+  source_refs: ["PNPK 2021", "WHO 2023"]

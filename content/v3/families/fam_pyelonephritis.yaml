@@ -1,0 +1,19 @@
+id: fam_pyelonephritis
+family_type: disease
+title_id: Pielonefritis
+title_en: Pyelonephritis
+primary_specialty: nephrology_urology
+cross_specialty_tags: [obgyn_reproductive, infectious_diseases]
+presenting_complaints: [Fever with flank pain, Loin pain, Complicated urinary tract infection]
+population_tags: [adult, pregnant, diabetic]
+target_stages: [koas]
+skd2026_mapping:
+  category: initial_management_and_referral
+  system: sistem_ginjal_saluran_kemih
+learning_objectives:
+  - "Distinguish upper-tract (pyelonephritis) from lower-tract UTI"
+  - "Identify complicated vs uncomplicated pyelonephritis (pregnancy, obstruction, sepsis)"
+  - "Initiate appropriate parenteral/IV management and refer when admission required"
+  - "Recognise sepsis risk and obstetric implications in pregnancy"
+common_differentials: [Lower UTI, Urolithiasis with obstruction, Appendicitis, Sepsis of other origin]
+status: draft

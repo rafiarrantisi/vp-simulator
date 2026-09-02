@@ -19,7 +19,11 @@ def post_event(req: PilotEventIn, user: User = Depends(get_current_user),
         req.validate_event()
     except ValueError as e:
         raise HTTPException(422, str(e))
-    return ok(record_event(db, user.id, req.session_id, req.event, req.stage, req.meta))
+    return ok(record_event(
+        db, user.id, req.session_id, req.event, req.stage, req.meta,
+        competency_standard=req.competency_standard,
+        competency_category=req.competency_category,
+        legacy_skdi_level=req.legacy_skdi_level))
 
 
 @router.get("/analytics")
