@@ -17,6 +17,7 @@ from pipeline.case_v3.models import (
     AssessmentItem,
     CaseFamily,
     ClinicalVariant,
+    Competency,
     DiagnosticTruth,
     Differential,
     DisclosureMode,
@@ -66,7 +67,20 @@ def load_variant(raw: dict) -> ClinicalVariant:
         variation_level=_enum(VariationLevel, raw.get("variation_level"), VariationLevel.PRESENTATION),
         title=str(raw.get("title", "")),
         supported_stages=_stages(raw.get("supported_stages")),
-        skdi_level=str(raw.get("skdi_level") or "") or None,
+    )
+    # legacy flat `skdi_level` promoted into the competency crosswalk (SKDI 2012)
+    comp = raw.get("competency") or {}
+    if "legacy_level" not in comp and raw.get("skdi_level"):
+        comp = dict(comp, legacy_level=raw.get("skdi_level"))
+    v.competency = Competency(
+        standard=str(comp.get("standard") or "SKD 2026"),
+        category=(comp.get("category") or None),
+        reference=str(comp.get("reference") or ""),
+        system=str(comp.get("system") or ""),
+        legacy_standard=str(comp.get("legacy_standard") or "SKDI 2012"),
+        legacy_level=comp.get("legacy_level") or None,
+        legacy_mapping_confirmed=bool(comp.get("legacy_mapping_confirmed", False)),
+        legacy_note=str(comp.get("legacy_note") or ""),
     )
     ident = raw.get("identity") or {}
     v.identity = IdentityConstraints(

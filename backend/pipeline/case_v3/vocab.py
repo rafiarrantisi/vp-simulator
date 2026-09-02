@@ -3,10 +3,38 @@ from __future__ import annotations
 
 from enum import Enum
 
-# SKDI competency levels (competency mapping source, NOT a treatment source).
-# Primary new bank scope is 3A / 3B / 4A (01_READ_ME_FIRST §4).
-SKDI_LEVELS_ALLOWED_PRIMARY = frozenset({"3A", "3B", "4A"})
+# ═══ COMPETENCY BASELINE (STEP 4 pivot) ═══════════════════════════════════
+# SKD 2026 (HK.01.02/KKI/2183/2026) is the SINGLE PRIMARY competency authority
+# for the new case bank. Each Spektrum Penyakit entry is classified as either
+# 'tuntas' (managed independently) or 'initial_management_and_referral'
+# (stabilise + refer). We use these OFFICIAL 2026 terms — we do NOT auto-map
+# them onto SKDI 2012 levels.
+SKD2026_STANDARD = "SKD 2026"
+SKD2026_REFERENCE = "HK.01.02/KKI/2183/2026"
+SKD2026_CATEGORY_TUNTAS = "tuntas"
+SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL = "initial_management_and_referral"
+SKD2026_CATEGORIES = frozenset({
+    SKD2026_CATEGORY_TUNTAS, SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL,
+})
+
+# SKD 2026 Spektrum Penyakit — the 16 system buckets (Tab. 4).
+SKD2026_SYSTEMS = frozenset({
+    "sistem_saraf", "psikiatri", "sistem_indera_mata", "sistem_indera_ear",
+    "sistem_indera_hidung", "kepala_dan_leher", "sistem_respirasi",
+    "sistem_kardiovaskuler", "sistem_gi_hepato_pankreatik", "sistem_ginjal_kemih",
+    "sistem_reproduksi", "sistem_endokrin_metabolik_nutrisi",
+    "sistem_hemato_imunologi", "sistem_muskuloskeletal",
+    "sistem_kulit_integumen", "forensik_medikolegal",
+})
+
+# ── SKDI 2012 — LEGACY competency crosswalk ONLY (not primary authority). ──
+# Kept for historical/curriculum/student compatibility (3A/3B/4A terms are
+# still used widely). A legacy level may ONLY be set when the same disease is
+# actually found & verified in SKDI 2012 — never inferred from the SKD 2026
+# category.
+SKDI_LEGACY_STANDARD = "SKDI 2012"
 SKDI_LEVELS_KNOWN = frozenset({"1", "2", "3A", "3B", "4A"})
+SKDI_LEVELS_ALLOWED_PRIMARY = frozenset({"3A", "3B", "4A"})  # legacy crosswalk scope
 
 
 class FamilyType(str, Enum):

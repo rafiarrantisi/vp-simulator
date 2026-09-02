@@ -21,7 +21,10 @@ from typing import Optional
 from pipeline.case_v3.models import ClinicalVariant
 from pipeline.case_v3.vocab import (
     HUMAN_REVIEWED_STATES,
+    SKDI_LEVELS_ALLOWED_PRIMARY,
     SKDI_LEVELS_KNOWN,
+    SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL,
+    SKD2026_CATEGORY_TUNTAS,
     ReviewState,
     SourceKind,
     SourceStatusKind,
@@ -78,38 +81,63 @@ class SourceRecord:
                 or "fornas" in title or "formularium" in title)
 
 
-# ── SKDI registry (STEP 3 §2 / §3) ─────────────────────────────────────────
+# ── SKD 2026 registry (PRIMARY competency authority, STEP 4) ───────────────
+# SKD 2026 (HK.01.02/KKI/2183/2026) — Tab. 4 Spektrum Penyakit, 16 systems,
+# each entry classified 'tuntas' or 'initial_management_and_referral'.
+_WORDS_TUNTAS = ("managed independently to resolution (SKD 2026 'tuntas')",)
+_WORDS_INITIAL_REFER = ("diagnosis + initial/stabilising management + referral as appropriate "
+                        "(SKD 2026 'tatalaksana awal dan rujuk')",)
+SKD2026_CATEGORY_DEFINITIONS = {
+    SKD2026_CATEGORY_TUNTAS: _WORDS_TUNTAS[0],
+    SKD2026_CATEGORY_INITIAL_MGMT_REFERRAL: _WORDS_INITIAL_REFER[0],
+}
+_VERIFICATION_DATE = "2026-09-01"  # date the baseline was recorded / re-checked
+
+
+def skd2026_category_registry() -> dict[str, str]:
+    """Official SKD 2026 classifications (primary authority for the new bank)."""
+    return dict(SKD2026_CATEGORY_DEFINITIONS)
+
+
+def skd2026_categories() -> frozenset[str]:
+    from pipeline.case_v3.vocab import SKD2026_CATEGORIES
+    return SKD2026_CATEGORIES
+
+
+# ── SKDI 2012 registry — LEGACY crosswalk ONLY (not primary authority) ────
 @dataclass(frozen=True)
-class SKDIEntry:
+class SKDILegacyEntry:
     level: str
-    standard: str = "SKDI"
+    standard: str = "SKDI 2012"
     authority: str = "Konsil Kedokteran Indonesia (KKI)"
     version: str = "2012"
     definition: str = ""
     verification_date: str = ""
 
 
-# Operational definitions per STEP 3 §3 (verify wording against official source).
-_SKDI_DEFINITIONS = {
+_SKDI_2012_DEFINITIONS = {
     "3A": ("Diagnosis + initial management in non-emergency context + referral as appropriate."),
     "3B": ("Diagnosis + emergency initial management / stabilization + referral."),
     "4A": ("Diagnosis + independent management at graduation level."),
 }
-_VERIFICATION_DATE = "2026-09-01"  # date the baseline was recorded / re-checked
 
 
-def skdi_registry() -> dict[str, SKDIEntry]:
-    """Curated SKDI level registry limited to the primary bank scope."""
+def skdi_legacy_registry() -> dict[str, SKDILegacyEntry]:
+    """Legacy SKDI 2012 levels for crosswalk/metadata only (never primary)."""
     return {
-        lvl: SKDIEntry(level=lvl, definition=_SKDI_DEFINITIONS.get(lvl, ""),
-                       verification_date=_VERIFICATION_DATE)
+        lvl: SKDILegacyEntry(level=lvl, definition=_SKDI_2012_DEFINITIONS.get(lvl, ""),
+                             verification_date=_VERIFICATION_DATE)
         for lvl in sorted(SKDI_LEVELS_KNOWN)
     }
 
 
-def skdi_allowed_levels() -> frozenset[str]:
-    from pipeline.case_v3.vocab import SKDI_LEVELS_ALLOWED_PRIMARY
+def skdi_legacy_allowed_levels() -> frozenset[str]:
     return SKDI_LEVELS_ALLOWED_PRIMARY
+
+
+# Backward-compat aliases (old STEP-3 names → legacy crosswalk roles).
+skdi_registry = skdi_legacy_registry
+skdi_allowed_levels = skdi_legacy_allowed_levels
 
 
 # ── Source hierarchy (STEP 3 §4) ───────────────────────────────────────────
@@ -219,21 +247,45 @@ def human_review_required_for(state) -> bool:
     return state in HUMAN_REVIEWED_STATES
 
 
-def validate_governance(v: ClinicalVariant, *, primary_bank_skdi_only: bool = True,
+def validate_governance(v: ClinicalVariant, *, require_skd2026_category: bool = True,
                         require_clinical_source_for_publishable: bool = True) -> "ValidationResult":
-    """STEP 3 governance validation: SKDI scope, clinical-source presence,
-    Fornas isolation, AI self-promote guard, conflict representability.
-    Implemented here + mirrored into case-v3 validate via a thin wrapper."""
+    """STEP 3/4 governance validation: SKD 2026 competency scope (PRIMARY),
+    clinical-source presence, Fornas isolation, AI self-promote guard, and the
+    SKDI 2012 legacy crosswalk rule (level only from verified values, never
+    inferred from the 2026 category)."""
     from pipeline.case_v3.validate import ValidationResult, ValidationIssue
+    from pipeline.case_v3.vocab import SKD2026_CATEGORIES
     res = ValidationResult()
-    # 1) SKDI level only allows verified values for the primary bank.
-    if v.skdi_level:
-        if v.skdi_level not in SKDI_LEVELS_KNOWN:
-            res.issues.append(ValidationIssue(v.id + ".skdi_level",
-                                              f"SKDI level {v.skdi_level} not in verified values"))
-        if primary_bank_skdi_only and v.skdi_level not in skdi_allowed_levels():
-            res.issues.append(ValidationIssue(v.id + ".skdi_level",
-                                              f"SKDI {v.skdi_level} outside primary bank scope (3A/3B/4A)"))
+
+    comp = v.competency
+    # 1) PRIMARY: SKD 2026 category is the single authority for the new bank.
+    if require_skd2026_category:
+        if comp is None or not comp.category:
+            res.issues.append(ValidationIssue(
+                v.id, "variant requires `competency.category` from SKD 2026 (tuntas | initial_management_and_referral)"))
+        elif comp.category not in SKD2026_CATEGORIES:
+            res.issues.append(ValidationIssue(
+                v.id + ".competency.category",
+                f"SKD 2026 category '{comp.category}' not in verified values {sorted(SKD2026_CATEGORIES)}"))
+        elif comp.standard != "SKD 2026":
+            res.issues.append(ValidationIssue(v.id + ".competency.standard",
+                                              "primary competency standard must be 'SKD 2026'"))
+
+    # 1b) LEGACY SKDI 2012 crosswalk — level may ONLY come from verified values;
+    #     never inferred from the 2026 category (kept optional for metadata).
+    if comp and comp.legacy_level:
+        if comp.legacy_level not in SKDI_LEVELS_KNOWN:
+            res.issues.append(ValidationIssue(v.id + ".competency.legacy_level",
+                                              f"SKDI legacy level {comp.legacy_level} not in verified values"))
+        if comp.legacy_level not in SKDI_LEVELS_ALLOWED_PRIMARY:
+            res.issues.append(ValidationIssue(
+                v.id + ".competency.legacy_level",
+                f"SKDI legacy level {comp.legacy_level} outside crosswalk scope (3A/3B/4A)"))
+        # a legacy level must be explicitly confirmed by a human reviewer
+        if not comp.legacy_mapping_confirmed:
+            res.issues.append(ValidationIssue(
+                v.id + ".competency.legacy_level",
+                "legacy SKDI 2012 level present but `legacy_mapping_confirmed` is False (human review required)"))
 
     # 2) publishable requires at least one clinical source.
     if v.publishable and require_clinical_source_for_publishable:

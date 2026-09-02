@@ -3,7 +3,10 @@ family_id: fam_uti
 variation_level: presentation
 title: Urinary tract infection in a previously well child
 supported_stages: [koas]
-skdi_level: "3B"
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: tuntas
 
 identity:
   age_years: 3

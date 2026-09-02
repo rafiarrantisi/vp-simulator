@@ -3,7 +3,10 @@ family_id: fam_dengue
 variation_level: presentation
 title: Dengue with warning signs (adult)
 supported_stages: [koas]
-skdi_level: "3B"
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: initial_management_and_referral
 
 identity:
   age_years: 38

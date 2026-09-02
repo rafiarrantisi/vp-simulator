@@ -169,7 +169,10 @@ def test_caregiver_pediatric_informant():
 def test_3b_emergency_variant_present():
     r = registry()
     severe = r.variant("dengue_003_severe")
-    assert severe.skdi_level == "3B"
+    # SKD 2026 is the PRIMARY competency authority
+    assert severe.competency.standard == "SKD 2026"
+    # severe dengue shock = "initial_management_and_referral" (stabilise + refer)
+    assert severe.competency.category == "initial_management_and_referral"
     assert any(rf.criticality.value == "critical" and rf.fact.lower().startswith("shock")
                for rf in severe.red_flags)
 

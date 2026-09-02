@@ -3,7 +3,12 @@ family_id: fam_dengue
 variation_level: persona
 title: Dengue fever without warning signs (typical, adult)
 supported_stages: [preclinical, koas]
-skdi_level: "3A"
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: tuntas
+  # legacy_standard: SKDI 2012
+  # legacy_level: null  (unverified — do NOT infer a SKDI 2012 level here)
 
 identity:
   age_years: 24

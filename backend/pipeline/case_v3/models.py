@@ -245,13 +245,39 @@ class Source:
 
 # ── CLINICAL VARIANT — canonical medical truth ─────────────────────────────
 @dataclass
+class Competency:
+    """SKD 2026 competency classification (primary) + legacy SKDI 2012 crosswalk.
+
+    `standard` names the authority; `category` uses the OFFICIAL SKD 2026 terms
+    ('tuntas' | 'initial_management_and_referral'). `legacy_level` (3A/3B/4A)
+    is OPTIONAL and ONLY set when verified against SKDI 2012 — never inferred
+    from the 2026 category. `mapping_confirmed` records that a human reviewed it.
+    """
+    standard: str = "SKD 2026"
+    category: Optional[str] = None                     # SKD2026_CATEGORIES
+    reference: str = ""                                # HK.01.02/KKI/2183/2026
+    system: str = ""                                   # SKD2026_SYSTEMS bucket
+    legacy_standard: str = "SKDI 2012"
+    legacy_level: Optional[str] = None                 # 3A/3B/4A or None
+    legacy_mapping_confirmed: bool = False
+    legacy_note: str = ""
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+
+@dataclass
 class ClinicalVariant:
     id: str
     family_id: str
     variation_level: VariationLevel = VariationLevel.PRESENTATION
     title: str = ""
     supported_stages: list[LearnerStage] = field(default_factory=lambda: [LearnerStage.KOAS])
-    skdi_level: Optional[str] = None
+    # competency (SKD 2026 primary + SKDI 2012 legacy crosswalk) — see Competency dataclass
+    @property
+    def skdi_level(self) -> Optional[str]:
+        # backward-compat read: legacy level lives on competency.legacy_level
+        return self.competency.legacy_level if self.competency else None
 
     identity: IdentityConstraints = field(default_factory=IdentityConstraints)
     chief_complaint: str = ""
@@ -261,6 +287,7 @@ class ClinicalVariant:
     key_chronology: str = ""
     history: list[HistoryGroup] = field(default_factory=list)
 
+    competency: Competency = field(default_factory=Competency)
     red_flags: list[RedFlag] = field(default_factory=list)
     physical_exam: PhysicalExam = field(default_factory=PhysicalExam)
     investigations: list[Investigation] = field(default_factory=list)
@@ -310,7 +337,7 @@ class ClinicalVariant:
             "id": self.id, "family_id": self.family_id,
             "variation_level": self.variation_level.value, "title": self.title,
             "supported_stages": [s.value for s in self.supported_stages],
-            "skdi_level": self.skdi_level,
+            "competency": self.competency.to_dict() if self.competency else {"standard": "SKD 2026"},
             "identity": asdict(self.identity),
             "chief_complaint": self.chief_complaint,
             "opening_context": self.opening_context, "duration": self.duration,

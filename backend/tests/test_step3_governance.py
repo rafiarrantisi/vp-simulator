@@ -20,14 +20,16 @@ from pipeline.case_v3.governance import (
     SKDI_OFFICIAL_URL, FORNAS_URL, PERMENKES_2026_CAUTION_URL,
     SourceRecord, SourceConflict, SourceKind, SourceStatusKind, SourceTier,
     assert_ai_can_promote, detect_conflicts, has_clinical_guidance_source,
-    human_review_required_for, re_review_needed, skdi_allowed_levels,
-    skdi_registry, source_records_from_variant, validate_governance,
+    human_review_required_for, re_review_needed, skdi_legacy_allowed_levels,
+    skdi_legacy_registry, skd2026_categories, skd2026_category_registry,
+    source_records_from_variant, validate_governance,
     HumanReviewError, _has_named_human_review,
 )
 from pipeline.case_v3.loader import CaseRegistry
-from pipeline.case_v3.models import ClinicalVariant, Source
+from pipeline.case_v3.models import ClinicalVariant, Competency, Source
 from pipeline.case_v3.vocab import (
-    HUMAN_REVIEWED_STATES, SKDI_LEVELS_ALLOWED_PRIMARY, ReviewState,
+    HUMAN_REVIEWED_STATES, SKDI_LEVELS_ALLOWED_PRIMARY,
+    SKD2026_CATEGORIES, ReviewState,
 )
 
 _reg = None
@@ -40,22 +42,47 @@ def registry() -> CaseRegistry:
     return _reg
 
 
-# ── SKDI registry ──────────────────────────────────────────────────────────
+def _mk_clone(v: ClinicalVariant, **over) -> ClinicalVariant:
+    """Construct a variant with the fixture's competency preserved unless overridden."""
+    comp = over.pop("competency", v.competency)
+    c = ClinicalVariant(
+        id=over.pop("id", v.id), family_id=over.pop("family_id", v.family_id),
+        diagnostic=over.pop("diagnostic", v.diagnostic),
+        physical_exam=over.pop("physical_exam", v.physical_exam),
+        status=over.pop("status", v.status),
+        competency=comp,
+        source_governance=over.pop("source_governance", v.source_governance),
+    )
+    for k, val in over.items():
+        setattr(c, k, val)
+    return c
 
-def test_skdi_registry_exists_and_known_levels():
-    reg = skdi_registry()
-    assert set(reg) >= SKDI_LEVELS_ALLOWED_PRIMARY  # at least the primary scope
+
+# ── SKD 2026 registry (PRIMARY competency authority) ───────────────────────
+
+def test_skd2026_category_registry_exists():
+    reg = skd2026_category_registry()
+    assert set(reg) == SKD2026_CATEGORIES
+    assert "tuntas" in reg and "initial_management_and_referral" in reg
+
+
+def test_skd2026_categories_are_official_terms():
+    assert "tuntas" in skd2026_categories()
+    assert "initial_management_and_referral" in skd2026_categories()
+    # the pivot rule: we do NOT auto-map tuntas→4A / refer→3B
+    assert "4A" not in skd2026_categories() and "3B" not in skd2026_categories()
+
+
+def test_skdi_2012_is_legacy_crosswalk_only():
+    reg = skdi_legacy_registry()
+    assert set(reg) >= SKDI_LEVELS_ALLOWED_PRIMARY
     for lvl in ("3A", "3B", "4A"):
         assert lvl in reg
-        assert reg[lvl].authority  # KKI
-        assert reg[lvl].verification_date  # verified when?
+        assert reg[lvl].standard == "SKDI 2012"  # marked as LEGACY, not primary
+    assert skdi_legacy_allowed_levels() == {"3A", "3B", "4A"}
 
 
-def test_skdi_primary_scope_is_3a_3b_4a():
-    assert skdi_allowed_levels() == {"3A", "3B", "4A"}
-
-
-def test_skdi_baseline_urls_present():
+def test_competency_baseline_urls_present():
     assert SKDI_OFFICIAL_URL.startswith("https://kki.go.id")
     assert FORNAS_URL  # formulary baseline recorded
     assert PERMENKES_2026_CAUTION_URL  # revocation caution recorded
@@ -65,22 +92,16 @@ def test_skdi_baseline_urls_present():
 
 def test_publishable_requires_clinical_source():
     v = registry().variant("dengue_001_mild")
-    # make it publishable and ensure it has a clinical guidance source
-    g = validate_governance(v, primary_bank_skdi_only=True)
-    # status is research_complete (not publishable) — governance should pass
+    g = validate_governance(v)  # SKD 2026 category present + status research_complete → pass
     assert g.ok, [str(e) for e in g.errors]
 
 
 def test_publishable_without_source_fails():
     v = registry().variant("dengue_001_mild")
     # strip sources => must fail when we require a publishable source
-    v2 = ClinicalVariant(
-        id=v.id, family_id=v.family_id, diagnostic=v.diagnostic,
-        physical_exam=v.physical_exam, status="clinically_reviewed",
-        source_governance={"clinical_reviewer": "dr. X"},  # named human
-    )
+    v2 = _mk_clone(v, status="clinically_reviewed",
+                   source_governance={"clinical_reviewer": "dr. X"})
     v2.sources = []  # no clinical source
-    # still needs a source even though reviewer present
     g = validate_governance(v2, require_clinical_source_for_publishable=True)
     assert not g.ok
     assert any("clinical source" in str(e) or "clinical guidance" in str(e) for e in g.errors)
@@ -93,19 +114,41 @@ def test_variants_have_clinical_sources():
         assert has_clinical_guidance_source(recs), vid
 
 
-# ── SKDI enforcement in governance ─────────────────────────────────────────
+# ── SKD 2026 category enforcement in governance (PRIMARY) ──────────────────
 
-def test_skdi_outside_primary_scope_rejected():
+def test_skd2026_category_required_for_primary_bank():
     v = registry().variant("dengue_001_mild")
-    g = validate_governance(v, primary_bank_skdi_only=True)  # 3A allowed (in scope)
+    assert v.competency.category == "tuntas"
+    g = validate_governance(v)
     assert g.ok
-    # a level outside 3A/3B/4A is rejected for the primary bank
-    from pipeline.case_v3.models import ClinicalVariant
-    bad = ClinicalVariant(id="x", family_id="fam_dengue", diagnostic=v.diagnostic,
-                          physical_exam=v.physical_exam, skdi_level="1")
-    g2 = validate_governance(bad, primary_bank_skdi_only=True)
+    # missing category is rejected for the primary bank
+    bad = _mk_clone(v, competency=Competency(standard="SKD 2026", category=None))
+    g2 = validate_governance(bad, require_skd2026_category=True)
     assert not g2.ok
-    assert any("outside primary bank scope" in str(e) for e in g2.errors)
+    assert any("competency.category" in str(e) for e in g2.errors)
+
+
+def test_invalid_skd2026_category_rejected():
+    v = registry().variant("dengue_001_mild")
+    bad = _mk_clone(v, competency=Competency(standard="SKD 2026", category="bogus"))
+    g = validate_governance(bad)
+    assert not g.ok
+    assert any("not in verified values" in str(e) for e in g.errors)
+
+
+def test_skdi_legacy_level_requires_confirmation():
+    # Legacy SKDI 2012 level is metadata-only crosswalk; it must be a verified
+    # value AND human-confirmed (never inferred from the 2026 category).
+    v = registry().variant("dengue_001_mild")
+    unconfirmed = _mk_clone(v, competency=Competency(standard="SKD 2026", category="tuntas",
+                                                     legacy_level="3A", legacy_mapping_confirmed=False))
+    g = validate_governance(unconfirmed)
+    assert not g.ok
+    assert any("legacy_mapping_confirmed" in str(e) for e in g.errors)
+    confirmed = _mk_clone(v, competency=Competency(standard="SKD 2026", category="tuntas",
+                                                   legacy_level="3A", legacy_mapping_confirmed=True))
+    gc = validate_governance(confirmed)
+    assert gc.ok, [str(e) for e in gc.errors]
 
 
 # ── Superseded source + conflict policy ────────────────────────────────────
@@ -146,15 +189,13 @@ def test_fornas_not_guideline_type():
     assert SourceKind.MANAGEMENT not in forn.relevance
     # governance: a formulary source typed as management guideline is invalid
     v = registry().variant("dengue_001_mild")
-    v2 = ClinicalVariant(id=v.id, family_id=v.family_id, diagnostic=v.diagnostic,
-                         physical_exam=v.physical_exam, status="research_complete")
+    v2 = _mk_clone(v, status="research_complete")
     v2.sources = [Source(title="Fornas X", authority="Kemenkes", url="e-fornas",
                          kind="formulary")]
     g = validate_governance(v2)
     assert g.ok  # formulary alone is fine as long as it is NOT a claimed guideline
     # but mark it as a management guideline -> must be rejected
-    v3 = ClinicalVariant(id=v.id, family_id=v.family_id, diagnostic=v.diagnostic,
-                         physical_exam=v.physical_exam, status="research_complete")
+    v3 = _mk_clone(v, status="research_complete")
     v3.sources = [Source(title="Fornas", kind="guideline", authority="Kemenkes")]
     g3 = validate_governance(v3)
     assert not g3.ok
@@ -174,8 +215,7 @@ def test_ai_generated_case_cannot_be_pilot_verified_by_tests():
     # Even with passing tests, a generated case with no named human reviewer
     # is not allowed to reach a human-reviewed state.
     v = registry().variant("dengue_001_mild")
-    v2 = ClinicalVariant(id=v.id, family_id=v.family_id, diagnostic=v.diagnostic,
-                         physical_exam=v.physical_exam, status="pilot_verified")  # no reviewer
+    v2 = _mk_clone(v, status="pilot_verified")  # no reviewer
     g = validate_governance(v2)
     assert not g.ok
     assert any("AI self-attestation" in str(e) for e in g.errors)

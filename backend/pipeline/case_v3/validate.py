@@ -85,8 +85,7 @@ def validate_family(f: CaseFamily, *, known_families: set[str] | None = None) ->
     return res
 
 
-def validate_variant(v: ClinicalVariant, *, require_source_for_publishable: bool = True,
-                     primary_bank_skdi_only: bool = False) -> ValidationResult:
+def validate_variant(v: ClinicalVariant, *, require_source_for_publishable: bool = True) -> ValidationResult:
     res = ValidationResult()
     if not v.id:
         res.issues.append(_iss("variant.id", "variant id is required"))
@@ -98,13 +97,14 @@ def validate_variant(v: ClinicalVariant, *, require_source_for_publishable: bool
     if not v.diagnostic.working_diagnosis:
         res.issues.append(_iss(v.id, "working_diagnosis is required"))
 
-    # SKDI level
+    # SKDI 2012 LEGACY crosswalk (not primary authority — SKD 2026 is primary,
+    # enforced in governance.validate_governance). Level only from verified values.
     if v.skdi_level:
         if v.skdi_level not in SKDI_LEVELS_KNOWN:
-            res.issues.append(_iss(v.id + ".skdi_level", f"unknown SKDI level {v.skdi_level}"))
-        if primary_bank_skdi_only and v.skdi_level not in SKDI_LEVELS_ALLOWED_PRIMARY:
+            res.issues.append(_iss(v.id + ".skdi_level", f"unknown SKDI legacy level {v.skdi_level}"))
+        elif v.skdi_level not in SKDI_LEVELS_ALLOWED_PRIMARY:
             res.issues.append(_iss(v.id + ".skdi_level",
-                                   f"SKDI {v.skdi_level} outside primary bank scope (3A/3B/4A)"))
+                                   f"SKDI legacy level {v.skdi_level} outside crosswalk scope (3A/3B/4A)"))
 
     # vitals typed consistently: every vital must have a name and a numeric/None value.
     for vs in v.physical_exam.vitals:
