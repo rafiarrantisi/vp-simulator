@@ -1,0 +1,99 @@
+id: htn_002_salt_sensitive
+family_id: fam_hypertension
+variation_level: presentation
+title: Hypertension presenting as morning headache — salt-sensitive adult
+supported_stages: [koas]
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: tuntas
+
+identity:
+  age_years: 56
+  biological_sex: female
+  informant_type: patient
+  setting: primary care
+  population_tags: [adult, post_menopausal, high_salt_diet]
+
+chief_complaint: "Morning headaches, especially occipital, for the past 3 months"
+opening_context: "56yo woman complains of dull morning occipital headaches, tiredness; BP 158/100; not previously known hypertensive"
+duration: "3 months"
+severity: moderate
+key_chronology: "Gradual onset headaches over months; increasingly frequent; relieved somewhat by evening"
+
+history:
+  - name: symptom
+    facts:
+      - { key: headache, value: "dull occipital, morning", disclosure: spontaneous }
+      - { key: headache_relief, value: "improves during the day", disclosure: direct_question }
+      - { key: visual_disturbance, value: false, disclosure: direct_question }
+  - name: pattern_risk
+    facts:
+      - { key: family_history_hypertension, value: true, disclosure: direct_question }
+      - { key: salt_intake, value: "high", disclosure: direct_question }
+      - { key: smoking, value: true, disclosure: direct_question, note: "1 pack/day" }
+      - { key: alcohol, value: false, disclosure: direct_question }
+  - name: pmh
+    facts:
+      - { key: diabetes, value: false, disclosure: direct_question }
+      - { key: chronic_kidney_disease, value: false, disclosure: direct_question }
+      - { key: previous_stroke, value: false, disclosure: direct_question }
+
+red_flags:
+  - { fact: "BP >180/120 with symptoms (CVA, chest pain, visual loss)", status: absent, criticality: critical, why_matters: "hypertensive emergency", disclosure: direct_question }
+  - { fact: "Rapidly worsening headache, neuro deficit", status: absent, criticality: high, why_matters: "stroke/TIA risk", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Comfortable, mildly overweight smoker"
+  consciousness: "Alert"
+  vitals:
+    - { name: blood_pressure, value: 158, unit: "mmHg", note: "repeated high readings" }
+    - { name: heart_rate, value: 82, unit: "bpm" }
+  system_findings:
+    cardiovascular: "Regular; no gallop or murmur"
+    fundoscopy: "AV nicking (grade I) — early target-organ effect"
+    neurology: "No focal deficit"
+
+investigations:
+  - { name: Urinalysis, expected_result: "Normal", appropriateness: appropriate, rationale: "renal screening", source: "guideline principle" }
+  - { name: Serum creatinine/electrolytes, expected_result: "Normal", appropriateness: appropriate, rationale: "baseline", source: "guideline principle" }
+  - { name: Fasting glucose, expected_result: "Normal", appropriateness: appropriate, rationale: "screening", source: "guideline principle" }
+
+diagnostic:
+  working_diagnosis: "Essential hypertension with early target-organ (retinopathy)"
+  synonyms: [Primary hypertension with retinopathy]
+  differentials:
+    - { name: "Migraine", discriminating_features: "unilateral, throbbing, associated nausea/photo — not relieved by day", reverting: false }
+    - { name: "Tension-type headache", discriminating_features: "bilateral pressure, stress-related", reverting: false }
+    - { name: "Secondary hypertension", discriminating_features: "kidney disease, hormonal — abnormal workup", reverting: true }
+  reasoning_anchors:
+    - "Morning occipital headache + sustained hypertension + AV nicking = hypertension-associated"
+    - "Headache by itself is not a hypertensive emergency unless BP very high / neuro signs"
+  icd10: "I10"
+
+management:
+  stabilization: ["None — not an emergency"]
+  pharmacologic: ["Start antihypertensive per guideline (e.g. ACE-I/ARB), titrate based on BP response", "Smoking cessation + reinforcement"]
+  non_pharmacologic: ["Strong salt restriction (high intake is central in this patient)", "Regular exercise, weight management"]
+  referral: ["Refer if resistant to therapy or secondary cause suspected"]
+  follow_up: ["BP checks 2-4 weeks post-initiation; reassess headache resolution"]
+  education_safety_netting: ["Headache with very high BP or neurology = urgent re-presentation"]
+
+assessment_items:
+  - { text: "Attribute morning headache to hypertension vs a primary headache disorder", importance: helpful, group: diagnosis }
+  - { text: "Identify target-organ damage (retinopathy)", importance: critical, group: exam }
+  - { text: "Start lifestyle + antihypertensive and plan follow-up", importance: critical, group: management }
+
+safety_critical_errors:
+  - "Dismissing headache without checking BP"
+  - "Labeling headache as cerebrovascular without focal signs / neuroimaging indication"
+  - "Excessively lowering BP acutely when not an emergency"
+
+sources:
+  - { title: "PNPK Hipertensi", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "ISC 2018 Indonesian hypertension guideline", authority: "PERHI", year: "2018", kind: "guideline" }
+  - { title: "SKD 2026 Sistem Kardiovaskuler", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
+
+status: research_complete
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"

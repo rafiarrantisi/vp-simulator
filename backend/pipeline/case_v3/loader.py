@@ -151,6 +151,8 @@ def load_variant(raw: dict) -> ClinicalVariant:
         emotional_tone=str(pv.get("emotional_tone") or "range"),
         cultural_context=str(pv.get("cultural_context") or "range"))
     v.canonical_entity_id = str(raw.get("canonical_entity_id") or "")
+    v.blind_candidate_brief = str(raw.get("blind_candidate_brief") or "")
+    v.targeted_title = str(raw.get("targeted_title") or "")
     pe = raw.get("physical_exam") or {}
     v.physical_exam = PhysicalExam(
         general_appearance=str(pe.get("general_appearance") or ""),

@@ -397,6 +397,10 @@ class ClinicalVariant:
     assessment_items: list[AssessmentItem] = field(default_factory=list)
     safety_critical_errors: list[str] = field(default_factory=list)
 
+    # ── mode / discoverability metadata (STEP 5 §7) ────────────────────────
+    blind_candidate_brief: str = ""     # shown instead of diagnosis in Blind/OSCE mode
+    targeted_title: str = ""            # shown in Targeted-disease mode (defaults to family title)
+
     sources: list[Source] = field(default_factory=list)
     source_governance: dict = field(default_factory=dict)
 
@@ -453,6 +457,8 @@ class ClinicalVariant:
             "management": self.management.to_dict(),
             "assessment_items": [i.to_dict() for i in self.assessment_items],
             "safety_critical_errors": self.safety_critical_errors,
+            "blind_candidate_brief": self.blind_candidate_brief,
+            "targeted_title": self.targeted_title,
             "sources": [s.to_dict() for s in self.sources],
             "source_governance": self.source_governance,
             "status": self.status, "clinical_content_version": self.clinical_content_version,

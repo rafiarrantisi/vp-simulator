@@ -105,3 +105,12 @@ sources:
 status: research_complete
 clinical_content_version: "v3.0"
 source_review_date: "2026-09-01"
+
+management_expectations:
+  recognize_diagnose: "Recognise dengue with warning signs (persistent vomiting, abdominal pain, mucosal bleed, lethargy, rising HCT) in a patient in dengue-endemic context"
+  initial_management: "Oral rehydration / judicious IV isotonic crystalloid only if not tolerating oral; daily CBC monitoring; avoid NSAIDs/aspirin"
+  emergency_stabilization_required: false
+  referral_urgency: "urgent (<24h)"
+  referral_indication: "Warning signs, impending shock, platelet drop <50000, or deterioration — refer to facility with inpatient/ICU capacity"
+  do_not_miss_actions: ["Identify warning signs", "Monitor daily HCT/platelets", "Advise when to re-present (danger signs)", "Avoid NSAIDs/aspirin"]
+  source_refs: ["WHO 2023", "PNPK Dengue 2021"]

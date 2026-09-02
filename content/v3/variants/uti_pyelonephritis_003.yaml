@@ -1,0 +1,111 @@
+id: uti_pyelonephritis_003
+family_id: fam_uti
+variation_level: complexity
+title: Acute pyelonephritis in pregnancy — complicated UTI, high-stakes
+supported_stages: [koas]
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: initial_management_and_referral
+
+identity:
+  age_years: 27
+  biological_sex: female
+  informant_type: patient
+  setting: emergency department
+  population_tags: [adult, pregnant, gravida_2]
+
+chief_complaint: "Fever, chills and right-sided flank pain for a day"
+opening_context: "27yo G2P1 at ~22 weeks pregnancy with fever, chills, right flank pain, nausea; LMP confirms pregnancy; UTI in pregnancy = complicated"
+duration: "1 day"
+severity: severe
+key_chronology: "Mild dysuria started 3 days ago → today high fever, rigors, right flank pain, vomiting"
+
+history:
+  - name: urinary
+    facts:
+      - { key: fever_chills, value: true, disclosure: spontaneous }
+      - { key: flank_pain, value: true, disclosure: spontaneous, note: "right" }
+      - { key: dysuria, value: true, disclosure: direct_question }
+      - { key: vomiting, value: true, disclosure: direct_question }
+  - name: obstetrics
+    facts:
+      - { key: gestational_age, value: "22 weeks", disclosure: direct_question }
+      - { key: contractions, value: false, disclosure: direct_question }
+      - { key: vaginal_bleeding, value: false, disclosure: direct_question }
+      - { key: prior_urinary_infection, value: true, disclosure: direct_question }
+
+red_flags:
+  - { fact: "Confirmed pyelonephritis in pregnancy — risk of pre-term labour, sepsis, ARDS", status: present, criticality: critical, why_matters: "inpatient IV antibiotics + obstetric monitoring", disclosure: spontaneous }
+  - { fact: "Signs of sepsis / shock (tachycardia, hypotension, confusion)", status: absent, criticality: critical, why_matters: "septic — resuscitate", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Feverish, uncomfortable, vomiting episodes"
+  consciousness: "Alert"
+  vitals:
+    - { name: temperature, value: 39.1, unit: "C" }
+    - { name: heart_rate, value: 112, unit: "bpm" }
+    - { name: blood_pressure, value: 98, unit: "mmHg", normal_range: "Systolic >90" }
+    - { name: respiratory_rate, value: 20, unit: "/min" }
+  system_findings:
+    abdomen: "Right CVA tenderness, gravid uterus, no contractions"
+    obstetrics: "Fetal heart rate reassuring"
+
+investigations:
+  - { name: Urine dipstick + microscopy, expected_result: "WBC casts, leukocytes, nitrites", appropriateness: essential, rationale: "confirm pyelonephritis", source: "guideline" }
+  - { name: Blood culture, expected_result: "Await; screen bacteraemia", appropriateness: appropriate, rationale: "gram stain / adjust antibiotics", source: "guideline" }
+  - { name: Serum creatinine / electrolytes, expected_result: "Normal", appropriateness: appropriate, rationale: "renal function for antibiotic dosing + AKI", source: "guideline" }
+  - { name: Fetal assessment, expected_result: "Reassuring", appropriateness: appropriate, rationale: "obstetric monitoring", source: "obstetric guideline" }
+
+diagnostic:
+  working_diagnosis: "Acute pyelonephritis in pregnancy (complicated UTI)"
+  synonyms: [Complicated UTI, Pyelonephritis gravidarum]
+  differentials:
+    - { name: "Urolithiasis (staghorn/obstructed)", discriminating_features: "colicky pain, haematuria, no fever pattern", reverting: true }
+    - { name: "Appendicitis (shifted anatomy in pregnancy)", discriminating_features: "GI features, tenderness location/appendix signs", reverting: true }
+    - { name: "Placental abruption / preterm labour", discriminating_features: "bleeding/contractions, not fever/dysuria", reverting: true }
+  reasoning_anchors:
+    - "Pregnancy + fever + flank pain + pyuria = pyelonephritis (complicated) → inpatient"
+    - "Obstetric safety: antibiotics safe in pregnancy chosen carefully"
+  icd10: "O23.0 / N10"
+
+management:
+  stabilization: ["IV antibiotics (e.g. ceftriaxone) + IV fluids, monitor vitals for sepsis"]
+  pharmacologic: ["Inpatient parenteral broad-spectrum, then oral step-down per culture; NO contraindicated agents in pregnancy", "Antipyretics, antiemetics safe in pregnancy"]
+  non_pharmacologic: ["Admit, observe for pre-term labour, serial vitals"]
+  referral: ["Immediate ED referral/consult Obstetrics — inpatient (parenteral treatment + fetal monitoring)", "Consider urology if obstruction suspected"]
+  follow_up: ["Continue IV until afebrile, then oral; repeated cultures; antenatal surveillance"]
+  education_safety_netting: ["Return urgency for fever, lower-abdominal pain, contractions, decreased fetal movement"]
+
+assessment_items:
+  - { text: "Recognize complicated UTI/pyelonephritis in pregnancy", importance: critical, group: diagnosis }
+  - { text: "Initiate inpatient IV treatment + obstetric consult", importance: critical, group: management }
+  - { text: "Exclude other causes (obstructed stone, appendicitis)", importance: helpful, group: differentials }
+  - { text: "Safe antibiotic selection in pregnancy", importance: critical, group: management }
+
+safety_critical_errors:
+  - "Treating pyelonephritis outpatient — risks sepsis/preterm labour"
+  - "Using a contraindicated antibiotic in pregnancy"
+  - "Missing early sepsis / shock"
+  - "Not involving Obstetrics"
+
+sources:
+  - { title: "PNPK Urinary tract infection / obstetric care", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "WHO antibiotic stewardship in pregnancy", authority: "WHO", year: "2023", kind: "guideline" }
+  - { title: "SKD 2026 Sistem Reproduksi / Ginjal", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
+
+status: research_complete
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"
+
+blind_candidate_brief: "A pregnant 27-year-old at ~22 weeks presents with fever, chills and right-sided flank pain for the past day, with vomiting."
+targeted_title: "Pyelonephritis in pregnancy (complicated UTI)"
+
+management_expectations:
+  recognize_diagnose: "Recognise acute pyelonephritis in a pregnant patient (fever, flank pain, pyuria) as a COMPLICATED UTI requiring admission"
+  initial_management: "IV broad-spectrum antibiotic + fluids; sepsis monitoring; obstetric consult"
+  emergency_stabilization_required: true
+  referral_urgency: "immediate"
+  referral_indication: "Pregnancy + pyelonephritis = inpatient Obstetric care"
+  do_not_miss_actions: ["Admit (never outpatient)", "Use pregnancy-safe antibiotic", "Monitor fetal + sepsis"]
+  source_refs: ["PNPK 2021", "WHO 2023"]

@@ -1,0 +1,93 @@
+id: uti_adult_002
+family_id: fam_uti
+variation_level: presentation
+title: Uncomplicated lower UTI — adult woman (cystitis)
+supported_stages: [koas]
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: tuntas
+
+identity:
+  age_years: 34
+  biological_sex: female
+  informant_type: patient
+  setting: primary care
+  population_tags: [adult, non_pregnant]
+
+chief_complaint: "Painful, frequent urination and burning for 2 days"
+opening_context: "34yo non-pregnant woman with dysuria, frequency, urgency; afebrile; no flank pain"
+duration: "2 days"
+severity: mild
+key_chronology: "Dysuria → frequency → urgency; no backache, no fever"
+
+history:
+  - name: urinary
+    facts:
+      - { key: dysuria, value: true, disclosure: spontaneous }
+      - { key: frequency_urgency, value: true, disclosure: spontaneous }
+      - { key: hematuria, value: true, disclosure: direct_question, note: "scant" }
+      - { key: flank_pain, value: false, disclosure: direct_question }
+      - { key: fever_chills, value: false, disclosure: direct_question }
+  - name: risk
+    facts:
+      - { key: sexual_activity, value: true, disclosure: direct_question }
+      - { key: prior_uti, value: true, disclosure: direct_question }
+      - { key: diabetes, value: false, disclosure: direct_question }
+      - { key: pregnancy, value: false, disclosure: direct_question, note: "LMP normal, using contraception" }
+
+red_flags:
+  - { fact: "Upper tract infection (fever, flank pain, rigors, vomiting) = pyelonephritis", status: absent, criticality: critical, why_matters: "changes management to longer/IV course", disclosure: direct_question }
+  - { fact: "Pregnancy, structural abnormality, recurrent/complicated UTI", status: absent, criticality: high, why_matters: "complicated UTI — different treatment", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Well, comfortable"
+  consciousness: "Alert"
+  vitals:
+    - { name: temperature, value: 37.0, unit: "C" }
+    - { name: heart_rate, value: 78, unit: "bpm" }
+  system_findings:
+    abdomen: "No suprapubic tenderness, no CVA tenderness"
+
+investigations:
+  - { name: Urine dipstick, expected_result: "Nitrites +, leukocytes +", appropriateness: essential, rationale: "rapid screen for UTI", source: "PNPK/guideline" }
+  - { name: Urine culture, expected_result: "Await; typical coliform", appropriateness: appropriate, rationale: "confirm + sensitivities for complicated/recurrent", source: "guideline" }
+
+diagnostic:
+  working_diagnosis: "Acute uncomplicated lower urinary tract infection (cystitis)"
+  synonyms: [Acute cystitis, Lower UTI]
+  differentials:
+    - { name: "Urethritis (STI)", discriminating_features: "discharge, sexual history, no cystitis localization", reverting: true }
+    - { name: "Pyelonephritis", discriminating_features: "fever, flank pain, systemic — upper tract", reverting: true }
+    - { name: "Interstitial cystitis / overactive bladder", discriminating_features: "chronic, non-infective, no dipstick findings", reverting: false }
+  reasoning_anchors:
+    - "Dysuria + frequency + nitrite/leukocyte on dip, afebrile without backache = lower UTI"
+    - "Lower vs upper tract changes duration/route and need for imaging"
+  icd10: "N30.0"
+
+management:
+  stabilization: ["None required"]
+  pharmacologic: ["Short-course oral antibiotic per local guideline (fluoroquinolone or nitrofurantoin/cefalosporin protocol)", "Analgesia, hydration"]
+  non_pharmacologic: ["Hydration, voiding hygiene counselling"]
+  referral: ["No referral for uncomplicated lower UTI in non-pregnant adult"]
+  follow_up: ["Reassess if no improvement in 48-72h; culture if recurrent"]
+  education_safety_netting: ["Fever, flank pain, vomiting = return (pyelonephritis or complicated)"]
+
+assessment_items:
+  - { text: "Localise lower vs upper UTI", importance: critical, group: diagnosis }
+  - { text: "Exclude pregnancy / complicated risk before treatment choice", importance: critical, group: management }
+  - { text: "Choose appropriate antibiotic + duration", importance: critical, group: management }
+
+safety_critical_errors:
+  - "Treating without excluding pyelonephritis (misses systemic infection)"
+  - "Giving short-course treatment to pregnant patient without adjustment"
+  - "Omitting culture in recurrent/complicated case"
+
+sources:
+  - { title: "PNPK Infeksi Saluran Kemih / antibiotic stewardship", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "WHO AWARe antibiotic guidance", authority: "WHO", year: "2023", kind: "guideline" }
+  - { title: "SKD 2026 Sistem Ginjal dan Saluran Kemih", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
+
+status: research_complete
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"

@@ -1,0 +1,19 @@
+id: fam_hypertension
+family_type: disease
+title_id: Hipertensi
+title_en: Hypertension
+primary_specialty: cardiology_vascular
+cross_specialty_tags: [nephrology_urology, endocrinology_metabolic_nutrition, neurology]
+presenting_complaints: [Headache, Fatigue, Asymptomatic raised BP]
+population_tags: [adult, elderly]
+target_stages: [koas]
+skd2026_mapping:
+  category: tuntas
+  system: sistem_kardiovaskuler
+learning_objectives:
+  - "Accurately measure and classify blood pressure; confirm sustained hypertension"
+  - "Assess for target-organ damage and secondary causes"
+  - "Initiate appropriate lifestyle + pharmacologic management and arrange follow-up"
+  - "Recognise hypertensive urgency/emergency and refer appropriately"
+common_differentials: [White-coat hypertension, Secondary hypertension (renal, endocrine), Anxiety-related]
+status: draft

@@ -106,3 +106,15 @@ sources:
 status: research_complete
 clinical_content_version: "v3.0"
 source_review_date: "2026-09-01"
+
+blind_candidate_brief: "A 16-year-old who felt dizzy and collapsed at home after 5 days of fever; is now lethargic, cold and clammy."
+targeted_title: "Dengue (severe, shock)"
+
+management_expectations:
+  recognize_diagnose: "Recognise dengue shock (cold/clammy, prolonged CRT, narrowed pulse pressure, hypotension) in a febrile patient from an endemic area"
+  initial_management: "Immediate isotonic crystalloid resuscitation (rapid bolus 20 mL/kg, reassess), oxygen, monitor vitals/urine output/HCT"
+  emergency_stabilization_required: true
+  referral_urgency: "immediate/ED"
+  referral_indication: "Shock — ICU/specialist intensive care; blood products per guideline if significant bleeding (not prophylactic)"
+  do_not_miss_actions: ["Treat shock before diagnosis certainty", "Repeat fluid bolus per response", "Monitor for fluid overload (pulmonary oedema)", "No NSAIDs/aspirin"]
+  source_refs: ["WHO 2023", "PNPK Dengue 2021"]

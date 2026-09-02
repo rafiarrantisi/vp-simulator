@@ -1,0 +1,99 @@
+id: htn_001_typical
+family_id: fam_hypertension
+variation_level: persona
+title: Essential hypertension — typical asymptomatic adult
+supported_stages: [koas]
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: tuntas
+
+identity:
+  age_years: 48
+  biological_sex: male
+  informant_type: patient
+  setting: primary care
+  population_tags: [adult, overweight]
+
+chief_complaint: "Met for a routine check-up; BP found raised on several readings"
+opening_context: "48yo man, no specific complaint, annual health check; BP 152/96 on repeat (seated, both arms)"
+duration: "asymptomatic, recent finding"
+severity: moderate
+key_chronology: "Several elevated readings over 2 weeks; no symptoms"
+
+history:
+  - name: symptom
+    facts:
+      - { key: headache_or_visual, value: "no headache, no visual disturbance", disclosure: direct_question }
+      - { key: palpitations, value: false, disclosure: direct_question }
+  - name: pattern_risk
+    facts:
+      - { key: family_history_hypertension, value: true, disclosure: direct_question, acceptable_intents: [mom_had_hbp, both_parents_pressured] }
+      - { key: smoking, value: false, disclosure: direct_question }
+      - { key: salt_intake, value: true, disclosure: direct_question, note: "high processed-food consumption" }
+      - { key: alcohol, value: "occasional", disclosure: direct_question }
+      - { key: physical_activity, value: "low", disclosure: direct_question }
+  - name: pmh
+    facts:
+      - { key: diabetes, value: false, disclosure: direct_question }
+      - { key: chronic_kidney_disease, value: false, disclosure: direct_question }
+      - { key: previous_cardiac_event, value: false, disclosure: direct_question }
+
+red_flags:
+  - { fact: "BP >180/120 or symptoms of emergency (chest pain, neuro deficit, visual loss)", status: absent, criticality: critical, why_matters: "hypertensive emergency — immediate referral", disclosure: direct_question }
+  - { fact: "Secondary causes (young onset, labile, unresponsive)", status: absent, criticality: high, why_matters: "reconsider diagnosis", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Well, overweight but comfortable"
+  consciousness: "Alert"
+  vitals:
+    - { name: blood_pressure, value: 152, unit: "mmHg", normal_range: "<140/90", note: "seated >5min, both arms" }
+    - { name: heart_rate, value: 76, unit: "bpm" }
+  system_findings:
+    cardiovascular: "Regular rhythm, no murmurs; peripheral pulses present, no radio-femoral delay"
+    fundoscopy: "No hypertensive retinopathy changes"
+    abdomen: "Soft; +/- obesity; no bruit"
+
+investigations:
+  - { name: Urinalysis, expected_result: "No protein, no blood", appropriateness: appropriate, rationale: "screen secondary renal cause", source: "JNC8/ISC 2018 principles" }
+  - { name: Electrolytes/creatinine, expected_result: "Normal", appropriateness: appropriate, rationale: "renal function + potassium baseline", source: "guideline principle" }
+  - { name: Fasting glucose/HbA1c, expected_result: "Normal", appropriateness: appropriate, rationale: "screen diabetes comorbidity", source: "guideline principle" }
+
+diagnostic:
+  working_diagnosis: "Essential (primary) hypertension, stage 1"
+  synonyms: [Primary hypertension, Hypertension stage 1]
+  differentials:
+    - { name: "White-coat hypertension", discriminating_features: "normal home/ABPM readings", reverting: false }
+    - { name: "Secondary hypertension", discriminating_features: "young onset, resistant, suggestive history/exam", reverting: true }
+  reasoning_anchors:
+    - "Sustained office BP >=140/90 on repeat + normal workup = primary hypertension"
+    - "Confirm out-of-office readings before lifelong therapy"
+  icd10: "I10"
+
+management:
+  stabilization: ["No acute stabilisation required (not a hypertensive emergency)"]
+  pharmacologic: ["Initiate lifestyle first; add ACE-I/ARB (or CCB/diuretic protocol) per national guideline", "Reassess BP at 2-4 weeks before deciding monotherapy"]
+  non_pharmacologic: ["Salt restriction, weight loss, physical activity, alcohol moderation", "Reassess in 1-3 months"]
+  referral: ["Refer only if secondary cause suspected or BP uncontrolled on therapy / resistant"]
+  follow_up: ["Repeat BP and re-screen target-organ damage at each visit"]
+  education_safety_netting: ["When to present urgently (severe headache, chest pain, vision loss)"]
+
+assessment_items:
+  - { text: "Accurately measure BP, repeat & confirm classification", importance: critical, group: diagnosis }
+  - { text: "Screen for target-organ damage and secondary causes", importance: critical, group: investigations }
+  - { text: "Initiate lifestyle + treatment per guideline & plan follow-up", importance: critical, group: management }
+  - { text: "Detect hypertensive emergency and refer", importance: critical, group: safety }
+
+safety_critical_errors:
+  - "Treating on a single raised reading without confirmation"
+  - "Giving aspirin/blood pressure lowering as if hypertensive emergency when it is not"
+  - "Missing CVA/chest-pain red flags"
+
+sources:
+  - { title: "PNPK Hipertensi (Pedoman Nasional Pelayanan Kedokteran)", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "ISC 2018 (Indonesian hypertension guideline)", authority: "BP IH / PERHI", year: "2018", kind: "guideline" }
+  - { title: "SKD 2026 Sistem Kardiovaskuler — hipertensi", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
+
+status: research_complete
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"

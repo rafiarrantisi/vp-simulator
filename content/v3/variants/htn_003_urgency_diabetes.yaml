@@ -1,0 +1,101 @@
+id: htn_003_urgency_diabetes
+family_id: fam_hypertension
+variation_level: complexity
+title: Hypertensive urgency with poorly-controlled T2DM — management complexity
+supported_stages: [koas]
+competency:
+  standard: SKD 2026
+  reference: HK.01.02/KKI/2183/2026
+  category: tuntas
+
+identity:
+  age_years: 61
+  biological_sex: male
+  informant_type: patient
+  setting: emergency department (low-acuity)
+  population_tags: [adult, diabetic]
+
+chief_complaint: "BP 178/108 noticed at screening; not feeling unwell"
+opening_context: "61yo man with known T2DM and untreated high BP; BP 178/108, no symptoms of end-organ damage; risk-category: hypertensive urgency (NOT emergency) because no ongoing organ injury"
+duration: "known HTN untreated; BP high on this visit"
+severity: moderate
+key_chronology: "Long-standing hypertension off-treatment; today BP high but asymptomatic"
+
+history:
+  - name: symptom
+    facts:
+      - { key: chest_pain, value: false, disclosure: spontaneous }
+      - { key: dyspnea, value: false, disclosure: direct_question }
+      - { key: neuro_symptoms, value: false, disclosure: direct_question }
+      - { key: visual_loss, value: false, disclosure: direct_question }
+  - name: pmh
+    facts:
+      - { key: diabetes, value: true, disclosure: direct_question, note: "duration 8y, HbA1c last 9.1%" }
+      - { key: microalbuminuria, value: true, disclosure: direct_question }
+      - { key: chronic_kidney_disease, value: false, disclosure: direct_question }
+      - { key: no_htn_treatment, value: true, disclosure: direct_question, note: "not on any BP medication" }
+  - name: pattern_risk
+    facts:
+      - { key: smoking, value: true, disclosure: direct_question }
+      - { key: family_history_early_cardiac, value: true, disclosure: direct_question }
+
+red_flags:
+  - { fact: "Ongoing target-organ injury (chest pain, acute neuro deficit, LVF, retinopathy) = EMERGENCY", status: absent, criticality: critical, why_matters: "hypertensive emergency — parenteral + immediate care, NOT outpatient titration", disclosure: direct_question }
+  - { fact: "Acute kidney injury / raised creatinine", status: absent, criticality: high, why_matters: "comorbidity + possible renovascular", disclosure: direct_question }
+
+physical_exam:
+  general_appearance: "Comfortable, no distress"
+  consciousness: "Alert"
+  vitals:
+    - { name: blood_pressure, value: 178, unit: "mmHg", note: "urgency threshold (>160/110) without symptoms" }
+    - { name: heart_rate, value: 84, unit: "bpm" }
+  system_findings:
+    cardiovascular: "Regular, no S3 murmur; no crackles"
+    fundoscopy: "Background diabetic + hypertensive retinopathy (no papilloedema)"
+    abdomen: "Soft, no renal bruit"
+    neurology: "No focal deficit"
+
+investigations:
+  - { name: Urinalysis, expected_result: "Proteinuria (microalbuminuric range)", appropriateness: appropriate, rationale: "diabetic nephropathy screen", source: "guideline" }
+  - { name: Creatinine/eGFR, expected_result: "eGFR ~70, stable", appropriateness: appropriate, rationale: "renal function + CT-comorbidity", source: "guideline" }
+  - { name: ECG, expected_result: "LV strain / no acute ischaemia", appropriateness: appropriate, rationale: "target-organ check", source: "guideline" }
+  - { name: HbA1c, expected_result: "9.1% (poor control)", appropriateness: appropriate, rationale: "global risk", source: "guideline" }
+
+diagnostic:
+  working_diagnosis: "Hypertensive urgency (asymptomatic, severe range) with diabetic comorbidity"
+  synonyms: [Severe hypertension without end-organ damage, Hypertensive urgency]
+  differentials:
+    - { name: "Hypertensive emergency", discriminating_features: "evidence of ongoing organ injury — chest pain, neuro, AKI, LVF", reverting: true }
+    - { name: "White-coat severe reading", discriminating_features: "confirmed only on repeat/out-of-office", reverting: false }
+  reasoning_anchors:
+    - "Key distinction urgency (asymptomatic, no acute organ injury) vs emergency (organ injury)"
+    - "Urgency: oral antihypertensive + outpatient titration, NOT parenteral rapid lowering"
+  icd10: "I10 + E11.9"
+
+management:
+  stabilization: ["No parenteral emergency treatment — not a hypertensive emergency"]
+  pharmacologic: ["Start oral antihypertensive per guideline (e.g. ACE-i/ARB, given proteinuria)", "Address poor diabetes control concurrently"]
+  non_pharmacologic: ["Smoking cessation, dietary, monitoring plan"]
+  referral: ["Refer if red flags for emergency, worsening renal function, or resistant BP"]
+  follow_up: ["Close BP + renal + HbA1c follow-up in days (not hours); recheck within 1-2 weeks"]
+  education_safety_netting: ["Very high BP with new symptoms = return to ED"]
+
+assessment_items:
+  - { text: "Differentiate hypertensive urgency from emergency", importance: critical, group: safety, note: "misclassifying = dangerous over/under-treatment" }
+  - { text: "Recognise diabetic comorbidity + proteinuria guide to ACE-i/ARB", importance: critical, group: management }
+  - { text: "Avoid harmful rapid IV lowering in urgency (no emergency)", importance: critical, group: management }
+  - { text: "Plan appropriate subacute follow-up", importance: helpful, group: follow_up }
+
+safety_critical_errors:
+  - "Treating hypertensive urgency as an emergency (rapid parenteral drop → hypoperfusion)"
+  - "Discharging emergency red flags without workup"
+  - "Ignoring proteinuria when choosing agent"
+
+sources:
+  - { title: "PNPK Hipertensi", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "ISC 2018 Indonesian hypertension guideline", authority: "PERHI", year: "2018", kind: "guideline" }
+  - { title: "SKD 2026 Sistem Kardiovaskuler", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
+
+status: research_complete
+clinical_content_version: "v3.0"
+source_review_date: "2026-09-01"

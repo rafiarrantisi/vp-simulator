@@ -109,3 +109,51 @@ def derive_debrief(v: ClinicalVariant) -> dict:
 def essential_investigations(v: ClinicalVariant) -> list[dict]:
     return [i for i in derive_investigations(v)
             if i["appropriateness"] in (Appropriateness.ESSENTIAL.value, Appropriateness.APPROPRIATE.value)]
+
+
+def derive_mode_views(v: ClinicalVariant, family_title: str = "") -> dict:
+    """Course presentation per mode (STEP 5 §7).
+
+    Targeted mode → diagnosis/family visible.
+    Blind/OSCE mode → diagnosis hidden; only a candidate brief is shown, and
+    the user reasons from the presenting complaint.
+    """
+    diag = v.diagnostic.working_diagnosis
+    return {
+        "targeted": {
+            "family_title": family_title,
+            "diagnosis_visible": True,
+            "title": v.targeted_title or family_title or diag,
+            "diagnosis": diag,
+        },
+        "blind": {
+            "family_title": family_title,
+            "diagnosis_visible": False,
+            "candidate_brief": v.blind_candidate_brief or v.chief_complaint,
+            "diagnosis": None,   # hidden
+        },
+    }
+
+
+def derive_generation_bundle(v: ClinicalVariant, family_title: str = "") -> dict:
+    """End-to-end scoring fixture for one variant (STEP 5 §12 'scoring fixture').
+
+    One call that produces everything the pipeline needs from the single
+    canonical truth — persona is generated separately and must stay skinned.
+    """
+    return {
+        "variant_id": v.id,
+        "family_id": v.family_id,
+        "competency": v.competency.to_dict() if v.competency else {},
+        "management_expectations": v.management_expectations.to_dict(),
+        "history_checklist": derive_history_checklist(v),
+        "red_flags": derive_red_flags(v),
+        "vitals": derive_vitals(v),
+        "physical_exam": derive_physical_exam(v),
+        "investigations": derive_investigations(v),
+        "answer_key": derive_answer_key(v),
+        "scoring_profile": derive_scoring_profile(v),
+        "debrief": derive_debrief(v),
+        "modes": derive_mode_views(v, family_title),
+        "sources": [s.to_dict() for s in v.sources],
+    }

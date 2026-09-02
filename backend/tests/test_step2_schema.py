@@ -41,9 +41,11 @@ def registry() -> CaseRegistry:
 
 def test_families_and_variants_load():
     r = registry()
-    assert set(r.families) == {"fam_dengue", "fam_fever_child", "fam_uti"}
-    assert set(r.variants) == {"dengue_001_mild", "dengue_002_warning",
-                               "dengue_003_severe", "uti_child_001"}
+    assert {"fam_dengue", "fam_fever_child", "fam_uti"} <= set(r.families)
+    # STEP 5 added a golden hypertension family
+    assert "fam_hypertension" in r.families
+    assert {"dengue_001_mild", "dengue_002_warning", "dengue_003_severe",
+            "uti_child_001"} <= set(r.variants)
     assert len(r.variants_for_family("fam_dengue")) == 3
 
 
