@@ -58,7 +58,11 @@ class DiagnosisEvaluator:
 
 # ── normalisation helpers ──────────────────────────────────────────────────
 _STOP = {"the", "a", "an", "with", "in", "of", "and", "or", "for",
-         "acute", "presentation", "syndrome", "disease", "case"}
+         "acute", "presentation", "syndrome", "disease", "case",
+         # Indonesian connectives / fillers / addressives (STEP-9 broadening)
+         "saya", "aku", "kena", "kenai", "dok", "dokter", "pasien", "sudah",
+         "telah", "yang", "dan", "atau", "ada", "adanya", "saya punya",
+         "punya", "dan saya", "dengan", "pada", "di", "ke", "dari"}
 
 
 def normalize(s: str) -> str:
@@ -86,6 +90,7 @@ _ID_EN = {
 # non-abbreviated Indonesian ↔ English disease names treated as equal pairs.
 _ID_SYN = {
     "demam berdarah dengue": "dengue",
+    "demam berdarah": "dengue",       # colloquial shorthand for dengue
     "dengue berdarah": "dengue",
     "demam berdarah dengue berat": "severe dengue",
     "dengue syok": "dengue shock",
@@ -102,6 +107,29 @@ _ID_SYN = {
     "infeksi saluran kemih": "urinary tract infection",
     "gagal ginjal": "renal failure",
     "penyakit ginjal kronik": "chronic kidney disease",
+    # STEP-9 broadening — many SKD 2026 conditions, not just golden families
+    "dengue berat": "severe dengue",
+    "dbd berat": "severe dengue",
+    "pielonefritis": "pyelonephritis",
+    "infeksi ginjal": "pyelonephritis",
+    "usus buntu": "appendicitis",
+    "radang usus buntu": "appendicitis",
+    "demam tifoid": "typhoid fever",
+    "tifus": "typhoid fever",
+    "tipus": "typhoid fever",
+    "tb paru": "tuberculosis",
+    "tbc": "tuberculosis",
+    "tuberkulosis": "tuberculosis",
+    "dm tipe 2": "type 2 diabetes mellitus",
+    "diabetes tipe 2": "type 2 diabetes mellitus",
+    "stroke": "ischaemic stroke",
+    "serangan jantung": "myocardial infarction",
+    "jantung koroner": "coronary artery disease",
+    "sesak nafas": "dyspnoea",
+    "sesak napas": "dyspnoea",
+    "radang paru": "pneumonia",
+    "batu ginjal": "nephrolithiasis",
+    "kencing batu": "nephrolithiasis",
 }
 
 

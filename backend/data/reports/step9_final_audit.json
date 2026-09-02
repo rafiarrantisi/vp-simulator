@@ -1,0 +1,62 @@
+{
+  "date": "2026-09-02",
+  "strict_split": {
+    "generated": 12,
+    "qa_passed": 12,
+    "clinically_reviewed": 0,
+    "pilot_verified": 0,
+    "published": 0
+  },
+  "inventory": {
+    "legacy": null,
+    "new_families": 5,
+    "new_variants": 12,
+    "by_specialty": {
+      "internal_medicine": 0,
+      "paediatrics": 0,
+      "cardiology_vascular": 0,
+      "nephrology_urology": 0
+    },
+    "by_category_skd2026": {
+      "tuntas": 6,
+      "initial_management_and_referral": 6
+    },
+    "by_review_state": {
+      "ai_generated": 0,
+      "research_complete": 12,
+      "in_review": 0,
+      "clinically_reviewed": 0,
+      "pilot_verified": 0,
+      "published": 0
+    }
+  },
+  "sources": {
+    "pnpk": 12,
+    "society": 0,
+    "international": 13,
+    "epidemiology": 0,
+    "fornas": 0
+  },
+  "product": {
+    "targeted_mode": true,
+    "blind_mode_leak_tested": true,
+    "family_cards": true,
+    "replay_same_disease": true,
+    "source_debrief": true,
+    "preclinical_koas_scoring": true
+  },
+  "qa": {
+    "tests_ran": true,
+    "pass_fail": {
+      "errors": 0,
+      "redteam_fails": 0
+    },
+    "human_reviewed_cases": 0,
+    "unresolved": [
+      "live LLM red-team executed on 2 representative variants only",
+      "source URL currentness + claim-support need human spot-check per batch",
+      "doctor/educator comparison not yet run"
+    ]
+  },
+  "pilot_readiness": "NOT READY"
+}
