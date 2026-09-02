@@ -226,3 +226,48 @@ def test_targeted_start_dto_keeps_diagnosis_but_hides_rubric():
                           "interaction_mode": "targeted"})
     payload = str(r.json()["data"])
     assert "answer_key" not in payload and "rubric" not in payload
+
+
+# ── STEP-8: blind network/API-payload leak (not just visual) ──────────────
+
+def test_blind_api_payload_never_contains_diagnosis_or_answer_data():
+    """STEP 8 §3/§9: blind mode may not leak the diagnosis in the HTTP payload
+    (not merely hidden in CSS). We assert the raw API responses contain none of
+    the target diagnosis, rubric, management key, answer key, or source text."""
+    tok = _new_user()
+    from pipeline.case_v3.loader import CaseRegistry
+    reg = CaseRegistry.from_dir()
+    v = reg.variant("dengue_003_severe")
+    dx = v.diagnostic.working_diagnosis            # "Severe dengue with shock..."
+    start = client.post("/api/v3/sessions", headers=_auth(tok),
+                        json={"family_id": "fam_dengue", "learner_level": "koas",
+                              "interaction_mode": "blind"}).json()["data"]
+    sid = start["sessionId"]
+    # start payload
+    sp = str(start)
+    assert dx not in sp, "start response leaked target diagnosis"
+    assert "answer_key" not in sp and "rubric" not in sp and "management" not in sp
+    # resume payload
+    rp = str(client.get(f"/api/v3/sessions/{sid}", headers=_auth(tok)).json()["data"])
+    assert dx not in rp, "resume response leaked target diagnosis"
+    assert "answer_key" not in rp and "rubric" not in rp
+    # candidate_safe DTO explicitly hides
+    cv = client.get(f"/api/v3/sessions/{sid}", headers=_auth(tok)).json()["data"]["candidateView"]
+    assert cv["diagnosis_hidden"] is True
+
+
+def test_replay_another_patient_chooses_different_clinical_variant():
+    """STEP-8 + rule 5: 'another patient same disease' must select a genuinely
+    different clinical variant (different canonical truth), not just persona."""
+    tok = _new_user()
+    nap = client.post("/api/v3/another-patient", headers=_auth(tok),
+                      json={"family_id": "fam_dengue", "current_variant_id": "dengue_001_mild",
+                            "learner_level": "koas"}).json()["data"]
+    assert nap["kind"] == "new_clinical_variant"
+    assert nap["variant_id"] != "dengue_001_mild"
+    # confirm the two variants differ in canonical clinical truth (not only name)
+    from pipeline.case_v3.loader import CaseRegistry
+    reg = CaseRegistry.from_dir()
+    a = reg.variant("dengue_001_mild").canonical_hash()
+    b = reg.variant(nap["variant_id"]).canonical_hash()
+    assert a != b, "selected variant must differ in clinical truth, not just persona/name"

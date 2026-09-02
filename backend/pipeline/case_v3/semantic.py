@@ -32,17 +32,22 @@ class DiagnosisEvaluator:
         cand = normalize(submitted)
         if not cand:
             return {"match": False, "grade": "no_candidate", "note": "No diagnosis submitted"}
-        if cand == norm_goal:
-            return {"match": True, "grade": "exact", "note": "exact match"}
-        # synonym / paraphrase tolerant
+        # STEP 8: expand Indonesian/English/abbreviation surfaces of the candidate
+        # (e.g. 'DBD' → 'dengue', 'hipertensi' → 'hypertension') and re-normalise.
+        expanded = [normalize(e) for e in expand_id(submitted)]
+        cand_forms = list(dict.fromkeys([cand] + expanded))
+        if norm_goal in cand or cand in norm_goal:
+            return {"match": True, "grade": "partial", "note": "target term contained"}
+        for cf in cand_forms:
+            if norm_goal in cf or cf in norm_goal:
+                return {"match": True, "grade": "synonym", "note": "ID/EN/abbreviation surface matched"}
         if _paraphrase(cand, norm_goal):
             return {"match": True, "grade": "paraphrase", "note": "semantic paraphrase accepted"}
         for s in synonyms:
-            if _contained(cand, normalize(s)):
+            sn = normalize(s)
+            if any(sn in cf or cf in sn for cf in cand_forms):
                 return {"match": True, "grade": "synonym", "note": f"synonym/alias matched: '{s}'"}
-        if _contained(cand, norm_goal):
-            return {"match": True, "grade": "partial", "note": "target term contained"}
-        close = _levenshtein(cand, norm_goal)
+        close = min(_levenshtein(cf, norm_goal) for cf in cand_forms)
         if close <= max(3, len(norm_goal) // 3):
             return {"match": True, "grade": "near_miss",
                     "note": f"near-miss (typo, sd={close}) — accepted, flag for human review",
@@ -62,6 +67,64 @@ def normalize(s: str) -> str:
     s = re.sub(r"[^\w\s]", " ", s)
     tokens = [w for w in s.split() if w not in _STOP]
     return " ".join(tokens)
+
+
+# Indonesian → English clinical synonyms + widely-used abbreviations (STEP 8:
+# candidate often writes 'DBD', 'hipertensi', 'DM tipe 2', lowercase/typos).
+_ID_EN = {
+    # abbreviations → expanded Indonesian + English clinical term
+    "dbd": "demam berdarah dengue dengue",
+    "tb": "tuberkulosis tuberculosis tb",
+    "htn": "hipertensi hypertension",
+    "dm": "diabetes mellitus diabetes dm",
+    "ckd": "penyakit ginjal kronik chronic kidney disease ckd",
+    "uti": "infeksi saluran kemih urinary tract infection uti",
+    "isk": "infeksi saluran kemih urinary tract infection isk",
+    "pne": "pneumonia pneumonia",
+    "agn": "glomerulonefritis akut acute glomerulonephritis agn",
+}
+# non-abbreviated Indonesian ↔ English disease names treated as equal pairs.
+_ID_SYN = {
+    "demam berdarah dengue": "dengue",
+    "dengue berdarah": "dengue",
+    "demam berdarah dengue berat": "severe dengue",
+    "dengue syok": "dengue shock",
+    "syok dengue": "dengue shock",
+    "hipertensi": "hypertension",
+    "tekanan darah tinggi": "hypertension",
+    "tensi tinggi": "hypertension",
+    "darah tinggi": "hypertension",
+    "diabetes melitus": "diabetes",
+    "diabetes": "diabetes mellitus",
+    "kencing manis": "diabetes mellitus",
+    "asma": "asthma",
+    "pneumonia": "pneumonia",
+    "infeksi saluran kemih": "urinary tract infection",
+    "gagal ginjal": "renal failure",
+    "penyakit ginjal kronik": "chronic kidney disease",
+}
+
+
+def expand_id(s: str) -> list[str]:
+    """Return candidate surface forms (ID/EN/abbrev) for a semantic term."""
+    out = [s, str(s).lower()]
+    lo = str(s).lower().strip()
+    if lo in _ID_EN:
+        for e in _ID_EN[lo].split():
+            out.append(e)
+    # token-level abbreviation substitution (e.g. 'DBD berdarah' → 'dengue berdarah')
+    tokens = lo.split()
+    substituted = []
+    for tok in tokens:
+        substituted.append(_ID_EN.get(tok, tok) if _ID_EN.get(tok) else tok)
+    if substituted != tokens:
+        out.append(" ".join(substituted))
+    for id_k, en_v in _ID_SYN.items():
+        if id_k in lo:
+            out.append(en_v)
+        if en_v in lo:
+            out.append(id_k)
+    return list(dict.fromkeys([t for t in out if t]))
 
 
 def _contained(cand: str, goal: str) -> bool:

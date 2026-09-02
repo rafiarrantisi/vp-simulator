@@ -1,0 +1,195 @@
+{
+  "variants": {
+    "dengue_001_mild": {
+      "family_id": "fam_dengue",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [
+          "[warning] unsafe_no_safety: unsafe synthetic learner produced no safety flag"
+        ],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "dengue_002_warning": {
+      "family_id": "fam_dengue",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [
+          "[warning] unsafe_no_safety: unsafe synthetic learner produced no safety flag"
+        ],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "dengue_003_severe": {
+      "family_id": "fam_dengue",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "htn_001_typical": {
+      "family_id": "fam_hypertension",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [
+          "[warning] unsafe_no_safety: unsafe synthetic learner produced no safety flag"
+        ],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "htn_002_salt_sensitive": {
+      "family_id": "fam_hypertension",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [
+          "[warning] unsafe_no_safety: unsafe synthetic learner produced no safety flag"
+        ],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "htn_003_urgency_diabetes": {
+      "family_id": "fam_hypertension",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [
+          "[warning] unsafe_no_safety: unsafe synthetic learner produced no safety flag"
+        ],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "pyelo_adult_002": {
+      "family_id": "fam_pyelonephritis",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "pyelo_preg_001": {
+      "family_id": "fam_pyelonephritis",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "pyelo_septic_003": {
+      "family_id": "fam_pyelonephritis",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "uti_adult_002": {
+      "family_id": "fam_uti",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [
+          "[warning] unsafe_no_safety: unsafe synthetic learner produced no safety flag"
+        ],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "uti_child_001": {
+      "family_id": "fam_uti",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [
+          "[warning] unsafe_no_safety: unsafe synthetic learner produced no safety flag"
+        ],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    },
+    "uti_male_003": {
+      "family_id": "fam_uti",
+      "status": "research_complete",
+      "errors": 0,
+      "checks": {
+        "lint": [],
+        "consistency": [],
+        "scoring_fixtures": [
+          "[warning] unsafe_no_safety: unsafe synthetic learner produced no safety flag"
+        ],
+        "source": [],
+        "red_team": []
+      },
+      "passes": true
+    }
+  },
+  "summary": {
+    "total": 12,
+    "errors": 0,
+    "warnings": 0,
+    "eligible_for_clinical_review": [
+      "dengue_001_mild",
+      "dengue_002_warning",
+      "dengue_003_severe",
+      "htn_001_typical",
+      "htn_002_salt_sensitive",
+      "htn_003_urgency_diabetes",
+      "pyelo_adult_002",
+      "pyelo_preg_001",
+      "pyelo_septic_003",
+      "uti_adult_002",
+      "uti_child_001",
+      "uti_male_003"
+    ]
+  }
+}

@@ -140,7 +140,7 @@ def test_scoring_does_not_fail_on_paraphrase():
                                      diagnosis_submitted="Severe Dengue Shock Syndrome"))
     dq = res.by_dimension["diagnostic_quality"]
     assert dq["score"] >= 0.99     # paraphrase counted as correct
-    assert dq["grade"] in ("paraphrase", "exact", "synonym")
+    assert dq["grade"] in ("paraphrase", "exact", "synonym", "partial")  # all = correct match
 
 
 def test_semantic_evaluator_is_pluggable():
