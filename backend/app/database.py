@@ -74,12 +74,37 @@ def _ensure_runtime_columns() -> None:
     di-skip. Alembic tetap sumber kebenaran migrasi utk Postgres/prod.
 
     v0.16.0: cases.locked.
+    STEP-6: new-schema session columns (sessions table, extended not duplicated).
     """
     from sqlalchemy import text
 
     stmts = [
         "ALTER TABLE cases ADD COLUMN locked BOOLEAN DEFAULT 0",
         "ALTER TABLE session_turns ADD COLUMN input_type VARCHAR DEFAULT 'text'",
+        # STEP-6 superseding rule 1 — v3 runtime state (existing sessions table)
+        "ALTER TABLE sessions ADD COLUMN content_schema VARCHAR DEFAULT 'legacy'",
+        "ALTER TABLE sessions ADD COLUMN family_id VARCHAR",
+        "ALTER TABLE sessions ADD COLUMN variant_id VARCHAR",
+        "ALTER TABLE sessions ADD COLUMN persona_seed INTEGER",
+        "ALTER TABLE sessions ADD COLUMN persona JSON",
+        "ALTER TABLE sessions ADD COLUMN learner_level VARCHAR",
+        "ALTER TABLE sessions ADD COLUMN interaction_mode VARCHAR",
+        "ALTER TABLE sessions ADD COLUMN competency_category VARCHAR",
+        "ALTER TABLE sessions ADD COLUMN legacy_skdi_level VARCHAR",
+        "ALTER TABLE sessions ADD COLUMN presentation_path VARCHAR",
+        "ALTER TABLE sessions ADD COLUMN selection_reason VARCHAR",
+        "ALTER TABLE sessions ADD COLUMN variant_canonical_hash VARCHAR",
+        # STEP-6 rules — pilot_events behavioural/competency columns
+        "ALTER TABLE pilot_events ADD COLUMN competency_standard VARCHAR DEFAULT 'SKD 2026'",
+        "ALTER TABLE pilot_events ADD COLUMN competency_category VARCHAR",
+        "ALTER TABLE pilot_events ADD COLUMN legacy_skdi_level VARCHAR",
+        "ALTER TABLE pilot_events ADD COLUMN family_id VARCHAR",
+        "ALTER TABLE pilot_events ADD COLUMN variant_id VARCHAR",
+        "ALTER TABLE pilot_events ADD COLUMN presentation_path VARCHAR",
+        "ALTER TABLE pilot_events ADD COLUMN interaction_mode VARCHAR",
+        "ALTER TABLE pilot_events ADD COLUMN learner_level VARCHAR",
+        "ALTER TABLE pilot_events ADD COLUMN persona_fallback BOOLEAN DEFAULT FALSE",
+        "ALTER TABLE pilot_events ADD COLUMN content_schema VARCHAR DEFAULT 'new'",
     ]
     for s in stmts:
         try:

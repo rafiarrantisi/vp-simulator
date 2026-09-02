@@ -29,6 +29,22 @@ class SessionRow(Base):
     total_score: Mapped[int | None] = mapped_column(Integer, default=None)
     report: Mapped[dict | None] = mapped_column(JSON, default=None)  # EvaluationReport §3A
     language: Mapped[str] = mapped_column(String, default="en")  # en | id | ms | tl | vi | th | ...
+    # ── STEP-6 superseding: new-schema (case_v3) runtime session state ──
+    # (extended existing `sessions` table — no new DB subsystem, per rule 1)
+    content_schema: Mapped[str] = mapped_column(String, default="legacy")  # legacy | new
+    family_id: Mapped[str | None] = mapped_column(String, index=True, default=None)   # canonical family
+    variant_id: Mapped[str | None] = mapped_column(String, index=True, default=None)  # selected ClinicalVariant
+    persona_seed: Mapped[int | None] = mapped_column(Integer, default=None)
+    persona: Mapped[dict | None] = mapped_column(JSON, default=None)         # rendered persona instance (immutable post-start)
+    learner_level: Mapped[str | None] = mapped_column(String, default=None)  # preclinical | koas
+    interaction_mode: Mapped[str | None] = mapped_column(String, default=None)  # targeted | blind | random
+    competency_category: Mapped[str | None] = mapped_column(String, default=None)  # tuntas | initial_management_and_referral (SKD 2026)
+    legacy_skdi_level: Mapped[str | None] = mapped_column(String, default=None)     # optional, verified-only
+    presentation_path: Mapped[str | None] = mapped_column(String, default=None)
+    selection_reason: Mapped[str | None] = mapped_column(String, default=None)      # audit trail
+    # reproducibility: fingerprint of the canonical clinical truth so a reload
+    # can confirm the EXACT session instance (immutability, rule 2).
+    variant_canonical_hash: Mapped[str | None] = mapped_column(String, default=None)
 
 
 class SessionTurn(Base):
