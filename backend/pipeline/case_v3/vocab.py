@@ -83,3 +83,46 @@ class ClinicalSeverity(str, Enum):
     MODERATE = "moderate"
     SEVERE = "severe"
     CRITICAL = "critical"
+
+
+class SourceStatusKind(str, Enum):
+    CURRENT = "current"
+    SUPERSEDED = "superseded"
+    UNCLEAR = "unclear"
+
+
+class SourceTier(str, Enum):
+    TIER0 = "0"          # regulatory / competency (KKI, Kemenkes)
+    TIER1 = "1"          # current Indonesian national clinical guidance (PNPK, program)
+    TIER2 = "2"          # Indonesian specialty/professional org (PAPDI, PERKI, IDAI, ...)
+    TIER3 = "3"          # high-authority international guideline (WHO, NICE, ESC, ACC/AHA...)
+    TIER4 = "4"          # standard educational reference
+
+
+class SourceKind(str, Enum):
+    COMPETENCY = "competency"
+    DIAGNOSIS = "diagnosis"
+    MANAGEMENT = "management"
+    EPIDEMIOLOGY = "epidemiology"
+    FORMULARY = "formulary"
+    OSCE_RUBRIC = "osce_rubric"
+
+
+class ReviewState(str, Enum):
+    DRAFT = "draft"
+    AI_GENERATED = "ai_generated"
+    RESEARCH_COMPLETE = "research_complete"
+    IN_CLINICAL_REVIEW = "in_clinical_review"
+    CLINICALLY_REVIEWED = "clinically_reviewed"
+    PILOT_VERIFIED = "pilot_verified"
+    PUBLISHED = "published"
+    NEEDS_UPDATE = "needs_update"
+    SUPERSEDED = "superseded"
+
+
+# States that can ONLY be reached via a human clinical review — never by an
+# AI self-attesting on the strength of passing automated tests.
+HUMAN_REVIEWED_STATES = frozenset({
+    ReviewState.CLINICALLY_REVIEWED, ReviewState.PILOT_VERIFIED,
+    ReviewState.PUBLISHED,
+})

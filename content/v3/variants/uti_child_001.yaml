@@ -93,6 +93,6 @@ sources:
   - { title: "PNPK Infeksi Saluran Kemih Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline" }
   - { title: "NICE NG224 urinary tract infection in under 16s", authority: "NICE", year: "2022", kind: "guideline" }
 
-status: clinically_reviewed
+status: research_complete
 clinical_content_version: "v3.0"
 source_review_date: "2026-09-01"

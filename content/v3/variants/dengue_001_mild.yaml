@@ -93,10 +93,10 @@ safety_critical_errors:
   - "Advising NSAIDs/aspirin during dengue"
 
 sources:
-  - { title: "WHO SEARO Dengue Guidelines", authority: "WHO", year: "2023", kind: "guideline" }
-  - { title: "PNPK Dengue Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline" }
-  - { title: "SKDI level 3A: demam", authority: "KKI SKDI", year: "2012", kind: "competency" }
+  - { title: "WHO SEARO Dengue Guidelines", authority: "WHO", year: "2023", kind: "guideline", url: "https://www.who.int/publications/i/item/9789241552119" }
+  - { title: "PNPK Dengue Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline", url: "https://www.kemkes.go.id" }
+  - { title: "SKDI level 3A: demam", authority: "KKI SKDI", year: "2012", kind: "competency", url: "https://kki.go.id" }
 
-status: clinically_reviewed
+status: research_complete
 clinical_content_version: "v3.0"
 source_review_date: "2026-09-01"
