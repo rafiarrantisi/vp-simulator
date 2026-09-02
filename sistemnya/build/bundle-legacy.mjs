@@ -30,6 +30,7 @@ const LOAD_ORDER = [
   'translations.js',
   'qora-landing.jsx',
   'qora-v2.jsx',
+  'qora-v3.jsx',
   'qora-pf.jsx',
   'qora-enhancements.jsx',
   'qora-mentor.jsx',

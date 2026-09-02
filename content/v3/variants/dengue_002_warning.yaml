@@ -100,7 +100,7 @@ safety_critical_errors:
 sources:
   - { title: "WHO SEARO Dengue Guidelines", authority: "WHO", year: "2023", kind: "guideline" }
   - { title: "PNPK Dengue Kemenkes", authority: "Kemenkes", year: "2021", kind: "guideline" }
-  - { title: "SKDI level 3B: demam berdarah dengue", authority: "KKI SKDI", year: "2012", kind: "competency" }
+  - { title: "SKD 2026 — dengue (tatalaksana awal dan rujuk)", authority: "KKI", year: "2026", kind: "competency", url: "https://kki.go.id" }
 
 status: research_complete
 clinical_content_version: "v3.0"

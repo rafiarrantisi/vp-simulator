@@ -44,10 +44,10 @@
       const [screen, setScreen] = React.useState(() => {
         var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
         var authed = loadAuth();
-        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
+        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout', 'v3'].indexOf(h) >= 0;
         if (!authed && protectedHash) return 'qora-landing';
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
-        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
+        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'v3'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
       });
       const [screenKey, setScreenKey] = React.useState(0);
@@ -80,10 +80,10 @@
         var fn = function () {
           var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
           var next = null;
-          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
-          if (protectedHash && !loadAuth()) next = 'qora-landing';
-          else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
-          else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
+          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout', 'v3'].indexOf(h) >= 0;
+                  if (protectedHash && !loadAuth()) next = 'qora-landing';
+                  else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
+                  else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'v3'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
@@ -197,6 +197,7 @@
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
+          screen === 'v3' && React.createElement(QoraV3App, null),
           screen === 'mentor' && React.createElement(QMentorScreen, { onNav: navigate }),
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
           screen === 'sessions' && React.createElement(QoraSessions, { onNav: navigate }),

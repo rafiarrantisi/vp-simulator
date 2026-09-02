@@ -1640,6 +1640,7 @@ function QoraV2Screen() {
 
   const applyRoute = React.useCallback(function (parts) {
     var p0 = parts[0], p1 = parts[1];
+    if (p0 === 'v3') { setView('v3'); return; }   // STEP 7: self-routing case library (#/v3/…)
     if (p0 === 'session' && p1) {
       var meta = null;
       try { meta = JSON.parse(sessionStorage.getItem('qora_session_meta') || 'null'); } catch (e) {}
@@ -1679,7 +1680,11 @@ function QoraV2Screen() {
   }, [applyRoute]);
 
   let body;
-  if (view === 'setup' && picked) {
+  var _route0 = (hashParts()[0] || '');
+  if (_route0 === 'v3') {
+    // STEP 7: self-contained v3 case library (#/v3/…) within the shared scope.
+    body = React.createElement(QoraV3App, null);
+  } else if (view === 'setup' && picked) {
     body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setReport(null); setInitialSessionId(null); setView('session'); }, onBack: () => { setView('catalogue'); setHash('cases'); } });
   } else if (view === 'session' && picked) {
     body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, initialSessionId: initialSessionId, onSessionReady: (sid) => { setSessionId(sid); setHash('session/' + sid); }, onScored: (r) => { setReport(r); try { sessionStorage.setItem('qora_last_report', JSON.stringify({ report: r, caseId: picked.id, sessionId: sessionId })); } catch (e) {} setView('result'); setHash('result'); }, onExit: () => { try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
