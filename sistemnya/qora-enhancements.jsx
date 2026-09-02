@@ -59,7 +59,7 @@ function QSkillRadar(props) {
     var angle = -Math.PI / 2 + slice * i;
     var label = L[keys[i]] || keys[i];
     var pct = Math.round(dims[keys[i]] || 0);
-    elements.push(React.createElement('text', { key: 'l' + i, x: cx + (r + 22) * Math.cos(angle), y: cy + (r + 22) * Math.sin(angle), textAnchor: 'middle', dominantBaseline: 'central', fontSize: 9.5, fontWeight: 600, fill: 'var(--text-1)', fontFamily: 'Poppins' }, label + ' ' + pct + '%'));
+    elements.push(React.createElement('text', { key: 'l' + i, x: cx + (r + 22) * Math.cos(angle), y: cy + (r + 22) * Math.sin(angle), textAnchor: 'middle', dominantBaseline: 'central', fontSize: 9.5, fontWeight: 600, fill: 'var(--text-1)', fontFamily: 'Plus Jakarta Sans' }, label + ' ' + pct + '%'));
   }
 
   return React.createElement('svg', { width: size + pad * 2, height: size + pad * 2 + 4, viewBox: '0 0 ' + (size + pad * 2) + ' ' + (size + pad * 2), style: { display: 'block', margin: '0 auto', maxWidth: '100%' } }, elements);
@@ -107,11 +107,13 @@ function QoraSessions(props) {
     content = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } }, sessions.map(renderSession));
   }
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(860px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
-      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
-      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\uD83D\uDCCB ' + _t('dashboard.recent_sessions'))),
-    content);
+  return React.createElement('div', { style: { maxWidth: 'min(860px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
+    // GDV §4: pita suasana "Malam" — malam berbintang, garis waktu tipis
+    React.createElement(QAMoodBand, { scene: 'malam', kicker: 'RIWAYAT', title: _t('dashboard.recent_sessions'),
+      children: React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { marginTop: 14, padding: '8px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)', display: 'inline-flex', alignItems: 'center', gap: 6 } }, React.createElement(QIcon, { n: 'back', s: 15 }), _t('common.back')) }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
+      content,
+      ));
 }
 
 // ── Billing plan card — visually consistent with landing QLPricing (§5.2) ──
@@ -130,7 +132,7 @@ function QLBillingPlanCard(props) {
           React.createElement('span', { style: { color: isAccent ? '#fff' : 'var(--primary)', fontWeight: 700 } }, '✓'),
           f);
       })),
-    React.createElement('button', { onClick: props.onCta, style: { width: '100%', padding: 12, borderRadius: 12, border: 'none', background: isAccent ? '#fff' : 'var(--primary)', color: isAccent ? 'var(--primary)' : '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', textAlign: 'center', transition: 'transform 0.15s ease, box-shadow 0.15s ease' } },
+    React.createElement('button', { onClick: props.onCta, style: { width: '100%', padding: 12, borderRadius: 12, border: 'none', background: isAccent ? '#fff' : 'var(--primary)', color: isAccent ? 'var(--primary)' : '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', textAlign: 'center', transition: 'transform 0.15s ease, box-shadow 0.15s ease' } },
       isID ? 'Langganan' : 'Subscribe'));
 }
 
@@ -178,10 +180,11 @@ function QoraBilling(props) {
   var limit = data.free_session_limit || 3;
   var pct = Math.min(Math.round(usedSessions / limit * 100), 100);
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(760px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
-      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
-      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\uD83D\uDCB3 ' + (window.__t ? window.__t('profile.billing', {}) || 'Billing & plan' : 'Billing & plan'))),
+  return React.createElement('div', { style: { maxWidth: 'min(760px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
+    // GDV §4: pita suasana "Pagi" — paling cerah
+    React.createElement(QAMoodBand, { scene: 'pagi', kicker: (data.plan ? String(data.plan).toUpperCase() : 'BILLING'), title: (window.__t ? window.__t('profile.billing', {}) || 'Billing & plan' : 'Billing & plan'),
+      children: React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { marginTop: 14, padding: '8px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)', display: 'inline-flex', alignItems: 'center', gap: 6 } }, React.createElement(QIcon, { n: 'back', s: 15 }), _t('common.back')) }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
     // Current plan card
     React.createElement('div', { className: 'as', style: { padding: 24, borderRadius: 'var(--r-xl)', background: isPaid ? 'var(--primary)' : 'var(--surface)', border: isPaid ? 'none' : '1px solid var(--border)', boxShadow: 'var(--sh-md)', color: isPaid ? '#fff' : 'var(--text-1)', marginBottom: 20 } },
       React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 } },
@@ -196,7 +199,7 @@ function QoraBilling(props) {
             React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 8 } }, usedSessions + ' of ' + limit + ' free sessions used this period'),
             React.createElement('div', { style: { height: 8, borderRadius: 999, background: 'var(--surface-3)', marginBottom: 16 } },
               React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: pct >= 80 ? 'var(--red)' : 'var(--primary)', transition: 'width 0.6s ease' } })),
-            React.createElement('button', { onClick: function () { goCheckout('monthly'); }, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } },
+            React.createElement('button', { onClick: function () { goCheckout('monthly'); }, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } },
               'Upgrade to ' + (prices.monthly || '$14.99/mo')),
       err && React.createElement('div', { style: { fontSize: 12.5, color: isPaid ? 'rgba(255,255,255,0.9)' : 'var(--red-d)', marginTop: 10 } }, err)),
     // Plan options — same pricing card style as the landing page (§5.2)
@@ -205,7 +208,7 @@ function QoraBilling(props) {
       React.createElement(QLBillingPlanCard, { name: region === 'indo' ? 'Tahunan' : 'Annual', price: prices.annual || (region === 'indo' ? 'Rp999.000/thn' : '$119/yr'), sessions: region === 'indo' ? 'Tak terbatas sesi' : 'Unlimited sessions', features: QORA_PLAN_FEATURES.annual, accent: true, onCta: function () { goCheckout('annual'); }, isID: region === 'indo' })),
     // Pattern note: billing keeps the free-session progress + plan cards only.
     // (Recent sessions were removed here — they live on the Sessions page.)
-  ));
+      )));
 }
 
 // ── Billing Success / Failed redirect pages ──
@@ -222,8 +225,8 @@ function QoraBillingResult(props) {
         ? 'Your plan has been activated. You can now practise without limits.'
         : 'No charge was made. You can retry, or contact support if you think this is a mistake.'),
     React.createElement('div', { style: { display: 'flex', gap: 10, justifyContent: 'center' } },
-      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, _t('common.back') + ' \u2192 Dashboard'),
-      !okResult && React.createElement('button', { onClick: function () { onNav('billing'); }, style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Retry payment')));
+      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, _t('common.back') + ' \u2192 Dashboard'),
+      !okResult && React.createElement('button', { onClick: function () { onNav('billing'); }, style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Retry payment')));
 }
 
 
@@ -265,7 +268,7 @@ function QoraSettings(props) {
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(640px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
-      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
+      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
       React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\u2699\uFE0F ' + _t('profile.settings'))),
     React.createElement('div', { className: 'as', style: { padding: 24, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
       React.createElement('div', { style: { marginBottom: 20 } },
@@ -273,7 +276,7 @@ function QoraSettings(props) {
         React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
           LANGS.map(function (p) {
             var code = p[0], label = p[1];
-            return React.createElement('button', { key: code, onClick: function () { setLang(code); }, style: { padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: lang === code ? 700 : 500, border: '1px solid ' + (lang === code ? 'var(--primary)' : 'var(--border)'), background: lang === code ? 'var(--primary-l)' : 'var(--surface)', color: lang === code ? 'var(--primary)' : 'var(--text-2)' } }, (lang === code ? '\u2713 ' : '') + label);
+            return React.createElement('button', { key: code, onClick: function () { setLang(code); }, style: { padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontWeight: lang === code ? 700 : 500, border: '1px solid ' + (lang === code ? 'var(--primary)' : 'var(--border)'), background: lang === code ? 'var(--primary-l)' : 'var(--surface)', color: lang === code ? 'var(--primary)' : 'var(--text-2)' } }, (lang === code ? '\u2713 ' : '') + label);
           }))),
       React.createElement('div', { style: { marginBottom: 20 } },
         React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, _t('profile.region')),
@@ -282,6 +285,6 @@ function QoraSettings(props) {
         'Email: ' + me.email + ' \u00B7 ' + _t('dashboard.sessions') + ': ' + (me.total_sessions || 0)),
       err ? React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err) : null,
       React.createElement('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } },
-        React.createElement('button', { onClick: saveLang, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
+        React.createElement('button', { onClick: saveLang, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
         saved ? React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal)', fontWeight: 600 } }, '\u2713 ' + _t('profile.save') + 'd') : null)));
 }

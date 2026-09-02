@@ -6,33 +6,34 @@
   <title>Qora — Virtual Patient Simulator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style id="qora-ui">
-    /* Qora UI — button & mentor system (Ker, Aug 2026). design.css stays untouched. */
-    .qbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:Poppins;font-size:13.5px;font-weight:700;line-height:1;padding:0 18px;height:42px;border-radius:12px;cursor:pointer;white-space:nowrap;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .15s ease,box-shadow .15s ease,background .15s ease,color .15s ease,border-color .15s ease}
-    .qbtn:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
-    .qbtn-p{background:var(--primary);color:#fff;box-shadow:0 6px 18px rgba(88,101,242,.28)}
-    .qbtn-p:hover{background:linear-gradient(135deg,#5b6cf7,#4b5cf5);transform:translateY(-1px);box-shadow:0 10px 24px rgba(88,101,242,.34)}
-    .qbtn-p:active{transform:translateY(0);box-shadow:0 4px 12px rgba(88,101,242,.3)}
-    .qbtn-g{background:var(--surface);color:var(--text-2);border:1px solid var(--border)}
-    .qbtn-g:hover{color:var(--text-1);border-color:#c7d0f7;background:var(--surface-2)}
-    .qbtn-d{background:var(--red-l);color:var(--red-d);border:1px solid var(--red)}
-    .qbtn-d:hover{background:#fbe3e3}
+    /* Qora UI — button & mentor system (Ker, Sep 2026). design.css untouched.
+       Re-mapped to GDV v2: Plus Jakarta Sans, ungu u600 action, purple-undertone shadows. */
+    .qbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:14px;font-weight:600;line-height:1;padding:0 18px;height:42px;border-radius:12px;cursor:pointer;white-space:nowrap;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .16s var(--ease),box-shadow .16s var(--ease),background .16s var(--ease),color .16s var(--ease),border-color .16s var(--ease)}
+    .qbtn:focus-visible{outline:2px solid var(--u600);outline-offset:2px}
+    .qbtn-p{background:var(--u600);color:#fff;box-shadow:0 5px 16px rgba(92,63,150,.26)}
+    .qbtn-p:hover{background:var(--u700);transform:translateY(-2px);box-shadow:0 12px 26px rgba(34,19,48,.2)}
+    .qbtn-p:active{transform:translateY(0);box-shadow:0 4px 12px rgba(34,19,48,.16)}
+    .qbtn-g{background:#fff;color:var(--u600);border:1px solid var(--u200)}
+    .qbtn-g:hover{color:var(--u700);border-color:var(--u300);background:var(--u50);transform:translateY(-2px)}
+    .qbtn-d{background:var(--miss-l);color:var(--miss);border:1px solid var(--miss)}
+    .qbtn-d:hover{background:#f6ddd6;color:var(--miss-d,var(--miss))}
     .qbtn:disabled{opacity:.5;cursor:not-allowed;transform:none!important;box-shadow:none!important}
     .qbtn-lg{height:48px;padding:0 26px;font-size:14.5px;border-radius:14px}
     .qbtn-blk{width:100%}
-    .qchip{display:inline-flex;align-items:center;gap:6px;font-family:Poppins;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border-radius:999px;background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
-    .qchip-v{background:var(--violet-l);color:var(--violet);border:1px solid var(--violet)}
-    .hdr-badge{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;background:linear-gradient(135deg,var(--primary) 0%,#8b5cf6 100%);box-shadow:0 6px 16px rgba(88,101,242,.32)}
-    .qpill{font-family:Poppins;font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
-    .qpill-ok{color:var(--teal-d);background:var(--teal-l)}
-    .qpill-now{color:var(--primary);background:var(--primary-l)}
-    .qpill-lock{color:var(--text-3);background:var(--surface-3)}
+    .qchip{display:inline-flex;align-items:center;gap:6px;font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:5px 12px;border-radius:999px;background:var(--n100);color:var(--n700);border:1px solid var(--n200)}
+    .qchip-v{background:var(--u100);color:var(--u700);border:1px solid var(--u200)}
+    .hdr-badge{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;background:linear-gradient(135deg,var(--u600) 0%,var(--plum-500) 100%);box-shadow:0 6px 18px rgba(92,63,150,.3)}
+    .qpill{font-family:"Plus Jakarta Sans",system-ui,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px}
+    .qpill-ok{color:var(--ok);background:var(--ok-l)}
+    .qpill-now{color:var(--u600);background:var(--u100)}
+    .qpill-lock{color:var(--n500);background:var(--n200)}
     .daycard::-webkit-scrollbar{display:none}
     .daycard{scrollbar-width:none}
   </style>
-  <script type="module" crossorigin src="./assets/index-DD1LT4Ks.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-Bj97HpXF.css">
+  <script type="module" crossorigin src="./assets/index-D8fjBTzb.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-GjYZz1NN.css">
 </head>
 <body>
   <div id="root"></div>

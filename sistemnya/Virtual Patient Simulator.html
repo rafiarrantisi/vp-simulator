@@ -6,7 +6,7 @@
   <title>OphthaSim — Virtual Patient Simulator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="design.css" />
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
@@ -134,54 +134,63 @@
       const isLoggedIn = screen !== 'qora-landing';
 
       return React.createElement(React.Fragment, null,
-        // Qora header (logged in screens)
+        // Qora header (logged in screens) — GDV: glass floating nav + logo
         isLoggedIn && React.createElement('header', { style: {
-          position: 'sticky', top: 0, zIndex: 100,
-          background: 'rgba(245,247,255,0.88)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid var(--border)',
-          padding: isMobile ? '0 10px' : '0 24px', height: 56,
+          position: 'sticky', top: 14, zIndex: 100,
+          maxWidth: 1080, margin: '0 auto',
+          background: 'rgba(255,255,255,0.72)',
+          backdropFilter: 'blur(22px) saturate(170%)',
+          WebkitBackdropFilter: 'blur(22px) saturate(170%)',
+          border: '1px solid rgba(255,255,255,0.9)',
+          boxShadow: '0 8px 26px rgba(34,19,48,0.09)',
+          borderRadius: 18,
+          padding: '10px 16px', height: 54,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
         }},
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', flexShrink: 0 }, onClick: () => navigate('dashboard') },
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flexShrink: 0 }, onClick: () => navigate('dashboard') },
+            React.createElement(QoraLogo, { h: 28 }),
             React.createElement('div', null,
-              React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 } }, 'Qora'),
-              !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
-          // Nav — desktop/tablet: centered; mobile: moved to a bottom tab bar
+              React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--u900)', lineHeight: 1 } }, 'Qora'),
+              !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--n500)', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
+          // Nav — desktop/tablet: centered glass tabs; mobile: moved to a bottom tab bar
           !isMobile && React.createElement('nav', { style: {
-            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: 'center',
+            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: 'center', alignItems: 'flex-end',
+            background: 'rgba(255,255,255,0.55)', borderRadius: 12, padding: 3, border: '1px solid rgba(233,227,245,0.8)',
+            overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none',
           } },
             [['dashboard','Dashboard'],['cases','Cases'],['mentor','Mentor'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
-                padding: isMobile ? '6px 9px' : '6px 14px', borderRadius: 10, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
-                background: screen === s ? 'var(--primary-l)' : 'transparent',
-                color: screen === s ? 'var(--primary)' : 'var(--text-2)',
-                fontSize: isMobile ? 12 : 13, fontWeight: screen === s ? 700 : 500,
-                cursor: 'pointer', transition: 'all 0.18s ease',
-                fontFamily: 'Poppins',
+                padding: '5px 10px', borderRadius: 9, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+                background: screen === s ? 'rgba(92,63,150,0.12)' : 'transparent',
+                color: screen === s ? 'var(--u600)' : 'var(--n500)',
+                fontSize: 12.5, fontWeight: screen === s ? 600 : 500,
+                cursor: 'pointer', transition: 'all 0.18s var(--ease)',
+                fontFamily: 'Plus Jakarta Sans',
               } }, l);
             })),
           // Right side
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 10, flexShrink: 0 } },
             React.createElement('button', { onClick: function() { setShowSettings(true); }, style: {
-              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: 8, border: '1px solid var(--border)',
-              background: 'var(--surface)', cursor: 'pointer', fontSize: 14,
+              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: 10,
+              background: 'rgba(255,255,255,0.7)', cursor: 'pointer',
+              color: 'var(--n700)', border: '1px solid var(--u200)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }, title: 'Settings' }, '⚙️'),
+            }, title: 'Settings' },
+              React.createElement(QIcon, { n: 'settings', s: 17 })),
             React.createElement('button', { onClick: function() { navigate('profile'); }, style: {
               width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: '50%',
-              background: screen === 'profile' ? 'var(--primary-d, var(--primary))' : 'var(--primary)', color: '#fff',
-              border: screen === 'profile' ? '2px solid var(--text-1)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
-              fontFamily: 'Poppins',
+              background: 'var(--u600)', color: '#fff',
+              border: screen === 'profile' ? '2px solid var(--u900)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              fontFamily: 'Plus Jakarta Sans',
             }, title: 'View profile' },
               auth && auth.email ? auth.email[0].toUpperCase() : '?'))),
 
         // Decorative background layer (authenticated pages) — revision §6.1
         isLoggedIn && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 0, overflow: 'hidden', pointerEvents: 'none' } },
-          React.createElement('div', { style: { position: 'absolute', width: 480, height: 480, borderRadius: '50%', top: -160, right: -120, background: 'radial-gradient(circle, rgba(88,101,242,0.16) 0%, rgba(88,101,242,0) 70%)' } }),
-          React.createElement('div', { style: { position: 'absolute', width: 380, height: 380, borderRadius: '50%', bottom: -120, left: -100, background: 'radial-gradient(circle, rgba(124,58,237,0.13) 0%, rgba(124,58,237,0) 70%)' } }),
-          React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: '38%', right: -70, border: '1.5px solid rgba(88,101,242,0.10)' } })),
+          React.createElement('div', { style: { position: 'absolute', width: 480, height: 480, borderRadius: '50%', top: -160, right: -120, background: 'radial-gradient(circle, rgba(92,63,150,0.13) 0%, rgba(92,63,150,0) 70%)' } }),
+          React.createElement('div', { style: { position: 'absolute', width: 380, height: 380, borderRadius: '50%', bottom: -120, left: -100, background: 'radial-gradient(circle, rgba(155,74,150,0.11) 0%, rgba(155,74,150,0) 70%)' } }),
+          React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: '38%', right: -70, border: '1.5px solid rgba(92,63,150,0.09)' } })),
 
         // Main content
         React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
@@ -199,24 +208,25 @@
         // Consistent company footer on all authenticated pages (revision §2.2/§6.2)
         isLoggedIn && React.createElement(QLFooter, null),
 
-        // Bottom tab bar (mobile only) — native mobile pattern, all 5 items always visible
+        // Bottom tab bar (mobile only) — GDV: line icons
         isLoggedIn && isMobile && React.createElement('nav', { style: {
           position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100,
-          background: 'rgba(245,247,255,0.96)',
-          backdropFilter: 'blur(20px)',
-          borderTop: '1px solid var(--border)',
+          background: 'rgba(255,255,255,0.92)',
+          backdropFilter: 'blur(20px) saturate(170%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(170%)',
+          borderTop: '1px solid var(--n200)',
           display: 'flex',
           padding: '6px 4px calc(6px + env(safe-area-inset-bottom))',
         } },
-          [['dashboard','🏠','Home'],['cases','📚','Cases'],['mentor','🎓','Mentor'],['sessions','🕘','Sessions'],['profile','👤','Profile']].map(function(pair) {
+          [['dashboard','home','Home'],['cases','cases','Cases'],['mentor','mentor','Mentor'],['sessions','history','Sessions'],['profile','user','Profile']].map(function(pair) {
             var s = pair[0], ic = pair[1], l = pair[2];
             return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
-              flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+              flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
               padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer',
-              fontFamily: 'Poppins', fontSize: 9.5, fontWeight: screen === s ? 700 : 500,
-              color: screen === s ? 'var(--primary)' : 'var(--text-3)',
+              fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: screen === s ? 700 : 500,
+              color: screen === s ? 'var(--u600)' : 'var(--n500)',
             } },
-              React.createElement('span', { style: { fontSize: 19, lineHeight: 1 } }, ic),
+              React.createElement(QIcon, { n: ic, s: 20 }),
               React.createElement('span', null, l));
           })),
 
@@ -226,14 +236,14 @@
           React.createElement('div', { style: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 320, background: 'var(--surface)', boxShadow: 'var(--sh-xl)', padding: 24, display: 'flex', flexDirection: 'column' } },
             React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 } },
               React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)' } }, 'Settings'),
-              React.createElement('button', { onClick: closeSettings, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontSize: 12, fontFamily: 'Poppins' } }, '✕ Close')),
+              React.createElement('button', { onClick: closeSettings, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontSize: 12, fontFamily: 'Plus Jakarta Sans' } }, '✕ Close')),
             React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } },
               React.createElement('p', null, 'Logged in as: ', React.createElement('strong', null, (auth && auth.email) || '–')),
               React.createElement('p', null, 'Role: ', (auth && auth.role) || '–'),
               React.createElement('p', { style: { marginTop: 20, fontSize: 11, color: 'var(--text-3)' } }, 'Qora \u2014 Clinical Interview Trainer v0.16.0')),
             React.createElement('div', { style: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 } },
-              React.createElement('button', { onClick: function() { closeSettings(); navigate('billing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, '✨ Upgrade plan'),
-              React.createElement('button', { onClick: handleLogout, style: { width: '100%', padding: 11, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Log out')))));
+              React.createElement('button', { onClick: function() { closeSettings(); navigate('billing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '✨ Upgrade plan'),
+              React.createElement('button', { onClick: handleLogout, style: { width: '100%', padding: 11, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Log out')))));
     }
 
     // Reuse a single root across dev hot-reloads (avoids the duplicate-createRoot warning).

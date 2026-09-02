@@ -1450,9 +1450,9 @@ function QLPricing(props) {
             width: '100%', padding: 12, borderRadius: 12, border: 'none',
             background: isAccent ? '#fff' : 'var(--primary)',
             color: isAccent ? 'var(--primary)' : '#fff',
-            fontSize: 13, fontWeight: 700, fontFamily: 'Poppins',
+            fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans',
             cursor: 'pointer', textAlign: 'center',
-            boxShadow: isAccent ? '0 4px 14px rgba(88,101,242,0.35)' : 'none',
+            boxShadow: isAccent ? '0 4px 14px rgba(92,63,150,0.24)' : 'none',
             transition: 'transform 0.15s ease, box-shadow 0.15s ease',
           },
         }, p.cta));
@@ -1589,7 +1589,7 @@ function QLGoogleButton({ onCredential }) {
     return function () { alive = false; };
   }, [clientId]);
   if (!clientId) {
-    return React.createElement('button', { disabled: true, title: 'Set VITE_GOOGLE_CLIENT_ID to enable', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'not-allowed' } }, 'Continue with Google · coming soon');
+    return React.createElement('button', { disabled: true, title: 'Set VITE_GOOGLE_CLIENT_ID to enable', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'not-allowed' } }, 'Continue with Google · coming soon');
   }
   return React.createElement('div', { style: { marginTop: 12, display: 'flex', justifyContent: 'center' } }, React.createElement('div', { ref: ref }));
 }
@@ -1627,7 +1627,7 @@ function QLAuth({ mode, setMode, onLogin }) {
     React.createElement('input', {
       type: type || 'text', value, onChange: e => set(e.target.value),
       onKeyDown: e => { if (e.key === 'Enter') submit(); }, placeholder: ph, autoComplete: type === 'password' ? 'current-password' : 'on',
-      style: { width: '100%', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Poppins', color: 'var(--text-1)' },
+      style: { width: '100%', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' },
     }));
 
   return React.createElement('div', { className: 'as', style: { maxWidth: 'min(400px, calc(100% - 32px))', margin: '40px auto', padding: 28, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-lg)' } },
@@ -1637,7 +1637,7 @@ function QLAuth({ mode, setMode, onLogin }) {
     field('Email', email, setEmail, 'email', 'you@example.com'),
     field('Password', password, setPassword, 'password', '••••••••'),
     err && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err),
-    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', padding: '12px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Please wait\u2026' : (isSignup ? 'Create account' : 'Log in')),
+    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', padding: '12px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Please wait\u2026' : (isSignup ? 'Create account' : 'Log in')),
     React.createElement(QLGoogleButton, { onCredential: async function (cred) {
       if (busy) return;
       setBusy(true); setErr('');
@@ -1649,7 +1649,7 @@ function QLAuth({ mode, setMode, onLogin }) {
     } }),
     React.createElement('div', { style: { textAlign: 'center', marginTop: 16, fontSize: 13, color: 'var(--text-2)' } },
       isSignup ? 'Already have an account? ' : "Don't have an account? ",
-      React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
+      React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
 }
 
 function QoraLanding({ onLogin, onSubscribe }) {
@@ -1675,8 +1675,8 @@ function QoraLanding({ onLogin, onSubscribe }) {
       React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' } }, 'Qora'),
       React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' } }, 'Clinical interview trainer')),
     React.createElement('div', { style: { display: 'flex', gap: 8 } },
-      React.createElement('button', { onClick: () => go('login'), style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Log in'),
-      React.createElement('button', { onClick: () => go('signup'), style: { padding: '7px 16px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Get started')));
+      React.createElement('button', { onClick: () => go('login'), style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Log in'),
+      React.createElement('button', { onClick: () => go('signup'), style: { padding: '7px 16px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Get started')));
 
   if (view === 'auth') {
     return React.createElement('div', { style: { minHeight: '100vh' } }, header,
@@ -1686,9 +1686,9 @@ function QoraLanding({ onLogin, onSubscribe }) {
   return React.createElement('div', { style: { minHeight: '100vh', position: 'relative', overflow: 'hidden' } },
     // Subtle decorative background (revision §1.3) — kept light & clean.
     React.createElement('div', { style: { position: 'absolute', inset: 0, zIndex: -1, overflow: 'hidden', pointerEvents: 'none' } },
-      React.createElement('div', { style: { position: 'absolute', width: 520, height: 520, borderRadius: '50%', top: -180, right: -140, background: 'radial-gradient(circle, rgba(88,101,242,0.14) 0%, rgba(88,101,242,0) 70%)' } }),
-      React.createElement('div', { style: { position: 'absolute', width: 420, height: 420, borderRadius: '50%', top: '30%', left: -150, background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, rgba(124,58,237,0) 70%)' } }),
-      React.createElement('div', { style: { position: 'absolute', width: 260, height: 260, borderRadius: '50%', top: '62%', right: -80, border: '1.5px solid rgba(88,101,242,0.12)' } })),
+      React.createElement('div', { style: { position: 'absolute', width: 520, height: 520, borderRadius: '50%', top: -180, right: -140, background: 'radial-gradient(circle, rgba(92,63,150,0.12) 0%, rgba(92,63,150,0) 70%)' } }),
+      React.createElement('div', { style: { position: 'absolute', width: 420, height: 420, borderRadius: '50%', top: '30%', left: -150, background: 'radial-gradient(circle, rgba(155,74,150,0.10) 0%, rgba(155,74,150,0) 70%)' } }),
+      React.createElement('div', { style: { position: 'absolute', width: 260, height: 260, borderRadius: '50%', top: '62%', right: -80, border: '1.5px solid rgba(92,63,150,0.10)' } })),
     header,
     // ── Hero ──
     React.createElement('section', { style: { padding: '60px 24px 20px' } },
@@ -1700,8 +1700,8 @@ function QoraLanding({ onLogin, onSubscribe }) {
         React.createElement('p', { className: 'au d1', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 'min(620px, 100%)', margin: '0 auto 28px' } },
           'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring against a hidden checklist and a full model-answer reveal. From internal medicine to emergency.'),
         React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' } },
-          React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
-          React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'I have an account')),
+          React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
+          React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'I have an account')),
         // Stats
         React.createElement(QLStats, null))),
 
@@ -1821,6 +1821,58 @@ function _pilotEvent(event, extra) {
   } catch (e) { /* analytics must never break the app */ }
 }
 
+// ============================================================
+// Qora logo (GDV identity) + line icon set (GDV §7)
+// ============================================================
+function QoraLogo({ h }) {
+  return React.createElement('svg', { width: h * 2.6, height: h, viewBox: '-58 -58 190 160', xmlns: 'http://www.w3.org/2000/svg', 'aria-label': 'Qora', style: { display: 'block' } },
+    React.createElement('path', { d: 'M -7.6 43.3 A 44 44 0 0 1 7.6 -43.3', fill: 'none', stroke: '#9A76DB', 'stroke-width': 6 }),
+    React.createElement('circle', { cx: 0, cy: 0, r: 30, fill: 'none', stroke: '#5C3F96', 'stroke-width': 13 }),
+    React.createElement('circle', { cx: 0, cy: 0, r: 10, fill: 'none', stroke: '#C97A15', 'stroke-width': 4 }),
+    React.createElement('path', { d: 'M 18 18 C 36 34 44 44 44 56', fill: 'none', stroke: '#5C3F96', 'stroke-width': 13 }),
+    React.createElement('circle', { cx: 42, cy: 78, r: 9, fill: '#9A76DB' }),
+    React.createElement('text', { x: 41, y: 16, fill: '#5C3F96', 'font-family': "'Plus Jakarta Sans',sans-serif", style: { fontSize: 46, fontWeight: 700, letterSpacing: '-0.5px' } }, 'ora'));
+}
+
+// GDV §7 line icons — 24×24 grid, 1.75 stroke, rounded caps. Colour u700.
+const QICON_PATHS = {
+  settings: 'M12 3.5a8.5 8.5 0 0 1 8.5 8.5 8.5 8.5 0 0 1-8.5 8.5 8.5 8.5 0 0 1-8.5-8.5 8.5 8.5 0 0 1 8.5-8.5zM12 9.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z',
+  home: 'M4 11.5 12 4.5l8 7v8a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z',
+  cases: 'M5 3.5h14a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-15a1 1 0 0 1 1-1zM9 8.5h6M9 12.5h6M9 16.5h4',
+  mentor: 'M12 4v7l4.5 3M4.5 12a7.5 7.5 0 1 0 3-6M4.5 4v4H8.5',
+  history: 'M12 4v8l5 3M4.5 12a7.5 7.5 0 1 0 3-6M4.5 4v4H8.5',
+  user: 'M12 4.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zM5.5 19.5c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6',
+  back: 'M15 5.5 8.5 12 15 18.5',
+  forward: 'M9 5.5 15.5 12 9 18.5',
+  check: 'M4.5 12.5 9.5 17.5 19.5 7.5',
+  close: 'M6 6l12 12M18 6 6 18',
+  plus: 'M12 5v14M5 12h14',
+  clock: 'M12 5a7 7 0 1 1 0 14 7 7 0 0 1 0-14zM12 8v4.5l3 2',
+  important: 'M12 5a7 7 0 1 1 0 14 7 7 0 0 1 0-14zM12 8.5V12M12 15h.01',
+  search: 'M10.5 4.5a6 6 0 1 1 0 12 6 6 0 0 1 0-12zM15.5 15.5 20 20',
+  mic: 'M12 3.5a3.5 3.5 0 0 1 3.5 3.5v4.5a3.5 3.5 0 0 1-7 0V7a3.5 3.5 0 0 1 3.5-3.5zM5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V20',
+  play: 'M8 5.5 18.5 12 8 18.5z',
+  pause: 'M8.5 5.5v13M15.5 5.5v13',
+  send: 'M4.5 12 19.5 4.5 15.5 19.5 12 13.5z',
+  award: 'M12 3.5 14.6 9l6 .9-4.3 4.2 1 6-5.3-2.8L6.7 20l1-6L3.4 9.9 9.4 9z',
+  streak: 'M6 20v-6M12 20V9M18 20v-8',
+  flame: 'M12 3.5c3.5 2.5 5 5 5 8.5a5 5 0 0 1-10 0c0-1.8.6-3.2 1.6-4.6.6 1.2 1.5 2 2.4 2.1V6.5c0-1-.9-2.4-1.2-3z',
+  chart: 'M6 20v-6M12 20V9M18 20v-8',
+  target: 'M12 4.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15zM12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7zM12 11.5a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z',
+  flag: 'M6 21V4.5M6 5c4 0 4 3 8 3 4 0 4-3 8-3v11c-4 0-4 3-8 3-4 0-4-3-8-3',
+  star: 'M12 4 14.5 9l5.5.8-4 3.9.9 5.5L12 17.5 7.1 19.2 8 13.7 4 9.8 9.5 9z',
+  spark: 'M12 4v3M12 17v3M4 12h3M17 12h3M6.5 6.5l2 2M15.5 15.5l2 2M17.5 6.5l-2 2M8.5 15.5l-2 2',
+  lock: 'M7.5 10V8.5a4.5 4.5 0 0 1 9 0V10M6 10h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z',
+  camera: 'M4.5 7.5h3l2-2h5l2 2h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1zM12 11a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z',
+  trophy: 'M8 4.5h8V14a4 4 0 0 1-8 0zM8 6H5.5a1 1 0 0 0-1 1 3.5 3.5 0 0 0 3.5 3.5M16 6h2.5a1 1 0 0 1 1 1 3.5 3.5 0 0 1-3.5 3.5M12 18v2.5M8 21.5h8',
+};
+function QIcon({ n, s, color }) {
+  var d = QICON_PATHS[n] || '';
+  if (!d) return React.createElement('span', { style: { fontSize: s || 18 } }, '•');
+  return React.createElement('svg', { width: s || 20, height: s || 20, viewBox: '0 0 24 24', fill: 'none', stroke: color || 'currentColor', strokeWidth: 1.75, strokeLinecap: 'round', strokeLinejoin: 'round', style: { flexShrink: 0 } },
+    React.createElement('path', { d: d }));
+}
+
 const QV2_SPEC_LABEL = {
   internal_medicine: 'Internal medicine', surgery: 'Surgery', paediatrics: 'Paediatrics',
   obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology',
@@ -1881,32 +1933,36 @@ function QV2Catalogue({ onPick, onProgress }) {
 
   const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)));
   const DIFF_LABEL = { '1': _t('cases.difficulty_1'), '2': _t('cases.difficulty_2'), '3': _t('cases.difficulty_3') };
-  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(1080px, calc(100% - 24px))', margin: '0 auto', padding: '24px 16px' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 6 } },
-      React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)' } }, _t('cases.title')),
-      onProgress && React.createElement('button', { onClick: onProgress, style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, '\uD83D\uDCCA ' + _t('dashboard.your_progress'))),
-    React.createElement('div', { style: { marginBottom: 16, fontSize: 13, color: 'var(--text-2)' } },
-      shown.length + (shown.length === cases.length ? '' : ' of ' + cases.length) + ' cases across ' + specs.length + ' specialties'),
-    // specialty filter chips
-    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
-      [['', _t('cases.filter_all')]].concat(specs.map(s => [s, _qv2SpecLabel(s)])).map(([val, lab]) =>
-        React.createElement('button', { key: val || 'all', onClick: () => setFilter(val), style: {
-          padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: filter === val ? 700 : 500,
-          fontFamily: 'Poppins', cursor: 'pointer',
-          border: '1px solid ' + (filter === val ? 'var(--primary)' : 'var(--border)'),
-          background: filter === val ? 'var(--primary-l)' : 'var(--surface)',
-          color: filter === val ? 'var(--primary)' : 'var(--text-2)',
-        } }, lab))),
+  return React.createElement('div', { style: { maxWidth: 'min(1080px, calc(100% - 24px))', margin: '0 auto', padding: '24px 16px' } },
+    // GDV §4: pita suasana "Senja" — siluet rak arsip
+    React.createElement(QAMoodBand, { scene: 'senja', kicker: (specs.length ? specs.length + ' SPECIALTIES' : 'CASE LIBRARY'),
+      title: _t('cases.title'),
+      sub: shown.length + (shown.length === cases.length ? '' : ' of ' + cases.length) + ' cases across ' + specs.length + ' specialties',
+      children: onProgress && React.createElement('button', { onClick: onProgress, style: { marginTop: 14, padding: '8px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)', display: 'inline-flex', alignItems: 'center', gap: 6 } }, React.createElement(QIcon, { n: 'chart', s: 15 }), _t('dashboard.your_progress')) }),
+    // Filter chips overlap the mood band
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
+      // specialty filter chips
+      React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
+        [['', _t('cases.filter_all')]].concat(specs.map(s => [s, _qv2SpecLabel(s)])).map(([val, lab]) =>
+          React.createElement('button', { key: val || 'all', onClick: () => setFilter(val), style: {
+            padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: filter === val ? 700 : 500,
+            fontFamily: 'Plus Jakarta Sans', cursor: 'pointer',
+            border: '1px solid ' + (filter === val ? 'var(--primary)' : 'var(--border)'),
+            background: filter === val ? 'var(--primary-l)' : 'var(--surface)',
+            color: filter === val ? 'var(--primary)' : 'var(--text-2)',
+          } }, lab))),
     // difficulty filter chips
     React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 20 } },
       [['', _t('cases.filter_all') + ' ' + _t('cases.title')], ['1', _t('cases.difficulty_1')], ['2', _t('cases.difficulty_2')], ['3', _t('cases.difficulty_3')]].map(([val, lab]) =>
         React.createElement('button', { key: 'd' + (val || 'all'), onClick: () => setDiff(val), title: DIFF_LABEL[val] || 'All difficulty levels', style: {
           padding: '6px 14px', borderRadius: 999, fontSize: 12.5, fontWeight: diff === val ? 700 : 500,
-          fontFamily: 'Poppins', cursor: 'pointer',
+          fontFamily: 'Plus Jakarta Sans', cursor: 'pointer',
           border: '1px solid ' + (diff === val ? 'var(--violet, var(--primary))' : 'var(--border)'),
           background: diff === val ? 'var(--violet-l, var(--primary-l))' : 'var(--surface)',
           color: diff === val ? 'var(--violet, var(--primary))' : 'var(--text-2)',
         } }, lab))),
+      // close overlap wrapper
+      ),
     // empty state
     shown.length === 0 && React.createElement('div', { style: { padding: '32px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 'var(--r-lg)', border: '1px dashed var(--border)' } }, _t('cases.no_results')),
     // cards grid
@@ -1914,7 +1970,7 @@ function QV2Catalogue({ onPick, onProgress }) {
       shown.map((c, i) => React.createElement('button', {
         key: c.id, onClick: () => onPick(c), className: 'as', style: {
           textAlign: 'left', padding: 16, borderRadius: 'var(--r-lg)', border: '1px solid var(--border)',
-          background: 'var(--surface)', boxShadow: 'var(--sh-sm)', cursor: 'pointer', fontFamily: 'Poppins',
+          background: 'var(--surface)', boxShadow: 'var(--sh-sm)', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans',
           display: 'flex', flexDirection: 'column', gap: 8, animationDelay: (i % 8) * 0.04 + 's',
         },
       },
@@ -1935,7 +1991,7 @@ function QV2AssessField({ label, value, set, ph, area }) {
     React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', marginBottom: 5 } }, label),
     React.createElement(area ? 'textarea' : 'input', {
       value, onChange: (e) => set(e.target.value), placeholder: ph, rows: area ? 3 : undefined,
-      style: { width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)', resize: area ? 'vertical' : 'none' },
+      style: { width: '100%', padding: '10px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)', resize: area ? 'vertical' : 'none' },
     }));
 }
 
@@ -1962,19 +2018,19 @@ function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }
   return React.createElement('div', null,
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('input', { value: search, onChange: (e) => setSearch(e.target.value), placeholder: 'Search ' + (unit || 'items') + '…',
-        style: { flex: 1, minWidth: 0, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
+        style: { flex: 1, minWidth: 0, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' } }),
       React.createElement('span', { style: { fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap', color: max && selected.length >= max ? 'var(--red-d)' : 'var(--text-2)' } }, max ? (selected.length + ' / ' + max + ' selected') : (selected.length + ' selected'))),
     React.createElement('div', { style: { display: 'flex', gap: 8, marginBottom: 12, flexWrap: 'wrap' } },
       React.createElement('select', { value: cat, onChange: (e) => setCat(e.target.value),
-        style: { flex: isMobile ? '1 1 100%' : 1, padding: '9px 10px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } },
+        style: { flex: isMobile ? '1 1 100%' : 1, padding: '9px 10px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' } },
         React.createElement('option', { value: '' }, 'Choose a category…'),
         cats.map((c) => React.createElement('option', { key: c, value: c }, c + ' (' + (catalog[c] || []).length + ')'))),
       React.createElement('input', { value: custom, onChange: (e) => setCustom(e.target.value), onKeyDown: (e) => { if (e.key === 'Enter') { e.preventDefault(); addCustom(); } }, placeholder: 'Or type your own…',
-        style: { flex: 1, minWidth: 0, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Poppins', color: 'var(--text-1)' } }),
-      React.createElement('button', { onClick: addCustom, disabled: !custom.trim() || (max && selected.length >= max), style: { padding: '0 14px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: (!custom.trim() || (max && selected.length >= max)) ? 0.5 : 1 } }, 'Add')),
+        style: { flex: 1, minWidth: 0, padding: '9px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' } }),
+      React.createElement('button', { onClick: addCustom, disabled: !custom.trim() || (max && selected.length >= max), style: { padding: '0 14px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: (!custom.trim() || (max && selected.length >= max)) ? 0.5 : 1 } }, 'Add')),
     selected.length > 0 && React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 } },
       selected.map((it) => React.createElement('button', { key: it, onClick: () => removeSel(it), title: 'Remove', style: {
-        padding: '5px 10px', borderRadius: 999, fontSize: 12, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600,
+        padding: '5px 10px', borderRadius: 999, fontSize: 12, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontWeight: 600,
         border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)' } }, '✓ ' + it + ' ✕'))),
     visible.length > 0
       ? React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
@@ -1982,7 +2038,7 @@ function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }
             const on = selected.indexOf(it) >= 0;
             const capped = !!max && !on && selected.length >= max;
             return React.createElement('button', { key: it, onClick: () => onToggle(it), disabled: capped, style: {
-              padding: '6px 12px', borderRadius: 999, fontSize: 12, fontFamily: 'Poppins', cursor: capped ? 'not-allowed' : 'pointer',
+              padding: '6px 12px', borderRadius: 999, fontSize: 12, fontFamily: 'Plus Jakarta Sans', cursor: capped ? 'not-allowed' : 'pointer',
               fontWeight: on ? 700 : 500, opacity: capped ? 0.45 : 1,
               border: '1px solid ' + (on ? 'var(--primary)' : 'var(--border)'),
               background: on ? 'var(--primary-l)' : 'var(--surface)',
@@ -2050,20 +2106,20 @@ function QV2Assess({ caseSummary, isOsce, busy, err, transcript, onBack, onSubmi
   const panel = tab === 'conversation' ? conversationTab : tab === 'investigations' ? investigationsTab : tab === 'therapy' ? therapyTab : diagnosisTab;
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(720px, calc(100% - 16px))', margin: '0 auto', padding: 16 } },
-    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Back to interview'),
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Back to interview'),
     React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, _t('session.your_assessment')),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 16 } }, 'Commit your workup before the answer key is revealed.'),
     React.createElement('div', { style: { display: 'flex', gap: 4, marginBottom: 18, borderBottom: '1px solid var(--border)', flexWrap: 'wrap' } },
       tabs.map(([val, lab]) => React.createElement('button', { key: val, onClick: () => setTab(val), style: {
         padding: '9px 14px', border: 'none', borderBottom: '2px solid ' + (tab === val ? 'var(--primary)' : 'transparent'),
-        background: 'none', color: tab === val ? 'var(--primary)' : 'var(--text-2)', fontSize: 13, fontWeight: tab === val ? 700 : 500, fontFamily: 'Poppins', cursor: 'pointer',
+        background: 'none', color: tab === val ? 'var(--primary)' : 'var(--text-2)', fontSize: 13, fontWeight: tab === val ? 700 : 500, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer',
       } }, lab + (val === 'investigations' && inv.length ? ' (' + inv.length + ')' : '') + (val === 'therapy' && tx.length ? ' (' + tx.length + ')' : '')))),
     panel,
     !busy && err && React.createElement('div', { style: { marginTop: 14, padding: '10px 12px', borderRadius: 10, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5 } },
       '⚠️ ' + String(err) + ' — ' + _t('session.score_retry_hint')),
     localErr && React.createElement('div', { style: { marginTop: 14, padding: '10px 12px', borderRadius: 10, background: 'var(--amber-l, var(--red-l))', border: '1px solid var(--amber)', color: 'var(--amber-d, var(--red-d))', fontSize: 12.5, lineHeight: 1.5 } },
       '⚠️ ' + localErr),
-    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Scoring…' : 'Finish & reveal answer key'));
+    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Scoring…' : 'Finish & reveal answer key'));
 }
 
 // ---- Session chat ----
@@ -2080,7 +2136,7 @@ function QV2StationBrief({ caseSummary, mode, language, onBegin, onExit }) {
     : ['Take a focused history', 'Screen for red-flag symptoms', 'Explore Ideas, Concerns & Expectations', 'Give a working diagnosis', 'Propose management'];
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(660px, calc(100% - 16px))', margin: '0 auto', padding: 16 } },
-    React.createElement('button', { onClick: onExit, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, isId ? '← Keluar' : '← Exit'),
+    React.createElement('button', { onClick: onExit, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, isId ? '← Keluar' : '← Exit'),
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 } },
       React.createElement('span', { style: { fontSize: 10, fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } }, isOsce ? 'OSCE Station' : 'Practice Station'),
       React.createElement('div', { style: { fontSize: 13, color: 'var(--text-3)' } }, '· ' + (caseSummary.specialty || ''))),
@@ -2100,7 +2156,7 @@ function QV2StationBrief({ caseSummary, mode, language, onBegin, onExit }) {
           ? (isId ? '🔒 Diagnosis Anda dirahasiakan. Rencana penatalaksanaan & kunci jawaban hanya terungkap saat Anda mengunci submisi.' : '🔒 The diagnosis is hidden. The answer key is only revealed after you commit your submission.')
           : (isId ? 'Mode latihan — Anda boleh melanjutkan kapan pun; tidak ada penalti waktu.' : 'Practice mode — proceed at your own pace; no time penalty.'))),
 
-    React.createElement('button', { onClick: onBegin, style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } },
+    React.createElement('button', { onClick: onBegin, style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } },
       isId ? (isOsce ? '🚪 Mulai stasiun →' : '🚪 Mulai →') : (isOsce ? '🚪 Begin station →' : '🚪 Begin →')));
 }
 
@@ -2142,7 +2198,7 @@ function QV2MediaModal({ media, onClose }) {
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 } },
         React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', flex: 1 } }, (QV2_MEDIA_ICON[cur.type] || '🔬') + ' ' + (cur.label || 'Examination media')),
         count > 1 && React.createElement('span', { style: { fontSize: 11, color: 'var(--text-3)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' } }, (idx + 1) + ' / ' + count),
-        React.createElement('button', { onClick: onClose, style: { padding: '6px 12px', fontSize: 12, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '✕ Close')),
+        React.createElement('button', { onClick: onClose, style: { padding: '6px 12px', fontSize: 12, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '✕ Close')),
       React.createElement('div', { style: { position: 'relative', flex: 1, background: 'var(--surface-2)', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', minHeight: 260 } },
         !loaded && React.createElement('div', { style: { position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-3)', fontSize: 12 } }, 'Loading…'),
         React.createElement('img', { src: _qv2ResolveMedia(cur.src), alt: cur.caption || cur.label || 'Examination media', onLoad: () => setLoaded(true), onError: () => setLoaded(true), style: { maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain', display: 'block', opacity: loaded ? 1 : 0, transition: 'opacity 0.2s ease' } }),
@@ -2167,7 +2223,7 @@ function QV2MediaBar({ caseId }) {
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, padding: '8px 14px', marginBottom: 10, background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 12 } },
       React.createElement('span', { style: { fontSize: 11, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase' } }, 'Examination'),
       React.createElement('div', { style: { flex: 1 } }),
-      React.createElement('button', { onClick: () => setOpen(true), style: { padding: '6px 12px', fontSize: 12, fontWeight: 600, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-1)', fontFamily: 'Poppins', cursor: 'pointer' } }, '🔬 View examination media' + (media.length > 1 ? ' (' + media.length + ')' : ''))),
+      React.createElement('button', { onClick: () => setOpen(true), style: { padding: '6px 12px', fontSize: 12, fontWeight: 600, borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-1)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '🔬 View examination media' + (media.length > 1 ? ' (' + media.length + ')' : ''))),
     open && React.createElement(QV2MediaModal, { media, onClose: () => setOpen(false) }));
 }
 
@@ -2199,7 +2255,7 @@ const QV2_DIM_LABEL = {
 // ---- Session setup: mode selection + preparation (instruksi §4.3 + §4.5) ----
 function QV2ModeCard({ active, onClick, tone, badge, title, body }) {
   return React.createElement('button', { onClick, className: 'as', style: {
-    flex: 1, minWidth: 220, textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', cursor: 'pointer', fontFamily: 'Poppins',
+    flex: 1, minWidth: 220, textAlign: 'left', padding: 18, borderRadius: 'var(--r-lg)', cursor: 'pointer', fontFamily: 'Plus Jakarta Sans',
     background: active ? 'var(--' + tone + '-l, var(--primary-l))' : 'var(--surface)',
     border: '2px solid ' + (active ? 'var(--' + tone + ', var(--primary))' : 'var(--border)'),
     boxShadow: active ? 'var(--sh-md)' : 'var(--sh-xs)', transition: 'all .15s ease',
@@ -2263,7 +2319,7 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
     } catch (e) { setMicState('denied'); }
   }
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(640px, calc(100% - 16px))', margin: '0 auto', padding: '24px 16px 60px' } },
-    React.createElement('button', { onClick: onBack, style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 Library'),
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 16, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '\u2190 Library'),
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, 'Get ready for your session'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 22, fontStyle: 'italic' } }, caseSummary.first_impression_id || caseSummary.first_impression || caseSummary.presentation_id || caseSummary.presentation),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose a mode'),
@@ -2275,7 +2331,7 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
       [['en','English'],['id','Bahasa Indonesia'],['ms','Bahasa Melayu'],['tl','Tagalog'],['vi','Tiếng Việt'],['th','ภาษาไทย']].map(function(p) {
         var code = p[0], label = p[1];
         return React.createElement('button', { key: code, onClick: function() { setLang(code); }, style: {
-          padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: lang === code ? 700 : 500,
+          padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontWeight: lang === code ? 700 : 500,
           border: '1px solid ' + (lang === code ? 'var(--primary)' : 'var(--border)'),
           background: lang === code ? 'var(--primary-l)' : 'var(--surface)',
           color: lang === code ? 'var(--primary)' : 'var(--text-2)',
@@ -2290,7 +2346,7 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
           React.createElement('div', { style: { fontSize: 12, color: 'var(--text-2)', lineHeight: 1.5 } }, 'Optional — talk to the patient by voice. You can always type instead.')),
         micState === 'granted'
           ? React.createElement('span', { style: { fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 999, background: 'var(--teal-l, var(--primary-l))', color: 'var(--teal, var(--primary))' } }, '✓ Allowed')
-          : React.createElement('button', { onClick: requestMic, disabled: micState === 'requesting', style: { fontSize: 12, fontWeight: 700, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer' } }, micState === 'denied' ? 'Blocked — retry' : micState === 'requesting' ? 'Requesting…' : 'Allow')),
+          : React.createElement('button', { onClick: requestMic, disabled: micState === 'requesting', style: { fontSize: 12, fontWeight: 700, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, micState === 'denied' ? 'Blocked — retry' : micState === 'requesting' ? 'Requesting…' : 'Allow')),
       React.createElement(QV2PrepRow, { icon: '🔊', title: 'Speech-to-text', body: stt === null ? 'Checking…' : (stt === 'browser' ? 'Ready — using your browser’s built-in speech recognition (no upload).' : stt === 'server' ? 'Ready — speech is transcribed on the server.' : 'Unavailable in this browser — you can still type your questions.'), status: stt === null ? 'Checking…' : (stt ? 'Ready' : 'Text only'), tone: stt ? 'teal' : 'primary' }),
       React.createElement(QV2PrepRow, { icon: '🔒', title: 'Privacy & security', body: 'Your audio is processed securely and is not stored without your explicit consent.' }),
       React.createElement(QV2PrepRow, { icon: '🎧', title: 'Audio quality', body: 'For best results, use a quiet room and check your microphone works.' })),
@@ -2300,9 +2356,9 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
           React.createElement('div', { style: { fontSize: 13.5, fontWeight: 700, color: 'var(--amber-d)', marginBottom: 4 } }, '⚡ Free session limit reached'),
           React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'You have used all ' + (billing.free_session_limit || 3) + ' free sessions this period. Upgrade to keep practising without limits.'),
           React.createElement('div', { style: { display: 'flex', gap: 8 } },
-            React.createElement('button', { onClick: function () { if (window.__goBilling) window.__goBilling(); }, style: { padding: '10px 18px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Upgrade plan'),
-            React.createElement('button', { onClick: onBack, style: { padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Back to library')))
-      : React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
+            React.createElement('button', { onClick: function () { if (window.__goBilling) window.__goBilling(); }, style: { padding: '10px 18px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Upgrade plan'),
+            React.createElement('button', { onClick: onBack, style: { padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Back to library')))
+      : React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
 }
 
 // ---- In-session task panel (instruksi §4.6) ----
@@ -2317,7 +2373,7 @@ function QV2TaskPanel({ mode, secs, timerOn, onToggleTimer }) {
     React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', textAlign: 'center', background: low ? 'var(--red-l)' : 'var(--surface)', border: '1px solid ' + (low ? 'var(--red)' : 'var(--border)') } },
       React.createElement('div', { style: { fontSize: 10, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)', marginBottom: 6 } }, 'Time remaining'),
       React.createElement('div', { style: { fontSize: 30, fontWeight: 800, fontVariantNumeric: 'tabular-nums', color: low ? 'var(--red-d)' : 'var(--text-1)' } }, timerOn ? mm + ':' + ss : '—:—'),
-      React.createElement('button', { onClick: onToggleTimer, style: { marginTop: 8, fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? 'Pause timer' : 'Start timer')),
+      React.createElement('button', { onClick: onToggleTimer, style: { marginTop: 8, fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, timerOn ? 'Pause timer' : 'Start timer')),
     React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)' } },
       React.createElement('div', { style: { fontSize: 12, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10 } }, '📋 Your tasks'),
       tasks.map((t, i) => React.createElement('div', { key: i, style: { display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 12, color: 'var(--text-2)', padding: '4px 0', lineHeight: 1.4 } },
@@ -2336,8 +2392,8 @@ function QV2TimeUpModal({ onFinish, onContinue }) {
       React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 8 } }, "Time's up"),
       React.createElement('div', { style: { fontSize: 13.5, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 22 } }, 'Your OSCE time has ended. Finish now and go to your assessment, or keep going — continuing past time applies a small score penalty.'),
       React.createElement('div', { style: { display: 'flex', gap: 10 } },
-        React.createElement('button', { onClick: onContinue, style: { flex: 1, padding: 12, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Continue (−penalty)'),
-        React.createElement('button', { onClick: onFinish, style: { flex: 1, padding: 12, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Finish now'))));
+        React.createElement('button', { onClick: onContinue, style: { flex: 1, padding: 12, borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Continue (−penalty)'),
+        React.createElement('button', { onClick: onFinish, style: { flex: 1, padding: 12, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Finish now'))));
 }
 
 // ---- Voice input button (voice-first experience) ----
@@ -2725,10 +2781,10 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
   const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 140px)' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
-      React.createElement('button', { onClick: () => { _pilotEvent('abandoned', { session_id: sessionId, stage: stage }); onExit(); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
+      React.createElement('button', { onClick: () => { _pilotEvent('abandoned', { session_id: sessionId, stage: stage }); onExit(); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Library'),
       React.createElement(QV2Pill, { tone: isOsce ? 'violet' : 'teal' }, isOsce ? 'OSCE' : 'Practice'),
       React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, _qv2Title(caseSummary)),
-      !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
+      !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
     React.createElement(QV2MediaBar, { caseId: caseSummary.id }),
     err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8 } }, err),
     React.createElement('div', { style: { flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, padding: '8px 2px' } },
@@ -2751,9 +2807,9 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
           value: input, onChange: e => setInput(e.target.value),
           onKeyDown: e => { if (e.key === 'Enter') send(); },
           placeholder: 'Or type a question…', disabled: busy,
-          style: { flex: 1, minWidth: 0, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)' },
+          style: { flex: 1, minWidth: 0, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' },
         }),
-        React.createElement('button', { onClick: () => setStage(isOsce ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', whiteSpace: 'nowrap' } }, isOsce ? 'Exam →' : 'Assess →'))));
+        React.createElement('button', { onClick: () => setStage(isOsce ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, isOsce ? 'Exam →' : 'Assess →'))));
 
   return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 0' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
     wide && React.createElement('div', { style: { width: 240, flexShrink: 0, marginLeft: -40 } },
@@ -2830,7 +2886,7 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
     if (typeof window.confetti !== 'function' || reduce) return;
     var score = report.overall || 0;
     if (score >= 80) {
-      window.confetti({ particleCount: 90, spread: 75, startVelocity: 42, origin: { y: 0.6 }, colors: ['#5865F2', '#8b5cf6', '#22d3a7', '#f0b429'], shapes: ['circle', 'square', 'star'] });
+      window.confetti({ particleCount: 90, spread: 75, startVelocity: 42, origin: { y: 0.6 }, colors: ['#5C3F96', '#9A76DB', '#C77FC0', '#C97A15'], shapes: ['circle', 'square', 'star'] });
     }
   }, [reduce]);
   // Reasoning autopsy (Qora Mentor §4.2): fetch, or generate post-score.
@@ -2950,8 +3006,8 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
     typeof QAutopsyCard === 'function' && autopsy && React.createElement(QAutopsyCard, { autopsy: autopsy }),
     // actions
     React.createElement('div', { style: { display: 'flex', gap: 10, marginTop: 22 } },
-      React.createElement('button', { onClick: () => { _pilotEvent('retry_attempt', { session_id: sessionId }); onAgain(); }, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Try another case'),
-      React.createElement('button', { onClick: onLibrary, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Back to library'))
+      React.createElement('button', { onClick: () => { _pilotEvent('retry_attempt', { session_id: sessionId }); onAgain(); }, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Try another case'),
+      React.createElement('button', { onClick: onLibrary, style: { padding: '10px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Back to library'))
   );
 }
 
@@ -3007,7 +3063,7 @@ function QV2Progress({ onBack }) {
   const goal = p.dailyGoal || { done: 0, target: 1 };
   const goalMet = goal.done >= goal.target;
   return React.createElement('div', { className: 'au', style: { maxWidth: 820, margin: '0 auto', padding: '24px 20px' } },
-    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '← Library'),
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Library'),
     React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 16 } }, 'Your progress'),
     // daily goal banner
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', borderRadius: 'var(--r-lg)', marginBottom: 18, background: goalMet ? 'var(--teal-l, var(--primary-l))' : 'var(--primary-ll, var(--surface-2))', border: '1px solid ' + (goalMet ? 'var(--teal, var(--primary))' : 'var(--border)') } },
@@ -3051,11 +3107,136 @@ function QV2Onboarding({ onDone }) {
       React.createElement('div', { style: { display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 18 } },
         slides.map((_, i) => React.createElement('div', { key: i, style: { width: i === step ? 20 : 7, height: 7, borderRadius: 999, background: i === step ? 'var(--primary)' : 'var(--border-2)', transition: 'all .2s' } }))),
       React.createElement('div', { style: { display: 'flex', gap: 10 } },
-        React.createElement('button', { onClick: onDone, style: { padding: '11px 16px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Skip'),
-        React.createElement('button', { onClick: () => last ? onDone() : setStep(step + 1), style: { flex: 1, padding: '11px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, last ? 'Start practising' : 'Next'))));
+        React.createElement('button', { onClick: onDone, style: { padding: '11px 16px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Skip'),
+        React.createElement('button', { onClick: () => last ? onDone() : setStep(step + 1), style: { flex: 1, padding: '11px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, last ? 'Start practising' : 'Next'))));
 }
 
 // ---- Dashboard (Qora style, inspired by OphthaSim) ----
+// ============================================================
+// QAMood — GDV §4 "pita suasana": one family of colour, different
+// time of day per screen. Vector SVG scenes from the theme mockup.
+// ============================================================
+function QAMoodScene({ scene }) {
+  // Returns the SVG scene markup (gradient sky + light source + layered
+  // silhouettes + floating dots). Six moods, one colour family.
+  var scenes = {
+    fajar: { w:400, h:970, children: [
+      ['sky','linearGradient',[['#331F63',0],['#6A4499',0.5],['#A9739F',1]],null],
+      ['sun','radial',[['#F7CE85',0.95],['#F7CE85',0]],790,288,205,'flick'],
+      ['sunC','circle',790,288,52,'#FBE0AC',0.9],
+      ['m1','M0 300c130-62 210 18 330-22s200-74 330-22 220 76 420 44v100H0z','#4E3080',0.55],
+      ['m2','M0 334c150-52 250 22 380-14s230-56 360-18 230 52 340 26v72H0z','#361F63',0.85],
+      ['m3','M0 366c170-36 280 16 430-8s270-30 650-4v46H0z','#251646',1],
+      ['dots',[[150,66,2.4,0.65],[286,42,1.8,0.5],[470,86,2.2,0.45],[940,56,1.9,0.5],[620,40,1.6,0.4]]],
+      ['float',[[600,196,4.2,'#F7CE85',0.7],[668,152,2.9,'#E4C6F2',0.6],[540,146,2.4,'#F7CE85',0.5]]],
+    ]},
+    senja: { w:330, h:970, children: [
+      ['sky','linearGradient',[['#2A1852',0],['#573484',0.6],['#8B4F94',1]],null],
+      ['glow','radial',[['#D48ACB',0.65],['#D48ACB',0]],660,290,400,'flick'],
+      ['arch1',[[40,118,50,212],[102,152,36,178],[150,96,56,234],[218,170,32,160],[262,140,44,190]],'#1F1240',0.45],
+      ['arch2',[[880,136,46,194],[938,102,40,228],[990,160,52,170]],'#1F1240',0.45],
+      ['arch3',[[0,196,44,134],[316,212,36,118],[812,204,40,126],[1048,188,32,142]],'#150C2C',0.72],
+      ['float',[[500,104,3.6,'#F6DCF2',0.6],[592,70,2.5,'#F6DCF2',0.45],[418,76,2.2,'#F6DCF2',0.4],[700,118,2.8,'#F6DCF2',0.4]]],
+    ]},
+    lentera: { w:330, h:970, children: [
+      ['sky','linearGradient',[['#1F1240',0],['#472B70',0.6],['#7B4B80',1]],null],
+      ['m1','M0 246c150-52 250 26 390-8s240-64 380-24 220 54 310 26v90H0z','#2C1A56',0.75],
+      ['m2','M0 284c180-32 300 20 450-4s280-26 630 8v42H0z','#1D1139',1],
+      ['path','M110 292C300 260 400 206 540 200s280 34 440 12',null,0.7],
+      ['lamp','radial',[['#F0A63A',0.9],['#F0A63A',0]],540,200,180,'flick'],
+      ['node1','circ',[110,292,7.5,'#C77FC0',null]],
+      ['node2','circ',[330,238,7.5,'#C77FC0',null]],
+      ['node3','circ',[540,200,11,'#F5C87A',null]],
+      ['node4','circ',[740,204,6.5,'#3B2568','#9A76DB']],
+      ['node5','circ',[930,212,6.5,'#3B2568','#9A76DB']],
+      ['float',[[620,112,3.2,'#F0A63A',0.6],[486,86,2.5,'#F0A63A',0.45],[690,66,2.1,'#F6DCF2',0.4]]],
+    ]},
+    malam: { w:300, h:970, children: [
+      ['sky','linearGradient',[['#120A24',0],['#2F1B56',0.6],['#553584',1]],null],
+      ['dots',[[90,58,1.9,0.7],[212,36,1.4,0.5],[336,76,2.2,0.6],[472,44,1.5,0.45],[614,66,2,0.6],[762,34,1.4,0.5],[884,62,2.1,0.55],[1002,46,1.6,0.45],[152,104,1.3,0.4],[706,112,1.5,0.4],[400,120,1.2,0.35]]],
+      ['m1','M0 214c150-40 250 18 390-8s240-42 380-12 230 38 310 14v92H0z','#28174C',0.85],
+      ['m2','M0 254c180-28 290 14 450-6s270-20 630 8v44H0z','#1A0F32',1],
+      ['path','M50 178C230 146 400 168 540 142S870 130 1030 152',null,0.5],
+      ['node','circ',[540,142,6,'#C77FC0','#C77FC0'],'flick'],
+    ]},
+    profil: { w:290, h:970, children: [
+      ['sky','linearGradient',[['#271748',0],['#74469C',1]],null],
+      ['aurora1','M0 120c180-70 340 42 540 10s360-86 540-30v50c-180-50-340 32-540 54S180 152 0 190z',['#9A76DB',0,0.5,'#C77FC0',0.6,1,'#9A76DB',0],'flick'],
+      ['aurora2','M0 176c200-46 360 36 560 12s340-56 520-12v28c-180-38-320 26-520 46S200 216 0 204z',['#F0A63A',0,0.5,'#F0A63A',0.4,1,'#F0A63A',0],0.8],
+      ['dots',[[180,52,1.8,0.55],[640,40,1.5,0.45],[900,66,1.6,0.4]]],
+      ['m1','M0 236c190-28 300 18 460 2s300-24 620 8v44H0z','#1F1338',1],
+    ]},
+    pagi: { w:270, h:970, children: [
+      ['sky','linearGradient',[['#553783',0],['#B389C4',1]],null],
+      ['glow','radial',[['#FFE9C4',0.8],['#FFE9C4',0]],850,220,190,'flick'],
+      ['m1','M0 196c160-38 260 20 420-4s280-34 660 4v74H0z','#5A3C8C',0.5],
+      ['m2','M0 230c180-26 300 14 470-4s300-16 610 8v36H0z','#3C2668',1],
+    ]},
+  };
+  var s = scenes[scene] || scenes.fajar;
+  // Build the layers in order, referencing gradients by id constructed after defs.
+  var body = s.children.map(function (c, i) {
+    var t = c[0];
+    if (t === 'sky') return React.createElement('rect', { key: i, width: 970, height: s.w, fill: 'url(#s' + scene + ')' });
+    if (t === 'sun' || t === 'glow' || t === 'lamp') {
+      return React.createElement('circle', { key: i, cx: c[3], cy: c[4], r: c[5], fill: 'url(#r' + scene + ')', className: c[6] || null });
+    }
+    if (t === 'sunC') return React.createElement('circle', { key: i, cx: c[2], cy: c[3], r: c[4], fill: c[5], opacity: c[6] });
+    if (t === 'm1' || t === 'm2' || t === 'm3') {
+      var h = s.w;
+      return React.createElement('path', { key: i, d: c[1], fill: c[2], opacity: c[3] });
+    }
+    if (t === 'dots') {
+      return React.createElement('g', { key: i, fill: '#F1E6FF' }, c[1].map(function (d, j) { return React.createElement('circle', { key: j, cx: d[0], cy: d[1], r: d[2], opacity: d[3] }); }));
+    }
+    if (t === 'float') {
+      return React.createElement('g', { key: i, className: 'qa-float' }, c[1].map(function (d, j) { return React.createElement('circle', { key: j, cx: d[0], cy: d[1], r: d[2], fill: d[3], opacity: d[4] }); }));
+    }
+    if (t === 'path') return React.createElement('path', { key: i, d: c[1], fill: 'none', stroke: '#9A76DB', strokeWidth: c[0]==='path' ? (scene==='malam'?1.8:2.6) : 2.6, strokeDasharray: scene==='malam' ? '4 8' : '7 9', opacity: c[2] });
+    if (t === 'arch1' || t === 'arch2' || t === 'arch3') {
+      return React.createElement('g', { key: i, opacity: c[3], fill: c[2] }, c[1].map(function (r, j) { return React.createElement('rect', { key: j, x: r[0], y: r[1], width: r[2], height: r[3], rx: 7 }); }));
+    }
+    if (t === 'aurora1' || t === 'aurora2') {
+      var gid = scene + '_a' + (t === 'aurora1' ? '1' : '2');
+      return React.createElement('path', { key: i, d: c[1], fill: 'url(#' + gid + ')', className: t === 'aurora1' ? 'qa-flick' : null, opacity: t === 'aurora1' ? undefined : c[3] });
+    }
+    if (t === 'node1' || t === 'node2' || t === 'node3' || t === 'node4' || t === 'node5') {
+      var d = c[2];
+      return React.createElement('circle', { key: i, cx: d[0], cy: d[1], r: d[2], fill: d[3], stroke: d[4] || 'none', strokeWidth: d[4] ? 2.2 : undefined, className: (scene==='malam' && d[3]==='#C77FC0') ? 'qa-flick' : null });
+    }
+    if (t === 'node') return React.createElement('circle', { key: i, cx: c[2][0], cy: c[2][1], r: c[2][2], fill: c[2][3], className: c[3] || 'qa-flick' });
+    return null;
+  });
+  var defs = [];
+  if (scenes[scene] && scenes[scene].children.filter(function (c) { return c[0] === 'sky' || c[0] === 'glow' || c[0] === 'lamp' || c[0] === 'sun'; }).length) {
+    var skyC = s.children.find(function (c) { return c[0] === 'sky'; });
+    var radC = s.children.find(function (c) { return c[0] === 'sun' || c[0] === 'glow' || c[0] === 'lamp'; });
+    defs.push(React.createElement('defs', { key: 'defs' },
+      skyC && React.createElement('linearGradient', { id: 's' + scene, x1: 0, y1: 0, x2: 0.3, y2: 1 }, skyC[2].map(function (st, j) { return React.createElement('stop', { key: j, offset: String(st[1]), stopColor: st[0] }); })),
+      radC && React.createElement('radialGradient', { id: 'r' + scene, cx: 0.5, cy: 0.5, r: 0.5 }, radC[2].map(function (st, j) { return React.createElement('stop', { key: j, offset: String(st[1]), stopColor: st[0], stopOpacity: st[2] }); }))));
+    // aurora gradients
+    scenes[scene].children.filter(function (c) { return c[0].indexOf('aurora') === 0; }).forEach(function (c) {
+      var gid = scene + '_a' + (c[0] === 'aurora1' ? '1' : '2');
+      var arr = c[2] || [];
+      defs.push(React.createElement('defs', { key: gid }, React.createElement('linearGradient', { id: gid, x1: 0, y1: 0, x2: 1, y2: c[0] === 'aurora1' ? 0.4 : 0 }, arr.map(function (st, j) { return React.createElement('stop', { key: j, offset: String(st[1]), stopColor: st[0], stopOpacity: st[2] }); }))));
+    });
+  }
+  return React.createElement('svg', { className: 'qa-scene', style: { display: 'block', width: '100%', height: 'auto' }, viewBox: '0 0 970 ' + s.w, xmlns: 'http://www.w3.org/2000/svg', 'aria-hidden': true },
+    defs, body);
+}
+
+function QAMoodBand({ scene, kicker, title, sub, children }) {
+  // Standard pita suasana: sky + caption (bottom) + optional floating glass
+  // panel (children). Matches GDV §4 structure on every screen.
+  return React.createElement('div', { className: 'qa-band au', style: { marginBottom: 0 } },
+    React.createElement(QAMoodScene, { scene: scene }),
+    React.createElement('div', { style: { position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '30px 32px 96px', color: '#fff' } },
+      kicker && React.createElement('div', { style: { fontSize: 10.5, letterSpacing: '.18em', fontWeight: 700, opacity: .82, marginBottom: 7, textTransform: 'uppercase' } }, kicker),
+      React.createElement('h1', { style: { fontSize: 'clamp(24px,7vw,28px)', margin: 0, fontWeight: 800, letterSpacing: '-.02em', textShadow: '0 2px 18px rgba(20,10,40,.35)' } }, title),
+      sub && React.createElement('p', { style: { margin: '6px 0 0', fontSize: 14, opacity: .88, maxWidth: '44ch', textShadow: '0 1px 8px rgba(20,10,40,.4)' } }, sub),
+      children));
+}
+
 function QoraDashboard({ onNav, onStartCase }) {
   const [p, setP] = React.useState(null);
   const [err, setErr] = React.useState('');
@@ -3102,43 +3283,30 @@ function QoraDashboard({ onNav, onStartCase }) {
 
   return React.createElement('div', { style: { maxWidth: 'min(1100px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '20px 10px 60px' : '32px 24px 60px' } },
 
-    // ── Hero: welcome + progress with clear, fixed proportions ──
-    React.createElement('div', { className: 'au', style: {
-      background: 'linear-gradient(135deg, var(--primary) 0%, #7C3AED 100%)',
-      borderRadius: 24, padding: isMobile ? '26px 20px' : '36px 44px', marginBottom: 24,
-      position: 'relative', overflow: 'hidden', color: '#fff',
-      display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.6fr) minmax(0, 1fr)',
-      gap: isMobile ? 20 : 44, alignItems: 'center',
-    } },
-      React.createElement('div', { style: { position: 'absolute', right: -60, top: -60, width: 320, height: 320, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.08)' } }),
-      React.createElement('div', { style: { position: 'absolute', right: -20, top: -20, width: 220, height: 220, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.12)' } }),
-      React.createElement('div', { style: { position: 'absolute', right: 40, top: 20, width: 140, height: 140, borderRadius: '50%', border: '2px solid rgba(255,255,255,0.15)' } }),
-      // Left: greeting + CTAs
-      React.createElement('div', { style: { position: 'relative', minWidth: 0 } },
-        React.createElement('div', { style: { display: 'inline-flex', alignItems: 'center', gap: 8, background: 'rgba(255,255,255,0.15)', borderRadius: 10, padding: '5px 12px', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 16, backdropFilter: 'blur(8px)' } },
-          React.createElement('span', { style: { fontSize: 13 } }, '👨‍⚕️'), ' Clinical Interview Trainer'),
-        React.createElement('h1', { style: { fontSize: 'clamp(24px, 7vw, 30px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 10 } },
-          'Welcome back' + (firstName ? ', ' + firstName : '') + '! 👋'),
-        React.createElement('p', { style: { fontSize: 14, opacity: 0.82, marginBottom: 26, lineHeight: 1.6, maxWidth: 460 } },
-          'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.'),
-        React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap' } },
-          React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--primary)', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' } }, '▶ Start new case'),
-          completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.3)', background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.9)', fontSize: 14, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Continue practising'))),
-      // Right: progress card (vertically centred, fills its grid track)
-      React.createElement('div', { style: { background: 'rgba(255,255,255,0.12)', backdropFilter: 'blur(12px)', borderRadius: 20, padding: '20px 24px', border: '1px solid rgba(255,255,255,0.2)', alignSelf: 'center' } },
-        React.createElement('div', { style: { fontSize: 11, opacity: 0.7, fontWeight: 600, marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.07em' } }, 'Your Progress'),
-        React.createElement('div', { style: { fontSize: 21, fontWeight: 800, lineHeight: 1.2 } }, 'Lv ' + level + ' · ' + levelName),
-        React.createElement('div', { style: { fontSize: 15, fontWeight: 700, opacity: 0.95, margin: '10px 0 12px' } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' / 200 XP'),
-        React.createElement('div', { style: { background: 'rgba(255,255,255,0.2)', borderRadius: 999, height: 8, marginBottom: 8 } },
-          React.createElement('div', { style: { height: '100%', borderRadius: 999, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease-panel)' } })),
-        React.createElement('div', { style: { fontSize: 10.5, opacity: 0.85, textAlign: 'right' } }, toNext + ' XP to next level'))),
+    // ── Hero: pita suasana "Fajar" (GDV §4) + floating glass panel ──
+    React.createElement(QAMoodBand, { scene: 'fajar', kicker: 'CLINICAL INTERVIEW TRAINER', title: 'Welcome back' + (firstName ? ', ' + firstName : '') + '! 👋',
+      sub: 'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.' },
+      // Floating glass level panel (GDV §9) — top-right, one brief piece of info
+      React.createElement('div', { style: { position: 'absolute', right: 26, top: 28, width: 250, padding: '17px 19px', borderRadius: 18,
+        background: 'rgba(255,255,255,0.16)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+        border: '1px solid rgba(255,255,255,0.34)', boxShadow: '0 12px 30px rgba(20,10,40,.22), inset 0 1px 0 rgba(255,255,255,.4)', color: '#fff' } },
+        React.createElement('div', { style: { fontSize: 10, letterSpacing: '.16em', fontWeight: 700, opacity: .78, textTransform: 'uppercase' } }, 'Your Progress'),
+        React.createElement('div', { style: { fontSize: 20, fontWeight: 800, letterSpacing: '-.02em', margin: '5px 0 3px' } }, 'Lv ' + level + ' · ' + levelName),
+        React.createElement('div', { style: { fontSize: 12, opacity: .82 } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' / 200 XP'),
+        React.createElement('div', { style: { height: 6, borderRadius: 99, background: 'rgba(255,255,255,0.26)', overflow: 'hidden', marginTop: 11 } },
+          React.createElement('div', { style: { height: '100%', borderRadius: 99, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease)' } })),
+        React.createElement('div', { style: { fontSize: 11.5, opacity: .72, marginTop: 8 } }, toNext + ' XP to next level')),
+      // CTA buttons pinned at the caption row (content preserved verbatim)
+      React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 16 } },
+        React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--u700)', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: '0 5px 16px rgba(0,0,0,0.18)' } }, '▶ Start new case'),
+        completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)' } }, 'Continue practising'))),
 
-    // ── Summary stats: uniform cards, equal height & spacing ──
-    React.createElement('div', { className: 'au', style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: 14, marginBottom: 24 } },
-      React.createElement(QDStat, { label: 'Cases completed', value: completedCases, icon: '📋', color: 'var(--primary)', sub: 'across ' + specKeys.length + ' specialties' }),
-      React.createElement(QDStat, { label: 'Total sessions', value: totalSessions, icon: '🔥', color: 'var(--amber)', sub: 'practice encounters' }),
-      React.createElement(QDStat, { label: 'Avg score', value: avgScore + '%', icon: '📈', color: 'var(--teal)', sub: hasDims ? 'across all dimensions' : 'complete a case to see' }),
-      React.createElement(QDStat, { label: 'Streak', value: p.streak ? p.streak + 'd' : '0d', icon: '🏅', color: 'var(--gold)', sub: p.streak ? 'days in a row' : 'start your streak' })),
+    // ── Summary stats: glass cards floating over the mood band (GDV) ──
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -76, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: 14, marginBottom: 24 } },
+      React.createElement(QDStat, { label: 'Cases completed', value: completedCases, icon: 'cases', sub: 'across ' + specKeys.length + ' specialties' }),
+      React.createElement(QDStat, { label: 'Total sessions', value: totalSessions, icon: 'streak', sub: 'practice encounters' }),
+      React.createElement(QDStat, { label: 'Avg score', value: avgScore + '%', icon: 'chart', sub: hasDims ? 'across all dimensions' : 'complete a case to see' }),
+      React.createElement(QDStat, { label: 'Streak', value: p.streak ? p.streak + 'd' : '0d', icon: 'flame', sub: p.streak ? 'days in a row' : 'start your streak' })),
 
     // ── Content: balanced two-column grid (stacks on mobile) ──
     // Fixed tracks (minmax(0, x)) instead of auto-fit so the columns stay
@@ -3151,7 +3319,7 @@ function QoraDashboard({ onNav, onStartCase }) {
         React.createElement('div', { className: 'as', style: panel },
           React.createElement('div', { style: secTitle },
             React.createElement('span', { style: secHead }, '📋 ' + _t('dashboard.recent_sessions')),
-            recent.length > 0 && React.createElement('button', { onClick: () => onNav('sessions'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Poppins', cursor: 'pointer', fontWeight: 600 } }, _t('dashboard.browse_cases'))),
+            recent.length > 0 && React.createElement('button', { onClick: () => onNav('sessions'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontWeight: 600 } }, _t('dashboard.browse_cases'))),
           recent.length === 0 && React.createElement('div', { style: { padding: '28px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 12, border: '1px dashed var(--border)' } },
             'Complete your first case to see activity here.'),
           React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } },
@@ -3203,12 +3371,14 @@ function QoraDashboard({ onNav, onStartCase }) {
 }
 
 function QDStat({ label, value, icon, color, sub }) {
-  // Uniform stat card: fixed structure so all four align on one row.
-  return React.createElement('div', { className: 'as', style: { padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', display: 'flex', flexDirection: 'column', minHeight: 136 } },
-    React.createElement('div', { style: { fontSize: 20, lineHeight: 1, marginBottom: 10 } }, icon),
-    React.createElement('div', { style: { fontSize: 26, fontWeight: 800, color, lineHeight: 1.1 } }, value),
-    React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-1)', marginTop: 10 } }, label),
-    React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', marginTop: 3, lineHeight: 1.4 } }, sub));
+  // GDV §9 stat card: the number is always ink (ungu 900) — a different
+  // colour per card makes the eye hunt a meaning that isn't there. Glass
+  // surface so it floats above the mood band.
+  return React.createElement('div', { className: 'as qa-glass', style: { padding: 18, borderRadius: 'var(--radius-lg)', display: 'flex', flexDirection: 'column', minHeight: 136 } },
+    React.createElement(QIcon, { n: icon, s: 22, color: 'var(--u700)' }),
+    React.createElement('div', { style: { fontSize: 26, fontWeight: 800, color: 'var(--u900)', lineHeight: 1.1, fontVariantNumeric: 'tabular-nums' } }, value),
+    React.createElement('div', { style: { fontSize: 12.5, fontWeight: 600, color: 'var(--n500)', marginTop: 10 } }, label),
+    React.createElement('div', { style: { fontSize: 10.5, color: 'var(--n500)', marginTop: 3, lineHeight: 1.4 } }, sub));
 }
 
 
@@ -3289,14 +3459,14 @@ function QoraV2Screen() {
 
 // ---- User profile (view + edit) ----
 const QP_AVATARS = ['👤', '🧑‍⚕️', '👩‍⚕️', '👨‍⚕️', '🩺', '🧠', '👁️', '🫀', '🦴', '🧬', '⚕️', '🎓'];
-const QP_COLORS = ['#5865F2', '#7C3AED', '#0EA5E9', '#10B981', '#F59E0B', '#EF4444', '#EC4899', '#14B8A6'];
+const QP_COLORS = ['#5C3F96', '#4A3278', '#7B57C4', '#9A76DB', '#C97A15', '#B3452F', '#9B4A96', '#2E7D5B'];
 
 function QP_Field({ label, value, set, ph }) {
   return React.createElement('label', { style: { display: 'block', marginBottom: 14 } },
     React.createElement('div', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)', marginBottom: 5 } }, label),
     React.createElement('input', {
       value: value || '', onChange: (e) => set(e.target.value), placeholder: ph,
-      style: { width: '100%', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Poppins', color: 'var(--text-1)' },
+      style: { width: '100%', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' },
     }));
 }
 
@@ -3306,10 +3476,10 @@ function QoraProfile({ onNav }) {
   const [saving, setSaving] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
   var _t = window.__t || function(k) { return k; };
-  const [form, setForm] = React.useState({ full_name: '', school: '', year: '', avatar_emoji: '👤', avatar_color: '#5865F2' });
+  const [form, setForm] = React.useState({ full_name: '', school: '', year: '', avatar_emoji: '👤', avatar_color: '#5C3F96' });
   React.useEffect(() => {
     qv2Fetch('/api/users/me')
-      .then((d) => { setMe(d); setForm({ full_name: d.full_name || '', school: d.school || '', year: d.year || '', avatar_emoji: d.avatar_emoji || '👤', avatar_color: d.avatar_color || '#5865F2' }); })
+      .then((d) => { setMe(d); setForm({ full_name: d.full_name || '', school: d.school || '', year: d.year || '', avatar_emoji: d.avatar_emoji || '👤', avatar_color: d.avatar_color || '#5C3F96' }); })
       .catch((e) => setErr(String(e.message || e)));
   }, []);
   const set = (k) => (v) => { setForm((f) => Object.assign({}, f, { [k]: v })); setSaved(false); };
@@ -3322,8 +3492,10 @@ function QoraProfile({ onNav }) {
   if (err && !me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)' } }, _t('common.error') + ': ' + err);
   if (!me) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, _t('common.loading'));
   const level = Math.floor((me.xp || 0) / 200) + 1;
-  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', marginBottom: 18 } }, _t('profile.title')),
+  return React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '28px 20px 60px' } },
+    // GDV §4: pita suasana "Profile" — aurora berpita
+    React.createElement(QAMoodBand, { scene: 'profil', kicker: 'PROFILE', title: _t('profile.title') }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
     React.createElement('div', { className: 'as', style: { display: 'flex', alignItems: 'center', gap: 16, padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 18 } },
       React.createElement('div', { style: { width: 64, height: 64, borderRadius: '50%', background: form.avatar_color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 30, flexShrink: 0 } }, form.avatar_emoji),
       React.createElement('div', { style: { flex: 1, minWidth: 0 } },
@@ -3344,9 +3516,9 @@ function QoraProfile({ onNav }) {
       QP_COLORS.map((col) => React.createElement('button', { key: col, onClick: () => set('avatar_color')(col), 'aria-label': 'Avatar colour ' + col, style: { width: 30, height: 30, borderRadius: '50%', background: col, cursor: 'pointer', border: form.avatar_color === col ? '3px solid var(--text-1)' : '2px solid var(--surface)', boxShadow: '0 0 0 1px var(--border)' } }))),
     err && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err),
     React.createElement('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } },
-      React.createElement('button', { onClick: save, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
-      React.createElement('button', { onClick: () => onNav && onNav('dashboard'), style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, _t('common.back')),
-      saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '\u2713 ' + _t('common.save') + 'd')));
+      React.createElement('button', { onClick: save, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
+      React.createElement('button', { onClick: () => onNav && onNav('dashboard'), style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, _t('common.back')),
+      saved && React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal, var(--primary))', fontWeight: 600 } }, '\u2713 ' + _t('common.save') + 'd'))));
 }
 
 // ---- Pricing / upgrade (Midtrans Snap primary, Xendit fallback; §7.3) ----
@@ -3430,7 +3602,7 @@ function QV2PhysicalExam({ caseSummary, sessionId, language, onBack, onContinue 
   const label = (k) => { const d = AREA_DEFS.find((x) => x[0] === k); return d ? (isId ? d[2] : d[1]) : k; };
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(680px, calc(100% - 16px))', margin: '0 auto', padding: 16 } },
-    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, isId ? '← Kembali ke wawancara' : '← Back to interview'),
+    React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, isId ? '← Kembali ke wawancara' : '← Back to interview'),
     React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, isId ? '🩺 Pemeriksaan Fisik' : '🩺 Physical Examination'),
     React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 18, lineHeight: 1.6 } },
       isId
@@ -3443,7 +3615,7 @@ function QV2PhysicalExam({ caseSummary, sessionId, language, onBack, onContinue 
       AREA_DEFS.map(function (d) {
         var k = d[0], active = areas.indexOf(k) >= 0;
         return React.createElement('button', { key: k, onClick: () => toggleArea(k), style: {
-          padding: '8px 14px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: active ? 700 : 500,
+          padding: '8px 14px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontWeight: active ? 700 : 500,
           border: '1px solid ' + (active ? 'var(--primary)' : 'var(--border)'),
           background: active ? 'var(--primary-l)' : 'var(--surface)',
           color: active ? 'var(--primary)' : 'var(--text-2)',
@@ -3455,12 +3627,12 @@ function QV2PhysicalExam({ caseSummary, sessionId, language, onBack, onContinue 
     React.createElement('textarea', {
       value: notes, onChange: (e) => setNotes(e.target.value),
       placeholder: isId ? 'Contoh: palpasi dada kanan, auskultasi jantung, periksa leher — ekspektasi ada pembengkakan...' : 'e.g. palpate the right chest, auscultate the heart, examine the neck — expecting a lump...',
-      style: { width: '100%', minHeight: 90, padding: '11px 13px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Poppins', color: 'var(--text-1)', resize: 'vertical', boxSizing: 'border-box' },
+      style: { width: '100%', minHeight: 90, padding: '11px 13px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)', resize: 'vertical', boxSizing: 'border-box' },
     }),
 
     err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginTop: 10 } }, err),
 
-    React.createElement('button', { onClick: reveal, disabled: busy, style: { width: '100%', marginTop: 16, padding: 13, borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
+    React.createElement('button', { onClick: reveal, disabled: busy, style: { width: '100%', marginTop: 16, padding: 13, borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
       busy ? (isId ? 'Mengungkap…' : 'Revealing…') : (isId ? '🔍 Lihat hasil pemeriksaan →' : '🔍 Reveal findings →')),
 
     // Revealed findings
@@ -3475,7 +3647,7 @@ function QV2PhysicalExam({ caseSummary, sessionId, language, onBack, onContinue 
               React.createElement('div', { style: { fontSize: 13, color: 'var(--text-1)', lineHeight: 1.55 } }, findings[d[0]])))),
 
     // Continue
-    React.createElement('button', { onClick: () => onContinue({ notes: notes.trim(), areas: areas }), disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
+    React.createElement('button', { onClick: () => onContinue({ notes: notes.trim(), areas: areas }), disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: busy ? 0.7 : 1 } },
       isId ? 'Lanjut ke penilaian →' : 'Continue to assessment →'));
 }
 
@@ -3543,7 +3715,7 @@ function QSkillRadar(props) {
     var angle = -Math.PI / 2 + slice * i;
     var label = L[keys[i]] || keys[i];
     var pct = Math.round(dims[keys[i]] || 0);
-    elements.push(React.createElement('text', { key: 'l' + i, x: cx + (r + 22) * Math.cos(angle), y: cy + (r + 22) * Math.sin(angle), textAnchor: 'middle', dominantBaseline: 'central', fontSize: 9.5, fontWeight: 600, fill: 'var(--text-1)', fontFamily: 'Poppins' }, label + ' ' + pct + '%'));
+    elements.push(React.createElement('text', { key: 'l' + i, x: cx + (r + 22) * Math.cos(angle), y: cy + (r + 22) * Math.sin(angle), textAnchor: 'middle', dominantBaseline: 'central', fontSize: 9.5, fontWeight: 600, fill: 'var(--text-1)', fontFamily: 'Plus Jakarta Sans' }, label + ' ' + pct + '%'));
   }
 
   return React.createElement('svg', { width: size + pad * 2, height: size + pad * 2 + 4, viewBox: '0 0 ' + (size + pad * 2) + ' ' + (size + pad * 2), style: { display: 'block', margin: '0 auto', maxWidth: '100%' } }, elements);
@@ -3591,11 +3763,13 @@ function QoraSessions(props) {
     content = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } }, sessions.map(renderSession));
   }
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(860px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
-      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
-      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\uD83D\uDCCB ' + _t('dashboard.recent_sessions'))),
-    content);
+  return React.createElement('div', { style: { maxWidth: 'min(860px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
+    // GDV §4: pita suasana "Malam" — malam berbintang, garis waktu tipis
+    React.createElement(QAMoodBand, { scene: 'malam', kicker: 'RIWAYAT', title: _t('dashboard.recent_sessions'),
+      children: React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { marginTop: 14, padding: '8px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)', display: 'inline-flex', alignItems: 'center', gap: 6 } }, React.createElement(QIcon, { n: 'back', s: 15 }), _t('common.back')) }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
+      content,
+      ));
 }
 
 // ── Billing plan card — visually consistent with landing QLPricing (§5.2) ──
@@ -3614,7 +3788,7 @@ function QLBillingPlanCard(props) {
           React.createElement('span', { style: { color: isAccent ? '#fff' : 'var(--primary)', fontWeight: 700 } }, '✓'),
           f);
       })),
-    React.createElement('button', { onClick: props.onCta, style: { width: '100%', padding: 12, borderRadius: 12, border: 'none', background: isAccent ? '#fff' : 'var(--primary)', color: isAccent ? 'var(--primary)' : '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', textAlign: 'center', transition: 'transform 0.15s ease, box-shadow 0.15s ease' } },
+    React.createElement('button', { onClick: props.onCta, style: { width: '100%', padding: 12, borderRadius: 12, border: 'none', background: isAccent ? '#fff' : 'var(--primary)', color: isAccent ? 'var(--primary)' : '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', textAlign: 'center', transition: 'transform 0.15s ease, box-shadow 0.15s ease' } },
       isID ? 'Langganan' : 'Subscribe'));
 }
 
@@ -3662,10 +3836,11 @@ function QoraBilling(props) {
   var limit = data.free_session_limit || 3;
   var pct = Math.min(Math.round(usedSessions / limit * 100), 100);
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(760px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
-      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
-      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\uD83D\uDCB3 ' + (window.__t ? window.__t('profile.billing', {}) || 'Billing & plan' : 'Billing & plan'))),
+  return React.createElement('div', { style: { maxWidth: 'min(760px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
+    // GDV §4: pita suasana "Pagi" — paling cerah
+    React.createElement(QAMoodBand, { scene: 'pagi', kicker: (data.plan ? String(data.plan).toUpperCase() : 'BILLING'), title: (window.__t ? window.__t('profile.billing', {}) || 'Billing & plan' : 'Billing & plan'),
+      children: React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { marginTop: 14, padding: '8px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)', display: 'inline-flex', alignItems: 'center', gap: 6 } }, React.createElement(QIcon, { n: 'back', s: 15 }), _t('common.back')) }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
     // Current plan card
     React.createElement('div', { className: 'as', style: { padding: 24, borderRadius: 'var(--r-xl)', background: isPaid ? 'var(--primary)' : 'var(--surface)', border: isPaid ? 'none' : '1px solid var(--border)', boxShadow: 'var(--sh-md)', color: isPaid ? '#fff' : 'var(--text-1)', marginBottom: 20 } },
       React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 } },
@@ -3680,7 +3855,7 @@ function QoraBilling(props) {
             React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 8 } }, usedSessions + ' of ' + limit + ' free sessions used this period'),
             React.createElement('div', { style: { height: 8, borderRadius: 999, background: 'var(--surface-3)', marginBottom: 16 } },
               React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: pct >= 80 ? 'var(--red)' : 'var(--primary)', transition: 'width 0.6s ease' } })),
-            React.createElement('button', { onClick: function () { goCheckout('monthly'); }, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } },
+            React.createElement('button', { onClick: function () { goCheckout('monthly'); }, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } },
               'Upgrade to ' + (prices.monthly || '$14.99/mo')),
       err && React.createElement('div', { style: { fontSize: 12.5, color: isPaid ? 'rgba(255,255,255,0.9)' : 'var(--red-d)', marginTop: 10 } }, err)),
     // Plan options — same pricing card style as the landing page (§5.2)
@@ -3689,7 +3864,7 @@ function QoraBilling(props) {
       React.createElement(QLBillingPlanCard, { name: region === 'indo' ? 'Tahunan' : 'Annual', price: prices.annual || (region === 'indo' ? 'Rp999.000/thn' : '$119/yr'), sessions: region === 'indo' ? 'Tak terbatas sesi' : 'Unlimited sessions', features: QORA_PLAN_FEATURES.annual, accent: true, onCta: function () { goCheckout('annual'); }, isID: region === 'indo' })),
     // Pattern note: billing keeps the free-session progress + plan cards only.
     // (Recent sessions were removed here — they live on the Sessions page.)
-  ));
+      )));
 }
 
 // ── Billing Success / Failed redirect pages ──
@@ -3706,8 +3881,8 @@ function QoraBillingResult(props) {
         ? 'Your plan has been activated. You can now practise without limits.'
         : 'No charge was made. You can retry, or contact support if you think this is a mistake.'),
     React.createElement('div', { style: { display: 'flex', gap: 10, justifyContent: 'center' } },
-      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, _t('common.back') + ' \u2192 Dashboard'),
-      !okResult && React.createElement('button', { onClick: function () { onNav('billing'); }, style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Retry payment')));
+      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, _t('common.back') + ' \u2192 Dashboard'),
+      !okResult && React.createElement('button', { onClick: function () { onNav('billing'); }, style: { padding: '11px 18px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Retry payment')));
 }
 
 
@@ -3749,7 +3924,7 @@ function QoraSettings(props) {
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(640px, calc(100% - 16px))', margin: '0 auto', padding: '28px 20px 60px' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
-      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
+      React.createElement('button', { onClick: function () { onNav('dashboard'); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '\u2190 ' + _t('common.back')),
       React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)' } }, '\u2699\uFE0F ' + _t('profile.settings'))),
     React.createElement('div', { className: 'as', style: { padding: 24, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
       React.createElement('div', { style: { marginBottom: 20 } },
@@ -3757,7 +3932,7 @@ function QoraSettings(props) {
         React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
           LANGS.map(function (p) {
             var code = p[0], label = p[1];
-            return React.createElement('button', { key: code, onClick: function () { setLang(code); }, style: { padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Poppins', cursor: 'pointer', fontWeight: lang === code ? 700 : 500, border: '1px solid ' + (lang === code ? 'var(--primary)' : 'var(--border)'), background: lang === code ? 'var(--primary-l)' : 'var(--surface)', color: lang === code ? 'var(--primary)' : 'var(--text-2)' } }, (lang === code ? '\u2713 ' : '') + label);
+            return React.createElement('button', { key: code, onClick: function () { setLang(code); }, style: { padding: '8px 16px', borderRadius: 999, fontSize: 12.5, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontWeight: lang === code ? 700 : 500, border: '1px solid ' + (lang === code ? 'var(--primary)' : 'var(--border)'), background: lang === code ? 'var(--primary-l)' : 'var(--surface)', color: lang === code ? 'var(--primary)' : 'var(--text-2)' } }, (lang === code ? '\u2713 ' : '') + label);
           }))),
       React.createElement('div', { style: { marginBottom: 20 } },
         React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, _t('profile.region')),
@@ -3766,7 +3941,7 @@ function QoraSettings(props) {
         'Email: ' + me.email + ' \u00B7 ' + _t('dashboard.sessions') + ': ' + (me.total_sessions || 0)),
       err ? React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err) : null,
       React.createElement('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } },
-        React.createElement('button', { onClick: saveLang, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
+        React.createElement('button', { onClick: saveLang, disabled: saving, style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: saving ? 0.7 : 1 } }, saving ? 'Saving\u2026' : _t('common.save')),
         saved ? React.createElement('span', { style: { fontSize: 12.5, color: 'var(--teal)', fontWeight: 600 } }, '\u2713 ' + _t('profile.save') + 'd') : null)));
 }
 
@@ -3791,7 +3966,7 @@ var _mt = window.__t || function (k) { return k; };
 // ── shared UI bits (design tokens only) ─────────────────────────────────
 var _mtCard = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--sh-sm)' };
 var _mtBtn = function (kind) {
-  var base = { padding: '10px 18px', borderRadius: 12, border: 'none', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', transition: 'all 0.18s ease' };
+  var base = { padding: '10px 18px', borderRadius: 12, border: 'none', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', transition: 'all 0.18s ease' };
   if (kind === 'primary') return Object.assign({}, base, { background: 'var(--primary)', color: '#fff' });
   if (kind === 'ghost') return Object.assign({}, base, { background: 'var(--surface)', color: 'var(--text-2)', border: '1px solid var(--border)' });
   if (kind === 'danger') return Object.assign({}, base, { background: 'var(--red-l)', color: 'var(--red-d)', border: '1px solid var(--red)' });
@@ -3871,7 +4046,7 @@ function QMentorChat(props) {
         value: story, onChange: function (e) { setStory(e.target.value); },
         placeholder: _mt('mentor.chat_placeholder'),
         rows: 3, maxLength: 2000,
-        style: { width: '100%', boxSizing: 'border-box', resize: 'none', padding: '12px 14px', borderRadius: 16, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 14, fontFamily: 'Poppins', outline: 'none' },
+        style: { width: '100%', boxSizing: 'border-box', resize: 'none', padding: '12px 14px', borderRadius: 16, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 14, fontFamily: 'Plus Jakarta Sans', outline: 'none' },
       }),
       err && React.createElement('div', { style: { marginTop: 8, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, '⚠️ ' + err),
       busy && React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 12.5, color: 'var(--primary)', fontWeight: 600, background: 'var(--primary-l)', padding: '9px 14px', borderRadius: 12 } },
@@ -4040,7 +4215,7 @@ function QJourneyProposal(props) {
           value: fb, onChange: function (e) { setFb(e.target.value); },
           placeholder: _mt('mentor.customize_feedback'),
           onKeyDown: function (e) { if (e.key === 'Enter') customize(); },
-          style: { flex: 1, minWidth: 'min(220px, 100%)', padding: '10px 12px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 13, fontFamily: 'Poppins', outline: 'none' },
+          style: { flex: 1, minWidth: 'min(220px, 100%)', padding: '10px 12px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 13, fontFamily: 'Plus Jakarta Sans', outline: 'none' },
         }),
         React.createElement(_QBtn, { kind: 'g', onClick: customize, disabled: busy || !fb.trim() }, busy ? '…' : _mt('mentor.customize')))));
 }
@@ -4064,7 +4239,11 @@ function QJourneyDashboard(props) {
     try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
   }
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
+    // GDV §4: pita suasana "Lentera" — jalur bertitik dengan tonggak menyala
+    React.createElement(QAMoodBand, { scene: 'lentera', kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5), title: _mt('mentor.title'),
+      sub: j.package_name || '' }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
     React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 } },
         React.createElement('div', { className: 'hdr-badge' }, React.createElement(_Mtl, { n: 'spark', s: 22 })),
@@ -4099,7 +4278,7 @@ function QJourneyDashboard(props) {
       // Actions — secondary (report) + destructive (abandon)
       React.createElement('div', { style: { marginTop: 14, display: 'flex', justifyContent: 'flex-end', gap: 10, flexWrap: 'wrap' } },
         props.onReport && React.createElement(_QBtn, { kind: 'g', onClick: props.onReport }, _mt('mentor.view_report')),
-        React.createElement(_QBtn, { kind: 'd', onClick: props.onAbandon }, _mt('mentor.abandon')))));
+        React.createElement(_QBtn, { kind: 'd', onClick: props.onAbandon }, _mt('mentor.abandon'))))));
 }
 
 // ── QAutopsyCard: reasoning autopsy display (PRD §4.2.5) ────────────────
@@ -4119,7 +4298,7 @@ function QAutopsyCard(props) {
           key: t[0], onClick: function () { setTab(t[0]); },
           style: {
             padding: '7px 14px', border: 'none', background: 'transparent', cursor: 'pointer',
-            fontSize: 12.5, fontWeight: tab === t[0] ? 700 : 500, fontFamily: 'Poppins',
+            fontSize: 12.5, fontWeight: tab === t[0] ? 700 : 500, fontFamily: 'Plus Jakarta Sans',
             color: tab === t[0] ? 'var(--primary)' : 'var(--text-2)',
             borderBottom: tab === t[0] ? '2px solid var(--primary)' : '2px solid transparent',
           },
@@ -4443,7 +4622,7 @@ function QoraCheckout(props) {
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(900px, calc(100% - 16px))', margin: '0 auto', padding: '28px 16px 80px' } },
     // Header
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 } },
-      React.createElement('button', { onClick: goBack, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Poppins', cursor: 'pointer' } }, '\u2190 ' + _ct('common.back')),
+      React.createElement('button', { onClick: goBack, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '\u2190 ' + _ct('common.back')),
       React.createElement('div', null,
         React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, isID ? 'Checkout' : 'Checkout'),
         React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginTop: 2 } }, isID ? 'Langkah terakhir sebelum kamu mulai latihan tanpa batas.' : 'One step away from unlimited practice.'))),
@@ -4485,7 +4664,7 @@ function QoraCheckout(props) {
                 display: 'flex', alignItems: 'center', gap: 11, padding: '12px 14px', borderRadius: 14,
                 border: '1.5px solid ' + (active ? 'var(--primary)' : 'var(--border)'),
                 background: active ? 'var(--primary-l)' : 'var(--surface)',
-                cursor: 'pointer', fontFamily: 'Poppins', textAlign: 'left', width: '100%',
+                cursor: 'pointer', fontFamily: 'Plus Jakarta Sans', textAlign: 'left', width: '100%',
                 transition: 'all 0.18s ease',
               },
             },
@@ -4501,7 +4680,7 @@ function QoraCheckout(props) {
             width: '100%', padding: '14px', borderRadius: 14, border: 'none',
             background: busy || !plan || !method ? 'var(--surface-3)' : 'var(--primary)',
             color: busy || !plan || !method ? 'var(--text-3)' : '#fff',
-            fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: busy || !plan || !method ? 'default' : 'pointer',
+            fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: busy || !plan || !method ? 'default' : 'pointer',
             boxShadow: busy || !plan || !method ? 'none' : 'var(--sh-md)',
             transition: 'all 0.18s ease',
           },
@@ -4638,54 +4817,63 @@ window.__goCheckout = function (planId) {
       const isLoggedIn = screen !== 'qora-landing';
 
       return React.createElement(React.Fragment, null,
-        // Qora header (logged in screens)
+        // Qora header (logged in screens) — GDV: glass floating nav + logo
         isLoggedIn && React.createElement('header', { style: {
-          position: 'sticky', top: 0, zIndex: 100,
-          background: 'rgba(245,247,255,0.88)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid var(--border)',
-          padding: isMobile ? '0 10px' : '0 24px', height: 56,
+          position: 'sticky', top: 14, zIndex: 100,
+          maxWidth: 1080, margin: '0 auto',
+          background: 'rgba(255,255,255,0.72)',
+          backdropFilter: 'blur(22px) saturate(170%)',
+          WebkitBackdropFilter: 'blur(22px) saturate(170%)',
+          border: '1px solid rgba(255,255,255,0.9)',
+          boxShadow: '0 8px 26px rgba(34,19,48,0.09)',
+          borderRadius: 18,
+          padding: '10px 16px', height: 54,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
         }},
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', flexShrink: 0 }, onClick: () => navigate('dashboard') },
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flexShrink: 0 }, onClick: () => navigate('dashboard') },
+            React.createElement(QoraLogo, { h: 28 }),
             React.createElement('div', null,
-              React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1 } }, 'Qora'),
-              !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
-          // Nav — desktop/tablet: centered; mobile: moved to a bottom tab bar
+              React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--u900)', lineHeight: 1 } }, 'Qora'),
+              !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--n500)', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
+          // Nav — desktop/tablet: centered glass tabs; mobile: moved to a bottom tab bar
           !isMobile && React.createElement('nav', { style: {
-            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: 'center',
+            display: 'flex', gap: 2, flex: 1, minWidth: 0, justifyContent: 'center', alignItems: 'flex-end',
+            background: 'rgba(255,255,255,0.55)', borderRadius: 12, padding: 3, border: '1px solid rgba(233,227,245,0.8)',
+            overflowX: 'auto', scrollbarWidth: 'none', msOverflowStyle: 'none',
           } },
             [['dashboard','Dashboard'],['cases','Cases'],['mentor','Mentor'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
-                padding: isMobile ? '6px 9px' : '6px 14px', borderRadius: 10, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
-                background: screen === s ? 'var(--primary-l)' : 'transparent',
-                color: screen === s ? 'var(--primary)' : 'var(--text-2)',
-                fontSize: isMobile ? 12 : 13, fontWeight: screen === s ? 700 : 500,
-                cursor: 'pointer', transition: 'all 0.18s ease',
-                fontFamily: 'Poppins',
+                padding: '5px 10px', borderRadius: 9, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+                background: screen === s ? 'rgba(92,63,150,0.12)' : 'transparent',
+                color: screen === s ? 'var(--u600)' : 'var(--n500)',
+                fontSize: 12.5, fontWeight: screen === s ? 600 : 500,
+                cursor: 'pointer', transition: 'all 0.18s var(--ease)',
+                fontFamily: 'Plus Jakarta Sans',
               } }, l);
             })),
           // Right side
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 10, flexShrink: 0 } },
             React.createElement('button', { onClick: function() { setShowSettings(true); }, style: {
-              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: 8, border: '1px solid var(--border)',
-              background: 'var(--surface)', cursor: 'pointer', fontSize: 14,
+              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: 10,
+              background: 'rgba(255,255,255,0.7)', cursor: 'pointer',
+              color: 'var(--n700)', border: '1px solid var(--u200)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }, title: 'Settings' }, '⚙️'),
+            }, title: 'Settings' },
+              React.createElement(QIcon, { n: 'settings', s: 17 })),
             React.createElement('button', { onClick: function() { navigate('profile'); }, style: {
               width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: '50%',
-              background: screen === 'profile' ? 'var(--primary-d, var(--primary))' : 'var(--primary)', color: '#fff',
-              border: screen === 'profile' ? '2px solid var(--text-1)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
-              fontFamily: 'Poppins',
+              background: 'var(--u600)', color: '#fff',
+              border: screen === 'profile' ? '2px solid var(--u900)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              fontFamily: 'Plus Jakarta Sans',
             }, title: 'View profile' },
               auth && auth.email ? auth.email[0].toUpperCase() : '?'))),
 
         // Decorative background layer (authenticated pages) — revision §6.1
         isLoggedIn && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 0, overflow: 'hidden', pointerEvents: 'none' } },
-          React.createElement('div', { style: { position: 'absolute', width: 480, height: 480, borderRadius: '50%', top: -160, right: -120, background: 'radial-gradient(circle, rgba(88,101,242,0.16) 0%, rgba(88,101,242,0) 70%)' } }),
-          React.createElement('div', { style: { position: 'absolute', width: 380, height: 380, borderRadius: '50%', bottom: -120, left: -100, background: 'radial-gradient(circle, rgba(124,58,237,0.13) 0%, rgba(124,58,237,0) 70%)' } }),
-          React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: '38%', right: -70, border: '1.5px solid rgba(88,101,242,0.10)' } })),
+          React.createElement('div', { style: { position: 'absolute', width: 480, height: 480, borderRadius: '50%', top: -160, right: -120, background: 'radial-gradient(circle, rgba(92,63,150,0.13) 0%, rgba(92,63,150,0) 70%)' } }),
+          React.createElement('div', { style: { position: 'absolute', width: 380, height: 380, borderRadius: '50%', bottom: -120, left: -100, background: 'radial-gradient(circle, rgba(155,74,150,0.11) 0%, rgba(155,74,150,0) 70%)' } }),
+          React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: '38%', right: -70, border: '1.5px solid rgba(92,63,150,0.09)' } })),
 
         // Main content
         React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
@@ -4703,24 +4891,25 @@ window.__goCheckout = function (planId) {
         // Consistent company footer on all authenticated pages (revision §2.2/§6.2)
         isLoggedIn && React.createElement(QLFooter, null),
 
-        // Bottom tab bar (mobile only) — native mobile pattern, all 5 items always visible
+        // Bottom tab bar (mobile only) — GDV: line icons
         isLoggedIn && isMobile && React.createElement('nav', { style: {
           position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 100,
-          background: 'rgba(245,247,255,0.96)',
-          backdropFilter: 'blur(20px)',
-          borderTop: '1px solid var(--border)',
+          background: 'rgba(255,255,255,0.92)',
+          backdropFilter: 'blur(20px) saturate(170%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(170%)',
+          borderTop: '1px solid var(--n200)',
           display: 'flex',
           padding: '6px 4px calc(6px + env(safe-area-inset-bottom))',
         } },
-          [['dashboard','🏠','Home'],['cases','📚','Cases'],['mentor','🎓','Mentor'],['sessions','🕘','Sessions'],['profile','👤','Profile']].map(function(pair) {
+          [['dashboard','home','Home'],['cases','cases','Cases'],['mentor','mentor','Mentor'],['sessions','history','Sessions'],['profile','user','Profile']].map(function(pair) {
             var s = pair[0], ic = pair[1], l = pair[2];
             return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
-              flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2,
+              flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3,
               padding: '4px 0', border: 'none', background: 'transparent', cursor: 'pointer',
-              fontFamily: 'Poppins', fontSize: 9.5, fontWeight: screen === s ? 700 : 500,
-              color: screen === s ? 'var(--primary)' : 'var(--text-3)',
+              fontFamily: 'Plus Jakarta Sans', fontSize: 9.5, fontWeight: screen === s ? 700 : 500,
+              color: screen === s ? 'var(--u600)' : 'var(--n500)',
             } },
-              React.createElement('span', { style: { fontSize: 19, lineHeight: 1 } }, ic),
+              React.createElement(QIcon, { n: ic, s: 20 }),
               React.createElement('span', null, l));
           })),
 
@@ -4730,14 +4919,14 @@ window.__goCheckout = function (planId) {
           React.createElement('div', { style: { position: 'absolute', right: 0, top: 0, bottom: 0, width: 320, background: 'var(--surface)', boxShadow: 'var(--sh-xl)', padding: 24, display: 'flex', flexDirection: 'column' } },
             React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 } },
               React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)' } }, 'Settings'),
-              React.createElement('button', { onClick: closeSettings, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontSize: 12, fontFamily: 'Poppins' } }, '✕ Close')),
+              React.createElement('button', { onClick: closeSettings, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', fontSize: 12, fontFamily: 'Plus Jakarta Sans' } }, '✕ Close')),
             React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } },
               React.createElement('p', null, 'Logged in as: ', React.createElement('strong', null, (auth && auth.email) || '–')),
               React.createElement('p', null, 'Role: ', (auth && auth.role) || '–'),
               React.createElement('p', { style: { marginTop: 20, fontSize: 11, color: 'var(--text-3)' } }, 'Qora \u2014 Clinical Interview Trainer v0.16.0')),
             React.createElement('div', { style: { marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: 10 } },
-              React.createElement('button', { onClick: function() { closeSettings(); navigate('billing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, '✨ Upgrade plan'),
-              React.createElement('button', { onClick: handleLogout, style: { width: '100%', padding: 11, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Log out')))));
+              React.createElement('button', { onClick: function() { closeSettings(); navigate('billing'); }, style: { width: '100%', padding: 11, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '✨ Upgrade plan'),
+              React.createElement('button', { onClick: handleLogout, style: { width: '100%', padding: 11, borderRadius: 12, border: '1px solid var(--red)', background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Log out')))));
     }
 
     // Reuse a single root across dev hot-reloads (avoids the duplicate-createRoot warning).

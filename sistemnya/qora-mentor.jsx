@@ -16,7 +16,7 @@ var _mt = window.__t || function (k) { return k; };
 // ── shared UI bits (design tokens only) ─────────────────────────────────
 var _mtCard = { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--sh-sm)' };
 var _mtBtn = function (kind) {
-  var base = { padding: '10px 18px', borderRadius: 12, border: 'none', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', transition: 'all 0.18s ease' };
+  var base = { padding: '10px 18px', borderRadius: 12, border: 'none', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', transition: 'all 0.18s ease' };
   if (kind === 'primary') return Object.assign({}, base, { background: 'var(--primary)', color: '#fff' });
   if (kind === 'ghost') return Object.assign({}, base, { background: 'var(--surface)', color: 'var(--text-2)', border: '1px solid var(--border)' });
   if (kind === 'danger') return Object.assign({}, base, { background: 'var(--red-l)', color: 'var(--red-d)', border: '1px solid var(--red)' });
@@ -96,7 +96,7 @@ function QMentorChat(props) {
         value: story, onChange: function (e) { setStory(e.target.value); },
         placeholder: _mt('mentor.chat_placeholder'),
         rows: 3, maxLength: 2000,
-        style: { width: '100%', boxSizing: 'border-box', resize: 'none', padding: '12px 14px', borderRadius: 16, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 14, fontFamily: 'Poppins', outline: 'none' },
+        style: { width: '100%', boxSizing: 'border-box', resize: 'none', padding: '12px 14px', borderRadius: 16, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 14, fontFamily: 'Plus Jakarta Sans', outline: 'none' },
       }),
       err && React.createElement('div', { style: { marginTop: 8, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, '⚠️ ' + err),
       busy && React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 12.5, color: 'var(--primary)', fontWeight: 600, background: 'var(--primary-l)', padding: '9px 14px', borderRadius: 12 } },
@@ -265,7 +265,7 @@ function QJourneyProposal(props) {
           value: fb, onChange: function (e) { setFb(e.target.value); },
           placeholder: _mt('mentor.customize_feedback'),
           onKeyDown: function (e) { if (e.key === 'Enter') customize(); },
-          style: { flex: 1, minWidth: 'min(220px, 100%)', padding: '10px 12px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 13, fontFamily: 'Poppins', outline: 'none' },
+          style: { flex: 1, minWidth: 'min(220px, 100%)', padding: '10px 12px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 13, fontFamily: 'Plus Jakarta Sans', outline: 'none' },
         }),
         React.createElement(_QBtn, { kind: 'g', onClick: customize, disabled: busy || !fb.trim() }, busy ? '…' : _mt('mentor.customize')))));
 }
@@ -289,7 +289,11 @@ function QJourneyDashboard(props) {
     try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
   }
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
+    // GDV §4: pita suasana "Lentera" — jalur bertitik dengan tonggak menyala
+    React.createElement(QAMoodBand, { scene: 'lentera', kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5), title: _mt('mentor.title'),
+      sub: j.package_name || '' }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
     React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 } },
         React.createElement('div', { className: 'hdr-badge' }, React.createElement(_Mtl, { n: 'spark', s: 22 })),
@@ -324,7 +328,7 @@ function QJourneyDashboard(props) {
       // Actions — secondary (report) + destructive (abandon)
       React.createElement('div', { style: { marginTop: 14, display: 'flex', justifyContent: 'flex-end', gap: 10, flexWrap: 'wrap' } },
         props.onReport && React.createElement(_QBtn, { kind: 'g', onClick: props.onReport }, _mt('mentor.view_report')),
-        React.createElement(_QBtn, { kind: 'd', onClick: props.onAbandon }, _mt('mentor.abandon')))));
+        React.createElement(_QBtn, { kind: 'd', onClick: props.onAbandon }, _mt('mentor.abandon'))))));
 }
 
 // ── QAutopsyCard: reasoning autopsy display (PRD §4.2.5) ────────────────
@@ -344,7 +348,7 @@ function QAutopsyCard(props) {
           key: t[0], onClick: function () { setTab(t[0]); },
           style: {
             padding: '7px 14px', border: 'none', background: 'transparent', cursor: 'pointer',
-            fontSize: 12.5, fontWeight: tab === t[0] ? 700 : 500, fontFamily: 'Poppins',
+            fontSize: 12.5, fontWeight: tab === t[0] ? 700 : 500, fontFamily: 'Plus Jakarta Sans',
             color: tab === t[0] ? 'var(--primary)' : 'var(--text-2)',
             borderBottom: tab === t[0] ? '2px solid var(--primary)' : '2px solid transparent',
           },

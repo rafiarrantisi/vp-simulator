@@ -230,9 +230,9 @@ function QLPricing(props) {
             width: '100%', padding: 12, borderRadius: 12, border: 'none',
             background: isAccent ? '#fff' : 'var(--primary)',
             color: isAccent ? 'var(--primary)' : '#fff',
-            fontSize: 13, fontWeight: 700, fontFamily: 'Poppins',
+            fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans',
             cursor: 'pointer', textAlign: 'center',
-            boxShadow: isAccent ? '0 4px 14px rgba(88,101,242,0.35)' : 'none',
+            boxShadow: isAccent ? '0 4px 14px rgba(92,63,150,0.24)' : 'none',
             transition: 'transform 0.15s ease, box-shadow 0.15s ease',
           },
         }, p.cta));
@@ -369,7 +369,7 @@ function QLGoogleButton({ onCredential }) {
     return function () { alive = false; };
   }, [clientId]);
   if (!clientId) {
-    return React.createElement('button', { disabled: true, title: 'Set VITE_GOOGLE_CLIENT_ID to enable', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'not-allowed' } }, 'Continue with Google · coming soon');
+    return React.createElement('button', { disabled: true, title: 'Set VITE_GOOGLE_CLIENT_ID to enable', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'not-allowed' } }, 'Continue with Google · coming soon');
   }
   return React.createElement('div', { style: { marginTop: 12, display: 'flex', justifyContent: 'center' } }, React.createElement('div', { ref: ref }));
 }
@@ -407,7 +407,7 @@ function QLAuth({ mode, setMode, onLogin }) {
     React.createElement('input', {
       type: type || 'text', value, onChange: e => set(e.target.value),
       onKeyDown: e => { if (e.key === 'Enter') submit(); }, placeholder: ph, autoComplete: type === 'password' ? 'current-password' : 'on',
-      style: { width: '100%', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Poppins', color: 'var(--text-1)' },
+      style: { width: '100%', padding: '11px 13px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 14, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' },
     }));
 
   return React.createElement('div', { className: 'as', style: { maxWidth: 'min(400px, calc(100% - 32px))', margin: '40px auto', padding: 28, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-lg)' } },
@@ -417,7 +417,7 @@ function QLAuth({ mode, setMode, onLogin }) {
     field('Email', email, setEmail, 'email', 'you@example.com'),
     field('Password', password, setPassword, 'password', '••••••••'),
     err && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--red-d)', marginBottom: 12 } }, err),
-    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', padding: '12px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Please wait\u2026' : (isSignup ? 'Create account' : 'Log in')),
+    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', padding: '12px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Please wait\u2026' : (isSignup ? 'Create account' : 'Log in')),
     React.createElement(QLGoogleButton, { onCredential: async function (cred) {
       if (busy) return;
       setBusy(true); setErr('');
@@ -429,7 +429,7 @@ function QLAuth({ mode, setMode, onLogin }) {
     } }),
     React.createElement('div', { style: { textAlign: 'center', marginTop: 16, fontSize: 13, color: 'var(--text-2)' } },
       isSignup ? 'Already have an account? ' : "Don't have an account? ",
-      React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
+      React.createElement('button', { onClick: () => { setErr(''); setMode(isSignup ? 'login' : 'signup'); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontSize: 13 } }, isSignup ? 'Log in' : 'Sign up')));
 }
 
 function QoraLanding({ onLogin, onSubscribe }) {
@@ -455,8 +455,8 @@ function QoraLanding({ onLogin, onSubscribe }) {
       React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' } }, 'Qora'),
       React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' } }, 'Clinical interview trainer')),
     React.createElement('div', { style: { display: 'flex', gap: 8 } },
-      React.createElement('button', { onClick: () => go('login'), style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Log in'),
-      React.createElement('button', { onClick: () => go('signup'), style: { padding: '7px 16px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer' } }, 'Get started')));
+      React.createElement('button', { onClick: () => go('login'), style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Log in'),
+      React.createElement('button', { onClick: () => go('signup'), style: { padding: '7px 16px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Get started')));
 
   if (view === 'auth') {
     return React.createElement('div', { style: { minHeight: '100vh' } }, header,
@@ -466,9 +466,9 @@ function QoraLanding({ onLogin, onSubscribe }) {
   return React.createElement('div', { style: { minHeight: '100vh', position: 'relative', overflow: 'hidden' } },
     // Subtle decorative background (revision §1.3) — kept light & clean.
     React.createElement('div', { style: { position: 'absolute', inset: 0, zIndex: -1, overflow: 'hidden', pointerEvents: 'none' } },
-      React.createElement('div', { style: { position: 'absolute', width: 520, height: 520, borderRadius: '50%', top: -180, right: -140, background: 'radial-gradient(circle, rgba(88,101,242,0.14) 0%, rgba(88,101,242,0) 70%)' } }),
-      React.createElement('div', { style: { position: 'absolute', width: 420, height: 420, borderRadius: '50%', top: '30%', left: -150, background: 'radial-gradient(circle, rgba(124,58,237,0.12) 0%, rgba(124,58,237,0) 70%)' } }),
-      React.createElement('div', { style: { position: 'absolute', width: 260, height: 260, borderRadius: '50%', top: '62%', right: -80, border: '1.5px solid rgba(88,101,242,0.12)' } })),
+      React.createElement('div', { style: { position: 'absolute', width: 520, height: 520, borderRadius: '50%', top: -180, right: -140, background: 'radial-gradient(circle, rgba(92,63,150,0.12) 0%, rgba(92,63,150,0) 70%)' } }),
+      React.createElement('div', { style: { position: 'absolute', width: 420, height: 420, borderRadius: '50%', top: '30%', left: -150, background: 'radial-gradient(circle, rgba(155,74,150,0.10) 0%, rgba(155,74,150,0) 70%)' } }),
+      React.createElement('div', { style: { position: 'absolute', width: 260, height: 260, borderRadius: '50%', top: '62%', right: -80, border: '1.5px solid rgba(92,63,150,0.10)' } })),
     header,
     // ── Hero ──
     React.createElement('section', { style: { padding: '60px 24px 20px' } },
@@ -480,8 +480,8 @@ function QoraLanding({ onLogin, onSubscribe }) {
         React.createElement('p', { className: 'au d1', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 'min(620px, 100%)', margin: '0 auto 28px' } },
           'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring against a hidden checklist and a full model-answer reveal. From internal medicine to emergency.'),
         React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' } },
-          React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Poppins', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
-          React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Poppins', cursor: 'pointer' } }, 'I have an account')),
+          React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
+          React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'I have an account')),
         // Stats
         React.createElement(QLStats, null))),
 
