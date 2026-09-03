@@ -43,7 +43,6 @@ from pipeline.case_v3.runtime import (
     SelectionPolicy, SelectionRequest, ScoreInput, VariantUnavailable,
     build_debrief, score_encounter,
 )
-from pipeline.case_v3.derive import derive_answer_key, derive_mode_views
 from pipeline.case_v3.models import PersonaConstraints
 
 
@@ -326,9 +325,10 @@ def score(db: OrmSession, user: User, session_id: str, *,
         "score": result.total,
         "max_score": result.max_score,
         "per_dimension": _dims_to_v2(result.by_dimension),
+        "per_item": _v2_per_item(v, result),   # answer-key hit/miss overlay
         "safety_gates": result.safety_flags,
         "summary": debrief.get("overall_summary", {}).get("target_diagnosis", ""),
-        "answer_key": derive_answer_key(v),
+        "answer_key": _v2_answer_key(v),        # V2-compatible model answer
         "debrief": debrief,
         "overtime_penalty": None,
         "schema": "new",
@@ -358,3 +358,92 @@ def _dims_to_v2(by_dimension: dict) -> dict:
         else:
             out[k] = {"name": k, "score": val, "max": 0, "label": k}
     return out
+
+
+# ── V2 answer_key adapter (§9/§I) — QV2Result consumes the V2 shape ───────
+def _v2_answer_key(v) -> dict:
+    """Translate a V3 ClinicalVariant into the EXACT V2 `answer_key` shape that
+    `QV2Result` renders (anamnesis_checklist / red_flags / expected_ddx /
+    investigations / management). This is the compatibility DTO — do NOT swap
+    it for the V3-native answer key, or the V2 debrief UI breaks."""
+    fm = v
+
+    # working diagnosis + differentials
+    dd = v.diagnostic or type("D", (), {"working_diagnosis": "", "differentials": [], "synonyms": []})()
+    diffs = [d.name if isinstance(d, dict) else getattr(d, "name", str(d))
+             for d in (getattr(dd, "differentials", None) or [])]
+    working = getattr(dd, "working_diagnosis", "") or ""
+
+    # anamnesis checklist from V3 history groups (group -> items)
+    checklist = []
+    for g in (getattr(v, "history", None) or []):
+        items = []
+        for f in (getattr(g, "facts", None) or []):
+            items.append({
+                "item": (getattr(f, "key", None) or "").replace("_", " ").strip() or str(getattr(f, "value", "")),
+                "critical": False,
+            })
+        if items:
+            checklist.append({"group": getattr(g, "name", "history").replace("_", " "),
+                              "items": items})
+
+    # red flags
+    red = []
+    for r in (getattr(v, "red_flags", None) or []):
+        it = getattr(r, "fact", None) or str(r)
+        red.append({"item": it, "critical": True})
+
+    # investigations: appropriate vs inappropriate by appropriateness
+    inv_ok, inv_no = [], []
+    for i in (getattr(v, "investigations", None) or []):
+        name = getattr(i, "name", None) or ""
+        expected = getattr(i, "expected_result", None) or ""
+        ap = getattr(i, "appropriateness", None)
+        apv = getattr(ap, "value", ap) if ap is not None else "appropriate"
+        entry = {"name": name, "expected": expected}
+        (inv_ok if apv in ("appropriate",) else inv_no).append(entry)
+
+    # management buckets
+    mgmt = getattr(v, "management", None) or type("M", (), {})()
+    def _arr(name):
+        return [x for x in (getattr(mgmt, name, None) or [])]
+    pharmacological = _arr("pharmacologic") or _arr("pharmacological")
+    non_pharmacological = _arr("non_pharmacologic") or _arr("non_pharmacological")
+    education_safety_netting = (_arr("education_safety_netting")
+                                or _arr("education_netting") or [])
+
+    return {
+        "case_id": v.id,
+        "presentation": _v2_presentation(v),
+        "chief_complaint": v.chief_complaint or "",
+        "anamnesis_checklist": checklist,
+        "red_flags": red,
+        "expected_ddx": {"working_diagnosis": working, "differentials": diffs},
+        "investigations": {"appropriate": inv_ok, "inappropriate": inv_no},
+        "management": {
+            "pharmacological": pharmacological,
+            "non_pharmacological": non_pharmacological,
+            "education_safety_netting": education_safety_netting,
+        },
+    }
+
+
+def _v2_presentation(v) -> str:
+    return v.blind_candidate_brief or v.chief_complaint or (
+        v.targeted_title or v.family_id)
+
+
+def _v2_per_item(v, result) -> list[dict]:
+    """Derive a V2 `per_item` overlay from the V3 score so answer-key item rows
+    show hit/partial/miss. Best-effort: from safety_flags + score dimensions."""
+    # mark critical red-flag misses as 'miss'
+    items = []
+    flags = set()
+    for f in (result.safety_flags or []):
+        g = f.get("gate") if isinstance(f, dict) else getattr(f, "gate", None)
+        if g:
+            flags.add(g)
+    for r in (getattr(v, "red_flags", None) or []):
+        it = getattr(r, "fact", None) or str(r)
+        items.append({"item": it, "status": "miss" if flags else "not_asked"})
+    return items

@@ -139,6 +139,16 @@ def test_full_v2_journey_on_v3_family():
     for f in ("overall", "per_dimension", "safety_gates", "summary", "answer_key"):
         assert f in report, f"missing V2 report field: {f}"
     assert isinstance(report["overall"], int)
+    # V2-compatible answer_key shape (QV2Result renders these exact fields)
+    ak = report["answer_key"]
+    for f in ("anamnesis_checklist", "red_flags", "expected_ddx",
+              "investigations", "management", "case_id", "chief_complaint"):
+        assert f in ak, f"V2 answer_key missing: {f}"
+    assert isinstance(ak["anamnesis_checklist"], list) and ak["anamnesis_checklist"]
+    assert isinstance(ak["management"]["pharmacological"], list)
+    assert "working_diagnosis" in ak["expected_ddx"]
+    # QV2Result needs per_item for the hit/miss overlay
+    assert "per_item" in report and isinstance(report["per_item"], list)
 
     # 7) IDEMPOTENT SCORE — same stored report, no double scoring
     r2 = client.post(f"/api/v2/sessions/{sid}/score",
