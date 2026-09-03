@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Qora — Virtual Patient Simulator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -31,6 +31,17 @@
     .qpill-lock{color:var(--n500);background:var(--n200)}
     .daycard::-webkit-scrollbar{display:none}
     .daycard{scrollbar-width:none}
+    /* Qora shared shell (Fase 1): mobile viewport + safe-area foundation.
+       No visual identity change — these only fix overlap/clipping at the
+       shared App shell level so per-screen hacks are not needed. */
+    body #root{min-height:100vh;min-height:100dvh}
+    @media (max-width:768px){
+      /* iOS zooms on focus when inputs are <16px; keep chat/assess/mentor
+         inputs at 16px on phones so the keyboard open doesn't jump layout. */
+      #root input,#root textarea{font-size:16px}
+      /* Cheaper glass on low-end Android (per GDV §13): solid fallback. */
+      .qa-glass{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.92)}
+    }
   </style>
 </head>
 <body>

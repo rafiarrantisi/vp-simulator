@@ -920,7 +920,9 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
       .catch(e => setErr(String(e.message || e)));
   }, [caseSummary.id]);
 
-  React.useEffect(() => { if (endRef.current) endRef.current.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+  // Shared-shell rule (Fase 1): 'nearest' keeps new replies in view without
+  // yanking the chat header underneath the sticky App header on load.
+  React.useEffect(() => { if (endRef.current) endRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [messages]);
 
   // Update the trailing (streaming) patient bubble in place.
   const patchPatient = (t, streaming) => setMessages(m => {
@@ -1020,15 +1022,19 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
   const mmss = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
 
-  const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: 'calc(100dvh - 140px)' } },
+  // Shared-shell rule (Fase 1): on phones the page owns the scroll so the
+  // input dock + Exam/Assess CTA can never be trapped inside a fixed-height
+  // inner scroller behind the bottom tab bar. Wide screens keep the
+  // app-like inner scroll column.
+  const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: isMobile ? 'auto' : 'calc(100dvh - 140px)', minHeight: isMobile ? 'calc(100dvh - 260px)' : undefined } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('button', { onClick: () => { _pilotEvent('abandoned', { session_id: sessionId, stage: stage }); onExit(); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Library'),
       React.createElement(QV2Pill, { tone: isOsce ? 'violet' : 'teal' }, isOsce ? 'OSCE' : 'Practice'),
       React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, _qv2Title(caseSummary)),
-      !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
+      !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
     React.createElement(QV2MediaBar, { caseId: caseSummary.id }),
     err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8 } }, err),
-    React.createElement('div', { style: { flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 10, padding: '8px 2px' } },
+    React.createElement('div', { style: { flex: 1, overflowY: isMobile ? 'visible' : 'auto', display: 'flex', flexDirection: 'column', gap: 10, padding: '8px 2px' } },
       messages.map((m, i) => React.createElement('div', { key: i, className: 'af', style: {
         alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '78%',
         padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.5,
@@ -1052,8 +1058,8 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
         }),
         React.createElement('button', { onClick: () => setStage(hasPhysicalExam ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, hasPhysicalExam ? 'Exam →' : 'Assess →'))));
 
-  return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 0' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
-    wide && React.createElement('div', { style: { width: 240, flexShrink: 0, marginLeft: -40 } },
+  return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 8px' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
+    wide && React.createElement('div', { style: { width: 240, flexShrink: 0 } },
       React.createElement(QV2TaskPanel, { mode: mode, secs: secs, timerOn: timerOn, onToggleTimer: () => setTimerOn((v) => !v) })),
     chatColumn,
     timeUp && React.createElement(QV2TimeUpModal, {
