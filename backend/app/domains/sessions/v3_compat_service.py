@@ -1,7 +1,14 @@
 """Phase B — V3 compatibility service (backend facade).
 
 Called from the V2 routing layer (`v2_router.py`) whenever a request resolves
-to a V3 family / a session whose persisted `content_schema == 'v3'`.
+to a V3 family / a session whose persisted `content_schema == 'new'`.
+
+NOMENCLATURE: `content_schema` value `'new'` is the OFFICIAL, documented marker
+for V3 content in this codebase (models.py: `legacy | new`). It is used
+consistently by `v3_service.py` and `v3_router.py` (already shipped + read by
+analytics/STEP-9 pilot). We deliberately KEEP `'new'` = V3 — renaming to 'v3'
+would break existing `v3_router` filters (risky migration, no functional gain).
+Do not "fix" this to 'v3'.
 
 Everything here produces EXACT V2-compatible external shapes:
   start  -> {sessionId, caseId, mode, language, openingLine}

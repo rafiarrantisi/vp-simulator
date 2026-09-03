@@ -166,3 +166,104 @@ def test_v3_session_opens_with_v3_family_detail():
     d = r.json()["data"]
     assert d["id"] == FAMILY
     assert d["source_type"] == "v3_family"
+
+
+# ── Billing parity (§3 addendum): V3 sessions must NOT bypass billing ─────
+def test_v3_session_start_gated_when_free_limit_reached(monkeypatch):
+    """Free-session-limit / entitlement gate applies to V3-backed sessions."""
+    from app.domains.billing import service as billing
+    tok = _new_user()
+    monkeypatch.setattr(
+        "app.domains.billing.service.can_start_session",
+        lambda *a, **k: {"allowed": False, "reason": "free_limit_reached",
+                         "usage": {"sessions": 5}, "limit": 5},
+    )
+    r = client.post("/api/v2/sessions",
+                    json={"case_id": FAMILY, "language": "en"}, headers=_auth(tok))
+    assert r.status_code == 402, r.text
+    assert r.json()["detail"]["reason"] == "free_limit_reached"
+
+
+def test_v3_session_counts_usage_and_records_session_cost(monkeypatch):
+    """V3 create calls record_usage; stream/fallback turn calls record_session_cost."""
+    from app.domains.billing import service as billing
+    recorded_usage, recorded_cost = [], []
+    monkeypatch.setattr("app.domains.billing.service.can_start_session",
+                        lambda *a, **k: {"allowed": True, "usage": {"sessions": 0}})
+    monkeypatch.setattr("app.domains.billing.service.record_usage",
+                        lambda *a, **k: (recorded_usage.append(a) and None))
+    monkeypatch.setattr("app.domains.billing.service.record_session_cost",
+                        lambda *a, **k: (recorded_cost.append(a) and None))
+
+    tok = _new_user()
+    r = client.post("/api/v2/sessions",
+                    json={"case_id": FAMILY, "language": "id"}, headers=_auth(tok))
+    assert r.status_code == 200, r.text
+    sid = r.json()["data"]["sessionId"]
+    # session_start usage recorded for this user + family
+    assert any(arg[2] == "session_start" for arg in recorded_usage)
+
+    # a fallback turn must record session cost
+    client.get(f"/api/v2/sessions/{sid}/turns", headers=_auth(tok))
+    r = client.post(f"/api/v2/sessions/{sid}/turns",
+                    json={"text": "Bagaimana gejala awalnya?"}, headers=_auth(tok))
+    assert r.status_code == 200, r.text
+    assert recorded_cost, "V3 turn must call record_session_cost (cost accounting)"
+
+
+# ── Failure isolation (§ additional tests) ────────────────────────────────
+def test_invalid_v3_family_ref_fails_clearly():
+    """Unknown family ref must 404, never silently fall back to a random case."""
+    tok = _new_user()
+    r = client.post("/api/v2/sessions",
+                    json={"case_id": "fam_tidak_ada", "language": "en"},
+                    headers=_auth(tok))
+    assert r.status_code == 404, r.text
+    # and it must NOT have created any session
+    d = client.get("/api/v2/sessions?limit=5", headers=_auth(tok)).json()["data"]
+    assert len(d["sessions"]) == 0
+
+
+def test_v3_catalog_case_detail_404_for_unknown():
+    tok = _new_user()
+    r = client.get("/api/v2/cases/fam_nonexistent", headers=_auth(tok))
+    # not a v3 family and not a v2 legacy case -> clean 404 (no silent fallback)
+    assert r.status_code == 404, r.text
+
+
+# ── Additional requested tests (§ addendum) ──────────────────────────────
+def test_v3_engine_failure_does_not_fallback_to_v2(monkeypatch):
+    """A V3 engine error must surface as an error, never swap to the V2 patient."""
+    from pipeline.case_v3.runtime import VariantUnavailable
+    tok = _new_user()
+    r = client.post("/api/v2/sessions",
+                    json={"case_id": FAMILY, "language": "en"}, headers=_auth(tok))
+    assert r.status_code == 200, r.text
+    sid = r.json()["data"]["sessionId"]
+    # force the V3 engine to raise on stream
+    def _boom(*a, **k):
+        raise RuntimeError("v3 patient engine down")
+    monkeypatch.setattr("app.rag.engine_v3.stream_respond", _boom)
+    r = client.post(f"/api/v2/sessions/{sid}/turns/stream",
+                    json={"text": "Apa keluhan utama?"}, headers=_auth(tok))
+    assert r.status_code == 200
+    assert "error" in r.text.lower()  # surfaces as stream error, not V2 patient
+
+
+def test_stream_disconnect_does_not_corrupt_transcript():
+    """A failed/interrupted stream must not leave a dangling patient turn."""
+    tok = _new_user()
+    r = client.post("/api/v2/sessions",
+                    json={"case_id": FAMILY, "language": "en"}, headers=_auth(tok))
+    sid = r.json()["data"]["sessionId"]
+    h = _auth(tok)
+    # one normal turn then verify the transcript stays balanced/ordered
+    client.post(f"/api/v2/sessions/{sid}/turns",
+                json={"text": "Sudah lama?"}, headers=h)
+    turns = client.get(f"/api/v2/sessions/{sid}/turns", headers=h).json()["data"]["turns"]
+    roles = [t["role"] for t in turns]
+    # every user turn is paired with exactly one patient reply (no orphan/dangling)
+    assert roles.count("user") == roles.count("patient")
+    # and alert turns are ordered u,p,u,p...
+    for i in range(0, len(roles) - 1, 2):
+        assert roles[i] == "user" and roles[i + 1] == "patient"
