@@ -18,7 +18,10 @@ function v3SetHash(path) {
   try { var want = '#/v3/' + path.replace(/^\/+/, ''); if (location.hash !== want) location.hash = want; } catch (e) {}
 }
 function v3HashParts() {
-  try { return (location.hash || '').replace(/^#\/v3\/?/, '').split('/').filter(Boolean); } catch (e) { return []; }
+  try {
+    const hashPath = (location.hash || '').split('?')[0];
+    return hashPath.replace(/^#\/v3\/?/, '').split('/').filter(Boolean);
+  } catch (e) { return []; }
 }
 
 // Per-screen error boundary — MUST be a class (function components can't catch

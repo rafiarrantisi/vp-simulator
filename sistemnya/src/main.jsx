@@ -3583,7 +3583,10 @@ function v3SetHash(path) {
   try { var want = '#/v3/' + path.replace(/^\/+/, ''); if (location.hash !== want) location.hash = want; } catch (e) {}
 }
 function v3HashParts() {
-  try { return (location.hash || '').replace(/^#\/v3\/?/, '').split('/').filter(Boolean); } catch (e) { return []; }
+  try {
+    const hashPath = (location.hash || '').split('?')[0];
+    return hashPath.replace(/^#\/v3\/?/, '').split('/').filter(Boolean);
+  } catch (e) { return []; }
 }
 
 // Per-screen error boundary — MUST be a class (function components can't catch
@@ -5372,8 +5375,8 @@ window.__goCheckout = function (planId) {
         React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
-          screen === 'cases' && React.createElement(QoraV3App, null),
-          (screen === 'v3' || /^#\/v3(?:\/|$)/.test(window.location.hash || '')) && React.createElement(QoraV3App, null),
+          screen === 'cases' && !/^#\/v3(?:\/|$)/.test(window.location.hash || '') && React.createElement(QoraV3App, null),
+          /^#\/v3(?:\/|$)/.test(window.location.hash || '') && React.createElement(QoraV3App, null),
           screen === 'v2cases' && React.createElement(QoraV2Screen, null),
           screen === 'mentor' && React.createElement(QMentorScreen, { onNav: navigate }),
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
