@@ -2511,6 +2511,11 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
   const [stage, setStage] = React.useState((mode === 'osce' && !initialSessionId) ? 'brief' : 'chat'); // brief | chat | pf | assess
   const [pf, setPf] = React.useState({ notes: '', areas: [] });
   const isOsce = mode === 'osce';
+  // V3 family cards opt into the physical-exam step even in Practice mode
+  // (backend `/pf` dispatches to the V3 variant's system_findings). Legacy
+  // V2 practice keeps the original anamnesis-only behaviour.
+  const isV3Family = caseSummary && caseSummary.source_type === 'v3_family';
+  const hasPhysicalExam = isOsce || isV3Family;
   const [secs, setSecs] = React.useState((caseSummary.estimated_minutes || 15) * 60);
   const [timerOn, setTimerOn] = React.useState(isOsce); // OSCE auto-starts the countdown
   const [timeUp, setTimeUp] = React.useState(false);
@@ -2799,7 +2804,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
         : (m.streaming ? m.text + ' ▋' : m.text))),
       React.createElement('div', { ref: endRef })),
     React.createElement('div', { style: { padding: '12px 0 16px', display: 'flex', flexDirection: 'column', gap: 10 } },
-      isOsce && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', textAlign: 'center' } }, '🩺 Done with your questions? Tap ' + (isMobile ? 'Exam' : 'Exam →') + ' to perform the physical examination before assessing.'),
+      hasPhysicalExam && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', textAlign: 'center' } }, '🩺 Done with your questions? Tap ' + (isMobile ? 'Exam' : 'Exam →') + ' to perform the physical examination before assessing.'),
       React.createElement('div', { style: { display: 'flex', justifyContent: 'center' } },
         React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t, 'voice'), disabled: busy, sessionLang: language, compact: isMobile })),
       React.createElement('div', { style: { display: 'flex', gap: 8 } },
@@ -2809,7 +2814,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
           placeholder: 'Or type a question…', disabled: busy,
           style: { flex: 1, minWidth: 0, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' },
         }),
-        React.createElement('button', { onClick: () => setStage(isOsce ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, isOsce ? 'Exam →' : 'Assess →'))));
+        React.createElement('button', { onClick: () => setStage(hasPhysicalExam ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, hasPhysicalExam ? 'Exam →' : 'Assess →'))));
 
   return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 0' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
     wide && React.createElement('div', { style: { width: 240, flexShrink: 0, marginLeft: -40 } },
