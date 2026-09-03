@@ -198,8 +198,30 @@ def load_variant(raw: dict) -> ClinicalVariant:
     v.safety_critical_errors = list(raw.get("safety_critical_errors") or [])
     v.sources = [Source(title=str(s.get("title", "")), authority=str(s.get("authority") or ""),
                         version=str(s.get("version") or ""), year=str(s.get("year") or ""),
-                        url=str(s.get("url") or ""), kind=str(s.get("kind") or ""))
+                        url=str(s.get("url") or ""), kind=str(s.get("kind") or ""),
+                        tier=str(s.get("tier") or ""),
+                        publication_date=str(s.get("publication_date") or ""),
+                        effective_date=str(s.get("effective_date") or ""),
+                        superseded_by=str(s.get("superseded_by") or ""),
+                        review_status=str(s.get("review_status") or ""),
+                        locator=str(s.get("locator") or ""))
                  for s in (raw.get("sources") or [])]
+    from pipeline.case_v3.models import MedicationConcept
+    v.medications = [MedicationConcept(
+                        generic_name=str(m.get("generic_name", "")),
+                        drug_class=str(m.get("drug_class") or ""),
+                        preferred_local_agent=str(m.get("preferred_local_agent") or ""),
+                        acceptable_alternatives=list(m.get("acceptable_alternatives") or []),
+                        dose_range=str(m.get("dose_range") or ""),
+                        route=str(m.get("route") or ""),
+                        frequency=str(m.get("frequency") or ""),
+                        duration=str(m.get("duration") or ""),
+                        contraindications=list(m.get("contraindications") or []),
+                        monitoring=list(m.get("monitoring") or []),
+                        referral_restriction=str(m.get("referral_restriction") or ""),
+                        source_refs=list(m.get("source_refs") or []),
+                        formulary_status=str(m.get("formulary_status") or "unknown"))
+                     for m in (raw.get("medications") or [])]
     v.source_governance = raw.get("source_governance") or {}
     v.status = str(raw.get("status") or "draft")
     v.clinical_content_version = str(raw.get("clinical_content_version") or "")

@@ -357,7 +357,13 @@ def _has_named_human_review(v: ClinicalVariant) -> bool:
 
 
 def source_records_from_variant(v: ClinicalVariant) -> list[SourceRecord]:
-    """Map a variant's Source structures into governed SourceRecords."""
+    """Map a variant's Source structures into governed SourceRecords.
+
+    FASE 2: honors explicit `tier` / `review_status` / dates / locator when
+    the author set them; otherwise falls back to the previous inference
+    (guideline→MANAGEMENT Tier1, current). Behavior for pre-Fase-2 content
+    (no new fields) is byte-identical to before.
+    """
     out: list[SourceRecord] = []
     for i, s in enumerate(v.sources):
         relevance = []
@@ -371,10 +377,24 @@ def source_records_from_variant(v: ClinicalVariant) -> list[SourceRecord]:
             relevance.append(SourceKind.OSCE_RUBRIC)
         elif s.kind == "guideline":
             relevance.append(SourceKind.MANAGEMENT)
+        tier = SourceTier.TIER1
+        if (s.tier or "").strip():
+            try:
+                tier = SourceTier(s.tier.strip())
+            except ValueError:
+                tier = SourceTier.TIER1
+        status = SourceStatusKind.CURRENT
+        if (s.review_status or "").strip().lower() == "superseded" or (s.superseded_by or "").strip():
+            status = SourceStatusKind.SUPERSEDED
+        elif (s.review_status or "").strip().lower() == "unclear":
+            status = SourceStatusKind.UNCLEAR
         out.append(SourceRecord(
             source_id=f"{v.id}:src{i+1}", title=s.title, organization=s.authority,
             document_type=s.kind or "guideline", year=s.year, url=s.url,
-            version=s.version, tier=SourceTier.TIER1, relevance=relevance,
-            status=SourceStatusKind.CURRENT,
+            publication_date=s.publication_date or None,
+            effective_date=s.effective_date or None,
+            accessed_reviewed_date=None,
+            version=s.version, status=status, tier=tier, relevance=relevance,
+            locator=s.locator or "",
         ))
     return out

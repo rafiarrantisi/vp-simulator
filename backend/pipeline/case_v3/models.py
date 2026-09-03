@@ -238,9 +238,61 @@ class Source:
     year: str = ""
     url: str = ""
     kind: str = ""            # competency | guideline | epidemiology | formulary
+    # FASE 2 — evidence-pack fields (all optional; existing YAML without them
+    # parses exactly as before). Tier follows vocab.SourceTier ("0".."4");
+    # empty = inferred at validation time from authority/kind (never persisted
+    # as truth — inference is advisory, the human review record decides).
+    tier: str = ""
+    publication_date: str = ""   # ISO YYYY-MM-DD
+    effective_date: str = ""     # ISO YYYY-MM-DD
+    superseded_by: str = ""      # source_id/title that replaces this source
+    review_status: str = ""      # current | superseded | unclear
+    locator: str = ""            # page/section/table within the document
 
     def to_dict(self) -> dict:
         return asdict(self)
+
+
+# ── Medication concept (FASE 2 — normalized, formulary-aware) ─────────────
+@dataclass
+class MedicationConcept:
+    """One normalized medication concept for a variant's management truth.
+
+    This is a DATA contract for authoring/review — it does not prescribe to a
+    real patient. `preferred_local_agent` is the Indonesian-practice default;
+    `formulary_status` records Fornas/JKN context (in_stock | limited |
+    non_formulary | unknown) and NEVER replaces the disease guideline.
+    `referral_restriction` records level-of-care limits (e.g. "RS-only").
+    """
+    generic_name: str
+    drug_class: str = ""
+    preferred_local_agent: str = ""
+    acceptable_alternatives: list[str] = field(default_factory=list)
+    dose_range: str = ""
+    route: str = ""
+    frequency: str = ""
+    duration: str = ""
+    contraindications: list[str] = field(default_factory=list)
+    monitoring: list[str] = field(default_factory=list)
+    referral_restriction: str = ""
+    source_refs: list[str] = field(default_factory=list)
+    formulary_status: str = "unknown"   # in_stock | limited | non_formulary | unknown
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
+    def validate(self) -> list[str]:
+        """Return error strings; empty = valid."""
+        errs: list[str] = []
+        if not (self.generic_name or "").strip():
+            errs.append("medication requires `generic_name`")
+        if self.formulary_status not in ("in_stock", "limited", "non_formulary", "unknown"):
+            errs.append(f"formulary_status '{self.formulary_status}' must be "
+                        "in_stock | limited | non_formulary | unknown")
+        if self.preferred_local_agent and not self.source_refs:
+            errs.append(f"preferred_local_agent '{self.preferred_local_agent}' "
+                        "requires >=1 `source_refs`")
+        return errs
 
 
 # ── CLINICAL VARIANT — canonical medical truth ─────────────────────────────
@@ -393,6 +445,9 @@ class ClinicalVariant:
     investigations: list[Investigation] = field(default_factory=list)
     diagnostic: DiagnosticTruth = field(default_factory=lambda: DiagnosticTruth(""))
     management: Management = field(default_factory=Management)
+    # FASE 2 — normalized medication concepts (empty for all pre-Fase-2
+    # variants; populated only through human-reviewed authoring).
+    medications: list[MedicationConcept] = field(default_factory=list)
 
     assessment_items: list[AssessmentItem] = field(default_factory=list)
     safety_critical_errors: list[str] = field(default_factory=list)
@@ -455,6 +510,7 @@ class ClinicalVariant:
             "investigations": [i.to_dict() for i in self.investigations],
             "diagnostic": self.diagnostic.to_dict(),
             "management": self.management.to_dict(),
+            "medications": [m.to_dict() for m in self.medications],
             "assessment_items": [i.to_dict() for i in self.assessment_items],
             "safety_critical_errors": self.safety_critical_errors,
             "blind_candidate_brief": self.blind_candidate_brief,
@@ -468,10 +524,15 @@ class ClinicalVariant:
 
     # Reproducibility: a canonical content hash of the CLINICAL truth only
     # (persona fields excluded), so two variants differing only in "name" hash equal.
+    # FASE 2: `medications` is popped while empty so every pre-Fase-2 stored
+    # session hash stays stable; once populated it joins the hashed truth and
+    # any change correctly yields a new hash (old sessions 409, by design).
     def canonical_hash(self) -> str:
         d = dict(self.to_dict())
         d.pop("id", None)  # id is identity, not clinical truth
         d.pop("title", None)
+        if not d.get("medications"):
+            d.pop("medications", None)
         payload = json.dumps(d, sort_keys=True, default=str)
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
