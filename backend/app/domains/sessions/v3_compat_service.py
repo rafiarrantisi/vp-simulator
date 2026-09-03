@@ -327,7 +327,7 @@ def score(db: OrmSession, user: User, session_id: str, *,
         "per_dimension": _dims_to_v2(result.by_dimension),
         "per_item": _v2_per_item(v, result),   # answer-key hit/miss overlay
         "safety_gates": result.safety_flags,
-        "summary": debrief.get("overall_summary", {}).get("target_diagnosis", ""),
+        "summary": _v2_summary(v, result, debrief),   # V2 examiner paragraph
         "answer_key": _v2_answer_key(v),        # V2-compatible model answer
         "debrief": debrief,
         "overtime_penalty": None,
@@ -426,6 +426,62 @@ def _v2_answer_key(v) -> dict:
             "education_safety_netting": education_safety_netting,
         },
     }
+
+
+def _v2_summary(v, result, debrief) -> str:
+    """Compose a V2-style examiner paragraph from the V3 score + debrief.
+    Deterministic (no extra LLM token spend). QV2Result renders this as the
+    leading examiner verdict (report.summary)."""
+    overall = result.total
+    maxscore = result.max_score or 1.0
+    pct = int(round((overall / maxscore) * 100))
+    dx = (debrief.get("overall_summary") or {}).get("target_diagnosis", "") or \
+        getattr(v.diagnostic, "working_diagnosis", "")
+
+    # strongest / weakest dimension from by_dimension (score/max as pct)
+    dim_pct = {}
+    for k, val in (result.by_dimension or {}).items():
+        if isinstance(val, dict):
+            mx = val.get("max") or val.get("max_score") or 1.0
+            dim_pct[k] = int(round((val.get("score", 0) / mx) * 100))
+    dims_sorted = sorted(dim_pct.items(), key=lambda kv: kv[1], reverse=True)
+    strong = dims_sorted[0] if dims_sorted else None
+    weak = dims_sorted[-1] if len(dims_sorted) > 1 else None
+
+    parts = []
+    parts.append(f"Overall you scored {pct}%.")
+    if dx:
+        parts.append(f"The candidate's working diagnosis (case family '{v.family_id}') was assessed against {dx}.")
+    if strong:
+        sn = strong[0].replace("_", " ")
+        parts.append(f"Your strongest area was {sn} ({strong[1]}%).")
+    if weak:
+        wn = weak[0].replace("_", " ")
+        parts.append(f"Your weakest area was {wn} ({weak[1]}%) — review this and spend more time there next attempt.")
+    else:
+        parts.append("Keep practising the full history → diagnosis → management arc for consistency.")
+    # safety flags -> explicit actionable feedback
+    gates = result.safety_flags or []
+    if gates:
+        labels = []
+        for g in gates:
+            gv = g.get("gate") if isinstance(g, dict) else getattr(g, "gate", str(g))
+            if gv:
+                labels.append(str(gv).replace("_", " "))
+        if labels:
+            parts.append("⚠️ Safety concerns flagged: " + ", ".join(labels) +
+                         ". Prioritize red-flag screening and urgent steps in OSCE conditions.")
+    else:
+        parts.append("No critical safety gate triggered — good red-flag awareness.")
+    # management exposure
+    labels2 = None
+    if debrief and isinstance(debrief.get("management_review"), dict):
+        labels2 = debrief.get("management_review")
+    if labels2:
+        mg = ", ".join(str(x) for x in (labels2 if isinstance(labels2, list) else labels2.keys()))
+        parts.append("Management review: " + mg)
+
+    return " ".join(parts)
 
 
 def _v2_presentation(v) -> str:
