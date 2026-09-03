@@ -1,0 +1,74 @@
+[
+ {
+  "id": "fam_dengue",
+  "source_type": "v3_family",
+  "family_type": "disease",
+  "public_id": "fam_dengue",
+  "specialty": "internal_medicine",
+  "system": null,
+  "presentation_id": "Fever",
+  "presentation": "Dengue",
+  "first_impression": "Fever",
+  "first_impression_id": "Dengue",
+  "title": "Dengue",
+  "difficulty": 2,
+  "mode": "osce_full",
+  "estimated_minutes": 15,
+  "status": "clinically_reviewed",
+  "eligible_variant_count": 3,
+  "_v3": {
+   "family_id": "fam_dengue",
+   "family_type": "disease",
+   "targeted": true,
+   "variant_count": 3
+  }
+ },
+ {
+  "id": "fam_fever_child",
+  "source_type": "v3_family",
+  "family_type": "presentation",
+  "public_id": "fam_fever_child",
+  "specialty": "paediatrics",
+  "system": null,
+  "presentation_id": "Fever in a child",
+  "presentation": "Demam pada Anak",
+  "first_impression": "Fever in a child",
+  "first_impression_id": "Demam pada Anak",
+  "title": "Fever in a Child",
+  "difficulty": 2,
+  "mode": "anamnesis",
+  "estimated_minutes": 15,
+  "status": "in_review",
+  "eligible_variant_count": 2,
+  "_v3": {
+   "family_id": "fam_fever_child",
+   "family_type": "presentation",
+   "targeted": false,
+   "variant_count": 2
+  }
+ },
+ {
+  "id": "fam_uti",
+  "source_type": "v3_family",
+  "family_type": "disease",
+  "public_id": "fam_uti",
+  "specialty": "paediatrics",
+  "system": null,
+  "presentation_id": "Fever in a child",
+  "presentation": "Infeksi Saluran Kemih",
+  "first_impression": "Fever in a child",
+  "first_impression_id": "Infeksi Saluran Kemih",
+  "title": "Urinary Tract Infection",
+  "difficulty": 2,
+  "mode": "osce_full",
+  "estimated_minutes": 15,
+  "status": "clinically_reviewed",
+  "eligible_variant_count": 3,
+  "_v3": {
+   "family_id": "fam_uti",
+   "family_type": "disease",
+   "targeted": true,
+   "variant_count": 3
+  }
+ }
+]

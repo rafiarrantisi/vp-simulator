@@ -43,7 +43,7 @@ def _is_v3_compat(*, user=None, email: str | None = None) -> bool:
     st = get_settings()
     if (st.case_content_engine or "v2").lower() == "v3_compat":
         return True
-    who = (user.email if user is not None else "") or email or ""
+    who = ((user.email if user is not None else "") or email or "").strip().lower()
     if not who or not st.v3_compat_test_emails:
         return False
     return who in [w.strip().lower() for w in st.v3_compat_test_emails.split(",") if w.strip()]

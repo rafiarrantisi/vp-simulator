@@ -1,0 +1,12 @@
+{
+ "success": true,
+ "data": {
+  "sessionId": "bdf135c0-1192-4ef4-a329-8796a5d5557b",
+  "caseId": "fam_fever_child",
+  "mode": "blind",
+  "language": "en",
+  "openingLine": "Healthy young adult presents with high fever, retro-orbital pain, and severe myalgia",
+  "_contentSchema": "new"
+ },
+ "error": null
+}

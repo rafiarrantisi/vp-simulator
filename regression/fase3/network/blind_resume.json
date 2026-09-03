@@ -1,0 +1,20 @@
+{
+ "success": true,
+ "data": {
+  "turns": [
+   {
+    "role": "user",
+    "content": "Hello, what seems to be the problem?"
+   },
+   {
+    "role": "patient",
+    "content": "[STUB LLM] respons dihasilkan dari prompt ber-answer-restraint (set env LLM_API_KEY utk provider nyata). Pertanyaan: Hello, what seems to be the problem?"
+   }
+  ],
+  "case_id": "fam_fever_child",
+  "language": "en",
+  "status": "active",
+  "opening_line": "Healthy young adult presents with high fever, retro-orbital pain, and severe myalgia"
+ },
+ "error": null
+}

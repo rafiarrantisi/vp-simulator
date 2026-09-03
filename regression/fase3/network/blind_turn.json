@@ -1,0 +1,8 @@
+{
+ "success": true,
+ "data": {
+  "reply": "[STUB LLM] respons dihasilkan dari prompt ber-answer-restraint (set env LLM_API_KEY utk provider nyata). Pertanyaan: Hello, what seems to be the problem?",
+  "audioUrl": null
+ },
+ "error": null
+}

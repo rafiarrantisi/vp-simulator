@@ -1,0 +1,15 @@
+canary login ok
+blind card present: true count=2
+blind create status=200 sessionId=bdf135c0-1192-4ef4-a329-8796a5d5557b
+blind network leaks: NONE
+invalid family ref -> HTTP 404 (expect non-2xx, clear fail)
+double-score: 0 vs 0 idempotent=true
+stream abort: [object Response]
+transcript after abort intact, roles=user,patient,user,patient
+voice-status: {"stt":true,"tts":true,"language":"id"}
+practice opening visible: ora Qora CLINICAL INTERVIEW TRAINER Dashboard Cases Mentor Sessions Profile Billing L TIME REMAINING —:— Start timer 📋 Your tasks 1. Introduce yourself & build rapport 2. Take a focused history (anam
+resume same persona reply: true
+pageerrors=none
+practice result reached: true
+osce stage text has: brief?
+osce PF reached

@@ -82,29 +82,49 @@ def start(db: OrmSession, user: User, *, case_id: str, language: str) -> dict:
                     "limit": gate.get("limit"),
                     "message": "Free session limit reached — upgrade to continue."})
 
-    # select one eligible variant NOW (not on card click) — Phase E
-    policy = SelectionPolicy(reg)
-    try:
-        result = policy.select(SelectionRequest(
-            mode=interaction_mode, family_id=case_id,
-            learner_stage="koas", seed=0))
-    except VariantUnavailable:
-        raise HTTPException(status.HTTP_404_NOT_FOUND,
-                            "No eligible variant for this family")
+    # select one eligible variant NOW (not on card click) — Phase E.
+    # Presentation (blind) families resolve their curated cross-family refs;
+    # disease families use the family-scoped policy. Either way an empty set
+    # is a clear 404 — never a silent downgrade to a V2 patient.
+    from app.domains.sessions.v3_compat_schemas import resolve_start_variants
+    v = None
+    entry_point = None
+    reason = ""
+    if fam.family_type.value == "presentation":
+        cands = resolve_start_variants(reg, fam, "koas")
+        if not cands:
+            raise HTTPException(status.HTTP_404_NOT_FOUND,
+                                "No eligible variant for this family")
+        v = cands[0]
+        entry_point = f"presentation:{fam.id}"
+        reason = f"presentation resolve: eligible={len(cands)}, seed=0"
+    else:
+        policy = SelectionPolicy(reg)
+        try:
+            result = policy.select(SelectionRequest(
+                mode=interaction_mode, family_id=case_id,
+                learner_stage="koas", seed=0))
+        except VariantUnavailable:
+            raise HTTPException(status.HTTP_404_NOT_FOUND,
+                                "No eligible variant for this family")
+        v = result.variant
+        entry_point = result.entry_point
+        reason = result.reason
 
-    v = result.variant
     constraints = PersonaConstraints(relationship="self",
                                      allow_name_generation=True,
                                      anxiety_level="range", verbosity="range")
     try:
         persona = persona_from_constraints(v, constraints, 0)
     except Exception:  # noqa: BLE001
+        # Display-only fallback. Never carries the working diagnosis — the
+        # engine already holds the variant truth, and in blind mode even a
+        # server-side dx string is one refactor away from a client leak.
         persona = {"name": "", "occupation": "", "relationship": "self",
-                   "working_diagnosis": v.diagnostic.working_diagnosis,
                    "chief_complaint": v.chief_complaint}
     build_session_instance(v, persona_seed=0, language=language,
                            learner_stage="koas", mode=interaction_mode,
-                           entry_point=result.entry_point)
+                           entry_point=entry_point)
 
     # persist into the existing sessions table (content_schema='v3')
     s = SessionRow(
@@ -116,7 +136,7 @@ def start(db: OrmSession, user: User, *, case_id: str, language: str) -> dict:
         interaction_mode=interaction_mode,
         competency_category=v.competency.category if v.competency else None,
         legacy_skdi_level=v.competency.legacy_level if v.competency else None,
-        presentation_path=result.entry_point, selection_reason=result.reason,
+        presentation_path=entry_point, selection_reason=reason,
         variant_canonical_hash=v.canonical_hash(),
     )
     db.add(s)

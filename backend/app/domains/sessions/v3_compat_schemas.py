@@ -76,9 +76,36 @@ def family_to_card(reg: CaseRegistry, fam: CaseFamily, variant_count: int) -> di
     }
 
 
+def resolve_start_variants(reg: CaseRegistry, fam: CaseFamily,
+                             learner_stage: str = "koas") -> list[ClinicalVariant]:
+    """Variants a `start` may instantiate for this family, in deterministic
+    pick order. Disease families use the family-scoped policy (same rule as
+    the card count). Presentation (blind) families curate CROSS-family
+    variant refs in `active_variant_ids` (e.g. fever → dengue / UTI
+    differentials) — those resolve by id and are stage-filtered here, so the
+    card count and `start` can never disagree (FASE 3 canary fix: the blind
+    card used to advertise while `start` 404'd). No silent fallback: empty
+    stays empty and the caller returns a clear 404."""
+    from pipeline.case_v3.runtime import _not_stage_compatible
+    if fam.family_type != FamilyType.PRESENTATION:
+        return []
+    out = []
+    for vid in (fam.active_variant_ids or []):
+        v = reg.variants.get(vid)
+        if v is None:
+            continue
+        if _not_stage_compatible(v, learner_stage):
+            continue
+        out.append(v)
+    out.sort(key=lambda v: (v.variation_level.value, v.id))
+    return out
+
+
 def family_variant_count(reg: CaseRegistry, fam: CaseFamily,
                          learner_stage: str = "koas") -> int:
     from pipeline.case_v3.runtime import SelectionPolicy, SelectionRequest
+    if fam.family_type == FamilyType.PRESENTATION:
+        return len(resolve_start_variants(reg, fam, learner_stage))
     policy = SelectionPolicy(reg)
     return policy.eligible_count(
         SelectionRequest(mode="targeted", family_id=fam.id,
