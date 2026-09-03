@@ -35,6 +35,19 @@ from app.shared.dependencies import get_current_user
 from app.shared.envelope import ok
 from app.shared.ratelimit import rate_limit
 
+
+def _is_v3_compat(*, user=None, email: str | None = None) -> bool:
+    """Phase B flag (§K): which user sees the V3 family library + V3 dispatch.
+    Global config OR canary email list. No new route / no UI change."""
+    from app.config import get_settings
+    st = get_settings()
+    if (st.case_content_engine or "v2").lower() == "v3_compat":
+        return True
+    who = (user.email if user is not None else "") or email or ""
+    if not who or not st.v3_compat_test_emails:
+        return False
+    return who in [w.strip().lower() for w in st.v3_compat_test_emails.split(",") if w.strip()]
+
 # Cap the LLM-hitting turns/score endpoints per IP (cost + abuse guard).
 _ai_rl = Depends(rate_limit("ai", "rate_limit_ai"))
 
@@ -44,6 +57,16 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 @router.get("/cases")
 def v2_list_cases(specialty: str | None = None, status: str | None = None,
                   scope: str | None = None, user: User = Depends(get_current_user)):
+    # Phase B (§4/K): if this user is flagged v3_compat, the V2 frontend
+    # (`QV2Catalogue`) receives V3 family cards in exact CaseCard shape. The
+    # flag only changes the CONTENT SOURCE — QoraV2Screen / routes / shell stay
+    # identical. Flip to v2 (global or canary removal) restores old content.
+    from app.domains.sessions import v3_compat_service as v3c
+    if _is_v3_compat(user=user):
+        cards = v3c.library_cards()
+        specs = sorted({c.get("specialty") for c in cards if c.get("specialty")})
+        return ok({"cases": cards, "total": len(cards), "specialties": specs,
+                   "contentEngine": "v3_compat"})
     # The rebuilt bank (STEP 2+) filters EXCLUSIVELY to verified, non-legacy
     # content. The default (no scope / status) preserves the existing live flow
     # so the current catalogue keeps working untouched.
@@ -61,6 +84,14 @@ def v2_list_cases(specialty: str | None = None, status: str | None = None,
 
 @router.get("/cases/{case_id}")
 def v2_case_detail(case_id: str, user: User = Depends(get_current_user)):
+    from app.domains.sessions import v3_compat_service as v3c
+    from app.domains.sessions.v3_compat_schemas import (
+        default_registry, family_to_card, family_variant_count,
+    )
+    reg = default_registry()
+    if case_id in reg.families:
+        fam = reg.families[case_id]
+        return ok(family_to_card(reg, fam, family_variant_count(reg, fam)))
     try:
         c = load_v2_case(case_id)
     except FileNotFoundError:
@@ -146,6 +177,13 @@ def v2_list_sessions(limit: int = 50, user: User = Depends(get_current_user),
 @router.post("/sessions")
 def v2_start_session(req: V2StartReq, user: User = Depends(get_current_user),
                      db: Session = Depends(get_db)):
+    # Phase B (§E/§G): a V3 family public ref dispatches into the V3 runtime,
+    # returning the exact V2 session DTO. Variant selection happens HERE (at
+    # creation), not at card click. Diagnostics are never in the candidate DTO.
+    from app.domains.sessions.v3_compat_schemas import is_v3_family_ref
+    if is_v3_family_ref(req.case_id):
+        from app.domains.sessions import v3_compat_service as v3c
+        return ok(v3c.start(db, user, case_id=req.case_id, language=req.language))
     try:
         case = load_v2_case(req.case_id)
     except FileNotFoundError:
@@ -183,6 +221,9 @@ def v2_get_turns(session_id: str, user: User = Depends(get_current_user),
     """Chat turn history — used to restore an in-flight session after a refresh
     (hash-routing, Aug 2026). Returns the transcript + session metadata."""
     s = _owned(db, session_id, user)
+    if s.content_schema == "new":  # Phase B: V3-backed session -> compat path
+        from app.domains.sessions import v3_compat_service as v3c
+        return ok(v3c.get_turns(db, session_id, user))
     return ok({
         "turns": _history(db, session_id),
         "case_id": s.case_id,
@@ -196,6 +237,9 @@ def v2_get_turns(session_id: str, user: User = Depends(get_current_user),
 def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_current_user),
             db: Session = Depends(get_db)):
     s = _owned(db, session_id, user)
+    if s.content_schema == "new":  # Phase B: V3 turn (fallback, non-stream)
+        from app.domains.sessions import v3_compat_service as v3c
+        return ok(v3c.turn(db, user, session_id, req.text, req.input_type))
     history = _history(db, session_id)
     n = _next_turn_no(db, session_id)
     db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text, input_type=req.input_type))
@@ -225,6 +269,12 @@ def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(get_cur
     `db` is closed by the time the streaming body runs.
     """
     s = _owned(db, session_id, user)
+    if s.content_schema == "new":  # Phase B: V3 streaming (exact V2 contract)
+        from app.domains.sessions import v3_compat_service as v3c
+        return StreamingResponse(
+            v3c.stream_turn(db, user, session_id, req.text, req.input_type),
+            media_type="text/plain; charset=utf-8",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
     history = _history(db, session_id)
     n = _next_turn_no(db, session_id)
     user_id = user.id
@@ -326,6 +376,9 @@ def v2_pf(session_id: str, req: V2PFReq, user: User = Depends(get_current_user),
     they examine + what they expect; the endpoint reveals the patient's findings
     for those areas only. Stateless — the notes travel with the score request."""
     s = _owned(db, session_id, user)
+    if s.content_schema == "new":  # Phase B: V3 physical exam (isolation rule)
+        from app.domains.sessions import v3_compat_service as v3c
+        return ok(v3c.pf(db, user, session_id, notes=req.notes, areas=req.areas))
     try:
         case = load_v2_case(s.case_id)
     except FileNotFoundError:
@@ -395,6 +448,12 @@ def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_
     # Return the stored report instead of awarding XP/progress twice.
     if s.status == "completed" and s.report:
         return ok(s.report)
+    if s.content_schema == "new":  # Phase B: V3 scoring -> V2 report shape
+        from app.domains.sessions import v3_compat_service as v3c
+        return ok(v3c.score(
+            db, user, session_id, ddx=req.ddx, management=req.management,
+            mode=req.mode, overtime=req.overtime,
+            pf_notes=req.pf_notes, pf_areas=req.pf_areas))
     try:
         case = load_v2_case(s.case_id)
     except FileNotFoundError:

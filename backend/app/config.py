@@ -78,6 +78,15 @@ class Settings(BaseSettings):
 
     # ── Rate limiting (in-memory; Redis-backed = scale, ditunda) ──
     rate_limit_enabled: bool = True
+
+    # ── Case content engine (Phase B feature flag, §K) ──
+    # v2 (default) keeps the legacy 92-case catalogue & engine.
+    # v3_compat makes /api/v2/cases return V3 family cards and dispatches
+    # v3 families into the V3 runtime — while QoraV2Screen stays untouched.
+    case_content_engine: str = "v2"  # v2 | v3_compat
+    # Emails (comma-separated) that see v3_compat even when the global flag is v2
+    # (handy for canary/testing without a full rollout).
+    v3_compat_test_emails: str = ""
     rate_limit_auth: int = 20      # /api/auth/* per IP per menit
     rate_limit_ai: int = 30        # /api/ai|scoring per user per menit
     rate_limit_window_sec: int = 60
