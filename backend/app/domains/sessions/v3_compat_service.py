@@ -309,32 +309,59 @@ def score(db: OrmSession, user: User, session_id: str, *,
           ddx: dict | None = None, management: dict | None = None,
           mode: str | None = None, overtime: bool = False,
           pf_notes: str | None = None, pf_areas: list[str] | None = None) -> dict:
-    """Score using the PERSISTED variant. Idempotent (returns stored report)."""
+    """Score using the PERSISTED variant + the LLM judge over the REAL transcript.
+
+    Mirrors `judge_v2.evaluate_v2`: the judge reads every question/answer (so a
+    session with only 3 questions is scored honestly), produces per-item
+    hit/miss with evidence, honest per-dimension scores, safety gates and a
+    narrative examiner summary. Idempotent (returns stored report on retry).
+    """
+    from app.rag.judge_v3 import evaluate_v3
     from app.domains.billing import service as billing
     s = _owned(db, session_id, user)
     if s.status == "completed" and s.report:
         return s.report
     _, v = _frozen_variant(db, s)
+    transcript = _history(db, session_id)
+    is_osce = (mode or "").lower() == "osce"
+    judge = evaluate_v3(
+        v, transcript, learner_stage=s.learner_level or "koas",
+        ddx=ddx, management=management,
+        pf_notes=pf_notes, pf_areas=pf_areas, with_pf=is_osce)
+    # deterministic safety-gate complement (rule 3: red-flags/urgency)
     inp = _map_v2_assessment_to_score(v, ddx, management)
-    result = score_encounter(inp)
-    debrief = build_debrief(v, score=result,
-                            family_title=v.family_id)
-    # translate V3 -> exact V2 `report` shape (QV2Result consumes these)
+    try:
+        det = score_encounter(inp)
+    except Exception:  # noqa: BLE001
+        det = None
+    debrief = build_debrief(v, score=det, family_title=v.family_id)
+
+    # V2 answer key + per_item overlay (QV2Result consumes these)
+    ak = _v2_answer_key(v)
+    judge_per_item = judge.get("per_item") or []
+    ak_per_item = _v2_per_item(v, det) if det else []
+    merged_per_item = _merge_per_item(ak, judge_per_item, ak_per_item)
+
     report = {
-        "overall": int(round(result.total)),
-        "score": result.total,
-        "max_score": result.max_score,
-        "per_dimension": _dims_to_v2(result.by_dimension),
-        "per_item": _v2_per_item(v, result),   # answer-key hit/miss overlay
-        "safety_gates": result.safety_flags,
-        "summary": _v2_summary(v, result, debrief),   # V2 examiner paragraph
-        "answer_key": _v2_answer_key(v),        # V2-compatible model answer
+        "overall": int(round(judge.get("overall", 0) or 0)),
+        "score": judge.get("overall_raw", 0) or 0,
+        "max_score": judge.get("max_score", 100) or 100,
+        "per_dimension": judge.get("per_dimension") or {},
+        "per_item": merged_per_item,
+        "safety_gates": judge.get("safety_gates") or [],
+        "summary": judge.get("summary") or "",   # narrative examiner paragraph
+        "answer_key": ak,
         "debrief": debrief,
         "overtime_penalty": None,
         "schema": "new",
         "variantId": v.id,
         "familyId": v.family_id,
     }
+    if not report["summary"]:
+        # LLM unavailable / stub — honest deterministic fallback (no fake 100%)
+        report["summary"] = _v2_summary(v, det, debrief) if det else \
+            (f"Overall you scored {report['overall']}%. This session was scored "
+             "without a live judge. Review the model answer below.")
     if overtime:
         report["overall"] = max(0, report["overall"] - 10)
         report["overtime_penalty"] = 10
@@ -345,6 +372,29 @@ def score(db: OrmSession, user: User, session_id: str, *,
         s.ended_at = datetime.now(timezone.utc)
     db.commit()
     return report
+
+
+def _merge_per_item(ak: dict, judge_items: list[dict], det_items: list[dict]) -> list[dict]:
+    """Answer-key items overlaid with the judge's hit/miss status. Every item in
+    the V2 answer key gets a status (judge's, else deterministic, else not_asked)."""
+    out = []
+    judge_map = {str(i.get("item", "")).lower(): i.get("status", "miss")
+                 for i in judge_items if isinstance(i, dict)}
+    det_map = {str(i.get("item", "")).lower(): i.get("status", "miss")
+               for i in det_items if isinstance(i, dict)}
+    # anamnesis checklist items + red flags
+    for grp in (ak.get("anamnesis_checklist") or []):
+        for it in (grp.get("items") or []):
+            txt = str(it.get("item", "")).lower()
+            status = judge_map.get(txt, det_map.get(txt, "not_asked"))
+            out.append({"dimension": "info_gathering", "item": it.get("item", ""),
+                        "status": status, "evidence": ""})
+    for it in (ak.get("red_flags") or []):
+        txt = str(it.get("item", "")).lower()
+        status = judge_map.get(txt, det_map.get(txt, "not_asked"))
+        out.append({"dimension": "management_safety", "item": it.get("item", ""),
+                    "status": status, "evidence": ""})
+    return out
 
 
 def _dims_to_v2(by_dimension: dict) -> dict:

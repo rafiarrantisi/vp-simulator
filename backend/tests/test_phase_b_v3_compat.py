@@ -28,8 +28,11 @@ client = TestClient(app)
 def _stub_llm(monkeypatch):
     """Never hit the paid LLM in tests — deterministic stub only."""
     stub = StubLlmClient()
-    monkeypatch.setattr("app.rag.engine_v3.get_llm_client", lambda: stub)
+    # source: every module that does `from app.rag.llm import *` picks this up
+    monkeypatch.setattr("app.rag.llm.get_llm_client", lambda: stub)
     monkeypatch.setattr("app.rag.engine_v2.get_llm_client", lambda: stub)
+    monkeypatch.setattr("app.rag.engine_v3.get_llm_client", lambda: stub)
+    monkeypatch.setattr("app.rag.judge_v3.get_llm_client", lambda: stub)
     return stub
 
 
