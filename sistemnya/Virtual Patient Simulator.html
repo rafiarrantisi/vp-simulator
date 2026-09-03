@@ -44,10 +44,10 @@
       const [screen, setScreen] = React.useState(() => {
         var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
         var authed = loadAuth();
-        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout', 'v3', 'v2cases'].indexOf(h) >= 0;
+        var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
         if (!authed && protectedHash) return 'qora-landing';
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
-        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'v3', 'v2cases'].indexOf(h) >= 0) return h;
+        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
       });
       const [screenKey, setScreenKey] = React.useState(0);
@@ -80,10 +80,10 @@
         var fn = function () {
           var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
           var next = null;
-          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout', 'v3', 'v2cases'].indexOf(h) >= 0;
-                  if (protectedHash && !loadAuth()) next = 'qora-landing';
-                  else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
-                  else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'v3', 'v2cases'].indexOf(h) >= 0) next = h;
+          var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
+          if (protectedHash && !loadAuth()) next = 'qora-landing';
+          else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
+          else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
@@ -196,9 +196,7 @@
         React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
-          screen === 'cases' && !/^#\/v3(?:\/|$)/.test(window.location.hash || '') && React.createElement(V3Boundary, { key: 'cases-shell', onReset: function(){ navigate('dashboard'); } }, React.createElement(QoraV3App, null)),
-          /^#\/v3(?:\/|$)/.test(window.location.hash || '') && React.createElement(V3Boundary, { key: 'v3-shell-' + screenKey, onReset: function(){ navigate('cases'); } }, React.createElement(QoraV3App, null)),
-          screen === 'v2cases' && React.createElement(QoraV2Screen, null),
+          screen === 'cases' && React.createElement(QoraV2Screen, null),
           screen === 'mentor' && React.createElement(QMentorScreen, { onNav: navigate }),
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
           screen === 'sessions' && React.createElement(QoraSessions, { onNav: navigate }),
@@ -250,20 +248,7 @@
 
     // Reuse a single root across dev hot-reloads (avoids the duplicate-createRoot warning).
     if (!window.__qoraRoot) window.__qoraRoot = ReactDOM.createRoot(document.getElementById('root'));
-    // DEBUG-only error boundary to surface hidden render errors (removed before final).
-    if (!window.__QoraErrorBoundary) {
-      window.__QoraErrorBoundary = class extends React.Component {
-        constructor(p) { super(p); this.state = { e: null }; }
-        static getDerivedStateFromError(e) { return { e: e }; }
-        componentDidCatch(e) { window.__lastRenderErr = String((e && e.message) || e); }
-        render() {
-          if (this.state.e) return React.createElement('div', { style: { padding: 40, color: 'var(--red-d)', fontSize: 14, whiteSpace: 'pre-wrap' } },
-            'RENDER ERROR: ' + String((this.state.e && this.state.e.message) || this.state.e));
-          return this.props.children;
-        }
-      };
-    }
-    window.__qoraRoot.render(React.createElement(window.__QoraErrorBoundary, null, React.createElement(App)));
+    window.__qoraRoot.render(React.createElement(App));
 
 </script>
 </body>
