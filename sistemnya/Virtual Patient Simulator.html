@@ -197,7 +197,7 @@
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV3App, null),
-          screen === 'v3' && React.createElement(QoraV3App, null),
+          (screen === 'v3' || /^#\/v3(?:\/|$)/.test(window.location.hash || '')) && React.createElement(QoraV3App, null),
           screen === 'v2cases' && React.createElement(QoraV2Screen, null),
           screen === 'mentor' && React.createElement(QMentorScreen, { onNav: navigate }),
           screen === 'profile' && React.createElement(QoraProfile, { onNav: navigate }),
@@ -250,7 +250,20 @@
 
     // Reuse a single root across dev hot-reloads (avoids the duplicate-createRoot warning).
     if (!window.__qoraRoot) window.__qoraRoot = ReactDOM.createRoot(document.getElementById('root'));
-    window.__qoraRoot.render(React.createElement(App));
+    // DEBUG-only error boundary to surface hidden render errors (removed before final).
+    if (!window.__QoraErrorBoundary) {
+      window.__QoraErrorBoundary = class extends React.Component {
+        constructor(p) { super(p); this.state = { e: null }; }
+        static getDerivedStateFromError(e) { return { e: e }; }
+        componentDidCatch(e) { window.__lastRenderErr = String((e && e.message) || e); }
+        render() {
+          if (this.state.e) return React.createElement('div', { style: { padding: 40, color: 'var(--red-d)', fontSize: 14, whiteSpace: 'pre-wrap' } },
+            'RENDER ERROR: ' + String((this.state.e && this.state.e.message) || this.state.e));
+          return this.props.children;
+        }
+      };
+    }
+    window.__qoraRoot.render(React.createElement(window.__QoraErrorBoundary, null, React.createElement(App)));
 
 </script>
 </body>
