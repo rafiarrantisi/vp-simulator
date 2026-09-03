@@ -42,8 +42,8 @@ class Settings(BaseSettings):
     llm_provider: str = "openrouter"  # openrouter | openai | anthropic | ""
     llm_api_key: str = ""
     llm_base_url: str = "https://openrouter.ai/api/v1"
-    llm_model: str = "anthropic/claude-3.5-sonnet"  # persona (kuat) — sesuaikan
-    llm_judge_model: str = "openai/gpt-4o-mini"      # judge (murah, rag-plan §9.1)
+    llm_model: str = "deepseek/deepseek-v4-flash"    # persona + judge (via OpenRouter)
+    llm_judge_model: str = "deepseek/deepseek-v4-flash"  # judge — sama provider
     llm_author_model: str = ""  # case authoring (pivot-v4 §5.3); empty -> falls back to llm_model. Set a stronger reasoning model when the account supports it.
     # OpenRouter opsional (atribusi; aman dikosongkan)
     llm_site_url: str = ""
