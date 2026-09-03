@@ -1,0 +1,653 @@
+{
+ "batch": [
+  {
+   "id": "kepala_laringotrakeobronkitis",
+   "title": "Laringotrakeobronkitis",
+   "system": "kepala_dan_leher",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "kepala_laringotrakeobronkitis",
+    "family_type": "disease",
+    "title_id": "Laringotrakeobronkitis",
+    "title_en": "Laringotrakeobronkitis",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "kepala_laringotrakeobronkitis"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "kepala_laringotrakeobronkitis__variant1",
+     "family_id": "kepala_laringotrakeobronkitis",
+     "variation_level": "persona",
+     "title": "Laringotrakeobronkitis — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "kepala_laringotrakeobronkitis__variant2",
+     "family_id": "kepala_laringotrakeobronkitis",
+     "variation_level": "persona",
+     "title": "Laringotrakeobronkitis — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "psikiatri_delirium",
+   "title": "Delirium",
+   "system": "psikiatri",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "psikiatri_delirium",
+    "family_type": "disease",
+    "title_id": "Delirium",
+    "title_en": "Delirium",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "psikiatri_delirium"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "psikiatri_delirium__variant1",
+     "family_id": "psikiatri_delirium",
+     "variation_level": "persona",
+     "title": "Delirium — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "psikiatri_delirium__variant2",
+     "family_id": "psikiatri_delirium",
+     "variation_level": "persona",
+     "title": "Delirium — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_ulkus-gangrenosa",
+   "title": "Ulkus Gangrenosa",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_ulkus-gangrenosa",
+    "family_type": "disease",
+    "title_id": "Ulkus Gangrenosa",
+    "title_en": "Ulkus Gangrenosa",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_ulkus-gangrenosa"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_ulkus-gangrenosa__variant1",
+     "family_id": "sistem_ulkus-gangrenosa",
+     "variation_level": "persona",
+     "title": "Ulkus Gangrenosa — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_ulkus-gangrenosa__variant2",
+     "family_id": "sistem_ulkus-gangrenosa",
+     "variation_level": "persona",
+     "title": "Ulkus Gangrenosa — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_demam-tifoid-dengan-komplikasi",
+   "title": "Demam tifoid dengan komplikasi",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_demam-tifoid-dengan-komplikasi",
+    "family_type": "disease",
+    "title_id": "Demam tifoid dengan komplikasi",
+    "title_en": "Demam tifoid dengan komplikasi",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_demam-tifoid-dengan-komplikasi"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_demam-tifoid-dengan-komplikasi__variant1",
+     "family_id": "sistem_demam-tifoid-dengan-komplikasi",
+     "variation_level": "persona",
+     "title": "Demam tifoid dengan komplikasi — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_demam-tifoid-dengan-komplikasi__variant2",
+     "family_id": "sistem_demam-tifoid-dengan-komplikasi",
+     "variation_level": "persona",
+     "title": "Demam tifoid dengan komplikasi — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_ruptur-kandung-kencing",
+   "title": "Ruptur kandung kencing",
+   "system": "sistem_ginjal_saluran_kemih",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_ruptur-kandung-kencing",
+    "family_type": "disease",
+    "title_id": "Ruptur kandung kencing",
+    "title_en": "Ruptur kandung kencing",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_ruptur-kandung-kencing"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_ruptur-kandung-kencing__variant1",
+     "family_id": "sistem_ruptur-kandung-kencing",
+     "variation_level": "persona",
+     "title": "Ruptur kandung kencing — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_ruptur-kandung-kencing__variant2",
+     "family_id": "sistem_ruptur-kandung-kencing",
+     "variation_level": "persona",
+     "title": "Ruptur kandung kencing — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_edema-kornea",
+   "title": "Edema kornea",
+   "system": "sistem_indera_mata",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_edema-kornea",
+    "family_type": "disease",
+    "title_id": "Edema kornea",
+    "title_en": "Edema kornea",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_edema-kornea"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_edema-kornea__variant1",
+     "family_id": "sistem_edema-kornea",
+     "variation_level": "persona",
+     "title": "Edema kornea — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_edema-kornea__variant2",
+     "family_id": "sistem_edema-kornea",
+     "variation_level": "persona",
+     "title": "Edema kornea — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_otitis-media-akut",
+   "title": "Otitis media akut",
+   "system": "sistem_indera_telinga",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_otitis-media-akut",
+    "family_type": "disease",
+    "title_id": "Otitis media akut",
+    "title_en": "Otitis media akut",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_otitis-media-akut"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_otitis-media-akut__variant1",
+     "family_id": "sistem_otitis-media-akut",
+     "variation_level": "persona",
+     "title": "Otitis media akut — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_otitis-media-akut__variant2",
+     "family_id": "sistem_otitis-media-akut",
+     "variation_level": "persona",
+     "title": "Otitis media akut — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_sindrom-koroner-akut",
+   "title": "Sindrom koroner akut",
+   "system": "sistem_kardiovaskuler",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_sindrom-koroner-akut",
+    "family_type": "disease",
+    "title_id": "Sindrom koroner akut",
+    "title_en": "Sindrom koroner akut",
+    "primary_specialty": "cardiology_vascular",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_sindrom-koroner-akut"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_sindrom-koroner-akut__variant1",
+     "family_id": "sistem_sindrom-koroner-akut",
+     "variation_level": "persona",
+     "title": "Sindrom koroner akut — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_sindrom-koroner-akut__variant2",
+     "family_id": "sistem_sindrom-koroner-akut",
+     "variation_level": "persona",
+     "title": "Sindrom koroner akut — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_angioedema",
+   "title": "Angioedema",
+   "system": "sistem_kulit_integumen",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_angioedema",
+    "family_type": "disease",
+    "title_id": "Angioedema",
+    "title_en": "Angioedema",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_angioedema"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_angioedema__variant1",
+     "family_id": "sistem_angioedema",
+     "variation_level": "persona",
+     "title": "Angioedema — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_angioedema__variant2",
+     "family_id": "sistem_angioedema",
+     "variation_level": "persona",
+     "title": "Angioedema — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_artritis-psoriatik",
+   "title": "Artritis Psoriatik",
+   "system": "sistem_muskuloskeletal",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_artritis-psoriatik",
+    "family_type": "disease",
+    "title_id": "Artritis Psoriatik",
+    "title_en": "Artritis Psoriatik",
+    "primary_specialty": "internal_medicine",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_artritis-psoriatik"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_artritis-psoriatik__variant1",
+     "family_id": "sistem_artritis-psoriatik",
+     "variation_level": "persona",
+     "title": "Artritis Psoriatik — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_artritis-psoriatik__variant2",
+     "family_id": "sistem_artritis-psoriatik",
+     "variation_level": "persona",
+     "title": "Artritis Psoriatik — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_abortus-iminen",
+   "title": "Abortus iminen",
+   "system": "sistem_reproduksi",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_abortus-iminen",
+    "family_type": "disease",
+    "title_id": "Abortus iminen",
+    "title_en": "Abortus iminen",
+    "primary_specialty": "obgyn_reproductive",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_abortus-iminen"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_abortus-iminen__variant1",
+     "family_id": "sistem_abortus-iminen",
+     "variation_level": "persona",
+     "title": "Abortus iminen — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_abortus-iminen__variant2",
+     "family_id": "sistem_abortus-iminen",
+     "variation_level": "persona",
+     "title": "Abortus iminen — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  },
+  {
+   "id": "sistem_bronkitis-kronis",
+   "title": "Bronkitis kronis",
+   "system": "sistem_respirasi",
+   "category": "initial_management_and_referral",
+   "family_scaffold": {
+    "id": "sistem_bronkitis-kronis",
+    "family_type": "disease",
+    "title_id": "Bronkitis kronis",
+    "title_en": "Bronkitis kronis",
+    "primary_specialty": "respiratory",
+    "competency_categories": [
+     "initial_management_and_referral"
+    ],
+    "skd2026_catalog_id": "sistem_bronkitis-kronis"
+   },
+   "variant_scaffolds": [
+    {
+     "id": "sistem_bronkitis-kronis__variant1",
+     "family_id": "sistem_bronkitis-kronis",
+     "variation_level": "persona",
+     "title": "Bronkitis kronis — scaffolded variant 1 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    },
+    {
+     "id": "sistem_bronkitis-kronis__variant2",
+     "family_id": "sistem_bronkitis-kronis",
+     "variation_level": "persona",
+     "title": "Bronkitis kronis — scaffolded variant 2 (clinical content pending)",
+     "supported_stages": [
+      "koas"
+     ],
+     "competency": {
+      "standard": "SKD 2026",
+      "category": "initial_management_and_referral"
+     },
+     "_scaffold": true,
+     "needs_source_pack": true,
+     "status": "research_complete"
+    }
+   ],
+   "status": "research_complete",
+   "needs_source_pack": true,
+   "ready_for_qa_gate": false
+  }
+ ],
+ "promotion_guard": "CAPPED at research_complete; no clinically_reviewed/pilot_verified/pub"
+}

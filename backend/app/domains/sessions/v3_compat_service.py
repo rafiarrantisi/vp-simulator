@@ -57,7 +57,10 @@ def library_cards(*, learner_stage: str = "koas") -> list[dict]:
     for fid, fam in reg.families.items():
         if fam.status in ("draft",):
             continue
-        out.append(family_to_card(reg, fam, family_variant_count(reg, fam, learner_stage)))
+        count = family_variant_count(reg, fam, learner_stage)
+        if count <= 0:
+            continue  # FASE 4: never advertise a family `start` cannot serve
+        out.append(family_to_card(reg, fam, count))
     return out
 
 
