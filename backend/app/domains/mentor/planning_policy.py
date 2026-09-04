@@ -182,6 +182,37 @@ def _is_excluded(cand: dict, registry=None) -> str | None:
     return None
 
 
+def build_candidates(prior=(), *, registry=None, learner_stage: str = "koas") -> list[dict]:
+    """Build planner candidates from registry families (deterministic, pure).
+
+    Primary source is `eligible_v3_families` (human-reviewed + stage-fit);
+    when nothing is eligible, fall back to reviewed families regardless of
+    stage fit — still human-gated, never draft/AI content. Every candidate
+    carries `review_state` (never "draft") so downstream can audit gating.
+    `prior` (past session refs) is accepted for future novelty use and
+    currently only normalizes input.
+    """
+    _ = list(prior or [])
+    stage = (learner_stage or "koas").lower()
+    fams = eligible_v3_families(registry, stage) if registry is not None else []
+    if not fams and registry is not None:
+        all_fams = getattr(registry, "families", {}) or {}
+        fams = [
+            all_fams[fid] for fid in sorted(all_fams)
+            if (getattr(all_fams[fid], "status", "") or "") in HUMAN_REVIEWED_STATES
+        ]
+    out = []
+    for fam in fams:
+        cand = build_candidate_from_family(
+            registry, fam, stage) if registry is not None else None
+        if not cand:
+            continue
+        status = getattr(fam, "status", "") or ""
+        cand["review_state"] = "reviewed" if status in HUMAN_REVIEWED_STATES else "unreviewed"
+        out.append(cand)
+    return out
+
+
 def rank_candidates(candidates: list[dict], ctx: dict, *, day: int = 1,
                     duration_days: int = 7, registry=None) -> list[dict]:
     """Deterministically rank candidates for one plan day (stable, pure).
@@ -214,12 +245,18 @@ def rank_candidates(candidates: list[dict], ctx: dict, *, day: int = 1,
         ref = str(cand.get("ref"))
         spec = cand.get("specialty")
         s = 0.0
+        reasons: list[str] = []
         if target and spec == target:
             s += 3.0
+            reasons.append("target-specialty")
         if spec in weaknesses:
             s += 2.0
+            reasons.append("weakness")
         try:
-            s += 0.5 * int(cand.get("review_rank", 0) or 0)
+            rank = int(cand.get("review_rank", 0) or 0)
+            s += 0.5 * rank
+            if rank > 0:
+                reasons.append(f"reviewed-rank-{rank}")
         except (TypeError, ValueError):
             pass
         try:
@@ -228,22 +265,32 @@ def rank_candidates(candidates: list[dict], ctx: dict, *, day: int = 1,
             diff = 2
         if diff == want:
             s += 1.5
+            reasons.append("difficulty-fit")
         elif abs(diff - want) == 1:
             s += 0.5
+            reasons.append("difficulty-adjacent")
         mode = str(cand.get("mode") or "")
         if pos >= 0.85 and mode == "osce_full":
             s += 1.0  # final stretch: integrated mock
+            reasons.append("final-mock")
         elif pos <= 0.34 and mode in ("anamnesis", "targeted", "blind"):
             s += 0.5  # foundation first
+            reasons.append("foundation-first")
         if goal == "osce" and mode == "osce_full":
             s += 0.5
+            reasons.append("osce-goal")
         try:
             if int(cand.get("estimated_minutes") or 0) <= budget:
                 s += 0.5
+                reasons.append("time-fit")
         except (TypeError, ValueError):
             pass
         if ref in seen:
             s -= 2.0  # spaced repetition: deprioritize, never ban here
-        scored.append((s, ref, cand))
+            reasons.append("seen-novelty-penalty")
+        enriched = dict(cand)
+        enriched["_score"] = round(s, 2)
+        enriched["_reasons"] = reasons
+        scored.append((s, ref, enriched))
     scored.sort(key=lambda t: (-t[0], t[1]))
     return [dict(c) for _, _, c in scored]

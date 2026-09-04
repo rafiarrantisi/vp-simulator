@@ -288,6 +288,11 @@ class CaseRegistry:
         for comp in fam.presenting_complaints:
             self._index_entry(f"presentation:{comp.strip().lower()}", v)
 
+    def __call__(self) -> "CaseRegistry":
+        """Registries are callable (return self) so snapshotted accessors
+        (`getattr(reg(), "families", {})`) keep working across refactors."""
+        return self
+
     def family(self, fid: str) -> Optional[CaseFamily]:
         return self.families.get(fid)
 
