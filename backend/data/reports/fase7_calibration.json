@@ -1,0 +1,105 @@
+{
+  "schema": "fase7_calibration/1.0",
+  "hybrid_version": "0.1-experimental",
+  "variant": "dengue_001_mild",
+  "principle": "no evidence -> no full credit; safety overrides checklist gaming; arithmetic server-controlled; LLM never computes totals",
+  "domain_basis": "8 broad domains as starting point, mapped from V2 anamnesis/osce_full + V3 learner-profile + contracts core; Indonesian OSCE refs = credible-background only, NOT claimed official-current (human verification pending)",
+  "live_judge_strengths_preserved": [
+    "detail feedback",
+    "examiner summary",
+    "per-item/per-dimension",
+    "safety concept",
+    "answer key",
+    "thinking/reviewing UX"
+  ],
+  "known_live_weaknesses_addressed": [
+    "V2 LLM free-opinion arithmetic -> deterministic here",
+    "V3 semantic containment sole-judge -> multi-signal here",
+    "V3 3 placeholder dims 0.5 -> evidence-locked here",
+    "checklist gaming with safety miss -> cap 40 + Fail/Borderline here"
+  ],
+  "fixture_matrix_expectations": {
+    "exact-strong-full-evidence": "high + Pass/Superior, dx exact",
+    "paraphrase": "hit/partial, no miss on wording alone",
+    "vague": "no full credit",
+    "omitted": "miss + low + dx wrong/dangerous-miss",
+    "family-wrong-severity": "tier family-incomplete-severity (2)",
+    "wrong-dx": "dx domain clamped <=20",
+    "intl-alternative": "pharm >=1 (acceptable, not auto-zero)",
+    "drug-wrong-dose": "pharm detail-gated 1-2, never crash",
+    "unsafe-nsaid-dengue": "dangerous_drug + cap<=40 + Fail",
+    "high-checklist-catastrophic-miss": "cap<=40, no 'great job'",
+    "verbose-weak<concise-strong": "strong wins",
+    "bahasa-EN-mixed-abbrev-typo": "DBD/denguee/nyeri accepted via expansion/typo",
+    "overtime": "-10 deterministic"
+  },
+  "suite": "tests/test_hybrid_judge.py 15 passed (deterministic, offline, isolated sqlite via conftest)",
+  "human_calibration_subset_request": [
+    {
+      "id": "H1",
+      "fixture": "exact-strong-full-evidence",
+      "ask": [
+        "domain scores agree?",
+        "Pass?"
+      ]
+    },
+    {
+      "id": "H2",
+      "fixture": "paraphrase-vs-exact",
+      "ask": [
+        "false-negative miss?"
+      ]
+    },
+    {
+      "id": "H3",
+      "fixture": "family-wrong-severity",
+      "ask": [
+        "severity downgrade fair?"
+      ]
+    },
+    {
+      "id": "H4",
+      "fixture": "unsafe-nsaid-dengue",
+      "ask": [
+        "safety agreement? Fail?"
+      ]
+    },
+    {
+      "id": "H5",
+      "fixture": "high-checklist-catastrophic-miss",
+      "ask": [
+        "cap fair vs harsh?"
+      ]
+    },
+    {
+      "id": "H6",
+      "fixture": "verbose-weak-vs-concise-strong",
+      "ask": [
+        "false-positive credit?"
+      ]
+    },
+    {
+      "id": "H7",
+      "fixture": "bahasa-mixed-abbrev-typo",
+      "ask": [
+        "ID/EN fairness?"
+      ]
+    },
+    {
+      "id": "H8",
+      "fixture": "correct-late-drug-no-stabilize",
+      "ask": [
+        "priority split fair? (needs case with stabilization truth)"
+      ]
+    }
+  ],
+  "metrics_to_compare": [
+    "domain score",
+    "pass/fail",
+    "safety agreement",
+    "false-positive credit",
+    "false-negative miss"
+  ],
+  "stop": "DO NOT globally replace judge until human calibration acceptable. No router imports hybrid (pinned).",
+  "standard_setting": "none — BRM is cohort/station technique; needs station + human examiner data (documented, not claimed per-session)"
+}
