@@ -406,6 +406,19 @@ def score(db: OrmSession, user: User, session_id: str, *,
     s.status = "completed"
     if s.ended_at is None:
         s.ended_at = datetime.now(timezone.utc)
+    # FASE 8: V3-backed sessions award progress identically to V2 (parity fix —
+    # previously V3 earned 0 XP/streak/badges and was invisible on dashboards).
+    try:
+        from app.domains.sessions.progress_adapter import (
+            record_progress_for_report,
+            specialty_for_session,
+        )
+        record_progress_for_report(
+            user, case_id=s.case_id,
+            specialty=specialty_for_session(s),
+            report=report, content_schema="new")
+    except Exception:  # noqa: BLE001 — progress must never fail scoring
+        pass
     db.commit()
     return report
 

@@ -418,44 +418,23 @@ _OVERTIME_PENALTY = 10
 
 def _record_progress(user: User, case, report: dict) -> None:
     """Persist the session result to the user's profile (gamification). The JSON
-    `extra` blob is replaced immutably so SQLAlchemy tracks the change."""
-    prof = user.profile
-    if prof is None:
-        return
-    overall = int(report.get("overall", 0) or 0)
-    extra = dict(prof.extra or {})
-    history = list(extra.get("scoreHistory") or [])
-    history.insert(0, {
-        "ts": datetime.now(timezone.utc).isoformat(),
-        "caseId": case.id,
-        "specialty": case.frontmatter.get("specialty", ""),
-        "overall": overall,
-        "dims": {k: round((v.get("score", 0) / max(v.get("max", 1), 1)) * 100)
-                 for k, v in (report.get("per_dimension") or {}).items()},
-    })
-    extra["scoreHistory"] = history[:200]
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    dates = dict(extra.get("sessionDates") or {})
-    dates[today] = int(dates.get(today, 0)) + 1
-    extra["sessionDates"] = dates
-    done = set(extra.get("completedCaseIds") or [])
-    done.add(case.id)
-    extra["completedCaseIds"] = sorted(done)
-    # Daily streak: consecutive calendar days with >=1 completed session (§14).
-    last = extra.get("lastActiveDate")
-    if last != today:
-        try:
-            prev = datetime.strptime(last, "%Y-%m-%d").date() if last else None
-        except (ValueError, TypeError):
-            prev = None
-        today_d = datetime.now(timezone.utc).date()
-        prof.streak = (int(prof.streak or 0) + 1) if (prev and (today_d - prev).days == 1) else 1
-    extra["lastActiveDate"] = today
-    extra["bestStreak"] = max(int(extra.get("bestStreak") or 0), int(prof.streak or 0))
-    extra["bestScore"] = max(int(extra.get("bestScore") or 0), overall)
-    prof.extra = extra
-    prof.xp = int(prof.xp or 0) + overall
-    prof.total_sessions = int(prof.total_sessions or 0) + 1
+    `extra` blob is replaced immutably so SQLAlchemy tracks the change.
+
+    FASE 8: delegates to the shared `apply_progress_for_session` pure updater
+    so V2 and V3 award XP/streak/history identically (parity fix). Legacy
+    keys/rules preserved exactly.
+    """
+    from app.domains.sessions.progress_adapter import record_progress_for_report
+    try:
+        specialty = str((getattr(case, "frontmatter", None) or {}).get("specialty", ""))
+    except Exception:
+        specialty = ""
+    try:
+        case_id = getattr(case, "id", "") or ""
+    except Exception:
+        case_id = ""
+    record_progress_for_report(user, case_id=case_id or "", specialty=specialty or "unknown",
+                               report=report or {}, content_schema="legacy")
 
 
 @router.post("/sessions/{session_id}/score", dependencies=[_ai_rl])
@@ -529,46 +508,69 @@ def _compute_badges(metrics: dict) -> list[dict]:
 
 
 @router.get("/progress")
-def v2_progress(user: User = Depends(get_current_user)):
+def v2_progress(user: User = Depends(get_current_user),
+                db: Session = Depends(get_db)):
     """Gamification summary for the Qora flow: XP, streak, daily goal, badges,
-    per-dimension skill averages, and specialty coverage — from the user's profile."""
+    per-dimension skill averages, and specialty coverage.
+
+    FASE 8 (unified): derived from completed sessions with stored reports
+    (V2 + V3 via the canonical longitudinal model) so Result, Dashboard,
+    Progress, and Mentor speak one vocabulary (§36). Legacy response keys
+    are preserved; new explainable keys are additive:
+    `readiness`, `coverage`, `dataSource`, `dimensionDetail`,
+    `strongestSkill/weakestSkill`, `recentImprovement`, `definitions`.
+    """
+    from pipeline.progress.progress import compute_progress
+    from pipeline.progress.readiness import compute_readiness
     prof = user.profile
     extra = (prof.extra if prof else {}) or {}
-    history = extra.get("scoreHistory") or []
-    sums, counts = {}, {}
-    for h in history:
-        for k, v in (h.get("dims") or {}).items():
-            sums[k] = sums.get(k, 0) + (v or 0)
-            counts[k] = counts.get(k, 0) + 1
-    dim_avg = {k: round(sums[k] / counts[k], 1) for k in sums}
-    spec = {}
-    for h in history:
-        sp = h.get("specialty") or "other"
-        spec[sp] = spec.get(sp, 0) + 1
-    overalls = [int(h.get("overall", 0) or 0) for h in history]
-    avg_score = round(sum(overalls) / len(overalls), 1) if overalls else 0
-    completed = len(extra.get("completedCaseIds") or [])
+    try:
+        from app.domains.sessions.progress_adapter import completed_normalized
+        normalized = completed_normalized(db, user.id)
+    except Exception:
+        normalized = []
+    prog = compute_progress(normalized)
+    try:
+        readiness = compute_readiness(normalized)
+    except Exception:
+        readiness = None
+    # Legacy gamification state (XP/streak/bests) stays profile-authoritative.
     streak = int(prof.streak or 0) if prof else 0
-    total_sessions = int(prof.total_sessions or 0) if prof else 0
     dates = extra.get("sessionDates") or {}
     now = datetime.now(timezone.utc)
     today = now.strftime("%Y-%m-%d")
     week = {(now.date() - timedelta(days=i)).isoformat() for i in range(7)}
     weekly = sum(int(v or 0) for k, v in dates.items() if k in week)
-    metrics = {"cases": completed, "specialties": len(spec),
-               "avg_score": avg_score, "streak": streak, "sessions": total_sessions}
+    completed_legacy = len(extra.get("completedCaseIds") or [])
+    metrics = {"cases": prog["coverage"]["distinctCases"] or completed_legacy,
+               "specialties": prog["coverage"]["specialties"],
+               "avg_score": prog["avgScore"], "streak": streak,
+               "sessions": prog["totalSessions"]}
+    engines = sorted({s.get("engine") for s in normalized if s.get("engine")})
     return ok({
         "xp": int(prof.xp or 0) if prof else 0,
-        "totalSessions": total_sessions,
-        "completedCases": completed,
+        "totalSessions": prog["totalSessions"],
+        "completedCases": prog["coverage"]["distinctCases"] or completed_legacy,
         "streak": streak,
         "bestStreak": int(extra.get("bestStreak") or 0),
         "bestScore": int(extra.get("bestScore") or 0),
-        "avgScore": avg_score,
+        "avgScore": prog["avgScore"],
         "dailyGoal": {"done": int(dates.get(today, 0) or 0), "target": 1},
         "weeklyCount": weekly,
-        "sessions": history[:50],
-        "dimensionAverages": dim_avg,
-        "specialtyCounts": spec,
+        "sessions": prog["sessions"][:50],
+        "dimensionAverages": prog["dimensionAverages"],
+        "dimensionDetail": prog["dimensionDetail"],
+        "strongestSkill": prog["strongestSkill"],
+        "weakestSkill": prog["weakestSkill"],
+        "recentImprovement": prog["recentImprovement"],
+        "specialtyCounts": prog["specialtyCounts"],
+        "coverage": prog["coverage"],
+        "readiness": readiness,
         "badges": _compute_badges(metrics),
+        "badgeMetrics": prog["badgeMetrics"],
+        "dataSource": {"engines": engines,
+                       "sessionsIncluded": prog["totalSessions"],
+                       "excludedNoScore": prog["excludedNoScore"]},
+        "definitions": prog["definitions"],
+        "hasEvidence": prog["hasEvidence"],
     })

@@ -211,10 +211,18 @@ def complete_case(db: Session, user_id: str, journey_id: str,
         journey.current_day = jc.day_number
     journey.updated_at = _now()
 
-    # Interim readiness (Phase 1): simple average of completed scores.
-    # Phase 2 replaces this with the full readiness_calculator formula (§4.4.2).
-    scores = [c.score for c in journey.cases if c.score is not None]
-    journey.readiness_current = round(sum(scores) / len(scores)) if scores else journey.readiness_start
+    # Journey readiness: unified evidence engine scoped to this journey when
+    # possible (FASE 8); falls back to the legacy simple average if the
+    # engine has no evidence yet (keeps the field honest, never fabricated).
+    try:
+        jr = get_readiness(db, user_id, journey.id)
+        if jr.get("session_count"):
+            journey.readiness_current = int(jr.get("score", 0) or 0)
+        else:
+            raise ValueError("no journey evidence yet")
+    except Exception:
+        scores = [c.score for c in journey.cases if c.score is not None]
+        journey.readiness_current = round(sum(scores) / len(scores)) if scores else journey.readiness_start
 
     nxt = _unlock_next(db, journey)
     if nxt is None:
@@ -335,28 +343,72 @@ def pending_continuity(db: Session, user_id: str) -> dict:
 # ---------------------------------------------------------------------------
 
 def get_readiness(db: Session, user_id: str, journey_id: str | None = None) -> dict:
-    from app.domains.mentor.readiness_calculator import calculate_readiness
-    return calculate_readiness(db, user_id, journey_id)
+    """Unified evidence-based readiness (FASE 8).
+
+    Same engine as Dashboard `/progress.readiness` over the same normalized
+    sessions (§36: one performance can never produce contradictory claims).
+    Legacy keys preserved (`score`, `confidence`, `session_count`,
+    `base_score`, `trajectory_bonus`, `consistency_bonus`, `error_penalty`,
+    `dimensions`, `interpretation`); explainable keys are additive
+    (`version`, `state`, `core_dimensions`, `components`, `drivers`,
+    `strengths`, `needs_work`, `evidence`).
+    """
+    from app.domains.sessions.progress_adapter import (
+        completed_normalized,
+        critical_errors_recent,
+    )
+    from pipeline.progress.readiness import compute_readiness
+    try:
+        normalized = completed_normalized(db, user_id, journey_id=journey_id)
+    except Exception:
+        normalized = []
+    window = 5
+    try:
+        from pipeline.progress.readiness import READINESS_WEIGHTS
+        window = int(READINESS_WEIGHTS.get("safety_window", 5))
+    except Exception:
+        pass
+    # Critical-error penalty comes from recent reasoning autopsies (same
+    # source as the legacy calculator: critical errors in scope).
+    recent_ids = [s.get("session_id") for s in normalized[-window:] if s.get("session_id")]
+    n_crit = critical_errors_recent(db, recent_ids)
+    try:
+        return compute_readiness(normalized, critical_errors=n_crit)
+    except Exception:
+        from app.domains.mentor.readiness_calculator import calculate_readiness
+        return calculate_readiness(db, user_id, journey_id)
 
 
 def readiness_report(db: Session, user_id: str, journey_id: str | None = None) -> dict:
     """Full report: score + dimensions + weakest area + recommendations."""
-    from app.domains.mentor.readiness_calculator import (
-        _DIM_WEIGHTS, calculate_readiness, readiness_history)
-    r = calculate_readiness(db, user_id, journey_id)
+    r = get_readiness(db, user_id, journey_id)
     if r.get("session_count", 0) == 0:
         return {"readiness": r, "history": [], "weakest": None, "recommendations": [],
                 "disclaimer": _DISCLAIMER}
 
     dims = r.get("dimensions") or {}
-    weakest = min(dims, key=dims.get) if dims else None
+    # Prefer the engine's own needs_work (evidence-gated, min 2 observations);
+    # fall back to the raw weakest dim for legacy parity.
+    needs = r.get("needs_work") or []
+    weakest = needs[-1] if needs else (min(dims, key=dims.get) if dims else None)
     weakest_pct = dims.get(weakest) if weakest else None
 
     recs: list[str] = []
+    # Surface engine drivers first (explainable, strongest signal first).
+    for d in (r.get("drivers") or []):
+        if d.get("direction") in ("-", "cap") and d.get("factor") in (
+                "safety", "safety_cap", "osce", "evidence", "recency",
+                "critical_errors", "consistency", "trajectory"):
+            recs.append(str(d.get("detail") or "").strip())
     if weakest:
         recs.append(f"Fokus pada {weakest.replace('_', ' ')} — skor terendah ({weakest_pct}%).")
     if (r.get("error_penalty") or 0) > 0:
         recs.append("Kamu punya red flag kritis yang terlewat — ulangi skrining red flag.")
+    comps = r.get("components") or {}
+    if comps.get("safety_capped"):
+        recs.append("Safety failure membatasi readiness — remediasi red flag sebelum lanjut.")
+    if not comps.get("osce_sessions"):
+        recs.append("Belum ada sesi OSCE terintegrasi — Practice saja tidak cukup untuk kesiapan ujian.")
     if (r.get("trajectory_bonus") or 1.0) < 1.0:
         recs.append("Skor cenderung menurun — konsisten latihan, jangan skip hari.")
     if (r.get("consistency_bonus") or 1.0) < 0.95:
@@ -366,9 +418,26 @@ def readiness_report(db: Session, user_id: str, journey_id: str | None = None) -
     if weakest and weakest_pct is not None and weakest_pct < 60:
         recs.append("Ulangi hari-hari yang membahas area terlemah di journey kamu.")
 
+    try:
+        from pipeline.progress.readiness import READINESS_WEIGHTS  # noqa: F401
+        from app.domains.sessions.progress_adapter import completed_normalized
+        normalized = completed_normalized(db, user_id, journey_id=journey_id)
+        history = [{"session_id": s.get("session_id"), "case_id": s.get("case_id"),
+                    "score": int(s.get("overall_0_100") or 0),
+                    "rolling_avg": 0, "completed_at": s.get("completed_at")}
+                   for s in normalized[-10:]]
+        # Rolling average over overall scores (oldest->newest).
+        running: list[float] = []
+        for h, s in zip(history, normalized[-10:]):
+            running.append(float(s.get("overall_0_100") or 0))
+            h["rolling_avg"] = round(sum(running) / len(running))
+    except Exception:
+        from app.domains.mentor.readiness_calculator import readiness_history
+        history = readiness_history(db, user_id, journey_id)[-10:]
+
     return {
         "readiness": r,
-        "history": readiness_history(db, user_id, journey_id)[-10:],
+        "history": history,
         "weakest": {"dimension": weakest, "pct": weakest_pct} if weakest else None,
         "recommendations": recs[:4],
         "disclaimer": _DISCLAIMER,
