@@ -274,3 +274,16 @@ a { text-decoration: none; color: inherit; }
 /* Pita: glow berkedip halus + titik mengambang */
 .qa-flick{ animation: flick 6s ease-in-out infinite; }
 .qa-float{ animation: floatDrift 10s var(--ease) infinite alternate; }
+
+/* GDV §13: garis fokus keyboard selalu terlihat (ungu 600, 2px, offset 2px) */
+:focus-visible { outline: 2px solid var(--u600); outline-offset: 2px; border-radius: 6px; }
+
+/* GDV §13: kaca berat untuk ponsel menengah — di bawah 768px ganti
+   backdrop-filter dengan permukaan hampir solid (tampilan mirip, jauh ringan) */
+@media (max-width: 768px) {
+  .qa-glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255,255,255,.92);
+  }
+}

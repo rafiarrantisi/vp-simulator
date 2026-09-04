@@ -16,13 +16,29 @@ from sqlalchemy.orm import Session as OrmSession
 
 from app.domains.sessions.models import SessionRow
 
+_registry_cache = {}
+
+
+def cached_registry():
+    """Process-local memo of the V3 registry (386 YAML reads otherwise).
+
+    Content only changes on deploy + backend restart (same contract as the
+    V2 catalogue lru_cache), so caching per worker is safe and keeps
+    per-session loops (progress, history) from re-parsing on every row.
+    """
+    reg = _registry_cache.get("reg")
+    if reg is None:
+        from app.domains.sessions.v3_compat_schemas import default_registry
+        reg = default_registry()
+        _registry_cache["reg"] = reg
+    return reg
+
 
 def specialty_for_session(row: SessionRow) -> str:
     """Best-effort specialty for longitudinal coverage (never raises)."""
     try:
         if (row.content_schema or "legacy") == "new":
-            from app.domains.sessions.v3_compat_schemas import default_registry
-            reg = default_registry()
+            reg = cached_registry()
             fam_id = row.family_id or (row.case_id if (row.case_id or "").startswith("fam_") else None)
             if fam_id and fam_id in reg.families:
                 return str(reg.families[fam_id].primary_specialty or "unknown")

@@ -163,6 +163,24 @@ def v2_list_sessions(limit: int = 50, user: User = Depends(get_current_user),
             pres = c.frontmatter.get("presentation_id") or c.frontmatter.get("presentation")
         except Exception:
             pass
+        if spec is None:
+            # FASE 9: V3-backed rows resolve their family card (same adapter
+            # the catalogue uses) so history never shows raw `fam_*` ids.
+            # Registry is process-cached (see progress_adapter).
+            try:
+                from app.domains.sessions.progress_adapter import cached_registry
+                from app.domains.sessions.v3_compat_schemas import (
+                    family_to_card,
+                    family_variant_count,
+                )
+                reg = cached_registry()
+                if r.case_id in reg.families:
+                    fam = reg.families[r.case_id]
+                    card = family_to_card(reg, fam, family_variant_count(reg, fam))
+                    spec = card.get("specialty")
+                    pres = card.get("presentation") or card.get("title")
+            except Exception:
+                pass
         sessions.append({
             "sessionId": r.id,
             "caseId": r.case_id,

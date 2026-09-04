@@ -485,13 +485,17 @@ function useIsWide(px) {
 function useIsMobile() { return !useIsWide(768); }
 function useIsTablet() { return !useIsWide(1024); }
 
-// Shared dimension labels (rubric v2 — includes physical_exam added Aug 2026).
+// Shared dimension labels (rubric v2 — includes physical_exam added Aug 2026,
+// plus V3 native dims so the unified longitudinal model never renders raw keys).
 const QV2_DIM_LABEL = {
   history_coverage: 'History coverage', red_flags: 'Red-flag screening',
   ice_fife: 'ICE / FIFE', questioning_technique: 'Questioning technique',
   communication: 'Communication', physical_exam: 'Physical Exam',
   diagnostic_reasoning: 'Diagnostic reasoning', investigations: 'Investigation selection',
   management: 'Management', clinical_safety: 'Clinical safety',
+  info_gathering: 'Information gathering', focus_efficiency: 'Focus & efficiency',
+  reasoning_coherence: 'Reasoning coherence', diagnostic_quality: 'Diagnostic quality',
+  investigation_strategy: 'Investigation strategy', management_safety: 'Management safety',
   coverage: 'Coverage', fife: 'FIFE', redFlags: 'Red flags',
 };
 
@@ -1520,142 +1524,360 @@ function QoraDashboard({ onNav, onStartCase }) {
   const [err, setErr] = React.useState('');
   const [recent, setRecent] = React.useState([]);
   const [me, setMe] = React.useState(null);
+  const [journeys, setJourneys] = React.useState(null);
   const isMobile = useIsMobile();
+  var _t = window.__t || function (k) { return k; };
   React.useEffect(() => {
     qv2Fetch('/api/v2/progress').then(setP).catch(e => setErr(String(e.message || e)));
     qv2Fetch('/api/v2/sessions?limit=5').then(d => setRecent((d && d.sessions) || [])).catch(() => {});
     qv2Fetch('/api/users/me').then(setMe).catch(() => {});
+    qv2Fetch('/api/v2/mentor/journeys').then(d => setJourneys((d && d.journeys) || [])).catch(() => setJourneys([]));
   }, []);
   const firstName = me && me.full_name ? String(me.full_name).trim().split(/\s+/)[0] : '';
   if (err) return React.createElement('div', { style: { padding: 40, color: 'var(--text-2)', textAlign: 'center' } },
     'Could not load dashboard: ' + err);
   if (!p) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)', textAlign: 'center' } }, 'Loading dashboard…');
 
-  const level = p.level || Math.floor((p.xp || 0) / 200) + 1;
+  // ── ALL numbers are canonical backend (/api/v2/progress, Phase 8). ──
+  // Nothing is recomputed, hardcoded or dummied here.
+  const level = Math.floor((p.xp || 0) / 200) + 1;
   const levelProgress = ((p.xp || 0) % 200) / 200 * 100;
   const levelNames = ['Student','Intern','Resident','Senior Resident','Consultant','Specialist','Senior Specialist','Professor'];
   const levelName = levelNames[Math.min(level - 1, levelNames.length - 1)] || 'Student';
-  // Explicit XP progression (#2): X / 200 this level, plus "to next".
   const xpInLevel = (p.xp || 0) % 200;
-  const toNext = 200 - xpInLevel;
+  const hasEvidence = !!p.hasEvidence;
   const totalSessions = p.totalSessions || 0;
   const completedCases = p.completedCases || 0;
+  const avgScore = p.avgScore || 0;
   const dims = p.dimensionAverages || {};
-  // Skill mastery (#3): surface the strongest dimension from scaled scores.
-  const dimArr = Object.keys(dims).map(k => ({ label: QV2_DIM_LABEL[k] || k.replace(/_/g, ' '), pct: dims[k] || 0 }));
-  const strongestDim = dimArr.length ? dimArr.slice().sort((a, b) => b.pct - a.pct)[0] : null;
-  const hasDims = Object.keys(dims).length > 0;
+  const dimDetail = p.dimensionDetail || {};
+  const strongestKey = p.strongestSkill || null;
+  const weakestKey = p.weakestSkill || null;
   const specs = p.specialtyCounts || {};
   const specKeys = Object.keys(specs);
-  const avgScore = hasDims ? Math.round(Object.values(dims).reduce((a, b) => a + b, 0) / Object.keys(dims).length) : 0;
+  const coverage = p.coverage || { specialties: 0, familiesCompleted: 0, variantsCompleted: 0, distinctCases: 0, osceSessions: 0, practiceSessions: 0 };
+  const readiness = p.readiness || null;
+  const badges = p.badges || [];
 
   // Recent sessions helper
   const specLabel = { internal_medicine: 'Internal medicine', surgery: 'Surgery', paediatrics: 'Paediatrics', obstetrics_gynaecology: 'Obs & Gynae', psychiatry: 'Psychiatry', neurology: 'Neurology', ent: 'ENT', dermatology: 'Dermatology', ophthalmology: 'Ophthalmology', emergency: 'Emergency' };
 
+  // Active Mentor journey (if any) — surfaced as Continue Journey.
+  const activeJourney = (journeys || []).filter(j => j && j.status === 'active')[0] || null;
+
   // Uniform panel + heading styles shared across every content section
   // (keeps the existing look — surface, border, radius — but enforces
   //  one consistent spec so cards align on a clean grid).
-  const panel = { padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' };
+  const panel = { padding: isMobile ? 16 : 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' };
   const secTitle = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14, gap: 10 };
-  const secHead = { fontSize: 13, fontWeight: 700, color: 'var(--text-1)' };
+  const secHead = { display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 13, fontWeight: 700, color: 'var(--text-1)' };
 
-  return React.createElement('div', { style: { maxWidth: 'min(1100px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '20px 10px 60px' : '32px 24px 60px' } },
+  const ctaRow = { display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 16, maxWidth: 'calc(100% - 290px)' };
+  const ctaPrimary = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 22px', minHeight: 44, borderRadius: 12, border: 'none', background: '#fff', color: 'var(--u700)', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: '0 5px 16px rgba(0,0,0,0.18)' };
+  const ctaGhost = { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '12px 22px', minHeight: 44, borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' };
 
-    // ── Hero: pita suasana "Fajar" (GDV §4) + floating glass panel ──
-    React.createElement(QAMoodBand, { scene: 'fajar', kicker: 'CLINICAL INTERVIEW TRAINER', title: 'Welcome back' + (firstName ? ', ' + firstName : '') + '! 👋',
-      sub: 'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.' },
-      // Floating glass level panel (GDV §9) — top-right, one brief piece of info
-      React.createElement('div', { style: { position: 'absolute', right: 26, top: 28, width: 250, padding: '17px 19px', borderRadius: 18,
-        background: 'rgba(255,255,255,0.16)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-        border: '1px solid rgba(255,255,255,0.34)', boxShadow: '0 12px 30px rgba(20,10,40,.22), inset 0 1px 0 rgba(255,255,255,.4)', color: '#fff' } },
-        React.createElement('div', { style: { fontSize: 10, letterSpacing: '.16em', fontWeight: 700, opacity: .78, textTransform: 'uppercase' } }, 'Your Progress'),
-        React.createElement('div', { style: { fontSize: 20, fontWeight: 800, letterSpacing: '-.02em', margin: '5px 0 3px' } }, 'Lv ' + level + ' · ' + levelName),
-        React.createElement('div', { style: { fontSize: 12, opacity: .82 } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' / 200 XP'),
-        React.createElement('div', { style: { height: 6, borderRadius: 99, background: 'rgba(255,255,255,0.26)', overflow: 'hidden', marginTop: 11 } },
-          React.createElement('div', { style: { height: '100%', borderRadius: 99, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease)' } })),
-        React.createElement('div', { style: { fontSize: 11.5, opacity: .72, marginTop: 8 } }, toNext + ' XP to next level')),
-      // CTA buttons pinned at the caption row (content preserved verbatim)
-      React.createElement('div', { style: { display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 16 } },
-        React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--u700)', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: '0 5px 16px rgba(0,0,0,0.18)' } }, '▶ Start new case'),
-        completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: { padding: '11px 22px', borderRadius: 12, border: '1.5px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 14, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)' } }, 'Continue practising'))),
+  // Desktop hero keeps the full band (caption CTAs clear the floating panel
+  // via maxWidth guard). Mobile gets a cropped art hero (title fits the
+  // fixed-height band) with CTAs below on the page surface — nothing clips.
+  const hero = isMobile
+    ? React.createElement(QD9HeroMobile, { title: _t('dashboard.welcome') + (firstName ? ', ' + firstName : ''),
+        levelLine: 'Lv ' + level + ' · ' + levelName + ' — ' + xpInLevel + ' ' + _t('dashboard.xp_in_level') })
+    : React.createElement(QAMoodBand, { scene: 'fajar', kicker: 'CLINICAL INTERVIEW TRAINER', title: _t('dashboard.welcome') + (firstName ? ', ' + firstName : ''),
+    sub: 'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.' },
+    // Floating glass level panel (GDV §9: one per band, hidden on narrow screens)
+    React.createElement('div', { style: { position: 'absolute', right: 26, top: 24, width: 250, padding: '17px 19px', borderRadius: 18,
+      background: 'rgba(255,255,255,0.16)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+      border: '1px solid rgba(255,255,255,0.34)', boxShadow: '0 12px 30px rgba(20,10,40,.22), inset 0 1px 0 rgba(255,255,255,.4)', color: '#fff' } },
+      React.createElement('div', { style: { fontSize: 10, letterSpacing: '.16em', fontWeight: 700, opacity: .78, textTransform: 'uppercase' } }, _t('dashboard.level_progress')),
+      React.createElement('div', { style: { fontSize: 19, fontWeight: 800, letterSpacing: '-.02em', margin: '5px 0 3px', lineHeight: 1.25, overflowWrap: 'break-word', fontVariantNumeric: 'tabular-nums' } }, 'Lv ' + level + ' · ' + levelName),
+      React.createElement('div', { style: { fontSize: 12, opacity: .82, fontVariantNumeric: 'tabular-nums' } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' ' + _t('dashboard.xp_in_level')),
+      React.createElement('div', { style: { height: 6, borderRadius: 99, background: 'rgba(255,255,255,0.26)', overflow: 'hidden', marginTop: 11 } },
+        React.createElement('div', { style: { height: '100%', borderRadius: 99, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease)' } })),
+      React.createElement('div', { style: { fontSize: 11.5, opacity: .72, marginTop: 8, fontVariantNumeric: 'tabular-nums' } }, _t('dashboard.to_next_level', { n: 200 - xpInLevel }))),
+    // CTA row (content preserved; constrained clear of the floating panel on desktop)
+    React.createElement('div', { style: ctaRow },
+      React.createElement('button', { onClick: () => onNav('cases'), style: ctaPrimary }, React.createElement(QIcon, { n: 'play', s: 15 }), _t('dashboard.start_new_case')),
+      completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: ctaGhost }, _t('dashboard.continue_practising'))));
 
-    // ── Summary stats: glass cards floating over the mood band (GDV) ──
-    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -76, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: 14, marginBottom: 24 } },
-      React.createElement(QDStat, { label: 'Cases completed', value: completedCases, icon: 'cases', sub: 'across ' + specKeys.length + ' specialties' }),
-      React.createElement(QDStat, { label: 'Total sessions', value: totalSessions, icon: 'streak', sub: 'practice encounters' }),
-      React.createElement(QDStat, { label: 'Avg score', value: avgScore + '%', icon: 'chart', sub: hasDims ? 'across all dimensions' : 'complete a case to see' }),
-      React.createElement(QDStat, { label: 'Streak', value: p.streak ? p.streak + 'd' : '0d', icon: 'flame', sub: p.streak ? 'days in a row' : 'start your streak' })),
+  // Mobile CTAs live on the page surface (solid, thumb-sized) — the fixed-
+  // height art band cannot fit buttons without clipping (GDV: no overlap).
+  const ctaPrimarySolid = Object.assign({}, ctaPrimary, { background: 'var(--primary)', color: '#fff', flex: '1 1 100%' });
+  const ctaGhostSolid = Object.assign({}, ctaGhost, { border: '1.5px solid var(--border)', background: 'var(--surface)', color: 'var(--primary)', flex: '1 1 100%' });
+  const mobileCtas = isMobile && React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 16, alignItems: 'stretch' } },
+    React.createElement('button', { onClick: () => onNav('cases'), style: ctaPrimarySolid }, React.createElement(QIcon, { n: 'play', s: 15 }), _t('dashboard.start_new_case')),
+    completedCases > 0 && React.createElement('button', { onClick: () => onNav('cases'), style: ctaGhostSolid }, _t('dashboard.continue_practising')));
 
-    // ── Content: balanced two-column grid (stacks on mobile) ──
-    // Fixed tracks (minmax(0, x)) instead of auto-fit so the columns stay
-    // stable, cards align on shared rows, and nothing overlaps or clips.
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'minmax(0, 1.35fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' } },
+  // Compact art heroes cannot host the overlap (title would slide under the
+  // cards), so mobile stats sit below the band on the page surface.
+  const stats = React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobile ? 12 : -72, display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: isMobile ? 10 : 14, marginBottom: isMobile ? 16 : 24 } },
+    React.createElement(QDStat, { label: _t('dashboard.cases_completed'), value: completedCases, icon: 'cases', compact: isMobile, sub: _t('dashboard.coverage') + ': ' + specKeys.length }),
+    React.createElement(QDStat, { label: _t('dashboard.sessions'), value: totalSessions, icon: 'history', compact: isMobile, sub: 'practice encounters' }),
+    // No evidence → '–', never a fake 0% verdict (FASE 9 onboarding state).
+    React.createElement(QDStat, { label: _t('dashboard.avg_score'), value: hasEvidence ? avgScore + '%' : '–', icon: 'chart', compact: isMobile, sub: hasEvidence ? Object.keys(dims).length + ' dimensions' : _t('dashboard.onboarding_title') }),
+    React.createElement(QDStat, { label: _t('dashboard.streak'), value: p.streak ? p.streak + 'd' : '0d', icon: 'flame', compact: isMobile, sub: p.streak ? 'days in a row' : 'start your streak' }));
 
-      // ---- Left column: Sesi terbaru + Skill mastery ----
-      React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 20, minWidth: 0 } },
-        // Recent activity
-        React.createElement('div', { className: 'as', style: panel },
-          React.createElement('div', { style: secTitle },
-            React.createElement('span', { style: secHead }, '📋 ' + _t('dashboard.recent_sessions')),
-            recent.length > 0 && React.createElement('button', { onClick: () => onNav('sessions'), style: { padding: '4px 12px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 11, color: 'var(--primary)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontWeight: 600 } }, _t('dashboard.browse_cases'))),
-          recent.length === 0 && React.createElement('div', { style: { padding: '28px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 12, border: '1px dashed var(--border)' } },
-            'Complete your first case to see activity here.'),
-          React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 10 } },
-            recent.slice(0, 5).map((s, i) => React.createElement('div', { key: s.sessionId || i, style: { display: 'flex', alignItems: 'center', gap: 14, padding: 13, borderRadius: 12, background: 'var(--surface-2)', border: '1px solid var(--border)' } },
-              React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: 'var(--primary-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 } },
-                s.specialty === 'emergency' ? '🚑' : s.specialty === 'surgery' ? '🔪' : s.specialty === 'paediatrics' ? '👶' : s.specialty === 'psychiatry' ? '🧠' : s.specialty === 'ophthalmology' ? '👁' : '🩺'),
-              React.createElement('div', { style: { flex: 1, minWidth: 0 } },
-                React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, s.presentation || 'Case'),
-                React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, (specLabel[s.specialty] || s.specialty) + (s.score != null ? ' · Score: ' + s.score : ' · In progress'))))))),
+  const journeyCard = activeJourney && React.createElement('div', { className: 'as', style: Object.assign({}, panel, { marginBottom: isMobile ? 16 : 20, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }) },
+    React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: 'var(--primary-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', flexShrink: 0 } },
+      React.createElement(QIcon, { n: 'mentor', s: 22 })),
+    React.createElement('div', { style: { flex: 1, minWidth: 200 } },
+      React.createElement('div', { style: { fontSize: 10.5, letterSpacing: '.14em', fontWeight: 700, color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: 3 } }, _t('dashboard.continue_journey')),
+      React.createElement('div', { style: { fontSize: 14, fontWeight: 800, color: 'var(--text-1)' } }, activeJourney.package_name || 'Learning Journey'),
+      React.createElement('div', { style: { fontSize: 12, color: 'var(--text-2)', marginTop: 2, fontVariantNumeric: 'tabular-nums' } },
+        _t('dashboard.day_of', { a: (activeJourney.progress && activeJourney.progress.completed + 1) || activeJourney.current_day || 1, b: (activeJourney.progress && activeJourney.progress.total) || '–' }))),
+    React.createElement('button', { onClick: () => onNav('mentor'), style: { padding: '11px 20px', minHeight: 44, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13.5, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, _t('dashboard.resume')));
 
-        // Skill breakdown ("Skill mastery") — bars
-        hasDims && React.createElement('div', { className: 'as', style: panel },
-          React.createElement('div', { style: secTitle },
-            React.createElement('span', { style: secHead }, 'Skill mastery'),
-            strongestDim && React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '3px 10px', borderRadius: 999 } }, 'Strong: ' + strongestDim.label)),
-          React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginBottom: 14 } }, 'How your interview skills stack up across dimensions.'),
-          Object.keys(dims).map(k => {
-            const dimLabel = QV2_DIM_LABEL;
-            const pct = dims[k];
-            return React.createElement('div', { key: k, style: { marginBottom: 10 } },
-              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', fontSize: 11, color: 'var(--text-2)', fontWeight: 600, marginBottom: 3 } },
-                React.createElement('span', null, dimLabel[k] || k),
-                React.createElement('span', null, Math.round(pct) + '%')),
-              React.createElement('div', { style: { height: 6, borderRadius: 999, background: 'var(--surface-3)' } },
-                React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: 'var(--primary)', transition: 'width 0.6s ease' } })));
-          }))),
+  const nextCard = React.createElement(QD9NextAction, { p: p, onNav: onNav, isMobile: isMobile, panel: panel, secTitle: secTitle, secHead: secHead });
+  const readinessCard = hasEvidence && readiness && React.createElement(QD9Readiness, { r: readiness, dims: dims, panel: panel, secTitle: secTitle, secHead: secHead, isMobile: isMobile });
+  const recentCard = React.createElement(QD9Recent, { recent: recent, onNav: onNav, panel: panel, secTitle: secTitle, secHead: secHead });
+  const skillsCard = hasEvidence && Object.keys(dims).length > 0 && React.createElement(QD9SkillBars, { p: p, panel: panel, secTitle: secTitle, secHead: secHead });
+  const achieveCard = React.createElement(QD9Badges, { badges: badges, hasEvidence: hasEvidence, panel: panel, secHead: secHead });
+  const coverageCard = React.createElement('div', { className: 'as', style: panel },
+    React.createElement('div', { style: secTitle },
+      React.createElement('span', { style: secHead }, React.createElement(QIcon, { n: 'target', s: 16 }), _t('dashboard.coverage'))),
+    specKeys.length === 0 && React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)' } }, _t('dashboard.no_coverage')),
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
+      specKeys.map(s => React.createElement('span', { key: s, style: { fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)', fontVariantNumeric: 'tabular-nums' } },
+        (specLabel[s] || s) + ' · ' + specs[s]))),
+    React.createElement('div', { style: { marginTop: 10, fontSize: 11, color: 'var(--text-3)', fontVariantNumeric: 'tabular-nums' } },
+      coverage.familiesCompleted + ' families · ' + coverage.variantsCompleted + ' variants · ' + coverage.osceSessions + ' OSCE'));
 
-      // ---- Right column: radar + achievements + specialty coverage ----
-      React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 20, minWidth: 0 } },
-        // Skill radar ("Rincian kemampuan")
-        hasDims && React.createElement('div', { className: 'as', style: panel },
-          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10, textAlign: 'center' } }, '📊 ' + _t('dashboard.skill_breakdown')),
-          React.createElement(QSkillRadar, { dims: dims, size: 200 })),
+  const leftCol = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: isMobile ? 16 : 20, minWidth: 0 } },
+    nextCard, recentCard, skillsCard);
+  const rightCol = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: isMobile ? 16 : 20, minWidth: 0 } },
+    readinessCard, achieveCard, coverageCard);
 
-        // Achievements
-        (p.badges && p.badges.some((b) => b.earned)) ? React.createElement('div', { className: 'as', style: panel },
-          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🏅 Achievements'),
-          React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, alignItems: 'center' } },
-            p.badges.filter((b) => b.earned).slice(0, 10).map((b) => React.createElement('span', { key: b.id, title: b.name, style: { fontSize: 22, padding: 6, borderRadius: 10, background: 'var(--surface-2)', border: '1px solid var(--border)' } }, b.icon)))) : null,
-
-        // Specialty coverage
-        React.createElement('div', { className: 'as', style: panel },
-          React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12 } }, '🎯 Specialty coverage'),
-          specKeys.length === 0 && React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)' } }, 'No specialties practised yet.'),
-          React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
-            specKeys.map(s => React.createElement('span', { key: s, style: { fontSize: 11, fontWeight: 600, padding: '4px 10px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)' } },
-              (specLabel[s] || s) + ' · ' + specs[s])))))));
-
+  return React.createElement('div', { style: { maxWidth: 'min(1100px, calc(100% - 32px))', margin: '0 auto', padding: isMobile ? '16px 0 calc(96px + env(safe-area-inset-bottom, 0px))' : '32px 0 calc(60px + env(safe-area-inset-bottom, 0px))' } },
+    // ── Hero: pita suasana "Fajar" (GDV §4) — glass kept, never generic solid ──
+    hero,
+    stats,
+    mobileCtas,
+    journeyCard,
+    isMobile
+      ? React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 } },
+        nextCard, readinessCard, recentCard, skillsCard, achieveCard, coverageCard)
+      : React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'minmax(0, 1.35fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' } }, leftCol, rightCol));
 }
 
-function QDStat({ label, value, icon, color, sub }) {
+// ── FASE 9 dashboard atoms (GDV-constrained, canonical-data only) ──
+
+// Mobile art hero: cropped fajar scene at a fixed height with a legibility
+// scrim — kicker + title always fit (no caption-overflow clipping), CTAs
+// live below on the page surface. Same artwork family as the desktop band.
+function QD9HeroMobile({ title, levelLine }) {
+  return React.createElement('div', { style: { position: 'relative', borderRadius: 'var(--r-xl)', overflow: 'hidden', height: 200, boxShadow: 'var(--shadow-band)' } },
+    React.createElement('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden' } },
+      React.createElement('div', { style: { width: '170%', marginLeft: '-35%', height: '100%' } },
+        React.createElement(QAMoodScene, { scene: 'fajar' }))),
+    React.createElement('div', { style: { position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,10,40,0) 25%, rgba(20,10,40,.58) 100%)' } }),
+    React.createElement('div', { style: { position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '16px 20px', color: '#fff' } },
+      React.createElement('div', { style: { fontSize: 10, letterSpacing: '.18em', fontWeight: 700, opacity: .82, marginBottom: 5 } }, 'CLINICAL INTERVIEW TRAINER'),
+      React.createElement('div', { style: { fontSize: 23, margin: 0, fontWeight: 800, letterSpacing: '-.02em', textShadow: '0 2px 18px rgba(20,10,40,.35)', lineHeight: 1.2 } }, title),
+      React.createElement('div', { style: { marginTop: 6, fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.88)', fontVariantNumeric: 'tabular-nums' } }, levelLine)));
+}
+
+// Ranked horizontal skill bars — the PRIMARY skill visualization (GDV §9:
+// bars replace the radar; radar lives in deeper analytics only). Sorted
+// weakest-first so the next thing to train is on top. Values, evidence
+// counts and strongest/weakest all come from /api/v2/progress (Phase 8).
+function QD9SkillBars({ p, panel, secTitle, secHead }) {
+  var _t = window.__t || function (k) { return k; };
+  const dims = p.dimensionAverages || {};
+  const detail = p.dimensionDetail || {};
+  const rows = Object.keys(dims).map(k => ({
+    key: k, label: QV2_DIM_LABEL[k] || k.replace(/_/g, ' '),
+    pct: dims[k] || 0, n: (detail[k] && detail[k].n) || 0,
+    low: !!(detail[k] && detail[k].low_evidence),
+  })).sort((a, b) => a.pct - b.pct);
+  const weak = p.weakestSkill || (rows[0] && rows[0].key);
+  return React.createElement('div', { className: 'as', style: panel },
+    React.createElement('div', { style: secTitle },
+      React.createElement('span', { style: secHead }, React.createElement(QIcon, { n: 'chart', s: 16 }), _t('dashboard.skill_detail')),
+      weak && React.createElement('span', { style: { fontSize: 11, fontWeight: 700, color: 'var(--primary)', background: 'var(--primary-l)', padding: '3px 10px', borderRadius: 999 } }, QV2_DIM_LABEL[weak] || weak)),
+    React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginBottom: 14 } }, _t('dashboard.based_on', { n: p.totalSessions || 0 })),
+    rows.map((r, i) => {
+      const developing = r.pct < 60;
+      return React.createElement('div', { key: r.key, style: { marginBottom: i === rows.length - 1 ? 0 : 12 } },
+        React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, fontSize: 12, color: 'var(--text-1)', fontWeight: 600, marginBottom: 4 } },
+          React.createElement('span', { style: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, r.label),
+          React.createElement('span', { style: { flexShrink: 0, fontVariantNumeric: 'tabular-nums', color: 'var(--text-2)' } },
+            Math.round(r.pct) + '%', developing && ' · ' + _t('dashboard.developing'))),
+        React.createElement('div', { style: { height: 7, borderRadius: 999, background: 'rgba(34,19,48,.09)', overflow: 'hidden' } },
+          React.createElement('div', { style: { width: Math.max(0, Math.min(100, r.pct)) + '%', height: '100%', borderRadius: 999, background: 'var(--u500)', transition: 'width .85s var(--ease)', transitionDelay: (i * 0.09) + 's' } })),
+        React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', marginTop: 3, fontVariantNumeric: 'tabular-nums' } },
+          r.low ? _t('dashboard.needs_session') : (r.n + ' sessions')));
+    }));
+}
+
+// GDV §8 product badges — Qora ring derivatives, never emoji stickers.
+// Locked badges stay visible at 30% on neutral (motivation, per GDV).
+function QD9Ring({ kind, locked }) {
+  const u = locked ? '#9E96B4' : '#5C3F96';
+  const plum = locked ? '#9E96B4' : '#9B4A96';
+  const amb = locked ? '#9E96B4' : '#C97A15';
+  var inner = null;
+  if (kind === 'dots') inner = React.createElement('g', { fill: plum },
+    [[20, 9], [30, 14], [32, 25], [24, 32], [14, 31], [8, 22], [10, 12]].map((pt, i) =>
+      React.createElement('circle', { key: i, cx: pt[0], cy: pt[1], r: 2.6 })));
+  else if (kind === 'dash') inner = React.createElement('circle', { cx: 20, cy: 20, r: 12, fill: 'none', stroke: '#7B57C4', strokeWidth: 3.4, strokeDasharray: '5.4 2.2', opacity: locked ? .3 : 1 });
+  else if (kind === 'plum') inner = React.createElement('g', null,
+    React.createElement('circle', { cx: 18, cy: 18, r: 11, fill: 'none', stroke: plum, strokeWidth: 3.4 }),
+    React.createElement('circle', { cx: 28, cy: 28, r: 4.6, fill: plum }));
+  else if (kind === 'amb') inner = React.createElement('g', null,
+    React.createElement('circle', { cx: 18, cy: 18, r: 11, fill: 'none', stroke: amb, strokeWidth: 3.4 }),
+    React.createElement('circle', { cx: 28, cy: 28, r: 4.6, fill: amb }));
+  else inner = React.createElement('g', null,
+    React.createElement('circle', { cx: 18, cy: 18, r: 11, fill: 'none', stroke: u, strokeWidth: 3.4 }),
+    React.createElement('circle', { cx: 27, cy: 27, r: 3.4, fill: u }));
+  return React.createElement('svg', { width: 30, height: 30, viewBox: '0 0 40 40', 'aria-hidden': true }, inner);
+}
+function qd9RingKind(id) {
+  id = String(id || '');
+  if (id.indexOf('spec_') === 0) return 'dash';
+  if (id.indexOf('score_') === 0) return 'amb';
+  if (id.indexOf('streak_') === 0 || id.indexOf('sessions_') === 0) return 'dots';
+  if (id.indexOf('cases_') === 0 && id !== 'cases_5') return 'ring';
+  return 'dot';
+}
+function QD9Badges({ badges, hasEvidence, panel, secHead }) {
+  var _t = window.__t || function (k) { return k; };
+  const earned = (badges || []).filter(b => b.earned);
+  const locked = (badges || []).filter(b => !b.earned).sort((a, b) => (b.progress || 0) - (a.progress || 0)).slice(0, 3);
+  if (!hasEvidence && earned.length === 0) return null;
+  return React.createElement('div', { className: 'as', style: panel },
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 } },
+      React.createElement(QIcon, { n: 'award', s: 16 }), _t('dashboard.achievements')),
+    React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 14 } },
+      earned.slice(0, 10).map(b => React.createElement('div', { key: b.id, title: b.name, style: { width: 62, textAlign: 'center' } },
+        React.createElement('div', { style: { width: 62, height: 62, borderRadius: '50%', display: 'grid', placeItems: 'center', background: 'var(--u100)' } },
+          React.createElement(QD9Ring, { kind: qd9RingKind(b.id) })),
+        React.createElement('div', { style: { fontSize: 10, color: 'var(--text-2)', marginTop: 6, lineHeight: 1.3 } }, b.name))),
+      locked.map(b => React.createElement('div', { key: b.id, title: b.name + ' · ' + Math.round((b.progress || 0) * 100) + '%', style: { width: 62, textAlign: 'center', opacity: .45 } },
+        React.createElement('div', { style: { width: 62, height: 62, borderRadius: '50%', display: 'grid', placeItems: 'center', background: 'var(--n100)' } },
+          React.createElement(QD9Ring, { kind: qd9RingKind(b.id), locked: true })),
+        React.createElement('div', { style: { fontSize: 10, color: 'var(--text-3)', marginTop: 6, lineHeight: 1.3 } }, b.name)))));
+}
+
+// Study-cockpit next action — derived ONLY from canonical readiness/progress.
+// New users get the honest onboarding state (never sad/fake numbers); low
+// scores are framed as Developing with evidence, plus a clear next step.
+function QD9NextAction({ p, onNav, isMobile, panel, secTitle, secHead }) {
+  var _t = window.__t || function (k) { return k; };
+  if (!p.hasEvidence) return React.createElement('div', { className: 'as', style: panel },
+    React.createElement('div', { style: secTitle },
+      React.createElement('span', { style: secHead }, React.createElement(QIcon, { n: 'target', s: 16 }), _t('dashboard.next_focus'))),
+    React.createElement('div', { style: { fontSize: 15, fontWeight: 800, color: 'var(--text-1)', marginBottom: 6 } }, _t('dashboard.onboarding_title')),
+    React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, _t('dashboard.onboarding_body')));
+  const r = p.readiness || {};
+  const weakKey = (r.needs_work && r.needs_work[0]) || p.weakestSkill;
+  const weakLabel = (weakKey && (QV2_DIM_LABEL[weakKey] || weakKey.replace(/_/g, ' '))) || '—';
+  const weakPct = weakKey != null && p.dimensionAverages ? Math.round(p.dimensionAverages[weakKey] || 0) : null;
+  const weakN = weakKey != null && p.dimensionDetail && p.dimensionDetail[weakKey] ? p.dimensionDetail[weakKey].n : null;
+  const why = (r.drivers || []).filter(d => d && (d.direction === '-' || d.direction === 'cap') && d.factor !== 'caps')[0];
+  return React.createElement('div', { className: 'as', style: panel },
+    React.createElement('div', { style: secTitle },
+      React.createElement('span', { style: secHead }, React.createElement(QIcon, { n: 'target', s: 16 }), _t('dashboard.next_focus')),
+      React.createElement('span', { style: { fontSize: 11, color: 'var(--text-3)', fontVariantNumeric: 'tabular-nums' } }, _t('dashboard.based_on', { n: p.totalSessions || 0 }))),
+    React.createElement('div', { style: { fontSize: 16, fontWeight: 800, color: 'var(--text-1)', fontVariantNumeric: 'tabular-nums' } },
+      weakLabel + (weakPct != null ? ' · ' + weakPct + '%' : '')),
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginTop: 4, lineHeight: 1.6 } },
+      (weakPct != null && weakPct < 60 ? _t('dashboard.developing') + ' — ' : '') +
+      (why && why.detail ? why.detail : '') +
+      (weakN != null ? ' (' + weakN + ' sessions)' : '')),
+    React.createElement('button', { onClick: () => onNav('cases'), style: { marginTop: 12, padding: '11px 20px', minHeight: 44, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13.5, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 8 } },
+      React.createElement(QIcon, { n: 'cases', s: 16 }), _t('dashboard.find_case')));
+}
+
+// Readiness cockpit card — canonical score/state/confidence/drivers.
+// Skill radar lives ONLY here behind a disclosure (GDV: radar allowed in
+// deeper analytics once there is enough data), never as the primary viz.
+function QD9Readiness({ r, dims, panel, secTitle, secHead, isMobile }) {
+  var _t = window.__t || function (k) { return k; };
+  const confKey = r.confidence === 'high' ? 'dashboard.confidence_high' : r.confidence === 'medium' ? 'dashboard.confidence_medium' : 'dashboard.confidence_low';
+  const ev = r.evidence || {};
+  const drivers = (r.drivers || []).filter(d => d && d.factor !== 'proficiency' && d.factor !== 'coverage').slice(0, 3);
+  const evidentDims = {};
+  Object.keys(dims || {}).forEach(k => { if (r.dimensions && r.dimensions[k] != null) evidentDims[k] = r.dimensions[k]; });
+  const canRadar = Object.keys(evidentDims).length >= 3 && (ev.sessions || 0) >= 3;
+  const iconFor = (f) => f === 'safety' || f === 'safety_cap' || f === 'osce' || f === 'evidence' ? 'flag' : (f === 'trajectory' || f === 'recency' || f === 'consistency' ? 'history' : 'chart');
+  return React.createElement('div', { className: 'as', style: panel },
+    React.createElement('div', { style: secTitle },
+      React.createElement('span', { style: secHead }, React.createElement(QIcon, { n: 'mentor', s: 16 }), _t('dashboard.readiness')),
+      React.createElement('span', { style: { fontSize: 11, fontWeight: 600, color: 'var(--text-3)' } }, _t(confKey))),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 10 } },
+      React.createElement('div', { style: { fontSize: 30, fontWeight: 800, color: 'var(--u900)', letterSpacing: '-.02em', fontVariantNumeric: 'tabular-nums' } }, (r.score || 0) + '%'),
+      React.createElement('div', { style: { fontSize: 12.5, fontWeight: 600, color: 'var(--text-2)' } }, (r.interpretation && r.interpretation.label) || r.state || '')),
+    React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)', marginTop: 4, fontVariantNumeric: 'tabular-nums' } },
+      _t('dashboard.based_on', { n: ev.sessions || 0 }) + (ev.osce_sessions ? ' · ' + ev.osce_sessions + ' OSCE' : '')),
+    drivers.length > 0 && React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, marginTop: 12 } },
+      drivers.map((d, i) => React.createElement('div', { key: i, style: { display: 'flex', gap: 8, alignItems: 'flex-start', fontSize: 12, color: 'var(--text-2)', lineHeight: 1.5 } },
+        React.createElement('span', { style: { color: 'var(--u700)', marginTop: 1, flexShrink: 0 } }, React.createElement(QIcon, { n: iconFor(d.factor), s: 14 })),
+        React.createElement('span', null, d.detail)))),
+    canRadar && React.createElement('details', { style: { marginTop: 12 } },
+      React.createElement('summary', { style: { fontSize: 12, fontWeight: 700, color: 'var(--primary)', cursor: 'pointer' } }, _t('dashboard.skill_detail')),
+      React.createElement('div', { style: { display: 'flex', justifyContent: 'center', paddingTop: 6 } },
+        React.createElement(QSkillRadar, { dims: evidentDims, size: isMobile ? 170 : 200 }))));
+}
+
+// Recent sessions — grouped per day (GDV §9), no per-row icons, neutral
+// pills (ungu only: green/red live on the result page, never here).
+// Incomplete sessions offer a real resume via #/session/<id>, never a dead end.
+function QD9Recent({ recent, onNav, panel, secTitle, secHead }) {
+  var _t = window.__t || function (k) { return k; };
+  const groups = [];
+  (recent || []).slice(0, 5).forEach(s => {
+    var d = null;
+    try { d = s.startedAt ? new Date(s.startedAt) : null; } catch (e) {}
+    var key = 'unknown', label = '';
+    if (d && !isNaN(d)) {
+      var day = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      var today = new Date(); today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      var diff = Math.round((today - day) / 86400000);
+      key = day.toISOString().slice(0, 10);
+      label = diff === 0 ? _t('dashboard.today') : diff === 1 ? _t('dashboard.yesterday') : d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+    }
+    var g = groups.filter(g => g.key === key)[0];
+    if (!g) { g = { key: key, label: label, items: [] }; groups.push(g); }
+    g.items.push(s);
+  });
+  return React.createElement('div', { className: 'as', style: panel },
+    React.createElement('div', { style: secTitle },
+      React.createElement('span', { style: secHead }, React.createElement(QIcon, { n: 'history', s: 16 }), _t('dashboard.recent_sessions')),
+      (recent || []).length > 0 && React.createElement('button', { onClick: () => onNav('sessions'), style: { padding: '8px 14px', borderRadius: 8, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--primary)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', fontWeight: 600 } }, _t('dashboard.view_all'))),
+    (recent || []).length === 0 && React.createElement('div', { style: { padding: '28px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-3)', background: 'var(--surface)', borderRadius: 12, border: '1px dashed var(--border)' } },
+      _t('dashboard.no_sessions')),
+    groups.map(g => React.createElement('div', { key: g.key },
+      g.label && React.createElement('div', { style: { fontSize: 11, fontWeight: 700, color: 'var(--text-3)', letterSpacing: '.1em', textTransform: 'uppercase', margin: '12px 0 4px' } }, g.label),
+      g.items.map((s, i) => {
+        const done = s.score != null;
+        var time = '';
+        try { time = s.startedAt ? new Date(s.startedAt).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' }) : ''; } catch (e) {}
+        // Interaction modes (targeted/blind) are shown verbatim — mapping
+        // them to Anamnesis would misstate the session contract.
+        var modeLabel = s.mode === 'osce_full' || s.mode === 'osce' ? 'OSCE'
+          : s.mode === 'anamnesis' ? 'Anamnesis'
+          : s.mode === 'targeted' ? 'Targeted' : s.mode === 'blind' ? 'Blind' : (s.mode || '');
+        return React.createElement('div', { key: s.sessionId || i, style: { display: 'flex', alignItems: 'center', gap: 12, padding: '11px 6px', borderBottom: i === g.items.length - 1 && g === groups[groups.length - 1] ? 'none' : '1px solid var(--n100)' } },
+          React.createElement('div', { style: { flex: 1, minWidth: 0 } },
+            React.createElement('div', { style: { fontSize: 13.5, fontWeight: 700, color: 'var(--text-1)', marginBottom: 3, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, s.presentation || s.caseId || 'Case'),
+            React.createElement('div', { style: { display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center', fontSize: 11, color: 'var(--text-3)' } },
+              s.specialty && React.createElement('span', { style: { fontWeight: 700, padding: '2px 8px', borderRadius: 999, background: 'var(--n100)', color: 'var(--text-2)' } }, _qv2SpecLabel(s.specialty)),
+              modeLabel && React.createElement('span', null, modeLabel),
+              time && React.createElement('span', { style: { fontVariantNumeric: 'tabular-nums' } }, time))),
+          done
+            ? React.createElement('span', { style: { fontSize: 12.5, fontWeight: 800, padding: '4px 12px', borderRadius: 999, background: 'var(--primary-l)', color: 'var(--primary)', fontVariantNumeric: 'tabular-nums', flexShrink: 0 } }, s.score + '%')
+            : React.createElement('button', { onClick: () => onNav('session/' + s.sessionId), style: { padding: '10px 16px', minHeight: 44, borderRadius: 10, border: '1px solid var(--primary)', background: 'transparent', color: 'var(--primary)', fontSize: 12.5, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', flexShrink: 0 } }, _t('dashboard.resume')));
+      }))));
+}
+
+function QDStat({ label, value, icon, color, sub, compact }) {
   // GDV §9 stat card: the number is always ink (ungu 900) — a different
   // colour per card makes the eye hunt a meaning that isn't there. Glass
-  // surface so it floats above the mood band.
-  return React.createElement('div', { className: 'as qa-glass', style: { padding: 18, borderRadius: 'var(--radius-lg)', display: 'flex', flexDirection: 'column', minHeight: 136 } },
-    React.createElement(QIcon, { n: icon, s: 22, color: 'var(--u700)' }),
-    React.createElement('div', { style: { fontSize: 26, fontWeight: 800, color: 'var(--u900)', lineHeight: 1.1, fontVariantNumeric: 'tabular-nums' } }, value),
-    React.createElement('div', { style: { fontSize: 12.5, fontWeight: 600, color: 'var(--n500)', marginTop: 10 } }, label),
+  // surface so it floats above the mood band. Compact on handsets so two
+  // columns fit a 360px viewport without squeezing the numbers.
+  return React.createElement('div', { className: 'as qa-glass', style: { padding: compact ? 14 : 18, borderRadius: 'var(--radius-lg)', display: 'flex', flexDirection: 'column', minHeight: compact ? 112 : 136 } },
+    React.createElement(QIcon, { n: icon, s: compact ? 19 : 22, color: 'var(--u700)' }),
+    React.createElement('div', { style: { fontSize: compact ? 22 : 26, fontWeight: 800, color: 'var(--u900)', lineHeight: 1.1, fontVariantNumeric: 'tabular-nums' } }, value),
+    React.createElement('div', { style: { fontSize: compact ? 11.5 : 12.5, fontWeight: 600, color: 'var(--n500)', marginTop: compact ? 8 : 10 } }, label),
     React.createElement('div', { style: { fontSize: 10.5, color: 'var(--n500)', marginTop: 3, lineHeight: 1.4 } }, sub));
 }
 
