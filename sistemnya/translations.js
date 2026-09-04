@@ -196,6 +196,19 @@ window.QORA_TRANSLATIONS = {
   'mentor.weakest_area': { en: 'Critical: Weakest area', id: 'Kritis: Area terlemah' },
   'mentor.weakest_text': { en: '{d} is your weakest dimension ({p}%). Focus here before your exam.', id: '{d} adalah dimensi terlemah kamu ({p}%). Fokus di sini sebelum ujian.' },
   'mentor.recommended_actions': { en: 'Recommended actions', id: 'Aksi yang disarankan' },
+  // ── FASE 10 guided journey (mission / insight / timeline / verdict) ──
+  'mentor.mission': { en: "Today's Mission", id: 'Misi Hari Ini' },
+  'mentor.mission_meta': { en: '{n} encounter · ~{m} min', id: '{n} encounter · ~{m} mnt' },
+  'mentor.why_this_case': { en: 'Why this case', id: 'Kenapa kasus ini' },
+  'mentor.coach_insight': { en: 'Coach Insight', id: 'Catatan Coach' },
+  'mentor.timeline': { en: 'Journey Timeline', id: 'Linimasa Perjalanan' },
+  'mentor.goal_line': { en: '{goal} · {d} days', id: '{goal} · {d} hari' },
+  'mentor.journey_report': { en: 'Journey Report', id: 'Laporan Perjalanan' },
+  'mentor.next_recommendation': { en: 'Next recommendation', id: 'Rekomendasi berikutnya' },
+  'mentor.verdict_ready': { en: 'Exam ready', id: 'Siap ujian' },
+  'mentor.verdict_completed': { en: 'Plan complete', id: 'Rencana selesai' },
+  'mentor.recap': { en: 'Recap', id: 'Rekap' },
+  'mentor.stop_journey': { en: 'Stop journey', id: 'Hentikan perjalanan' },
 };
 
 // Simple translation function. Usage: window.__t('dashboard.title')

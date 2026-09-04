@@ -1243,6 +1243,19 @@ window.QORA_TRANSLATIONS = {
   'mentor.weakest_area': { en: 'Critical: Weakest area', id: 'Kritis: Area terlemah' },
   'mentor.weakest_text': { en: '{d} is your weakest dimension ({p}%). Focus here before your exam.', id: '{d} adalah dimensi terlemah kamu ({p}%). Fokus di sini sebelum ujian.' },
   'mentor.recommended_actions': { en: 'Recommended actions', id: 'Aksi yang disarankan' },
+  // ── FASE 10 guided journey (mission / insight / timeline / verdict) ──
+  'mentor.mission': { en: "Today's Mission", id: 'Misi Hari Ini' },
+  'mentor.mission_meta': { en: '{n} encounter · ~{m} min', id: '{n} encounter · ~{m} mnt' },
+  'mentor.why_this_case': { en: 'Why this case', id: 'Kenapa kasus ini' },
+  'mentor.coach_insight': { en: 'Coach Insight', id: 'Catatan Coach' },
+  'mentor.timeline': { en: 'Journey Timeline', id: 'Linimasa Perjalanan' },
+  'mentor.goal_line': { en: '{goal} · {d} days', id: '{goal} · {d} hari' },
+  'mentor.journey_report': { en: 'Journey Report', id: 'Laporan Perjalanan' },
+  'mentor.next_recommendation': { en: 'Next recommendation', id: 'Rekomendasi berikutnya' },
+  'mentor.verdict_ready': { en: 'Exam ready', id: 'Siap ujian' },
+  'mentor.verdict_completed': { en: 'Plan complete', id: 'Rencana selesai' },
+  'mentor.recap': { en: 'Recap', id: 'Rekap' },
+  'mentor.stop_journey': { en: 'Stop journey', id: 'Hentikan perjalanan' },
 };
 
 // Simple translation function. Usage: window.__t('dashboard.title')
@@ -4425,7 +4438,7 @@ function QDayCarousel(props) {
           onClick: function () { if (clickable && props.onStart) props.onStart(c); },
           disabled: !clickable,
           style: {
-            minWidth: 'min(250px, 82vw)', scrollSnapAlign: 'start', flexShrink: 0, appearance: 'none',
+            minWidth: 'min(220px, 80vw)', scrollSnapAlign: 'start', flexShrink: 0, appearance: 'none',
             padding: 16, borderRadius: 'var(--r-lg)', textAlign: 'left',
             background: s.bg, border: '1.5px solid ' + s.border,
             boxShadow: clickable ? 'var(--sh-sm)' : 'none',
@@ -4511,9 +4524,7 @@ function QJourneyProposal(props) {
           React.createElement('div', { style: { fontSize: 13.5, fontWeight: 600, color: 'var(--text-3)', marginTop: 2 } }, proposal.package_name || j.package_name || ''))),
       React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 18 } },
         React.createElement('span', { className: 'qchip' },
-          React.createElement(_Mtl, { n: 'clock', s: 13 }), _mt('mentor.days').replace('{d}', proposal.duration_days || cases.length || '').replace('{m}', '45-60')),
-        React.createElement('span', { className: 'qchip' },
-          React.createElement(_Mtl, { n: 'target', s: 13 }), _mt('mentor.target_readiness') + ': ' + (r.target || 80) + '%')),
+          React.createElement(_Mtl, { n: 'clock', s: 13 }), _mt('mentor.days').replace('{d}', proposal.duration_days || cases.length || '').replace('{m}', '45-60'))),
       React.createElement('div', { style: { marginBottom: 18 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
           React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } }, _mt('mentor.readiness_start')),
@@ -4540,17 +4551,50 @@ function QJourneyProposal(props) {
         React.createElement(_QBtn, { kind: 'g', onClick: customize, disabled: busy || !fb.trim() }, busy ? '…' : _mt('mentor.customize')))));
 }
 
-// ── QJourneyDashboard: active journey tracking ──────────────────────────
+// ── QJourneyDashboard: guided active journey (FASE 10) ─────────────────
+// Order: Journey Header → Today's Mission → Coach Insight → Journey
+// Timeline → secondary actions. Same Qora GDV, no new visual language:
+// one mood band, one primary CTA (mission), quiet destructive action.
+function QMHeroMobile(props) {
+  // Fixed-height cropped art: the aspect-locked band cannot fit kicker +
+  // title on a 390px viewport (caption would clip), so mobile gets its own
+  // compact hero with the same lentera artwork + legibility scrim.
+  return React.createElement('div', { style: { position: 'relative', borderRadius: 'var(--r-xl)', overflow: 'hidden', height: 196, boxShadow: 'var(--shadow-band)' } },
+    React.createElement('div', { style: { position: 'absolute', inset: 0, overflow: 'hidden' } },
+      React.createElement('div', { style: { width: '170%', marginLeft: '-35%', height: '100%' } },
+        React.createElement(QAMoodScene, { scene: 'lentera' }))),
+    React.createElement('div', { style: { position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,10,40,0) 25%, rgba(20,10,40,.58) 100%)' } }),
+    React.createElement('div', { style: { position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '16px 20px', color: '#fff' } },
+      React.createElement('div', { style: { fontSize: 10, letterSpacing: '.18em', fontWeight: 700, opacity: .82, marginBottom: 5 } }, props.kicker),
+      React.createElement('div', { style: { fontSize: 22, margin: 0, fontWeight: 800, letterSpacing: '-.02em', textShadow: '0 2px 18px rgba(20,10,40,.35)', lineHeight: 1.2 } }, props.title),
+      React.createElement('div', { style: { marginTop: 5, fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.88)', fontVariantNumeric: 'tabular-nums', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, (props.sub || ''))));
+}
 function QJourneyDashboard(props) {
   var j = props.journey;
   var cases = j.cases || [];
   var progress = j.progress || {};
   var r = j.readiness || {};
-  var today = cases.filter(function (c) { return c.status === 'available' || c.status === 'in_progress'; })[0] || null;
   var total = progress.total || 0;
-  // Bar width must match the number shown (§4.2) — readiness is displayed
-  // as an absolute percentage, so the bar uses the same value.
   var currentVal = Math.max(0, Math.min(100, r.current != null ? r.current : (r.start || 0)));
+  var ctx = j.context || {};
+  var goalLine = ctx.goal && ctx.goal !== 'general'
+    ? _mt('mentor.goal_line').replace('{goal}', String(ctx.goal).toUpperCase()).replace('{d}', ctx.timeline_days || total || '?')
+    : null;
+
+  var [mission, setMission] = React.useState(null);
+  var [recap, setRecap] = React.useState(null);
+  var [verdict, setVerdict] = React.useState(null);
+  React.useEffect(function () {
+    var alive = true;
+    if (j.status === 'active') {
+      qv2Fetch('/api/v2/mentor/journeys/' + j.id + '/mission').then(function (m) { if (alive) setMission(m); }).catch(function () {});
+      qv2Fetch('/api/v2/mentor/journeys/' + j.id + '/recap').then(function (c) { if (alive) setRecap(c); }).catch(function () {});
+    }
+    if (j.status === 'completed') {
+      qv2Fetch('/api/v2/mentor/journeys/' + j.id + '/report').then(function (rep) { if (alive) setVerdict(rep); }).catch(function () {});
+    }
+    return function () { alive = false; };
+  }, [j.id, j.status, (progress.completed || 0)]);
 
   function startCase(c) {
     // Navigate via hash ONLY — the App's hashchange listener maps
@@ -4559,46 +4603,77 @@ function QJourneyDashboard(props) {
     try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
   }
 
-  return React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
-    // GDV §4: pita suasana "Lentera" — jalur bertitik dengan tonggak menyala
-    React.createElement(QAMoodBand, { scene: 'lentera', kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5), title: _mt('mentor.title'),
-      sub: j.package_name || '' }),
-    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
-    React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
-      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 } },
-        React.createElement('div', { className: 'hdr-badge' }, React.createElement(_Mtl, { n: 'spark', s: 22 })),
-        React.createElement('div', null,
-          React.createElement('div', { style: { fontSize: 19, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, _mt('mentor.title')),
-          React.createElement('div', { style: { fontSize: 13.5, fontWeight: 600, color: 'var(--text-3)', marginTop: 2 } }, j.package_name || ''))),
-      // Journey progress
+  var missionCase = mission && mission.case_id ? { case_id: mission.case_id } : null;
+  // Static breakpoint read (same 768px as the shell): hero selection must
+  // not depend on hook scope across the concatenated bundle.
+  var isMobileM = false;
+  try { isMobileM = window.matchMedia('(max-width: 768px)').matches; } catch (e) {}
+
+  return React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px calc(40px + env(safe-area-inset-bottom, 0px))' } },
+    // 1 · Journey Header (GDV §4 lentera band; goal/date line, no target %)
+    // Mobile gets the cropped art hero — the aspect-locked band clips text.
+    isMobileM
+      ? React.createElement(QMHeroMobile, { kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5),
+          title: j.package_name || _mt('mentor.title'), sub: goalLine || '' })
+      : React.createElement(QAMoodBand, { scene: 'lentera', kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5), title: j.package_name || _mt('mentor.title'),
+        sub: goalLine || '' }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobileM ? 12 : -56 } },
+    React.createElement('div', { style: { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--sh-sm)', padding: 20 } },
+      // workload completion (planned %, honest progress — NOT readiness)
       React.createElement('div', { style: { marginBottom: 16 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
           React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } },
             _mt('mentor.progress').replace('{d}', j.current_day || 1).replace('{n}', total).replace('{p}', progress.percent || 0)),
-          React.createElement('span', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)', lineHeight: 1 } }, (progress.percent || 0) + '%')),
+          React.createElement('span', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' } }, (progress.percent || 0) + '%')),
         _mtBar(progress.percent || 0, 10)),
-      // Readiness (bar = displayed value)
-      React.createElement('div', { style: { marginBottom: 16 } },
+      // readiness now (evidence-driven; target % intentionally not shown)
+      React.createElement('div', { style: { marginBottom: 4 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
           React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } },
             _mt('mentor.readiness') + ': ' + currentVal + '%'),
-          React.createElement('span', { className: 'qchip' }, React.createElement(_Mtl, { n: 'target', s: 13 }), _mt('mentor.target_readiness') + ' ' + (r.target || 80) + '%')),
-        _mtBar(currentVal, 10)),
-      // Today's case
-      today && React.createElement('div', { style: { marginBottom: 16, padding: '16px 18px', borderRadius: 'var(--r-lg)', border: '1px solid var(--primary)', background: 'var(--primary-l)' } },
-        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.07em' } },
-          React.createElement(_Mtl, { n: 'play', s: 13 }), _mt('mentor.today')),
-        React.createElement('div', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', margin: '6px 0 4px' } },
-          'Day ' + today.day + ': ' + (today.focus_area || today.case_id)),
-        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--text-2)', marginBottom: 14, fontWeight: 500 } },
-          React.createElement(_Mtl, { n: 'clock', s: 13 }), today.case_id + ' · ~' + (today.estimated_minutes || 15) + ' min'),
-        React.createElement(_QBtn, { kind: 'p', blk: true, onClick: function () { startCase(today); } }, _mt('mentor.start_case'))),
-      // All days — horizontal carousel
-      React.createElement(QDayCarousel, { cases: cases, onStart: startCase, doneLabel: 'Selesai' }),
-      // Actions — secondary (report) + destructive (abandon)
-      React.createElement('div', { style: { marginTop: 14, display: 'flex', justifyContent: 'flex-end', gap: 10, flexWrap: 'wrap' } },
-        props.onReport && React.createElement(_QBtn, { kind: 'g', onClick: props.onReport }, _mt('mentor.view_report')),
-        React.createElement(_QBtn, { kind: 'd', onClick: props.onAbandon }, _mt('mentor.abandon'))))));
+          React.createElement('span', { style: { fontSize: 11, color: 'var(--text-3)', fontWeight: 600 } },
+            _mt('mentor.readiness_start') + ': ' + (r.start != null ? r.start : '–') + '%')),
+        _mtBar(currentVal, 10)))),
+    // 2 · Today's Mission (focus, time, encounters, why, CTA)
+    mission && mission.state === 'ready' && React.createElement('div', { className: 'as', style: Object.assign({}, _mtCard, { marginTop: 12, padding: 18, border: '1.5px solid var(--primary)' }) },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 } },
+        React.createElement(_Mtl, { n: 'play', s: 13 }), _mt('mentor.mission') + ' · Day ' + mission.day),
+      React.createElement('div', { style: { fontSize: 15, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, mission.focus || mission.case_id),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-2)', fontWeight: 600, marginBottom: 8, fontVariantNumeric: 'tabular-nums' } },
+        React.createElement(_Mtl, { n: 'clock', s: 13 }),
+        _mt('mentor.mission_meta').replace('{n}', mission.encounters || 1).replace('{m}', mission.expected_minutes || 45)),
+      React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.6, marginBottom: 12 } },
+        React.createElement('span', { style: { fontWeight: 700, color: 'var(--text-1)' } }, _mt('mentor.why_this_case') + ': '), mission.why),
+      React.createElement(_QBtn, { kind: 'p', blk: true, onClick: function () { startCase(missionCase || mission); } }, _mt('mentor.start_case'))),
+    // 3 · Coach Insight (latest evidence-grounded feedback, persisted server-side)
+    j.coach_insight && React.createElement('div', { className: 'as', style: Object.assign({}, _mtCard, { marginTop: 12, padding: 16, background: 'var(--violet-l)', border: '1px solid var(--violet)' }) },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--violet)', marginBottom: 8 } },
+        React.createElement(_Mtl, { n: 'spark', s: 15 }), _mt('mentor.coach_insight')),
+      React.createElement('div', { style: { fontSize: 13.5, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, j.coach_insight.headline || ''),
+      j.coach_insight.detail && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.6 } }, j.coach_insight.detail)),
+    // recap strip (end-of-day: done, time, tomorrow focus)
+    recap && (recap.cases_completed || 0) > 0 && React.createElement('div', { style: { marginTop: 12, fontSize: 12, color: 'var(--text-2)', display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' } },
+      React.createElement(_Mtl, { n: 'check', s: 14 }),
+      React.createElement('span', null, _mt('mentor.recap') + ': ' + recap.cases_completed + '/' + (recap.cases_total || total) +
+        (recap.next_focus ? ' · ' + recap.next_focus : ''))),
+    // 4 · Journey Timeline
+    React.createElement('div', { className: 'as', style: Object.assign({}, _mtCard, { marginTop: 12, padding: 18 }) },
+      React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: 'var(--text-1)', marginBottom: 10 } }, _mt('mentor.timeline')),
+      React.createElement(QDayCarousel, { cases: cases, onStart: startCase, doneLabel: 'Selesai' })),
+    // end-of-journey verdict: plan complete ≠ ready (honest, concrete next step)
+    j.status === 'completed' && verdict && React.createElement('div', { className: 'as', style: Object.assign({}, _mtCard, { marginTop: 12, padding: 18 }) },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 } },
+        React.createElement('span', { className: 'qpill qpill-now' },
+          verdict.verdict === 'ready' ? _mt('mentor.verdict_ready') : _mt('mentor.verdict_completed'))),
+      React.createElement('div', { style: { fontSize: 13.5, fontWeight: 700, color: 'var(--text-1)', marginBottom: 6, lineHeight: 1.5 } }, verdict.note || ''),
+      verdict.next_recommendation && React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.6 } },
+        React.createElement('span', { style: { fontWeight: 700, color: 'var(--text-1)' } }, _mt('mentor.next_recommendation') + ': '), verdict.next_recommendation)),
+    // 5 · secondary actions (report ghost; abandon quiet — never prominent red)
+    React.createElement('div', { style: { marginTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, flexWrap: 'wrap' } },
+      props.onReport
+        ? React.createElement(_QBtn, { kind: 'g', onClick: props.onReport }, _mt('mentor.view_report'))
+        : React.createElement('span', null),
+      React.createElement('button', { onClick: props.onAbandon, style: { background: 'transparent', border: 'none', color: 'var(--text-3)', fontSize: 12.5, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', textDecoration: 'underline', padding: '10px 4px', minHeight: 44 } }, _mt('mentor.stop_journey'))));
 }
 
 // ── QAutopsyCard: reasoning autopsy display (PRD §4.2.5) ────────────────
@@ -4728,6 +4803,18 @@ function QReadinessReport(props) {
       r.weakest && React.createElement('div', { style: { marginTop: 14, padding: '10px 14px', borderRadius: 'var(--r-md)', background: 'var(--red-l)', border: '1px solid var(--red)', fontSize: 12.5, color: 'var(--text-2)' } },
         React.createElement('div', { style: { fontWeight: 800, color: 'var(--red-d)', marginBottom: 4 } }, '🔴 ' + _mt('mentor.weakest_area')),
         _mt('mentor.weakest_text').replace('{d}', (r.weakest.dimension || '').replace(/_/g, ' ')).replace('{p}', r.weakest.pct)),
+      // FASE 10: explainable readiness — state/confidence/evidence + strong/needs-work
+      (function () {
+        var ev = readiness.evidence || {};
+        var lines = [];
+        if ((readiness.strengths || []).length) lines.push('Strong: ' + readiness.strengths.map(function (s) { return String(s).replace(/_/g, ' '); }).join(', '));
+        if ((readiness.needs_work || []).length) lines.push('Needs work: ' + readiness.needs_work.map(function (s) { return String(s).replace(/_/g, ' '); }).join(', '));
+        if (!lines.length) return null;
+        return React.createElement('div', { style: { marginTop: 12, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.7 } },
+          lines.map(function (ln, i) { return React.createElement('div', { key: i }, ln); }),
+          React.createElement('div', { style: { marginTop: 4, fontSize: 11.5, color: 'var(--text-3)', fontVariantNumeric: 'tabular-nums' } },
+            'Evidence: ' + (ev.sessions || 0) + ' sessions · ' + (ev.osce_sessions || 0) + ' OSCE · ' + (ev.domains_covered || 0) + ' domains'));
+      })(),
       r.recommendations && r.recommendations.length > 0 && React.createElement('div', { style: { marginTop: 12, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.7 } },
         React.createElement('div', { style: { fontWeight: 700, color: 'var(--text-1)', marginBottom: 4 } }, '📌 ' + _mt('mentor.recommended_actions')),
         r.recommendations.map(function (rec, i) { return React.createElement('div', { key: i }, (i + 1) + '. ' + rec); })),

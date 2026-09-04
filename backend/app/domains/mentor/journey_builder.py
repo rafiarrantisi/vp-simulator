@@ -31,17 +31,21 @@ no prose, no markdown fences:
   "timeline_days": 7 | 30 | 90 | null,
   "level": "preklinik" | "koas" | "ppds" | "general",
   "weaknesses": ["pediatrik", "bedah", ...],
+  "target_specialty": "internal_medicine" | null,
   "goal": "osce" | "stase" | "general" | "mock_exam",
   "emotional_state": "panik" | "confident" | "overwhelmed" | "neutral",
   "special_needs": "string" | null,
-  "confidence_score": 0-100
+  "confidence_score": 0-100,
+  "available_minutes_per_day": 45
 }
 
 Rules:
 - timeline_days: estimate from words like "besok" (1), "minggu" (7), "bulan" (30). null if unknown.
 - level: default "koas" if unclear. "ppds" if resident/residen, "preklinik" if preclinical.
 - weaknesses: list up to 3 specialty areas mentioned (Indonesian terms fine).
-- confidence_score: self-reported confidence, 0-100 (low = anxious/bego)."""
+- target_specialty: the single main specialty focus (first weakness), or null.
+- confidence_score: self-reported confidence, 0-100 (low = anxious/bego).
+- available_minutes_per_day: daily study budget in minutes ("2 jam sehari" = 120). 45 if unknown."""
 
 _PROPOSAL_SYSTEM = """You are Qora Mentor, a supportive medical education advisor for Indonesian medical students.
 Create a personalized learning journey proposal from the selected cases.
@@ -103,13 +107,25 @@ _LEVEL_RE = [
     (re.compile(r"koas|kepaniteraan|clinical\s+student|stase", re.I), "koas"),
 ]
 _GOAL_RE = [
-    (re.compile(r"osce|uknpdpd|ukom|mock|try\s+out", re.I), "osce"),
+    (re.compile(r"osce|uknpdpd|ukom|mock|try\s+out|ujian|exam", re.I), "osce"),
     (re.compile(r"stase|rotasi|clerk", re.I), "stase"),
 ]
 _EMOTION_RE = [
     (re.compile(r"panik|takut|nervous|stres|stress|bego|bodoh|khawatir", re.I), "panik"),
     (re.compile(r"overwhelm|kebanyakan|banyak\s+banget|buntu", re.I), "overwhelmed"),
     (re.compile(r"pede|yakin|confident|siap", re.I), "confident"),
+]
+# Explicit low-confidence cues ("saya belum ngerti apa-apa") — these pin
+# confidence ≤20 even without panic words (FASE 10 intake contract).
+_BEGINNER_RE = re.compile(
+    r"beginner|pemula|belum\s+(ngerti|paham|bisa|pernah|tau|tahu)|"
+    r"don'?t\s+understand|noob|awam|baru\s+mulai|bego|bodoh|blank",
+    re.I,
+)
+# Daily time budget: "2 jam sehari", "30 menit/hari", "1 hour per day".
+_BUDGET_RE = [
+    (re.compile(r"(\d+(?:[.,]\d+)?)\s*(?:jam|hour|hrs?)\s*(?:sehari|per\s*hari|per\s*day|daily|/hari|/day)?", re.I), 60),
+    (re.compile(r"(\d+)\s*(?:menit|minute|min)\s*(?:sehari|per\s*hari|per\s*day|daily|/hari|/day)?", re.I), 1),
 ]
 
 
@@ -156,14 +172,33 @@ def _heuristic_context(user_story: str) -> dict:
         if len(weaknesses) >= 3:
             break
 
+    # Daily time budget ("2 jam sehari" → 120). Absent → default 45.
+    budget = 45
+    for rx, mult in _BUDGET_RE:
+        m = rx.search(user_story)
+        if m:
+            try:
+                budget = max(15, min(240, int(float(m.group(1).replace(",", ".")) * mult)))
+            except (ValueError, TypeError):
+                pass
+            break
+
+    # Confidence: explicit beginner cues pin low even without panic words.
+    if _BEGINNER_RE.search(user_story):
+        confidence = 20
+    else:
+        confidence = 30 if emotion == "panik" else 50
+
     return {
         "timeline_days": days,
         "level": level,
         "weaknesses": weaknesses,
+        "target_specialty": weaknesses[0] if weaknesses else None,
         "goal": goal,
         "emotional_state": emotion,
         "special_needs": None,
-        "confidence_score": 30 if emotion == "panik" else 50,
+        "confidence_score": confidence,
+        "available_minutes_per_day": budget,
     }
 
 
@@ -217,6 +252,15 @@ def _normalize_context(data: dict, fallback: dict) -> dict:
         mapped = map_weaknesses([str(x) for x in w])
         out["weaknesses"] = mapped or out["weaknesses"]
 
+    ts = data.get("target_specialty")
+    if isinstance(ts, str) and ts.strip():
+        from app.domains.mentor.case_selector import map_weaknesses as _mw
+        mapped_ts = _mw([ts.strip()])
+        if mapped_ts:
+            out["target_specialty"] = mapped_ts[0]
+    if not out.get("target_specialty") and out.get("weaknesses"):
+        out["target_specialty"] = out["weaknesses"][0]
+
     goal = str(data.get("goal") or "").lower()
     if goal in ("osce", "stase", "general", "mock_exam"):
         out["goal"] = goal
@@ -232,7 +276,41 @@ def _normalize_context(data: dict, fallback: dict) -> dict:
     sn = data.get("special_needs")
     if isinstance(sn, str) and sn.strip():
         out["special_needs"] = sn.strip()
+
+    b = data.get("available_minutes_per_day")
+    if isinstance(b, (int, float)) and b is not None:
+        out["available_minutes_per_day"] = max(15, min(240, int(b)))
     return out
+
+
+# ---------------------------------------------------------------------------
+# Clarification gate (FASE 10): at most 1–2 questions, only for truly
+# missing critical data — intake stays free text, never a long form.
+# ---------------------------------------------------------------------------
+
+_CLARIFY_QUESTIONS = {
+    "goal": "Ujian atau stase apa yang kamu siapkan? (mis. OSCE 7 hari lagi)",
+    "target_specialty": "Spesialisasi mana yang paling ingin kamu kejar dulu?",
+    "timeline_days": "Kapan ujian atau target belajarmu? (mis. 7 hari lagi)",
+}
+
+
+def needs_clarification(ctx: dict) -> list[str]:
+    """Return 0–2 follow-up questions for missing critical goal data.
+
+    Priority: goal → specialty → deadline. A complete context (as produced
+    for "Internal Medicine OSCE in 7 days") needs nothing.
+    """
+    ctx = ctx or {}
+    qs: list[str] = []
+    goal = (ctx.get("goal") or "general").lower()
+    if goal == "general":
+        qs.append(_CLARIFY_QUESTIONS["goal"])
+    if not ctx.get("target_specialty") and not (ctx.get("weaknesses") or []):
+        qs.append(_CLARIFY_QUESTIONS["target_specialty"])
+    if not ctx.get("timeline_days"):
+        qs.append(_CLARIFY_QUESTIONS["timeline_days"])
+    return qs[:2]
 
 
 def generate_proposal(context: dict, selected: list[dict]) -> dict:

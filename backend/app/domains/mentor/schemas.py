@@ -28,3 +28,9 @@ class CompleteCaseRequest(BaseModel):
     case_id: str
     session_id: str
     score: int = Field(..., ge=0, le=100)
+
+
+class RebalanceRequest(BaseModel):
+    """Shift remaining schedule after missed days (never "fail day")."""
+
+    missed_days: int = Field(default=1, ge=0, le=30)

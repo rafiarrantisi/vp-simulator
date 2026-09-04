@@ -198,3 +198,127 @@ def build_fallback_proposal(context: dict, selected: list[dict]) -> dict:
             {"day": days, "checkpoint": "Ready for exam"},
         ],
     }
+
+
+# ---------------------------------------------------------------------------
+# FASE 10 — unified multi-day planner (V3 families + V2 cases, one engine).
+# ---------------------------------------------------------------------------
+
+def _v3_pool(ctx: dict, level: str) -> list[dict]:
+    """Eligible V3 family candidates for the goal specialty (may be empty —
+    the bank is human-gated, so V2 carries journeys until review lands)."""
+    try:
+        from app.domains.mentor import planning_policy as pp
+        from app.domains.sessions.progress_adapter import cached_registry
+    except Exception:  # noqa: BLE001 — V3 optional; V2 alone still plans
+        return []
+    try:
+        reg = cached_registry()
+        fams = pp.eligible_v3_families(reg, level)
+    except Exception:  # noqa: BLE001
+        return []
+    target = ctx.get("target_specialty")
+    weaknesses = list(ctx.get("weaknesses") or [])
+    keep = [f for f in fams
+            if getattr(f, "primary_specialty", None) in ([target] if target else []) + weaknesses]
+    if not keep:
+        keep = list(fams)
+    out = []
+    for fam in keep:
+        try:
+            cand = pp.build_candidate_from_family(reg, fam, level)
+        except Exception:  # noqa: BLE001
+            cand = None
+        if cand:
+            out.append(cand)
+    return out
+
+
+def select_journey_cases(ctx: dict, cases: list, *, budget_default: int = 45) -> list[dict]:
+    """Deterministic multi-day plan over V3 families + the given V2 cases.
+
+    Workload comes from minutes/day (one encounter/day, estimated at the
+    daily budget — never a fixed cases/day count). Days 1..N-1 progress
+    Foundation → Reasoning (difficulty ascending); the final day is always
+    an integrated OSCE mock. Every row carries the planner's reason so the
+    mission screen can answer "why this case?" without LLM invention.
+    """
+    ctx = ctx or {}
+    try:
+        days = max(1, min(21, int(ctx.get("timeline_days") or 7)))
+    except (TypeError, ValueError):
+        days = 7
+    try:
+        budget = int(ctx.get("available_minutes_per_day") or budget_default)
+    except (TypeError, ValueError):
+        budget = budget_default
+    level = str(ctx.get("level") or "koas").lower()
+    goal = str(ctx.get("goal") or "general").lower()
+    target = ctx.get("target_specialty")
+    weaknesses = list(ctx.get("weaknesses") or [])
+
+    from app.domains.mentor import planning_policy as pp
+    v2cands = []
+    for case in cases or []:
+        cand = pp.build_candidate_from_v2(case)
+        if cand:
+            v2cands.append(cand)
+    pool = _v3_pool(ctx, level) + v2cands
+    if not pool:
+        return []
+
+    ranked = pp.rank_candidates(pool, ctx, day=days, duration_days=days)
+    chosen = ranked[:days]
+    if not chosen:
+        return []
+
+    # Integrated mock on the final day: hardest osce_full in the pool.
+    osce_pool = [c for c in pool if str(c.get("mode")) == "osce_full"]
+    mock = None
+    if osce_pool:
+        mock = sorted(osce_pool, key=lambda c: (-int(c.get("difficulty", 2) or 2), str(c.get("ref"))))[0]
+        if all(c["ref"] != mock["ref"] for c in chosen):
+            chosen = chosen[:-1] + [dict(mock)] if len(chosen) >= 1 else [dict(mock)]
+    rest = [c for c in chosen if mock is None or c["ref"] != mock["ref"]]
+    # Educational progression on days 1..N-1: history-taking before full
+    # OSCE arcs, easier before harder (relevance already decided membership).
+    rest.sort(key=lambda c: (1 if str(c.get("mode")) == "osce_full" else 0,
+                             int(c.get("difficulty", 2) or 2), str(c.get("ref"))))
+    ordered = rest + ([dict(mock)] if mock is not None else [])
+
+    out = []
+    for i, cand in enumerate(ordered[:days]):
+        day_no = i + 1
+        spec = cand.get("specialty") or "unknown"
+        is_mock = mock is not None and cand.get("ref") == mock.get("ref") and day_no == len(ordered[:days])
+        reasons = []
+        if target and spec == target:
+            reasons.append(f"matches your {str(target).replace('_', ' ')} focus")
+        elif spec in weaknesses:
+            reasons.append(f"targets your weak area ({str(spec).replace('_', ' ')})")
+        else:
+            reasons.append("breadth coverage for the exam")
+        if cand.get("kind") == "v3_family":
+            reasons.append("reviewed canonical content")
+        if is_mock:
+            reasons.append("integrated OSCE mock")
+        elif day_no <= max(1, days // 3):
+            reasons.append("foundation first")
+        title = cand.get("title") or cand.get("ref")
+        focus = cand.get("presentation") or title
+        out.append({
+            "day": day_no,
+            "case_id": cand.get("ref"),
+            "kind": cand.get("kind") or "v2",
+            "specialty": spec,
+            "mode": cand.get("mode") or ("osce_full" if is_mock else "anamnesis"),
+            "difficulty": cand.get("difficulty", 2),
+            "estimated_minutes": budget,
+            "slot_type": "core",
+            "selection_reason": f"Day {day_no}: {title} — " + "; ".join(reasons) + ".",
+            "focus_area": focus,
+            "learning_objective": f"Train {str(focus).lower()} toward {goal} readiness",
+            "title": title,
+            "presentation": cand.get("presentation") or "",
+        })
+    return out

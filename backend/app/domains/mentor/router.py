@@ -19,6 +19,7 @@ from app.domains.mentor.schemas import (
     AcceptRequest,
     CompleteCaseRequest,
     CustomizeRequest,
+    RebalanceRequest,
     StoryRequest,
 )
 from app.shared.dependencies import get_current_user
@@ -86,6 +87,31 @@ def mentor_complete_case(journey_id: str, req: CompleteCaseRequest,
     data = service.complete_case(db, user.id, journey_id,
                                  req.case_id, req.session_id, req.score)
     return ok(data)
+
+
+@router.get("/journeys/{journey_id}/mission")
+def mentor_mission(journey_id: str, user: User = Depends(get_current_user),
+                   db: Session = Depends(get_db)):
+    return ok(service.get_mission(db, user.id, journey_id))
+
+
+@router.post("/journeys/{journey_id}/rebalance")
+def mentor_rebalance(journey_id: str, req: RebalanceRequest,
+                     user: User = Depends(get_current_user),
+                     db: Session = Depends(get_db)):
+    return ok(service.rebalance_journey(db, user.id, journey_id, req.missed_days))
+
+
+@router.get("/journeys/{journey_id}/report")
+def mentor_journey_report(journey_id: str, user: User = Depends(get_current_user),
+                          db: Session = Depends(get_db)):
+    return ok(service.get_report(db, user.id, journey_id))
+
+
+@router.get("/journeys/{journey_id}/recap")
+def mentor_journey_recap(journey_id: str, user: User = Depends(get_current_user),
+                         db: Session = Depends(get_db)):
+    return ok(service.get_recap(db, user.id, journey_id))
 
 
 # ---------------------------------------------------------------------------

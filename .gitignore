@@ -50,3 +50,5 @@ Thumbs.db
 
 # Wrangler local state/cache (deploy tooling, can hold creds) — never commit
 deploy/cloudflare/.wrangler/
+.qora-credentials*
+qora-credentials.env

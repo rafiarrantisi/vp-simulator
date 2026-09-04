@@ -143,14 +143,23 @@ def test_full_journey_flow():
     assert sess["success"], sess
     sid = sess["data"]["sessionId"]
 
-    # 4. Complete first case → next unlocks
+    # 3c. Run the session UX (turn + score) so there is a judge report to
+    # ingest — FASE 10 ingests the SERVER score, never the client claim.
+    # Stub LLM → stub judge → overall 0 (deterministic test artifact).
+    client.post(f"/api/v2/sessions/{sid}/turns", json={"text": "What brings you in today?"},
+                headers=H)
+    rep = client.post(f"/api/v2/sessions/{sid}/score", json={}, headers=H).json()["data"]
+    assert rep["overall"] == 0
+
+    # 4. Complete first case → next unlocks (server score wins over client 75)
     r = client.post(f"/api/v2/mentor/journeys/{jid}/complete-case",
                     json={"case_id": first["case_id"], "session_id": sid,
                           "score": 75}, headers=H).json()
     d = r["data"]
     assert d["progress"]["completed"] == 1
     assert d["next_case"] is not None and d["next_case"]["day"] == first["day"] + 1
-    assert d["readiness"]["current"] == 75
+    assert d["ingested"]["score"] == 0 and d["ingested"]["score_source"] == "server"
+    assert d["readiness"]["current"] == 0  # unified engine over one 0-score session
 
     # 5. Journey list shows it
     r = client.get("/api/v2/mentor/journeys", headers=H).json()

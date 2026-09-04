@@ -1,0 +1,14 @@
+{
+ "state": "ready",
+ "day": 1,
+ "case_id": "fam_dengue",
+ "focus": "Dengue",
+ "expected_minutes": 45,
+ "encounters": 1,
+ "why": "Day 1: Dengue — matches your internal medicine focus; reviewed canonical content; foundation first.",
+ "cta": {
+  "case_id": "fam_dengue",
+  "action": "start",
+  "label": "Start case"
+ }
+}

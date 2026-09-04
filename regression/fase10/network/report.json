@@ -1,0 +1,13 @@
+{
+ "verdict": "completed",
+ "note": "Journey in progress (0/7 cases, readiness 0).",
+ "next_recommendation": "Finish the remaining plan days, then re-check readiness.",
+ "evidence": {
+  "sessions": 0
+ },
+ "progress": {
+  "completed": 0,
+  "total": 7,
+  "percent": 0
+ }
+}

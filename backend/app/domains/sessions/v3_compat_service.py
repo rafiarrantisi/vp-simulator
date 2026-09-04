@@ -106,6 +106,7 @@ def start(db: OrmSession, user: User, *, case_id: str, language: str) -> dict:
         v = cands[0]
         entry_point = f"presentation:{fam.id}"
         reason = f"presentation resolve: eligible={len(cands)}, seed=0"
+        pool = list(cands)
     else:
         policy = SelectionPolicy(reg)
         try:
@@ -118,6 +119,17 @@ def start(db: OrmSession, user: User, *, case_id: str, language: str) -> dict:
         v = result.variant
         entry_point = result.entry_point
         reason = result.reason
+        pool = _family_pool_ordered(reg, fam, "koas") or [v]
+
+    # FASE 10 repeat rule: same family → different eligible variant (novelty).
+    # Fresh users keep the exact deterministic default (no behavior change).
+    try:
+        recent = _recent_variant_ids(db, user.id, case_id)
+        v, swapped = _pick_novel(pool, v, recent)
+        if swapped:
+            reason = (reason or "") + "; novelty: avoided recently-seen variant"
+    except Exception:  # noqa: BLE001
+        pass
 
     constraints = PersonaConstraints(relationship="self",
                                      allow_name_generation=True,
@@ -164,6 +176,64 @@ def start(db: OrmSession, user: User, *, case_id: str, language: str) -> dict:
         "openingLine": variant_opening_line(v),
         "_contentSchema": "new",  # internal hint; V2 ignores unknown keys
     }
+
+
+def _recent_variant_ids(db: OrmSession, user_id: str, family_id: str, limit: int = 20) -> list[str]:
+    """Variant ids this user already met in the family (newest first).
+
+    FASE 10: repeats go same/related family → DIFFERENT eligible variant →
+    different persona. Persona-only repeats are never "new clinical cases".
+    """
+    try:
+        from sqlalchemy import select as _select
+        rows = db.scalars(_select(SessionRow).where(
+            SessionRow.user_id == user_id,
+            ((SessionRow.family_id == family_id) | (SessionRow.case_id == family_id)),
+            SessionRow.variant_id.isnot(None),
+        ).order_by(SessionRow.started_at.desc()).limit(limit)).all()
+        seen, out = set(), []
+        for r in rows:
+            if r.variant_id and r.variant_id not in seen:
+                seen.add(r.variant_id)
+                out.append(r.variant_id)
+        return out
+    except Exception:  # noqa: BLE001 — novelty is best-effort, never blocks start
+        return []
+
+
+def _family_pool_ordered(reg, fam, learner_stage: str = "koas") -> list:
+    """Deterministic variant pool for a disease family (level, id order)."""
+    from pipeline.case_v3.runtime import _not_stage_compatible
+    ids = list(getattr(fam, "active_variant_ids", None) or [])
+    if not ids:
+        ids = sorted(v.id for v in (getattr(reg, "variants", {}) or {}).values()
+                     if getattr(v, "family_id", None) == getattr(fam, "id", None))
+    out = []
+    for vid in ids:
+        v = (getattr(reg, "variants", {}) or {}).get(vid)
+        if v is None:
+            continue
+        try:
+            if _not_stage_compatible(v, learner_stage):
+                continue
+        except Exception:  # noqa: BLE001
+            continue
+        out.append(v)
+    try:
+        out.sort(key=lambda v: (v.variation_level.value, v.id))
+    except Exception:  # noqa: BLE001
+        out.sort(key=lambda v: getattr(v, "id", ""))
+    return out
+
+
+def _pick_novel(pool: list, default, recent: list[str]):
+    """Swap to the first pool variant the user has not recently met."""
+    if default is not None and getattr(default, "id", None) not in (recent or []):
+        return default, False
+    for v in pool:
+        if getattr(v, "id", None) not in (recent or []):
+            return v, True
+    return default, False
 
 
 def _frozen_variant(db: OrmSession, s: SessionRow) -> tuple:

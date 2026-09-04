@@ -1,0 +1,26 @@
+[
+ {
+  "day": 1,
+  "case_id": "fam_dengue",
+  "focus_area": "Dengue",
+  "learning_objective": "Train dengue toward osce readiness",
+  "estimated_minutes": 45,
+  "status": "available",
+  "score": null,
+  "slot_type": "core",
+  "selection_reason": "Day 1: Dengue — matches your internal medicine focus; reviewed canonical content; foundation first.",
+  "mandatory": false
+ },
+ {
+  "day": 2,
+  "case_id": "im_community_acquired_pneumonia_001",
+  "focus_area": "Cough and breathlessness",
+  "learning_objective": "Train cough and breathlessness toward osce readiness",
+  "estimated_minutes": 45,
+  "status": "locked",
+  "score": null,
+  "slot_type": "core",
+  "selection_reason": "Day 2: Cough and breathlessness — matches your internal medicine focus; foundation first.",
+  "mandatory": false
+ }
+]
