@@ -35,6 +35,8 @@ from app.shared.dependencies import get_current_user
 from app.shared.envelope import ok
 from app.shared.ratelimit import rate_limit
 
+from app.domains.sessions.hardening import ensure_turnable, find_duplicate_reply
+
 
 def _is_v3_compat(*, user=None, email: str | None = None) -> bool:
     """Phase B flag (§K): which user sees the V3 family library + V3 dispatch.
@@ -237,10 +239,15 @@ def v2_get_turns(session_id: str, user: User = Depends(get_current_user),
 def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_current_user),
             db: Session = Depends(get_db)):
     s = _owned(db, session_id, user)
+    ensure_turnable(s.status)
     if s.content_schema == "new":  # Phase B: V3 turn (fallback, non-stream)
         from app.domains.sessions import v3_compat_service as v3c
         return ok(v3c.turn(db, user, session_id, req.text, req.input_type))
     history = _history(db, session_id)
+    # FASE 6: duplicate-send / stream→fallback retry returns stored reply.
+    dup = find_duplicate_reply(history, req.text)
+    if dup is not None:
+        return ok({"reply": dup, "audioUrl": None, "_deduped": True})
     n = _next_turn_no(db, session_id)
     db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text, input_type=req.input_type))
     try:
@@ -269,6 +276,7 @@ def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(get_cur
     `db` is closed by the time the streaming body runs.
     """
     s = _owned(db, session_id, user)
+    ensure_turnable(s.status)
     if s.content_schema == "new":  # Phase B: V3 streaming (exact V2 contract)
         from app.domains.sessions import v3_compat_service as v3c
         return StreamingResponse(
@@ -276,6 +284,15 @@ def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(get_cur
             media_type="text/plain; charset=utf-8",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
     history = _history(db, session_id)
+    # FASE 6: duplicate-send retry on an interrupted stream replays stored text.
+    dup = find_duplicate_reply(history, req.text)
+    if dup is not None:
+        def _replay():
+            yield dup
+        return StreamingResponse(
+            _replay(),
+            media_type="text/plain; charset=utf-8",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
     n = _next_turn_no(db, session_id)
     user_id = user.id
     case_id = s.case_id
@@ -376,6 +393,7 @@ def v2_pf(session_id: str, req: V2PFReq, user: User = Depends(get_current_user),
     they examine + what they expect; the endpoint reveals the patient's findings
     for those areas only. Stateless — the notes travel with the score request."""
     s = _owned(db, session_id, user)
+    ensure_turnable(s.status)
     if s.content_schema == "new":  # Phase B: V3 physical exam (isolation rule)
         from app.domains.sessions import v3_compat_service as v3c
         return ok(v3c.pf(db, user, session_id, notes=req.notes, areas=req.areas))

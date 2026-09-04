@@ -33,6 +33,11 @@ from sqlalchemy.orm import Session as OrmSession
 
 from app.domains.auth.models import User
 from app.domains.sessions.models import SessionRow, SessionTurn
+from app.domains.sessions.hardening import (
+    ensure_turnable,
+    find_duplicate_reply,
+    general_with_vitals,
+)
 from app.domains.sessions.router import _history, _next_turn_no, _owned
 from app.domains.sessions.v3_compat_schemas import (
     default_registry, family_type, variant_opening_line,
@@ -207,8 +212,12 @@ def turn(db: OrmSession, user: User, session_id: str, text: str,
     from app.rag.engine_v3 import respond as v3_respond
     from app.domains.billing import service as billing
     s = _owned(db, session_id, user)
+    ensure_turnable(s.status)
     _, v = _frozen_variant(db, s)
     history = _history(db, session_id)
+    dup = find_duplicate_reply(history, text)
+    if dup is not None:
+        return {"reply": dup, "audioUrl": None, "_deduped": True}
     n = _next_turn_no(db, session_id)
     db.add(SessionTurn(session_id=s.id, turn_number=n, role="user",
                        content=text, input_type=input_type))
@@ -236,8 +245,14 @@ def stream_turn(db: OrmSession, user: User, session_id: str, text: str,
     from app.rag.engine_v3 import stream_respond as v3_stream
     from app.domains.billing import service as billing
     s = _owned(db, session_id, user)
+    ensure_turnable(s.status)
     _, v = _frozen_variant(db, s)
     history = _history(db, session_id)
+    dup = find_duplicate_reply(history, text)
+    if dup is not None:
+        def _replay() -> Iterator[str]:
+            yield dup
+        return _replay()
     n = _next_turn_no(db, session_id)
     user_id = user.id
     sid = s.id
@@ -281,6 +296,7 @@ def pf(db: OrmSession, user: User, session_id: str, *,
        notes: str = "", areas: list[str] | None = None) -> dict:
     """Reveal ONLY the areas the student examined (isolation rule, V2 contract)."""
     s = _owned(db, session_id, user)
+    ensure_turnable(s.status)
     _, v = _frozen_variant(db, s)
     system_findings = v.physical_exam.system_findings or {}
     # area key -> human label
@@ -295,13 +311,10 @@ def pf(db: OrmSession, user: User, session_id: str, *,
     }
     examined = [a for a in (areas or []) if a in system_findings]
     findings = {a: str(system_findings[a]) for a in examined}
-    # always expose vitals + general appearance under 'general' if available
-    if not findings and v.physical_exam.vitals:
-        vitals_txt = "; ".join(
-            f"{vt.name} {vt.value}{vt.unit.value if vt.unit else ''}"
-            for vt in v.physical_exam.vitals if vt.value is not None)
-        findings["general"] = (v.physical_exam.general_appearance or "") + (
-            (" — " + vitals_txt) if vitals_txt else "")
+    # FASE 6: canonical vitals fallback uses the single shared formatter so
+    # PF text can never diverge from the persisted variant truth.
+    if not findings and (v.physical_exam.vitals or v.physical_exam.general_appearance):
+        findings["general"] = general_with_vitals(v)
         examined = ["general"]
     return {
         "findings": findings,

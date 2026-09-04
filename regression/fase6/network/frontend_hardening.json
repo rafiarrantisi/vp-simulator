@@ -1,0 +1,10 @@
+{
+  "send_inflight_guard": true,
+  "completed_banner": true,
+  "sticky_input_safearea": true,
+  "bubble_wrapping": true,
+  "streaming_status_arialive": true,
+  "scroll_margintop": true,
+  "input_type_passthrough": true,
+  "bundle_regen": true
+}

@@ -763,6 +763,9 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
   const [timerOn, setTimerOn] = React.useState(isOsce); // OSCE auto-starts the countdown
   const [timeUp, setTimeUp] = React.useState(false);
   const [overtime, setOvertime] = React.useState(false);
+  // FASE 6 hardening: completed banner + duplicate-send guard (no redesign).
+  const [sessionStatus, setSessionStatus] = React.useState('active');
+  const sendInflightRef = React.useRef(false);
   const endRef = React.useRef(null);
   const wide = useIsWide(900);
   const isMobile = useIsMobile();
@@ -906,13 +909,15 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
   React.useEffect(() => {
     // Restore an in-flight session (hash routing: refresh keeps you in chat)
-    // or start a fresh one.
+    // or start a fresh one. FASE 6: preserve exact status so a completed
+    // session reopens as read-only instead of accepting new turns.
     if (initialSessionId) {
       qv2Fetch('/api/v2/sessions/' + initialSessionId + '/turns')
         .then(d => {
           const turns = (d && d.turns) || [];
           setMessages(turns.map(t => ({ role: t.role, text: t.content || t.text || '' })));
           if (!turns.length && d && d.opening_line) setMessages([{ role: 'patient', text: d.opening_line }]);
+          if (d && d.status) setSessionStatus(d.status);
         })
         .catch(e => setErr(String(e.message || e)));
       return;
@@ -927,8 +932,9 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
       .catch(e => setErr(String(e.message || e)));
   }, [caseSummary.id]);
 
-  // Shared-shell rule (Fase 1): 'nearest' keeps new replies in view without
-  // yanking the chat header underneath the sticky App header on load.
+  // Shared-shell rule (Fase 1) + FASE 6: 'nearest' keeps new replies in view
+  // without yanking the chat header underneath the sticky App header on load.
+  // scroll-margin on the anchor handles the sticky header offset.
   React.useEffect(() => { if (endRef.current) endRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [messages]);
 
   // Update the trailing (streaming) patient bubble in place.
@@ -942,8 +948,13 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
   async function send(textArg, source) {
       const text = (typeof textArg === 'string' ? textArg : input).trim();
-      if (!text || busy || !sessionId) return;
+      // FASE 6: harden duplicate-send (double-Enter / double-tap / mic auto-send
+      // race) + completed-session reopen. V3 engine still gets plain text only.
+      if (!text || busy || sendInflightRef.current || !sessionId) return;
+      if (sessionStatus === 'completed') { setErr('This session is already completed — open the report instead.'); return; }
       const inputType = source === 'voice' ? 'voice' : 'text';
+      sendInflightRef.current = true;
+      setErr('');
       setInput(''); setBusy(true);
       setMessages(m => m.concat([{ role: 'user', text }, { role: 'patient', text: '', streaming: true }]));
       try {
@@ -981,14 +992,19 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
       }
       patchPatient(acc.trim() || '…', false);
     } catch (e) {
-      // Fallback to the non-streaming endpoint if streaming is unavailable.
+      // FASE 6: stream interrupted (timeout/abort/offline) → non-stream retry.
+      // Backend dedupes the already-persisted user turn, so no duplicate pair.
+      // On hard failure keep the typed/voice text in the input for retry.
       try {
-        const d = await qv2Fetch('/api/v2/sessions/' + sessionId + '/turns', { method: 'POST', body: { text } });
+        const d = await qv2Fetch('/api/v2/sessions/' + sessionId + '/turns', { method: 'POST', body: { text, input_type: inputType } });
         patchPatient((d && d.reply) || '…', false);
       } catch (e2) {
-        patchPatient('(error: ' + (e2.message || e2) + ')', false);
+        patchPatient('(error: ' + (e2.message || e2) + ') — your message is kept above; tap Assess later or retry.', false);
+        setInput(text);
+        setErr(String((e2 && e2.message) || e2 || e));
       }
     }
+    sendInflightRef.current = false;
     setBusy(false);
   }
 
@@ -1029,10 +1045,13 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
   const mmss = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
 
-  // Shared-shell rule (Fase 1): on phones the page owns the scroll so the
-  // input dock + Exam/Assess CTA can never be trapped inside a fixed-height
-  // inner scroller behind the bottom tab bar. Wide screens keep the
-  // app-like inner scroll column.
+  // Shared-shell rule (Fase 1) + FASE 6 hardening: on phones the page owns the
+  // scroll so the input dock + Exam/Assess CTA can never be trapped inside a
+  // fixed-height inner scroller behind the bottom tab bar. Wide screens keep
+  // the app-like inner scroll column. Input dock is sticky with safe-area so
+  // the mobile keyboard / address-bar resize never hides it; bubbles wrap
+  // long messages; anchor has scroll-margin for the sticky header offset.
+  const isCompleted = sessionStatus === 'completed';
   const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: isMobile ? 'auto' : 'calc(100dvh - 140px)', minHeight: isMobile ? 'calc(100dvh - 260px)' : undefined } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
       React.createElement('button', { onClick: () => { _pilotEvent('abandoned', { session_id: sessionId, stage: stage }); onExit(); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Library'),
@@ -1040,29 +1059,34 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
       React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, _qv2Title(caseSummary)),
       !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
     React.createElement(QV2MediaBar, { caseId: caseSummary.id }),
-    err && React.createElement('div', { style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8 } }, err),
-    React.createElement('div', { style: { flex: 1, overflowY: isMobile ? 'visible' : 'auto', display: 'flex', flexDirection: 'column', gap: 10, padding: '8px 2px' } },
+    isCompleted && React.createElement('div', { role: 'status', style: { fontSize: 12.5, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 12, padding: '10px 14px', marginBottom: 8 } }, 'This session is completed — the conversation is read-only. Open the report via Assess.'),
+    busy && React.createElement('div', { role: 'status', 'aria-live': 'polite', style: { fontSize: 12, color: 'var(--text-3)', marginBottom: 4 } }, 'Patient is replying…'),
+    err && React.createElement('div', { role: 'alert', style: { color: 'var(--red-d)', fontSize: 12, marginBottom: 8, overflowWrap: 'break-word' } }, err),
+    React.createElement('div', { 'aria-live': 'polite', style: { flex: 1, overflowY: isMobile ? 'visible' : 'auto', display: 'flex', flexDirection: 'column', gap: 10, padding: '8px 2px' } },
       messages.map((m, i) => React.createElement('div', { key: i, className: 'af', style: {
-        alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '78%',
+        alignSelf: m.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: isMobile ? '86%' : '78%',
         padding: '10px 14px', borderRadius: 16, fontSize: 13.5, lineHeight: 1.5,
+        overflowWrap: 'break-word', wordBreak: 'break-word',
         background: m.role === 'user' ? 'var(--primary)' : 'var(--surface)',
         color: m.role === 'user' ? '#fff' : 'var(--text-1)',
         border: m.role === 'user' ? 'none' : '1px solid var(--border)', boxShadow: 'var(--sh-xs)',
       } }, m.streaming && !m.text
         ? React.createElement('span', { className: 'qv2-typing', style: { color: 'var(--text-3)' } }, '● ● ●')
         : (m.streaming ? m.text + ' ▋' : m.text))),
-      React.createElement('div', { ref: endRef })),
-    React.createElement('div', { style: { padding: '12px 0 16px', display: 'flex', flexDirection: 'column', gap: 10 } },
+      React.createElement('div', { ref: endRef, style: { scrollMarginTop: 72 } })),
+    React.createElement('div', { style: { padding: '12px 0 calc(16px + env(safe-area-inset-bottom, 0px))', display: 'flex', flexDirection: 'column', gap: 10, position: isMobile ? 'sticky' : 'static', bottom: 0, background: isMobile ? 'var(--bg, transparent)' : 'transparent', zIndex: 2 } },
       hasPhysicalExam && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', textAlign: 'center' } }, '🩺 Done with your questions? Tap ' + (isMobile ? 'Exam' : 'Exam →') + ' to perform the physical examination before assessing.'),
       React.createElement('div', { style: { display: 'flex', justifyContent: 'center' } },
-        React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t, 'voice'), disabled: busy, sessionLang: language, compact: isMobile })),
+        React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t, 'voice'), disabled: busy || isCompleted, sessionLang: language, compact: isMobile })),
       React.createElement('div', { style: { display: 'flex', gap: 8 } },
         React.createElement('input', {
           value: input, onChange: e => setInput(e.target.value),
-          onKeyDown: e => { if (e.key === 'Enter') send(); },
-          placeholder: 'Or type a question…', disabled: busy,
+          onKeyDown: e => { if (e.key === 'Enter' && !e.repeat) send(); },
+          placeholder: isCompleted ? 'Session completed — read-only' : 'Or type a question…', disabled: busy || isCompleted,
+          'aria-label': 'Type your question',
           style: { flex: 1, minWidth: 0, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' },
         }),
+        React.createElement('button', { onClick: () => send(), disabled: busy || isCompleted || !input.trim(), title: 'Send question', style: { padding: isMobile ? '0 14px' : '0 16px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 16, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: (busy || isCompleted || !input.trim()) ? 'not-allowed' : 'pointer', opacity: (busy || isCompleted || !input.trim()) ? 0.55 : 1, whiteSpace: 'nowrap' } }, '↑'),
         React.createElement('button', { onClick: () => setStage(hasPhysicalExam ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, hasPhysicalExam ? 'Exam →' : 'Assess →'))));
 
   return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 8px' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
