@@ -489,6 +489,14 @@ def score(db: OrmSession, user: User, session_id: str, *,
             report=report, content_schema="new")
     except Exception:  # noqa: BLE001 — progress must never fail scoring
         pass
+    try:  # Phase 12: judge outcome correlation (metadata only, never content)
+        from app.shared.observability import log_judge_event
+        from pipeline.clinical_contracts.versions import SCORING_VERSION
+        log_judge_event(engine="v3_compat", outcome="ok",
+                        session_id=s.id, content_schema="new",
+                        scoring_version=SCORING_VERSION)
+    except Exception:  # noqa: BLE001
+        pass
     db.commit()
     return report
 

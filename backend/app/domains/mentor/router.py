@@ -9,7 +9,7 @@
   GET  /api/v2/mentor/journeys/{id}/next-case   next available case
   POST /api/v2/mentor/journeys/{id}/complete-case  mark case completed
 """
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.database import get_db
@@ -32,8 +32,20 @@ router = APIRouter(prefix="/api/v2/mentor", tags=["mentor"])
 _ai_rl = Depends(rate_limit("ai", "rate_limit_ai"))
 
 
+def _require_mentor_enabled() -> None:
+    """Phase 12 Mentor canary kill-switch: writes 503 when disabled while
+    reads stay open, so rollback needs no frontend revert."""
+    from app.shared.feature_flags import snapshot
+    if not snapshot().get("mentor_v1_enabled", True):
+        raise HTTPException(status_code=503,
+                            detail="Mentor is temporarily disabled — please retry shortly.")
+
+
+_mentor_write = Depends(_require_mentor_enabled)
+
+
 @router.post("/story")
-def mentor_story(req: StoryRequest, _: None = _ai_rl,
+def mentor_story(req: StoryRequest, _: None = _ai_rl, _w: None = _mentor_write,
                 user: User = Depends(get_current_user),
                 db: Session = Depends(get_db)):
     data = service.create_journey(db, user.id, user.institution_id, req.story)
@@ -41,7 +53,7 @@ def mentor_story(req: StoryRequest, _: None = _ai_rl,
 
 
 @router.post("/journeys/{journey_id}/customize")
-def mentor_customize(journey_id: str, req: CustomizeRequest, _: None = _ai_rl,
+def mentor_customize(journey_id: str, req: CustomizeRequest, _: None = _ai_rl, _w: None = _mentor_write,
                      user: User = Depends(get_current_user),
                      db: Session = Depends(get_db)):
     data = service.customize_journey(db, user.id, journey_id, req.feedback)
@@ -49,7 +61,7 @@ def mentor_customize(journey_id: str, req: CustomizeRequest, _: None = _ai_rl,
 
 
 @router.post("/journeys/{journey_id}/accept")
-def mentor_accept(journey_id: str, _req: AcceptRequest | None = None,
+def mentor_accept(journey_id: str, _req: AcceptRequest | None = None, _w: None = _mentor_write,
                   user: User = Depends(get_current_user),
                   db: Session = Depends(get_db)):
     data = service.accept_journey(db, user.id, journey_id)
@@ -57,7 +69,7 @@ def mentor_accept(journey_id: str, _req: AcceptRequest | None = None,
 
 
 @router.post("/journeys/{journey_id}/abandon")
-def mentor_abandon(journey_id: str, user: User = Depends(get_current_user),
+def mentor_abandon(journey_id: str, user: User = Depends(get_current_user), _w: None = _mentor_write,
                    db: Session = Depends(get_db)):
     data = service.abandon_journey(db, user.id, journey_id)
     return ok(data)
@@ -81,7 +93,7 @@ def mentor_next_case(journey_id: str, user: User = Depends(get_current_user),
 
 
 @router.post("/journeys/{journey_id}/complete-case")
-def mentor_complete_case(journey_id: str, req: CompleteCaseRequest,
+def mentor_complete_case(journey_id: str, req: CompleteCaseRequest, _w: None = _mentor_write,
                          user: User = Depends(get_current_user),
                          db: Session = Depends(get_db)):
     data = service.complete_case(db, user.id, journey_id,
@@ -96,7 +108,7 @@ def mentor_mission(journey_id: str, user: User = Depends(get_current_user),
 
 
 @router.post("/journeys/{journey_id}/rebalance")
-def mentor_rebalance(journey_id: str, req: RebalanceRequest,
+def mentor_rebalance(journey_id: str, req: RebalanceRequest, _w: None = _mentor_write,
                      user: User = Depends(get_current_user),
                      db: Session = Depends(get_db)):
     return ok(service.rebalance_journey(db, user.id, journey_id, req.missed_days))
@@ -119,7 +131,7 @@ def mentor_journey_recap(journey_id: str, user: User = Depends(get_current_user)
 # ---------------------------------------------------------------------------
 
 @router.post("/sessions/{session_id}/autopsy")
-def mentor_autopsy_generate(session_id: str, _: None = _ai_rl,
+def mentor_autopsy_generate(session_id: str, _: None = _ai_rl, _w: None = _mentor_write,
                             user: User = Depends(get_current_user),
                             db: Session = Depends(get_db)):
     data = service.generate_autopsy_for_session(db, user.id, session_id)

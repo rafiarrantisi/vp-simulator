@@ -87,6 +87,15 @@ class Settings(BaseSettings):
     # Emails (comma-separated) that see v3_compat even when the global flag is v2
     # (handy for canary/testing without a full rollout).
     v3_compat_test_emails: str = ""
+    # ── Judge engine canary (Phase 12; FASE 7 STOP: observational only) ──
+    # v2 (default) = stable LLM judge on every scoring path. 'hybrid' names
+    # the evidence-locked experimental judge — selecting it changes NO live
+    # path until human calibration explicitly approves a cutover.
+    judge_engine: str = "v2"  # v2 | hybrid
+    # ── Mentor kill-switch (Phase 12 incremental rollout) ──
+    # False disables Mentor write-paths (503) while reads stay open, so a
+    # bad rollout rolls back without a frontend revert. Default on.
+    mentor_v1_enabled: bool = True
     rate_limit_auth: int = 20      # /api/auth/* per IP per menit
     rate_limit_ai: int = 30        # /api/ai|scoring per user per menit
     rate_limit_window_sec: int = 60

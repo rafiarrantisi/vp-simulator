@@ -141,6 +141,11 @@ window.QORA_TRANSLATIONS = {
   'common.loading': { en: 'Loading…', id: 'Memuat…' },
   'common.error': { en: 'Error', id: 'Error' },
   'common.back': { en: 'Back', id: 'Kembali' },
+  // ── Error boundary (Phase 12; GDV §12: sebut keadaan, bukan vonis) ──
+  'error.boundary_title': { en: 'This screen stumbled', id: 'Layar ini tersendat' },
+  'error.boundary_body': { en: 'Nothing you did caused this. Retry, or go back — your progress is saved.', id: 'Bukan salahmu. Coba lagi, atau kembali — progresmu tersimpan.' },
+  'error.retry': { en: 'Try again', id: 'Coba lagi' },
+  'error.back': { en: 'Go back', id: 'Kembali' },
   'common.save': { en: 'Save', id: 'Simpan' },
   'common.cancel': { en: 'Cancel', id: 'Batal' },
 

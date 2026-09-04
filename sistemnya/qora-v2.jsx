@@ -1954,7 +1954,8 @@ function QoraV2Screen() {
   } else {
     body = React.createElement(QV2Catalogue, { onPick: (c) => { setPicked(c); setReport(null); setInitialSessionId(null); setView('setup'); setHash('cases/' + c.id); }, onProgress: () => { setView('progress'); setHash('progress'); } });
   }
-  return React.createElement(React.Fragment, null, onboard ? React.createElement(QV2Onboarding, { onDone: dismiss }) : null, body);
+  return React.createElement(React.Fragment, null, onboard ? React.createElement(QV2Onboarding, { onDone: dismiss }) : null,
+    React.createElement(QoraErrorBoundary, { key: view, screen: 'cases-' + view, onBack: () => { setView('catalogue'); setHash('cases'); } }, body));
 }
 
 // ---- User profile (view + edit) ----

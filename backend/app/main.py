@@ -20,12 +20,14 @@ from app.domains.cases.router import router as cases_router
 from app.domains.eye_photos.router import router as eye_photos_router
 from app.domains.exam.router import router as exam_router
 from app.domains.mentor.router import router as mentor_router
+from app.domains.ops.router import router as ops_router
 from app.domains.scoring.router import router as scoring_router
 from app.domains.sessions.router import router as sessions_router
 from app.domains.sessions.v2_router import router as v2_router
 from app.domains.sessions.v3_router import router as v3_router
 from app.domains.users.router import router as users_router
 from app.shared.envelope import ok
+from app.shared.request_id import RequestContextMiddleware, request_id_of, stamp_response_headers
 from app.shared.security_headers import SecurityHeadersMiddleware
 
 _settings = get_settings()
@@ -105,6 +107,9 @@ async def lifespan(_app: FastAPI):
 
 app = FastAPI(title=_settings.app_name, version="0.15.0", lifespan=lifespan)
 
+# Phase 12: correlation/version headers on EVERY response (innermost, so
+# error responses built inside still pass through on the way out).
+app.add_middleware(RequestContextMiddleware)
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(
     CORSMiddleware,
@@ -114,7 +119,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_router, v2_router, v3_router, exam_router, scoring_router, ai_router, eye_photos_router, admin_router, billing_router, mentor_router, analytics_router):
+for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_router, v2_router, v3_router, exam_router, scoring_router, ai_router, eye_photos_router, admin_router, billing_router, mentor_router, analytics_router, ops_router):
     app.include_router(r)
 
 
@@ -130,6 +135,49 @@ async def _db_pool_timeout_handler(_request, _exc):
         content={"success": False, "data": None,
                  "error": "Server sibuk — coba lagi sebentar lagi."},
     )
+
+
+# Phase 12: unhandled-exception envelope — stable client contract with a
+# request ref for end-to-end tracing. Tracebacks never leave the server
+# (they go to the server log only); secret-like tokens are redacted out of
+# the echoed message. HTTPException keeps FastAPI's default shape.
+import re as _re
+
+_SECRET_PATTERNS = tuple(
+    _re.compile(p, _re.IGNORECASE)
+    for p in (r"api[_-]?key", r"apikey", r"secret", r"passwd", r"password",
+              r"bearer", r"xendit", r"midtrans")
+)
+
+
+def _sanitize_error_text(text: str, limit: int = 200) -> str:
+    try:
+        out = str(text or "")
+    except Exception:
+        out = ""
+    for rx in _SECRET_PATTERNS:
+        out = rx.sub("[redacted]", out)
+    out = " ".join(out.split())
+    return out[:limit] if len(out) > limit else out
+
+
+@app.exception_handler(Exception)
+async def _unhandled_exception_handler(request, exc: Exception):
+    ref = request_id_of(request)
+    try:
+        path = request.url.path
+    except Exception:
+        path = "?"
+    _log.exception("unhandled [%s] %s %s", ref,
+                   getattr(request, "method", "?"), path)
+    resp = JSONResponse(
+        status_code=500,
+        content={"success": False,
+                 "error": f"{type(exc).__name__}: {_sanitize_error_text(exc)}",
+                 "ref": ref},
+    )
+    stamp_response_headers(resp, request)
+    return resp
 
 
 # Eye-photo files are served by the authenticated route in

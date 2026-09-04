@@ -1,0 +1,88 @@
+# Phase 12 — minimum CI (plan §PHASE12). Isolated, offline, no secrets.
+#
+# Gates (must pass): isolated backend unit/integration tests, V3
+# compatibility contract, scoring/judge fixtures + contracts, clinical
+# pipeline unit tests, mentor/journey tests, hardening suites, frontend
+# production build, boot smoke (health + version headers).
+# Informational (never blocks): content lint/QA (known human-review debt
+# on legacy bank items — see regression/fase11 + lint output artifact).
+# Live/paid LLM + provider tests NEVER run here (explicit opt-in only:
+# QORA_LIVE_TURNS=1 / RUN_LLM_QA=1 with keys in CI secrets).
+name: qora-ci
+
+on:
+  push:
+    branches: ["feature/pivot-v4", "main"]
+  pull_request:
+
+env:
+  DATABASE_URL: sqlite:////tmp/qora_ci.db
+  LLM_API_KEY: ""
+  ENV: test
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - name: Install backend deps
+        run: pip install -r requirements.txt
+      - name: Isolated backend suite (no prod DB, stub LLM)
+        run: |
+          python -m pytest tests/test_phase_b_v3_compat.py \
+            tests/test_presentation_family_compat.py \
+            tests/test_scoring_v2.py tests/test_scoring_contract.py \
+            tests/test_evidence_pack.py tests/test_medication_contract.py \
+            tests/test_playable_bank.py tests/test_expansion_roadmap.py \
+            tests/test_mentor.py tests/test_v2_runtime.py \
+            tests/test_fase6_session_hardening.py \
+            tests/test_hybrid_judge.py \
+            tests/test_fase8_unified_progress.py \
+            tests/test_fase9_dashboard_contract.py \
+            tests/test_fase10_adaptive_mentor.py \
+            tests/test_fase11_surveillance.py \
+            tests/test_fase12_hardening.py \
+            tests/test_analytics.py -q -p no:cacheprovider
+      - name: Content lint + QA battery (informational)
+        continue-on-error: true
+        run: |
+          python tools/lint_v3.py 2>&1 | tail -n 20
+          python -m pytest tests/test_lint_case.py tests/test_step8_qa.py -q -p no:cacheprovider
+      - name: Boot smoke (health + version headers, isolated DB)
+        run: |
+          (python -m uvicorn app.main:app --port 8123 >/tmp/qora_ci_boot.log 2>&1 &) 
+          for i in $(seq 1 30); do
+            curl -fsS http://127.0.0.1:8123/health && break || sleep 4
+          done
+          curl -fsS http://127.0.0.1:8123/health
+          curl -fsSI http://127.0.0.1:8123/health | grep -i "x-request-id"
+          curl -fsS http://127.0.0.1:8123/api/ops/version
+          curl -fsS http://127.0.0.1:8123/api/ops/readiness
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: sistemnya
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: sistemnya/package.json
+      - name: Install frontend deps
+        run: npm ci
+      - name: Production build (runs legacy prebundle)
+        run: npm run build

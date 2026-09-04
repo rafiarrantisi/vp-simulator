@@ -603,7 +603,9 @@ function QMentorScreen(props) {
     return React.createElement(React.Fragment, null,
       err && React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
       React.createElement(QContinuityBanner, { pending: pending }),
-      React.createElement(QJourneyDashboard, { journey: journey, onNav: props.onNav, onAbandon: abandon, onReport: openReport }));
+      React.createElement(QoraErrorBoundary, { key: journey.id + '-' + journey.status, screen: 'mentor-journey',
+        onBack: function () { try { window.location.hash = '#/dashboard'; } catch (e) {} } },
+        React.createElement(QJourneyDashboard, { journey: journey, onNav: props.onNav, onAbandon: abandon, onReport: openReport })));
   }
   return React.createElement(React.Fragment, null,
     React.createElement(QContinuityBanner, { pending: pending }),

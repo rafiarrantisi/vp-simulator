@@ -194,7 +194,7 @@ def v2_list_sessions(limit: int = 50, user: User = Depends(get_current_user),
     return ok({"sessions": sessions, "total": len(sessions)})
 
 
-@router.post("/sessions")
+@router.post("/sessions", dependencies=[_ai_rl])
 def v2_start_session(req: V2StartReq, user: User = Depends(get_current_user),
                      db: Session = Depends(get_db)):
     # Phase B (§E/§G): a V3 family public ref dispatches into the V3 runtime,
@@ -404,7 +404,7 @@ def parse_pf_findings(case) -> dict[str, str]:
     return out
 
 
-@router.post("/sessions/{session_id}/pf")
+@router.post("/sessions/{session_id}/pf", dependencies=[_ai_rl])
 def v2_pf(session_id: str, req: V2PFReq, user: User = Depends(get_current_user),
           db: Session = Depends(get_db)):
     """Structured physical-exam step (Aug 2026): the student states which areas
@@ -490,6 +490,15 @@ def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_
     if s.ended_at is None:
         s.ended_at = datetime.now(timezone.utc)
     _record_progress(user, case, report)
+    try:  # Phase 12: judge outcome correlation (metadata only, never content)
+        from app.shared.observability import log_judge_event
+        from pipeline.clinical_contracts.versions import SCORING_VERSION
+        from app.rag.judge_v2 import is_stub as _judge_stub
+        log_judge_event(engine="v2", outcome="stub" if _judge_stub() else "ok",
+                        session_id=s.id, content_schema="legacy",
+                        scoring_version=SCORING_VERSION)
+    except Exception:
+        pass
     db.commit()
     return ok(report)  # includes answer_key for the post-session reveal
 

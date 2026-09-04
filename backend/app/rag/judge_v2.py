@@ -475,6 +475,13 @@ def evaluate_v2(case: CaseV2, transcript: list[dict], *,
                 _empty_report(resolved_mode, weights, "judge returned no parseable JSON")
         except Exception as e:  # scoring must never fail the session
             report = _empty_report(resolved_mode, weights, f"judge parse failed, valid fallback: {e}")
+            try:
+                from app.shared.observability import log_judge_event
+                from pipeline.clinical_contracts.versions import SCORING_VERSION
+                log_judge_event(engine="v2", outcome="error", session_id=None,
+                                content_schema="legacy", scoring_version=SCORING_VERSION)
+            except Exception:
+                pass
 
     report["answer_key"] = build_answer_key(case)
     return report

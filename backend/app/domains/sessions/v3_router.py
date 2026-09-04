@@ -53,7 +53,7 @@ class V3TurnReq(BaseModel):
     input_type: str | None = None
 
 
-@router.post("/sessions")
+@router.post("/sessions", dependencies=[_ai_rl])
 def v3_start(req: V3StartReq, user: User = Depends(get_current_user),
              db: Session = Depends(get_db)):
     released = None
@@ -114,7 +114,7 @@ class V3AnotherPatientReq(BaseModel):
     seed: int = 0
 
 
-@router.post("/another-patient")
+@router.post("/another-patient", dependencies=[_ai_rl])
 def v3_another_patient(req: V3AnotherPatientReq, user: User = Depends(get_current_user)):
     """Rule 5 — 'another patient with the same disease': returns a genuinely
     different ELIGIBLE clinical variant when one exists for this learner/mode/
