@@ -1,0 +1,316 @@
+id: aki_prerenal_dehyd
+family_id: fam_aki
+variation_level: presentation
+title: Prerenal AKI after volume loss
+supported_stages:
+- koas
+competency:
+  standard: SKD 2026
+  category: initial_management_and_referral
+  reference: HK.01.02/KKI/2183/2026
+  system: sistem_ginjal_saluran_kemih
+  legacy_standard: SKDI 2012
+  legacy_level: null
+  legacy_mapping_confirmed: false
+  legacy_note: ''
+identity:
+  age_years: 58
+  age_range: null
+  biological_sex: male
+  pregnancy_status: null
+  informant_type: patient
+  setting: emergency department
+  population_tags:
+  - adult
+  - older adult
+chief_complaint: Markedly reduced urination
+opening_context: 'Patient presents: markedly reduced urination (3 days)'
+duration: 3 days
+severity: moderate
+key_chronology: Onset 3 days ago; course consistent with acute kidney injury evolution
+history:
+- name: onset_chronology
+  facts:
+  - key: chief_concern
+    value: Swelling with very little urine after diarrhea
+    disclosure: spontaneous
+  - key: duration
+    value: 3 days
+    disclosure: spontaneous
+  - key: course
+    value: came on gradually then persisted
+    disclosure: direct_question
+- name: symptom_detail
+  facts:
+  - key: associated_symptoms
+    value: reports features typical of early acute kidney injury evolution
+    disclosure: direct_question
+  - key: severity_effect
+    value: mild, still functional
+    disclosure: direct_question
+  - key: prior_similar_episodes
+    value: first episode like this
+    disclosure: direct_question
+- name: background
+  facts:
+  - key: past_history
+    value: no major chronic illness disclosed unless asked
+    disclosure: direct_question
+  - key: medications_allergy
+    value: takes only what is asked about; allergy asked directly
+    disclosure: direct_question
+  - key: exposure_risk
+    value: household and exposure history available on direct question
+    disclosure: follow_up_required
+- name: ice_fife
+  facts:
+  - key: idea
+    value: worried it may be something serious
+    disclosure: direct_question
+  - key: concern
+    value: fears it will get worse without treatment
+    disclosure: follow_up_required
+  - key: expectation
+    value: hopes for a clear explanation and plan
+    disclosure: follow_up_required
+red_flags:
+- fact: Fever with flank pain and vomiting
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in acute kidney injury assessment
+  disclosure: spontaneous
+- fact: No urine for > 8 hours
+  status: absent
+  criticality: critical
+  why_matters: changes urgency and referral decision in acute kidney injury assessment
+  disclosure: direct_question
+- fact: Testicular pain of sudden onset
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in acute kidney injury assessment
+  disclosure: direct_question
+- fact: Edema with breathlessness and oliguria
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in acute kidney injury assessment
+  disclosure: direct_question
+physical_exam:
+  general_appearance: Appears generally well; focused sistem_ginjal_saluran_kemih
+    examination consistent with acute kidney injury
+  consciousness: Alert
+  vitals:
+  - name: temperature
+    value: 37.2
+    unit: C
+  - name: heart_rate
+    value: 88
+    unit: bpm
+  - name: blood_pressure
+    value: 124/80
+    unit: mmHg
+  - name: respiratory_rate
+    value: 18
+    unit: /min
+  - name: oxygen_saturation
+    value: 98
+    unit: '%'
+  system_findings:
+    focus_1: 'flank: costovertebral-angle tenderness'
+    focus_2: 'abdomen: suprapubic tenderness, bladder distension'
+    focus_3: 'general: edema, hydration, blood pressure'
+investigations:
+- name: Urinalysis
+  expected_result: result interpreted in the context of acute kidney injury; supports
+    the working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for acute kidney injury presentation
+  source: standard clinical practice
+- name: Urine culture
+  expected_result: result interpreted in the context of acute kidney injury; supports
+    the working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for acute kidney injury presentation
+  source: standard clinical practice
+- name: Serum creatinine + electrolytes
+  expected_result: result interpreted in the context of acute kidney injury; supports
+    the working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for acute kidney injury presentation
+  source: standard clinical practice
+- name: Renal ultrasound
+  expected_result: result interpreted in the context of acute kidney injury; supports
+    the working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for acute kidney injury presentation
+  source: standard clinical practice
+- name: Complete blood count
+  expected_result: result interpreted in the context of acute kidney injury; supports
+    the working diagnosis
+  appropriateness: optional
+  rationale: guideline-concordant workup step for acute kidney injury presentation
+  source: standard clinical practice
+diagnostic:
+  working_diagnosis: Acute kidney injury
+  synonyms:
+  - Acute Kidney Injury
+  - Acute kidney injury
+  differentials:
+  - name: Dehidrasi tanpa AKI
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Obstruksi urin
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Gagal jantung
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  reasoning_anchors:
+  - History, examination and first-line tests converge on acute kidney injury
+  - Red-flag screen and differentials actively considered before settling on acute
+    kidney injury
+  icd10: ''
+management:
+  stabilization: []
+  pharmacologic:
+  - ciprofloxacin (fluoroquinolone antibiotic)
+  - paracetamol (antipyretic-analgesic)
+  non_pharmacologic:
+  - Disease-specific counseling for acute kidney injury
+  - Lifestyle and trigger-avoidance advice where relevant
+  referral:
+  - Urgent referral to higher care (routine)
+  follow_up:
+  - Review response and adherence before next visit
+  - Clear return precautions explained and documented
+  education_safety_netting:
+  - Explain the likely acute kidney injury course in plain language
+  - List exact red flags that must trigger immediate return
+medications:
+- generic_name: ciprofloxacin
+  drug_class: fluoroquinolone antibiotic
+  preferred_local_agent: ciprofloxacin
+  acceptable_alternatives:
+  - cefadroxil
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+- generic_name: paracetamol
+  drug_class: antipyretic-analgesic
+  preferred_local_agent: paracetamol
+  acceptable_alternatives:
+  - ibuprofen
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: in_stock
+assessment_items:
+- text: Elicit the key history features pointing to acute kidney injury
+  importance: critical
+  group: history
+- text: Screen systematically for red flags and act on them
+  importance: critical
+  group: red_flags
+- text: Choose and interpret first-line investigations correctly
+  importance: critical
+  group: investigations
+- text: Decide referral timing and stabilize before transfer
+  importance: critical
+  group: management
+- text: Communicate the plan and safety-net clearly
+  importance: helpful
+  group: communication
+safety_critical_errors:
+- Discharging without screening red flags in a acute kidney injury presentation
+- Missing the referral window when warning signs appear
+- Giving a plan without return precautions
+blind_candidate_brief: Patient with markedly reduced urination for 3 days; cause not
+  yet established
+targeted_title: Acute kidney injury
+epidemiology:
+  evidence:
+    facts:
+      setting: Indonesian primary-care/ED plausibility; exact local figures pending
+        human
+    sources: []
+  variant_constraints:
+    age_range: null
+    biological_sex: null
+    pregnancy_status: null
+    geographic_endemicity: null
+    occupation_risk: null
+  persona_variables:
+    name: true
+    occupation_set: []
+    harmless_hobbies: []
+    verbosity: range
+    emotional_tone: range
+    cultural_context: range
+management_expectations:
+  recognize_diagnose: Recognize acute kidney injury from history, focused examination
+    and first-line tests
+  initial_management: First-line primary-care management for acute kidney injury per
+    standard practice
+  emergency_stabilization_required: false
+  referral_urgency: routine
+  referral_indication: Warning signs, deterioration, or beyond-GP scope in acute kidney
+    injury
+  do_not_miss_actions:
+  - Identify red flags in acute kidney injury presentation
+  - Reassess vitals and response after first actions
+  - Document safety-net advice given
+  source_refs:
+  - SKD 2026
+  - standard clinical practice (human source-pack pending)
+canonical_entity_id: sistem_acute-kidney-injury
+sources:
+- title: SKD 2026 — Acute kidney injury
+  authority: KKI
+  version: ''
+  year: '2026'
+  url: ''
+  kind: competency
+  tier: '0'
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: current
+  locator: Standar Kompetensi Dokter 2026; ref HK.01.02/KKI/2183/2026; entry sistem_acute-kidney-injury
+- title: Standard disease-management practice (exact PNPK/society edition to be attached
+    by human reviewer)
+  authority: standard clinical practice
+  version: ''
+  year: ''
+  url: ''
+  kind: guideline
+  tier: ''
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: pending_human
+  locator: ''
+source_governance:
+  policy: SKD 2026 primary; exact guideline edition pending human source-pack
+  version: 2026-09
+status: research_complete
+clinical_content_version: v3.1
+source_review_date: '2026-09-04'
+variant_previous_version: null

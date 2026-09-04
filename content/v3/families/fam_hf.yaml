@@ -1,0 +1,38 @@
+id: fam_hf
+family_type: disease
+title_id: Gagal Jantung
+title_en: Heart Failure
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Breathless when lying flat
+- Leg swelling with easy fatigue
+population_tags:
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit orthopnea/PND/edema triad
+- Order ECG, chest X-ray, BNP/echo pathway
+- Start decongestion + referral planning
+common_differentials:
+- PPOK eksaserbasi
+- Pneumonia
+- Anemia berat
+active_variant_ids:
+- hf_chronic_recog
+- hf_acute_decomp
+- hf_edema_workup
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_gagal-jantung
+  - sistem_gagal-jantung-akut
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_kardiovaskuler
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

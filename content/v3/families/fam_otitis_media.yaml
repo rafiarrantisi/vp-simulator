@@ -1,0 +1,41 @@
+id: fam_otitis_media
+family_type: disease
+title_id: Otitis Media
+title_en: Otitis Media
+primary_specialty: ent
+cross_specialty_tags: []
+presenting_complaints:
+- Ear pain with fever after flu
+- Muffled hearing with ear fullness
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish effusion vs acute infection
+- Apply watchful vs antibiotic pathway
+- Safety-net for mastoiditis
+common_differentials:
+- Otitis eksterna
+- Benda asing
+- Barotrauma
+active_variant_ids:
+- otitis_media_serosa
+- otitis_media_acute
+- otitis_media_recurrent
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_otitis-media-serosa
+  - sistem_otitis-media-akut
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_indera_telinga
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

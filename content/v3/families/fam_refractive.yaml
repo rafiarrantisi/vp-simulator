@@ -1,0 +1,39 @@
+id: fam_refractive
+family_type: disease
+title_id: Gangguan Refraksi Ringan
+title_en: Mild Refractive Error
+primary_specialty: ophthalmology
+cross_specialty_tags: []
+presenting_complaints:
+- Cannot see the board clearly
+- Blurry distance vision
+population_tags:
+- adolescent
+- school-age
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit distance vs near blur pattern
+- Arrange refraction pathway
+- Counsel screen habits + follow-up
+common_differentials:
+- Astigmatisme
+- Keratitis
+- Katarak dini
+active_variant_ids:
+- refractive_myopia
+- refractive_dryeye
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_miopia-ringan
+  - sistem_mata-kering
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_indera_mata
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

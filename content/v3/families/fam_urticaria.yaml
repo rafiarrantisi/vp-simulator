@@ -1,0 +1,38 @@
+id: fam_urticaria
+family_type: disease
+title_id: Urtikaria
+title_en: Urticaria
+primary_specialty: dermatology
+cross_specialty_tags: []
+presenting_complaints:
+- Itchy bumps that come and go
+- Hives moving around the body
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish acute vs chronic course
+- Start antihistamine pathway
+- Watch airway/anaphylaxis overlap
+common_differentials:
+- Anafilaksis
+- Skabies
+- Drug eruption
+active_variant_ids:
+- urticaria_acute
+- urticaria_chronic
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_urtikaria-akut
+  - sistem_urtikaria
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

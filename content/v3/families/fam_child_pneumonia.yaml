@@ -1,0 +1,39 @@
+id: fam_child_pneumonia
+family_type: disease
+title_id: Pneumonia Anak
+title_en: Childhood Pneumonia
+primary_specialty: paediatrics
+cross_specialty_tags: []
+presenting_complaints:
+- Child with fast breathing and fever
+- Child coughing with chest indrawing
+population_tags:
+- child
+- infant
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Count RR + danger signs
+- Start amoxicillin pathway + referral triage
+- Counsel immunization/nutrition
+common_differentials:
+- Bronkiolitis
+- Asma
+- TB anak
+active_variant_ids:
+- child_pneumonia_nonsevere
+- child_pneumonia_severe
+- child_pneumonia_bronchiolitis
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_bronkopneumonia
+  - sistem_bronkiolitis
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_respirasi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

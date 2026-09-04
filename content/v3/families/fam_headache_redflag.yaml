@@ -1,0 +1,37 @@
+id: fam_headache_redflag
+family_type: disease
+title_id: Sakit Kepala Tanda Bahaya
+title_en: Headache Red Flags
+primary_specialty: neurology
+cross_specialty_tags: []
+presenting_complaints:
+- Worst headache of my life
+- Thunderclap headache with vomiting
+population_tags:
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize thunderclap pattern
+- Order CT/LP pathway + urgent referral
+- Never miss subarachnoid bleed
+common_differentials:
+- Migren
+- Tension headache
+- Meningitis
+active_variant_ids:
+- headache_redflag_sah
+- headache_redflag_cluster
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_perdarahan-subarachnoid
+  - sistem_cluster-headache
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

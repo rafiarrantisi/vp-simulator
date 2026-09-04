@@ -1,0 +1,38 @@
+id: fam_poisoning
+family_type: disease
+title_id: Keracunan
+title_en: Poisoning
+primary_specialty: emergency
+cross_specialty_tags: []
+presenting_complaints:
+- Vomiting after pesticide exposure
+- Collapse after unknown ingestion
+population_tags:
+- adult
+- farmer
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Identify agent + time + amount
+- Protect airway + decontamination timing
+- Give antidote-pathway + refer to higher care
+common_differentials:
+- Gastroenteritis
+- Keracunan makanan
+- Stroke
+active_variant_ids:
+- poisoning_organophos
+- poisoning_natural_toxin
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_keracunan-insektisida
+  - sistem_keracunan-racun-alam
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

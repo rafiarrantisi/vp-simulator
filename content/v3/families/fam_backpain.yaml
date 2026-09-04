@@ -1,0 +1,38 @@
+id: fam_backpain
+family_type: disease
+title_id: Nyeri Punggung Bawah
+title_en: Low Back Pain
+primary_specialty: surgery
+cross_specialty_tags: []
+presenting_complaints:
+- Lower back pain shooting down the leg
+- Back pain with leg numbness
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Map dermatomal pattern + red flags
+- Trial conservative pathway first
+- Refer deficit/cauda equina urgently
+common_differentials:
+- Strain otot
+- Infeksi saluran kemih
+- Batu ginjal
+active_variant_ids:
+- backpain_radicular
+- backpain_redflag
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_hernia-nucleus-pulposus-hnp
+  - sistem_radicular-syndrome
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

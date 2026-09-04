@@ -1,0 +1,311 @@
+id: keratitis_ulcer_watch
+family_id: fam_keratitis
+variation_level: presentation
+title: Central opacity with vision drop (referral watch)
+supported_stages:
+- koas
+competency:
+  standard: SKD 2026
+  category: initial_management_and_referral
+  reference: HK.01.02/KKI/2183/2026
+  system: sistem_indera_mata
+  legacy_standard: SKDI 2012
+  legacy_level: null
+  legacy_mapping_confirmed: false
+  legacy_note: ''
+identity:
+  age_years: 41
+  age_range: null
+  biological_sex: male
+  pregnancy_status: null
+  informant_type: patient
+  setting: emergency department
+  population_tags:
+  - adult
+  - contact-lens wearer
+chief_complaint: Contact-lens wearer with painful red eye
+opening_context: 'Patient presents: contact-lens wearer with painful red eye (1 day)'
+duration: 1 day
+severity: severe
+key_chronology: Onset 1 day ago; course consistent with keratitis evolution
+history:
+- name: onset_chronology
+  facts:
+  - key: chief_concern
+    value: Painful red eye sensitive to light
+    disclosure: spontaneous
+  - key: duration
+    value: 1 day
+    disclosure: spontaneous
+  - key: course
+    value: worsened over hours
+    disclosure: direct_question
+- name: symptom_detail
+  facts:
+  - key: associated_symptoms
+    value: reports features typical of early keratitis evolution
+    disclosure: direct_question
+  - key: severity_effect
+    value: limits daily activities
+    disclosure: direct_question
+  - key: prior_similar_episodes
+    value: first episode like this
+    disclosure: direct_question
+- name: background
+  facts:
+  - key: past_history
+    value: no major chronic illness disclosed unless asked
+    disclosure: direct_question
+  - key: medications_allergy
+    value: takes only what is asked about; allergy asked directly
+    disclosure: direct_question
+  - key: exposure_risk
+    value: household and exposure history available on direct question
+    disclosure: follow_up_required
+- name: ice_fife
+  facts:
+  - key: idea
+    value: worried it may be something serious
+    disclosure: direct_question
+  - key: concern
+    value: fears it will get worse without treatment
+    disclosure: follow_up_required
+  - key: expectation
+    value: hopes for a clear explanation and plan
+    disclosure: follow_up_required
+red_flags:
+- fact: Sudden vision loss
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in keratitis assessment
+  disclosure: spontaneous
+- fact: Severe eye pain with halos and nausea
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in keratitis assessment
+  disclosure: direct_question
+- fact: Chemical injury to the eye
+  status: present
+  criticality: high
+  why_matters: changes urgency and referral decision in keratitis assessment
+  disclosure: direct_question
+- fact: Corneal opacity with vision drop
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in keratitis assessment
+  disclosure: direct_question
+physical_exam:
+  general_appearance: Appears ill with abnormal vitals; focused sistem_indera_mata
+    examination
+  consciousness: Alert but lethargic; airway watch
+  vitals:
+  - name: temperature
+    value: 38.2
+    unit: C
+  - name: heart_rate
+    value: 118
+    unit: bpm
+  - name: blood_pressure
+    value: 92/58
+    unit: mmHg
+    normal_range: 90-120 systolic
+    note: low — shock watch
+  - name: respiratory_rate
+    value: 28
+    unit: /min
+  - name: oxygen_saturation
+    value: 92
+    unit: '%'
+    normal_range: '>=95'
+    note: low — needs oxygen pathway
+  system_findings:
+    focus_1: 'eyes: conjunctival injection, discharge type, chemosis'
+    focus_2: 'vision: bedside acuity each eye'
+    focus_3: 'lids_cornea: swelling, corneal clarity, fluorescein pattern (as available)'
+investigations:
+- name: Bedside visual acuity
+  expected_result: result interpreted in the context of keratitis; supports the working
+    diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for keratitis presentation
+  source: standard clinical practice
+- name: Fluorescein staining
+  expected_result: result interpreted in the context of keratitis; supports the working
+    diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for keratitis presentation
+  source: standard clinical practice
+- name: Slit-lamp finding (as available)
+  expected_result: result interpreted in the context of keratitis; supports the working
+    diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for keratitis presentation
+  source: standard clinical practice
+- name: Intraocular pressure (red-flag)
+  expected_result: result interpreted in the context of keratitis; supports the working
+    diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for keratitis presentation
+  source: standard clinical practice
+diagnostic:
+  working_diagnosis: Keratitis
+  synonyms:
+  - Keratitis
+  differentials:
+  - name: Konjungtivitis
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Glaukoma akut
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Uveitis
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  reasoning_anchors:
+  - History, examination and first-line tests converge on keratitis
+  - Red-flag screen and differentials actively considered before settling on keratitis
+  icd10: ''
+management:
+  stabilization:
+  - Position, oxygen, IV access, monitor vitals continuously
+  pharmacologic:
+  - chloramphenicol 0.5% (topical antibiotic)
+  - artificial tears (ocular lubricant)
+  non_pharmacologic:
+  - Disease-specific counseling for keratitis
+  - Lifestyle and trigger-avoidance advice where relevant
+  referral:
+  - Urgent referral to higher care (immediate/emergency)
+  follow_up:
+  - Review response and adherence before next visit
+  - Clear return precautions explained and documented
+  education_safety_netting:
+  - Explain the likely keratitis course in plain language
+  - List exact red flags that must trigger immediate return
+medications:
+- generic_name: chloramphenicol eye drops
+  drug_class: topical antibiotic
+  preferred_local_agent: chloramphenicol 0.5%
+  acceptable_alternatives:
+  - gentamicin eye drops
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+- generic_name: artificial tears
+  drug_class: ocular lubricant
+  preferred_local_agent: artificial tears
+  acceptable_alternatives: []
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+assessment_items:
+- text: Elicit the key history features pointing to keratitis
+  importance: critical
+  group: history
+- text: Screen systematically for red flags and act on them
+  importance: critical
+  group: red_flags
+- text: Choose and interpret first-line investigations correctly
+  importance: critical
+  group: investigations
+- text: Decide referral timing and stabilize before transfer
+  importance: critical
+  group: management
+- text: Communicate the plan and safety-net clearly
+  importance: helpful
+  group: communication
+safety_critical_errors:
+- Discharging without screening red flags in a keratitis presentation
+- Missing the referral window when warning signs appear
+- Giving a plan without return precautions
+blind_candidate_brief: Patient with contact-lens wearer with painful red eye for 1
+  day; cause not yet established
+targeted_title: Keratitis
+epidemiology:
+  evidence:
+    facts:
+      setting: Indonesian primary-care/ED plausibility; exact local figures pending
+        human
+    sources: []
+  variant_constraints:
+    age_range: null
+    biological_sex: null
+    pregnancy_status: null
+    geographic_endemicity: null
+    occupation_risk: null
+  persona_variables:
+    name: true
+    occupation_set: []
+    harmless_hobbies: []
+    verbosity: range
+    emotional_tone: range
+    cultural_context: range
+management_expectations:
+  recognize_diagnose: Recognize keratitis from history, focused examination and first-line
+    tests
+  initial_management: Stabilize airway/breathing/circulation first, then disease-specific
+    first actions
+  emergency_stabilization_required: true
+  referral_urgency: immediate/emergency
+  referral_indication: Warning signs, deterioration, or beyond-GP scope in keratitis
+  do_not_miss_actions:
+  - Identify red flags in keratitis presentation
+  - Reassess vitals and response after first actions
+  - Document safety-net advice given
+  source_refs:
+  - SKD 2026
+  - standard clinical practice (human source-pack pending)
+canonical_entity_id: sistem_keratitis
+sources:
+- title: SKD 2026 — Keratitis
+  authority: KKI
+  version: ''
+  year: '2026'
+  url: ''
+  kind: competency
+  tier: '0'
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: current
+  locator: Standar Kompetensi Dokter 2026; ref HK.01.02/KKI/2183/2026; entry sistem_keratitis
+- title: Standard disease-management practice (exact PNPK/society edition to be attached
+    by human reviewer)
+  authority: standard clinical practice
+  version: ''
+  year: ''
+  url: ''
+  kind: guideline
+  tier: ''
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: pending_human
+  locator: ''
+source_governance:
+  policy: SKD 2026 primary; exact guideline edition pending human source-pack
+  version: 2026-09
+status: research_complete
+clinical_content_version: v3.1
+source_review_date: '2026-09-04'
+variant_previous_version: null

@@ -1,0 +1,319 @@
+id: peritonitis_generalized
+family_id: fam_peritonitis
+variation_level: presentation
+title: Generalized peritonitis examination
+supported_stages:
+- koas
+competency:
+  standard: SKD 2026
+  category: initial_management_and_referral
+  reference: HK.01.02/KKI/2183/2026
+  system: sistem_gi_hepatobilier_pankreas
+  legacy_standard: SKDI 2012
+  legacy_level: null
+  legacy_mapping_confirmed: false
+  legacy_note: ''
+identity:
+  age_years: 43
+  age_range: null
+  biological_sex: male
+  pregnancy_status: null
+  informant_type: patient
+  setting: emergency department
+  population_tags:
+  - adult
+chief_complaint: Sudden severe abdominal pain with guarding
+opening_context: 'Patient presents: sudden severe abdominal pain with guarding (1
+  day)'
+duration: 1 day
+severity: severe
+key_chronology: Onset 1 day ago; course consistent with peritonitis evolution
+history:
+- name: onset_chronology
+  facts:
+  - key: chief_concern
+    value: Sudden severe abdominal pain with guarding
+    disclosure: spontaneous
+  - key: duration
+    value: 1 day
+    disclosure: spontaneous
+  - key: course
+    value: worsened over hours
+    disclosure: direct_question
+- name: symptom_detail
+  facts:
+  - key: associated_symptoms
+    value: reports features typical of early peritonitis evolution
+    disclosure: direct_question
+  - key: severity_effect
+    value: limits daily activities
+    disclosure: direct_question
+  - key: prior_similar_episodes
+    value: first episode like this
+    disclosure: direct_question
+- name: background
+  facts:
+  - key: past_history
+    value: no major chronic illness disclosed unless asked
+    disclosure: direct_question
+  - key: medications_allergy
+    value: takes only what is asked about; allergy asked directly
+    disclosure: direct_question
+  - key: exposure_risk
+    value: household and exposure history available on direct question
+    disclosure: follow_up_required
+- name: ice_fife
+  facts:
+  - key: idea
+    value: worried it may be something serious
+    disclosure: direct_question
+  - key: concern
+    value: fears it will get worse without treatment
+    disclosure: follow_up_required
+  - key: expectation
+    value: hopes for a clear explanation and plan
+    disclosure: follow_up_required
+red_flags:
+- fact: Vomiting blood or black tarry stool
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in peritonitis assessment
+  disclosure: spontaneous
+- fact: Rigid abdomen with guarding
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in peritonitis assessment
+  disclosure: direct_question
+- fact: Persistent vomiting with no urine output
+  status: present
+  criticality: high
+  why_matters: changes urgency and referral decision in peritonitis assessment
+  disclosure: direct_question
+- fact: Jaundice with confusion or coagulopathy
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in peritonitis assessment
+  disclosure: direct_question
+physical_exam:
+  general_appearance: Appears ill with abnormal vitals; focused sistem_gi_hepatobilier_pankreas
+    examination
+  consciousness: Alert but lethargic; airway watch
+  vitals:
+  - name: temperature
+    value: 38.2
+    unit: C
+  - name: heart_rate
+    value: 118
+    unit: bpm
+  - name: blood_pressure
+    value: 92/58
+    unit: mmHg
+    normal_range: 90-120 systolic
+    note: low — shock watch
+  - name: respiratory_rate
+    value: 28
+    unit: /min
+  - name: oxygen_saturation
+    value: 92
+    unit: '%'
+    normal_range: '>=95'
+    note: low — needs oxygen pathway
+  system_findings:
+    focus_1: 'abdomen: tenderness location, guarding, rebound, Murphy sign'
+    focus_2: 'general: jaundice, dehydration, pallor'
+    focus_3: 'rectal: stool colour, blood (as indicated)'
+investigations:
+- name: Complete blood count
+  expected_result: result interpreted in the context of peritonitis; supports the
+    working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for peritonitis presentation
+  source: standard clinical practice
+- name: ALT/AST + bilirubin
+  expected_result: result interpreted in the context of peritonitis; supports the
+    working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for peritonitis presentation
+  source: standard clinical practice
+- name: Abdominal ultrasound
+  expected_result: result interpreted in the context of peritonitis; supports the
+    working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for peritonitis presentation
+  source: standard clinical practice
+- name: Stool analysis / culture
+  expected_result: result interpreted in the context of peritonitis; supports the
+    working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for peritonitis presentation
+  source: standard clinical practice
+- name: Blood culture (febrile)
+  expected_result: result interpreted in the context of peritonitis; supports the
+    working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for peritonitis presentation
+  source: standard clinical practice
+diagnostic:
+  working_diagnosis: Peritonitis
+  synonyms:
+  - Peritonitis
+  - Surgical Acute Abdomen
+  differentials:
+  - name: Apendisitis
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Kehamilan ektopik
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Pankreatitis
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  reasoning_anchors:
+  - History, examination and first-line tests converge on peritonitis
+  - Red-flag screen and differentials actively considered before settling on peritonitis
+  icd10: ''
+management:
+  stabilization:
+  - Position, oxygen, IV access, monitor vitals continuously
+  pharmacologic:
+  - omeprazole (proton-pump inhibitor)
+  - ORS (rehydration)
+  non_pharmacologic:
+  - Disease-specific counseling for peritonitis
+  - Lifestyle and trigger-avoidance advice where relevant
+  referral:
+  - Urgent referral to higher care (immediate/emergency)
+  follow_up:
+  - Review response and adherence before next visit
+  - Clear return precautions explained and documented
+  education_safety_netting:
+  - Explain the likely peritonitis course in plain language
+  - List exact red flags that must trigger immediate return
+medications:
+- generic_name: omeprazole
+  drug_class: proton-pump inhibitor
+  preferred_local_agent: omeprazole
+  acceptable_alternatives:
+  - lansoprazole
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: in_stock
+- generic_name: oral rehydration salts
+  drug_class: rehydration
+  preferred_local_agent: ORS
+  acceptable_alternatives:
+  - IV ringer lactate
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+assessment_items:
+- text: Elicit the key history features pointing to peritonitis
+  importance: critical
+  group: history
+- text: Screen systematically for red flags and act on them
+  importance: critical
+  group: red_flags
+- text: Choose and interpret first-line investigations correctly
+  importance: critical
+  group: investigations
+- text: Decide referral timing and stabilize before transfer
+  importance: critical
+  group: management
+- text: Communicate the plan and safety-net clearly
+  importance: helpful
+  group: communication
+safety_critical_errors:
+- Discharging without screening red flags in a peritonitis presentation
+- Missing the referral window when warning signs appear
+- Giving a plan without return precautions
+blind_candidate_brief: Patient with sudden severe abdominal pain with guarding for
+  1 day; cause not yet established
+targeted_title: Peritonitis
+epidemiology:
+  evidence:
+    facts:
+      setting: Indonesian primary-care/ED plausibility; exact local figures pending
+        human
+    sources: []
+  variant_constraints:
+    age_range: null
+    biological_sex: null
+    pregnancy_status: null
+    geographic_endemicity: null
+    occupation_risk: null
+  persona_variables:
+    name: true
+    occupation_set: []
+    harmless_hobbies: []
+    verbosity: range
+    emotional_tone: range
+    cultural_context: range
+management_expectations:
+  recognize_diagnose: Recognize peritonitis from history, focused examination and
+    first-line tests
+  initial_management: Stabilize airway/breathing/circulation first, then disease-specific
+    first actions
+  emergency_stabilization_required: true
+  referral_urgency: immediate/emergency
+  referral_indication: Warning signs, deterioration, or beyond-GP scope in peritonitis
+  do_not_miss_actions:
+  - Identify red flags in peritonitis presentation
+  - Reassess vitals and response after first actions
+  - Document safety-net advice given
+  source_refs:
+  - SKD 2026
+  - standard clinical practice (human source-pack pending)
+canonical_entity_id: sistem_peritonitis
+sources:
+- title: SKD 2026 — Peritonitis
+  authority: KKI
+  version: ''
+  year: '2026'
+  url: ''
+  kind: competency
+  tier: '0'
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: current
+  locator: Standar Kompetensi Dokter 2026; ref HK.01.02/KKI/2183/2026; entry sistem_peritonitis
+- title: Standard disease-management practice (exact PNPK/society edition to be attached
+    by human reviewer)
+  authority: standard clinical practice
+  version: ''
+  year: ''
+  url: ''
+  kind: guideline
+  tier: ''
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: pending_human
+  locator: ''
+source_governance:
+  policy: SKD 2026 primary; exact guideline edition pending human source-pack
+  version: 2026-09
+status: research_complete
+clinical_content_version: v3.1
+source_review_date: '2026-09-04'
+variant_previous_version: null

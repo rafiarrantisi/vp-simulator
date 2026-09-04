@@ -1,0 +1,40 @@
+id: fam_htn_crisis
+family_type: disease
+title_id: Krisis Hipertensi
+title_en: Hypertensive Crisis
+primary_specialty: emergency
+cross_specialty_tags:
+- internal_medicine
+presenting_complaints:
+- Very high blood pressure with headache
+- High pressure with chest discomfort
+population_tags:
+- middle-aged
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish urgency vs emergency (organ damage)
+- Lower pressure in a controlled pathway
+- Refer emergencies immediately
+common_differentials:
+- Hipertensi derajat 2 stabil
+- Stroke
+- Sindrom koroner akut
+active_variant_ids:
+- htn_crisis_urgency
+- htn_crisis_emergency_neuro
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_krisis-hipertensi
+  - sistem_ensefalopati-hipertensi
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_kardiovaskuler
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

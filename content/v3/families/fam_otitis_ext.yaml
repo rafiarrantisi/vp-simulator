@@ -1,0 +1,38 @@
+id: fam_otitis_ext
+family_type: disease
+title_id: Otitis Eksterna
+title_en: Otitis Externa
+primary_specialty: ent
+cross_specialty_tags: []
+presenting_complaints:
+- Itchy painful ear after swimming
+- Ear pain when touching the ear
+population_tags:
+- adolescent
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit water/trauma history + tragal tenderness
+- Start topical pathway + dry-ear counseling
+- Refer malignant-pattern cases
+common_differentials:
+- Otitis media
+- Benda asing telinga
+- Furunkel
+active_variant_ids:
+- otitis_ext_swimmer
+- otitis_ext_diabetic_watch
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_otitis-eksterna
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_indera_telinga
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

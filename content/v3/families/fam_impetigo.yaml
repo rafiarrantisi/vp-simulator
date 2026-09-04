@@ -1,0 +1,38 @@
+id: fam_impetigo
+family_type: disease
+title_id: Impetigo
+title_en: Impetigo
+primary_specialty: dermatology
+cross_specialty_tags: []
+presenting_complaints:
+- Honey-colored crusts around mouth
+- Sores that spread by scratching
+population_tags:
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize golden crusts
+- Start topical/systemic pathway by extent
+- Hygiene + school exclusion counseling
+common_differentials:
+- Herpes simpleks
+- Varisela
+- Dermatitis kontak
+active_variant_ids:
+- impetigo_localized
+- impetigo_widespread
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_impetigo
+  - sistem_ektima
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

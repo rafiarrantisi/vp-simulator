@@ -1,0 +1,39 @@
+id: fam_rhinitis
+family_type: disease
+title_id: Rhinitis Alergi
+title_en: Allergic Rhinitis
+primary_specialty: ent
+cross_specialty_tags: []
+presenting_complaints:
+- Sneezing fits with itchy nose and eyes
+- Runny nose every dusty morning
+population_tags:
+- adolescent
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit trigger + seasonality pattern
+- Start intranasal steroid + antihistamine pathway
+- Counsel avoidance + asthma overlap
+common_differentials:
+- Rhinitis akut
+- Sinusitis
+- Benda asing hidung
+active_variant_ids:
+- rhinitis_seasonal
+- rhinitis_persistent
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_rhinitis-alergika
+  - sistem_rhinitis-vasomotor
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_indera_hidung
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

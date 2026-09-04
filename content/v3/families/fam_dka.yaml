@@ -1,0 +1,39 @@
+id: fam_dka
+family_type: disease
+title_id: Ketoasidosis Diabetikum
+title_en: Diabetic Ketoacidosis
+primary_specialty: emergency
+cross_specialty_tags: []
+presenting_complaints:
+- Rapid breathing with fruity-smelling breath
+- Vomiting with deep fast breathing in diabetes
+population_tags:
+- adult
+- young adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Link polyuria + Kussmaul + ketones
+- Order glucose/ketone/ABG/electrolytes
+- Start fluids + insulin protocol + find precipitant
+common_differentials:
+- Hiperglikemia hiperosmolar
+- Asidosis laktat
+- Gastroenteritis
+active_variant_ids:
+- dka_typical
+- dka_severe
+- dka_hhs_elderly
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_ketoasidosis-diabetikum
+  - sistem_hiperglikemia-hiperosmolar-non-ketotik
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_endokrin_metabolik_nutrisi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

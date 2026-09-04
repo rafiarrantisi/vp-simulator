@@ -1,0 +1,38 @@
+id: fam_hernia
+family_type: disease
+title_id: Hernia
+title_en: Hernia
+primary_specialty: surgery
+cross_specialty_tags: []
+presenting_complaints:
+- Lump in the groin when straining
+- Painful groin lump that will not go back
+population_tags:
+- adult
+- older adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Test reducibility + cough impulse
+- Distinguish simple vs strangulated
+- Refer strangulation immediately
+common_differentials:
+- Limfadenitis
+- Hidrokel
+- Abses
+active_variant_ids:
+- hernia_reducible
+- hernia_strangulated
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_hernia-strangulata-inkarserata
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

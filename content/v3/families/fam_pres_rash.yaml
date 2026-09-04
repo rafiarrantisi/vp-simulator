@@ -1,0 +1,34 @@
+id: fam_pres_rash
+family_type: presentation
+title_id: Ruam
+title_en: Rash
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Skin rash
+- Itchy rash with fever
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Describe morphology + distribution
+- Link drugs/exposures/household spread
+- Detect blistering/erythroderma emergencies
+common_differentials: []
+active_variant_ids:
+- measles_uncomplicated
+- chickenpox_typical
+- drug_eruption_morbilliform
+- scabies_household
+- atopic_child_flexural
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

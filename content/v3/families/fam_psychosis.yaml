@@ -1,0 +1,37 @@
+id: fam_psychosis
+family_type: disease
+title_id: Psikosis
+title_en: Psychosis
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Family says patient talks to unseen voices
+- Hearing voices commenting on actions
+population_tags:
+- young adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit positive/negative/disorganization features
+- Exclude substances/medical causes
+- Arrange safe urgent psychiatric referral
+common_differentials:
+- Skizofrenia
+- Gangguan bipolar
+- Intoksikasi zat
+active_variant_ids:
+- psychosis_first_episode
+- psychosis_schizophrenia
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_gangguan-psikotik
+  - psikiatri_skizofrenia
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

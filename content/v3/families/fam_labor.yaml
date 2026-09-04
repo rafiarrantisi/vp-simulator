@@ -1,0 +1,37 @@
+id: fam_labor
+family_type: disease
+title_id: Persalinan Lama
+title_en: Prolonged Labour
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Contractions for many hours without progress
+- Labour not advancing
+population_tags:
+- woman in labour
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Plot partograph thinking
+- Detect CPD/malpresentation/obstruction
+- Refer before rupture/sepsis
+common_differentials:
+- Persalinan normal
+- Disproporsi kepala panggul
+- Gawat janin
+active_variant_ids:
+- labor_prolonged
+- labor_arrest
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_partus-lama
+  - sistem_partus-tak-maju
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

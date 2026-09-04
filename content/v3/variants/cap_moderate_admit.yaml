@@ -1,0 +1,327 @@
+id: cap_moderate_admit
+family_id: fam_cap
+variation_level: presentation
+title: CAP with hypoxemia needing admission workup
+supported_stages:
+- koas
+competency:
+  standard: SKD 2026
+  category: initial_management_and_referral
+  reference: HK.01.02/KKI/2183/2026
+  system: sistem_respirasi
+  legacy_standard: SKDI 2012
+  legacy_level: null
+  legacy_mapping_confirmed: false
+  legacy_note: ''
+identity:
+  age_years: 64
+  age_range: null
+  biological_sex: male
+  pregnancy_status: null
+  informant_type: patient
+  setting: emergency department
+  population_tags:
+  - adult
+  - older adult
+chief_complaint: Cough with fever and breathlessness
+opening_context: 'Patient presents: cough with fever and breathlessness (5 days)'
+duration: 5 days
+severity: moderate-severe
+key_chronology: Onset 5 days ago; course consistent with community-acquired pneumonia
+  (cap) evolution
+history:
+- name: onset_chronology
+  facts:
+  - key: chief_concern
+    value: Chest pain when coughing
+    disclosure: spontaneous
+  - key: duration
+    value: 5 days
+    disclosure: spontaneous
+  - key: course
+    value: worsened over hours
+    disclosure: direct_question
+- name: symptom_detail
+  facts:
+  - key: associated_symptoms
+    value: reports features typical of early community-acquired pneumonia (cap) evolution
+    disclosure: direct_question
+  - key: severity_effect
+    value: limits daily activities
+    disclosure: direct_question
+  - key: prior_similar_episodes
+    value: first episode like this
+    disclosure: direct_question
+- name: background
+  facts:
+  - key: past_history
+    value: no major chronic illness disclosed unless asked
+    disclosure: direct_question
+  - key: medications_allergy
+    value: takes only what is asked about; allergy asked directly
+    disclosure: direct_question
+  - key: exposure_risk
+    value: household and exposure history available on direct question
+    disclosure: follow_up_required
+- name: ice_fife
+  facts:
+  - key: idea
+    value: worried it may be something serious
+    disclosure: direct_question
+  - key: concern
+    value: fears it will get worse without treatment
+    disclosure: follow_up_required
+  - key: expectation
+    value: hopes for a clear explanation and plan
+    disclosure: follow_up_required
+red_flags:
+- fact: Respiratory rate >= 30/min with hypoxemia
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in community-acquired pneumonia
+    (cap) assessment
+  disclosure: spontaneous
+- fact: Stridor or silent chest
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in community-acquired pneumonia
+    (cap) assessment
+  disclosure: direct_question
+- fact: Hemoptysis with weight loss
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in community-acquired pneumonia
+    (cap) assessment
+  disclosure: direct_question
+- fact: Chest pain with breathlessness
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in community-acquired pneumonia
+    (cap) assessment
+  disclosure: direct_question
+physical_exam:
+  general_appearance: Appears generally well; focused sistem_respirasi examination
+    consistent with community-acquired pneumonia (cap)
+  consciousness: Alert
+  vitals:
+  - name: temperature
+    value: 38.0
+    unit: C
+  - name: heart_rate
+    value: 104
+    unit: bpm
+  - name: blood_pressure
+    value: 128/82
+    unit: mmHg
+  - name: respiratory_rate
+    value: 22
+    unit: /min
+  - name: oxygen_saturation
+    value: 96
+    unit: '%'
+  system_findings:
+    focus_1: 'lungs: breath sounds, added sounds, respiratory effort'
+    focus_2: 'nose_throat: nasal discharge, pharyngeal erythema, tonsils'
+    focus_3: 'general: use of accessory muscles, cyanosis'
+investigations:
+- name: Chest X-ray
+  expected_result: findings supporting community-acquired pneumonia (cap) workup;
+    no contradictory alternative pattern
+  appropriateness: essential
+  rationale: guideline-concordant workup step for community-acquired pneumonia (cap)
+    presentation
+  source: standard clinical practice
+- name: Pulse oximetry
+  expected_result: within acceptable range at triage
+  appropriateness: essential
+  rationale: guideline-concordant workup step for community-acquired pneumonia (cap)
+    presentation
+  source: standard clinical practice
+- name: Sputum molecular test / AFB smear
+  expected_result: result interpreted in the context of community-acquired pneumonia
+    (cap); supports the working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for community-acquired pneumonia (cap)
+    presentation
+  source: standard clinical practice
+- name: Complete blood count
+  expected_result: result interpreted in the context of community-acquired pneumonia
+    (cap); supports the working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for community-acquired pneumonia (cap)
+    presentation
+  source: standard clinical practice
+- name: CRP
+  expected_result: result interpreted in the context of community-acquired pneumonia
+    (cap); supports the working diagnosis
+  appropriateness: optional
+  rationale: guideline-concordant workup step for community-acquired pneumonia (cap)
+    presentation
+  source: standard clinical practice
+diagnostic:
+  working_diagnosis: Community-Acquired Pneumonia (CAP)
+  synonyms:
+  - Community-Acquired Pneumonia
+  - Community-Acquired Pneumonia (CAP)
+  differentials:
+  - name: Bronkitis akut
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: TB paru
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Gagal jantung
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  reasoning_anchors:
+  - History, examination and first-line tests converge on community-acquired pneumonia
+    (cap)
+  - Red-flag screen and differentials actively considered before settling on community-acquired
+    pneumonia (cap)
+  icd10: ''
+management:
+  stabilization: []
+  pharmacologic:
+  - amoxicillin (beta-lactam antibiotic)
+  - salbutamol inhaler (short-acting bronchodilator)
+  non_pharmacologic:
+  - Disease-specific counseling for community-acquired pneumonia (cap)
+  - Lifestyle and trigger-avoidance advice where relevant
+  referral:
+  - Urgent referral to higher care (urgent (<24h))
+  follow_up:
+  - Review response and adherence before next visit
+  - Clear return precautions explained and documented
+  education_safety_netting:
+  - Explain the likely community-acquired pneumonia (cap) course in plain language
+  - List exact red flags that must trigger immediate return
+medications:
+- generic_name: amoxicillin
+  drug_class: beta-lactam antibiotic
+  preferred_local_agent: amoxicillin
+  acceptable_alternatives:
+  - amoxicillin-clavulanate
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: in_stock
+- generic_name: salbutamol
+  drug_class: short-acting bronchodilator
+  preferred_local_agent: salbutamol inhaler
+  acceptable_alternatives:
+  - budesonide-formoterol
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+assessment_items:
+- text: Elicit the key history features pointing to community-acquired pneumonia (cap)
+  importance: critical
+  group: history
+- text: Screen systematically for red flags and act on them
+  importance: critical
+  group: red_flags
+- text: Choose and interpret first-line investigations correctly
+  importance: critical
+  group: investigations
+- text: Decide referral timing and stabilize before transfer
+  importance: critical
+  group: management
+- text: Communicate the plan and safety-net clearly
+  importance: helpful
+  group: communication
+safety_critical_errors:
+- Discharging without screening red flags in a community-acquired pneumonia (cap)
+  presentation
+- Missing the referral window when warning signs appear
+- Giving a plan without return precautions
+blind_candidate_brief: Patient with cough with fever and breathlessness for 5 days;
+  cause not yet established
+targeted_title: Community-Acquired Pneumonia (CAP)
+epidemiology:
+  evidence:
+    facts:
+      setting: Indonesian primary-care/ED plausibility; exact local figures pending
+        human
+    sources: []
+  variant_constraints:
+    age_range: null
+    biological_sex: null
+    pregnancy_status: null
+    geographic_endemicity: null
+    occupation_risk: null
+  persona_variables:
+    name: true
+    occupation_set: []
+    harmless_hobbies: []
+    verbosity: range
+    emotional_tone: range
+    cultural_context: range
+management_expectations:
+  recognize_diagnose: Recognize community-acquired pneumonia (cap) from history, focused
+    examination and first-line tests
+  initial_management: First-line primary-care management for community-acquired pneumonia
+    (cap) per standard practice
+  emergency_stabilization_required: false
+  referral_urgency: urgent (<24h)
+  referral_indication: Warning signs, deterioration, or beyond-GP scope in community-acquired
+    pneumonia (cap)
+  do_not_miss_actions:
+  - Identify red flags in community-acquired pneumonia (cap) presentation
+  - Reassess vitals and response after first actions
+  - Document safety-net advice given
+  source_refs:
+  - SKD 2026
+  - standard clinical practice (human source-pack pending)
+canonical_entity_id: sistem_community-acquired-pneumonia-cap
+sources:
+- title: SKD 2026 — Community-Acquired Pneumonia (CAP)
+  authority: KKI
+  version: ''
+  year: '2026'
+  url: ''
+  kind: competency
+  tier: '0'
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: current
+  locator: Standar Kompetensi Dokter 2026; ref HK.01.02/KKI/2183/2026; entry sistem_community-acquired-pneumonia-cap
+- title: Standard disease-management practice (exact PNPK/society edition to be attached
+    by human reviewer)
+  authority: standard clinical practice
+  version: ''
+  year: ''
+  url: ''
+  kind: guideline
+  tier: ''
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: pending_human
+  locator: ''
+source_governance:
+  policy: SKD 2026 primary; exact guideline edition pending human source-pack
+  version: 2026-09
+status: research_complete
+clinical_content_version: v3.1
+source_review_date: '2026-09-04'
+variant_previous_version: null

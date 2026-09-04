@@ -1,0 +1,41 @@
+id: fam_gerd
+family_type: disease
+title_id: Refluks Gastroesofagus
+title_en: Gastroesophageal Reflux
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Burning chest sensation after meals
+- Sour taste rising to throat
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish reflux from cardiac chest pain
+- Apply lifestyle + PPI step-up
+- Know when to refer for endoscopy
+common_differentials:
+- Sindrom koroner akut
+- Gastritis
+- Angina
+active_variant_ids:
+- gerd_typical
+- gerd_chronic_relapse
+- gerd_chestpain_ruleout
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_refluks-gastroesofagus
+  - sistem_sindrom-koroner-akut
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  - sistem_kardiovaskuler
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

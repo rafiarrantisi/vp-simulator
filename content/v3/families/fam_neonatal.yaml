@@ -1,0 +1,36 @@
+id: fam_neonatal
+family_type: disease
+title_id: Bayi dengan Tanda Bahaya
+title_en: Neonate with Danger Signs
+primary_specialty: paediatrics
+cross_specialty_tags: []
+presenting_complaints:
+- Newborn refusing to feed
+- Baby unusually sleepy with fever
+population_tags:
+- neonate
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Check neonatal danger signs fast
+- Keep warm + glucose + urgent referral
+- Counsel mother on warning signs
+common_differentials:
+- Sepsis neonatorum
+- Ikterus
+- Asfiksia
+active_variant_ids:
+- neonatal_sepsis_like
+- neonatal_seizure_like
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_kejang-pada-neonatus
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

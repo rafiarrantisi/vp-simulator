@@ -1,0 +1,40 @@
+id: fam_worms
+family_type: disease
+title_id: Cacingan
+title_en: Intestinal Worms
+primary_specialty: paediatrics
+cross_specialty_tags:
+- internal_medicine
+presenting_complaints:
+- Child with itchy bottom at night
+- Worms seen in stool
+population_tags:
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit hygiene + household pattern
+- Give single-dose deworming + family counseling
+- Screen for anemia/malnutrition
+common_differentials:
+- Dermatitis perianal
+- Gastroenteritis
+- Alergi
+active_variant_ids:
+- worms_pinworm
+- worms_ascariasis
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_oxyuriasis
+  - sistem_askariasis
+  - sistem_penyakit-cacingan
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

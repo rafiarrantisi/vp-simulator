@@ -1,0 +1,37 @@
+id: fam_ocd
+family_type: disease
+title_id: OCD Ringan
+title_en: Mild OCD
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Must wash hands many times
+- Intrusive thoughts with rituals
+population_tags:
+- young adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Map obsessions vs compulsions + time cost
+- Start ERP basics + SSRI pathway
+- Refer severe/psychotic-feature cases
+common_differentials:
+- Gangguan ansietas
+- Depresi
+- Psikosis
+active_variant_ids:
+- ocd_mild_washing
+- ocd_severe_time
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_obsessive-compulsive-disorder-ocd-ringan
+  - psikiatri_obsessive-compulsive-disorder-ocd-berat
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

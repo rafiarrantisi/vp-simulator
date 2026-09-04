@@ -1,0 +1,36 @@
+id: fam_ectopic
+family_type: disease
+title_id: Kehamilan Ektopik
+title_en: Ectopic Pregnancy
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Lower abdominal pain with missed period
+- Vaginal spotting with faintness
+population_tags:
+- woman of reproductive age
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Link amenorrhea + pain + bleeding
+- Order pregnancy test + ultrasound pathway
+- Resuscitate ruptured cases + urgent referral
+common_differentials:
+- Abortus
+- Apendisitis
+- Ruptur kista ovarium
+active_variant_ids:
+- ectopic_stable_workup
+- ectopic_ruptured
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_kehamilan-ektopik-terganggu
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

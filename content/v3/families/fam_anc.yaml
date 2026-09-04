@@ -1,0 +1,40 @@
+id: fam_anc
+family_type: disease
+title_id: Asuhan Antenatal
+title_en: Antenatal Care
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Routine pregnancy check-up
+- Pregnant with mild complaints
+population_tags:
+- pregnant woman
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Take focused ANC history
+- Track fundal height/BP/urine protein
+- Give iron/folate + birth planning
+common_differentials:
+- Anemia kehamilan
+- Hipertensi gestasional
+- Infeksi saluran kemih
+active_variant_ids:
+- anc_routine
+- anc_anemia_preg
+- anc_normal_counsel
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_antenatal-care-terpadu-berdasarkan-buku-kia
+  - sistem_kehamilan-normal
+  - sistem_anemia-defisiensi-besi-pada-kehamilan
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

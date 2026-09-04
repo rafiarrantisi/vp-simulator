@@ -1,0 +1,33 @@
+id: fam_pres_joint
+family_type: presentation
+title_id: Nyeri Sendi
+title_en: Joint Pain
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Painful swollen joint
+- Joint pain
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Separate mono vs poly patterns
+- Treat hot joint as emergency until proven otherwise
+- Plan gout vs OA long-term care
+common_differentials: []
+active_variant_ids:
+- gout_acute_podagra
+- oa_early
+- septic_joint_knee
+- gout_recurrent_hyperu
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

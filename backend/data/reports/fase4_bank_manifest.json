@@ -1,0 +1,2142 @@
+{
+ "version": "1.0",
+ "generated_at": "2026-09-04",
+ "generator": "generate_playable_bank.py (deterministic, offline, no LLM)",
+ "families_written": 108,
+ "variants_written": 252,
+ "family_ids": [
+  "fam_abortion",
+  "fam_abscess",
+  "fam_acne",
+  "fam_acs",
+  "fam_aki",
+  "fam_alcohol",
+  "fam_anaphylaxis",
+  "fam_anc",
+  "fam_anemia",
+  "fam_anxiety",
+  "fam_appendicitis",
+  "fam_asthma",
+  "fam_atopic",
+  "fam_aub",
+  "fam_backpain",
+  "fam_bells",
+  "fam_burns",
+  "fam_cap",
+  "fam_carpal",
+  "fam_cellulitis",
+  "fam_chickenpox",
+  "fam_child_diarrhea",
+  "fam_child_pneumonia",
+  "fam_cholecystitis",
+  "fam_coma",
+  "fam_conjunctivitis",
+  "fam_contact_derm",
+  "fam_copd",
+  "fam_corneal",
+  "fam_croup",
+  "fam_depression",
+  "fam_diab_neuro",
+  "fam_discharge",
+  "fam_dka",
+  "fam_dm2",
+  "fam_drug_eruption",
+  "fam_ectopic",
+  "fam_epistaxis",
+  "fam_fb_ent",
+  "fam_febrile_seizure",
+  "fam_gastritis",
+  "fam_gastroenteritis",
+  "fam_gerd",
+  "fam_gi_bleed",
+  "fam_glaucoma",
+  "fam_gout",
+  "fam_hdp",
+  "fam_headache_redflag",
+  "fam_hearing",
+  "fam_hemorrhoid",
+  "fam_hepatitis",
+  "fam_hernia",
+  "fam_hf",
+  "fam_hordeolum",
+  "fam_htn_crisis",
+  "fam_hyperemesis",
+  "fam_hypoglycemia",
+  "fam_impetigo",
+  "fam_insomnia",
+  "fam_intussusception",
+  "fam_kb",
+  "fam_keratitis",
+  "fam_labor",
+  "fam_malaria",
+  "fam_malnutrition",
+  "fam_mastitis",
+  "fam_measles",
+  "fam_meningitis",
+  "fam_migraine",
+  "fam_neonatal",
+  "fam_oa",
+  "fam_obstruction",
+  "fam_ocd",
+  "fam_osteomyelitis",
+  "fam_otitis_ext",
+  "fam_otitis_media",
+  "fam_peritonitis",
+  "fam_pertussis",
+  "fam_pharyngitis",
+  "fam_poisoning",
+  "fam_pph",
+  "fam_prom",
+  "fam_psoriasis",
+  "fam_psychosis",
+  "fam_ptsd",
+  "fam_refractive",
+  "fam_rhinitis",
+  "fam_scabies",
+  "fam_seizure_emg",
+  "fam_septic_joint",
+  "fam_shock",
+  "fam_sinusitis",
+  "fam_somatic",
+  "fam_sprain",
+  "fam_status_asthma",
+  "fam_stroke",
+  "fam_suicide",
+  "fam_tb",
+  "fam_tension_headache",
+  "fam_thyroid",
+  "fam_tinea",
+  "fam_trauma",
+  "fam_typhoid",
+  "fam_urticaria",
+  "fam_vertigo",
+  "fam_worms",
+  "fam_wound",
+  "fam_zoster"
+ ],
+ "rows": [
+  {
+   "family": "fam_dm2",
+   "variant": "dm2_new_uncomplicated",
+   "category": "tuntas",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_dm2",
+   "variant": "dm2_uncontrolled_comorb",
+   "category": "tuntas",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_dm2",
+   "variant": "dm2_hypo_on_therapy",
+   "category": "tuntas",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gastritis",
+   "variant": "gastritis_acute_nsaid",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gastritis",
+   "variant": "gastritis_recurrent",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gastritis",
+   "variant": "gastritis_alarm_refer",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gerd",
+   "variant": "gerd_typical",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gerd",
+   "variant": "gerd_chronic_relapse",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gerd",
+   "variant": "gerd_chestpain_ruleout",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_typhoid",
+   "variant": "typhoid_uncomplicated",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_typhoid",
+   "variant": "typhoid_prolonged",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_typhoid",
+   "variant": "typhoid_complicated",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gastroenteritis",
+   "variant": "gastroenteritis_watery_mild",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gastroenteritis",
+   "variant": "gastroenteritis_moderate_dehyd",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gastroenteritis",
+   "variant": "gastroenteritis_dysentery",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anemia",
+   "variant": "anemia_ida_woman",
+   "category": "tuntas",
+   "system": "sistem_hemato_imunologi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anemia",
+   "variant": "anemia_b12_elderly",
+   "category": "tuntas",
+   "system": "sistem_hemato_imunologi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anemia",
+   "variant": "anemia_severe_sympt",
+   "category": "tuntas",
+   "system": "sistem_hemato_imunologi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_cap",
+   "variant": "cap_moderate_admit",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_cap",
+   "variant": "cap_severe",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_cap",
+   "variant": "cap_vs_bronchitis",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tb",
+   "variant": "tb_new_typical",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tb",
+   "variant": "tb_dm_comorb",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tb",
+   "variant": "tb_latent_contact",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_asthma",
+   "variant": "asthma_intermittent",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_asthma",
+   "variant": "asthma_persistent",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_asthma",
+   "variant": "asthma_exacerbation",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_copd",
+   "variant": "copd_stable",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_copd",
+   "variant": "copd_exacerbation",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_copd",
+   "variant": "copd_severe_hypox",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gout",
+   "variant": "gout_acute_podagra",
+   "category": "tuntas",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gout",
+   "variant": "gout_recurrent_hyperu",
+   "category": "tuntas",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gout",
+   "variant": "gout_ckd_comorb",
+   "category": "tuntas",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hf",
+   "variant": "hf_chronic_recog",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hf",
+   "variant": "hf_acute_decomp",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hf",
+   "variant": "hf_edema_workup",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_aki",
+   "variant": "aki_prerenal_dehyd",
+   "category": "initial_management_and_referral",
+   "system": "sistem_ginjal_saluran_kemih",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_aki",
+   "variant": "aki_hyperkalemia",
+   "category": "initial_management_and_referral",
+   "system": "sistem_ginjal_saluran_kemih",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hepatitis",
+   "variant": "hepatitis_typical",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hepatitis",
+   "variant": "hepatitis_cholestatic",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_thyroid",
+   "variant": "thyroid_hyper_shared",
+   "category": "tuntas",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_thyroid",
+   "variant": "thyroid_goiter_euthy",
+   "category": "tuntas",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_thyroid",
+   "variant": "thyroid_storm_warning",
+   "category": "initial_management_and_referral",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_malaria",
+   "variant": "malaria_uncomplicated",
+   "category": "tuntas",
+   "system": "sistem_hemato_imunologi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_malaria",
+   "variant": "malaria_traveler",
+   "category": "tuntas",
+   "system": "sistem_hemato_imunologi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anaphylaxis",
+   "variant": "anaphylaxis_typical_food",
+   "category": "tuntas",
+   "system": "sistem_hemato_imunologi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anaphylaxis",
+   "variant": "anaphylaxis_drug_biphasic",
+   "category": "tuntas",
+   "system": "sistem_hemato_imunologi",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anaphylaxis",
+   "variant": "anaphylaxis_angioedema",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "internal_medicine",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_acs",
+   "variant": "acs_typical_stemi",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_acs",
+   "variant": "acs_atypical_elderly",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_acs",
+   "variant": "acs_unstable",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_stroke",
+   "variant": "stroke_acute_window",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_stroke",
+   "variant": "stroke_delayed",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_stroke",
+   "variant": "stroke_tia_warning",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_shock",
+   "variant": "shock_septic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_shock",
+   "variant": "shock_hypovolemic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_shock",
+   "variant": "shock_cardiogenic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_dka",
+   "variant": "dka_typical",
+   "category": "initial_management_and_referral",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_dka",
+   "variant": "dka_severe",
+   "category": "initial_management_and_referral",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_dka",
+   "variant": "dka_hhs_elderly",
+   "category": "initial_management_and_referral",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hypoglycemia",
+   "variant": "hypoglycemia_typical",
+   "category": "initial_management_and_referral",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hypoglycemia",
+   "variant": "hypoglycemia_sulfonylurea",
+   "category": "initial_management_and_referral",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_seizure_emg",
+   "variant": "seizure_emg_first_fit",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_seizure_emg",
+   "variant": "seizure_emg_status",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_poisoning",
+   "variant": "poisoning_organophos",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_poisoning",
+   "variant": "poisoning_natural_toxin",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gi_bleed",
+   "variant": "gi_bleed_upper_stable",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_gi_bleed",
+   "variant": "gi_bleed_unstable",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_status_asthma",
+   "variant": "status_asthma_severe",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_status_asthma",
+   "variant": "status_asthma_nearfatal",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_trauma",
+   "variant": "trauma_closed_fx",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_trauma",
+   "variant": "trauma_open_wound",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_trauma",
+   "variant": "trauma_neurovasc",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_burns",
+   "variant": "burns_first_degree",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_burns",
+   "variant": "burns_partial_major",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_burns",
+   "variant": "burns_full_thickness",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_coma",
+   "variant": "coma_metabolic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_coma",
+   "variant": "coma_deep_coma",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_htn_crisis",
+   "variant": "htn_crisis_urgency",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kardiovaskuler",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_htn_crisis",
+   "variant": "htn_crisis_emergency_neuro",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "emergency",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_child_diarrhea",
+   "variant": "child_diarrhea_no_dehyd",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_child_diarrhea",
+   "variant": "child_diarrhea_some_dehyd",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_child_diarrhea",
+   "variant": "child_diarrhea_severe_dehyd",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_child_pneumonia",
+   "variant": "child_pneumonia_nonsevere",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_child_pneumonia",
+   "variant": "child_pneumonia_severe",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_child_pneumonia",
+   "variant": "child_pneumonia_bronchiolitis",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_febrile_seizure",
+   "variant": "febrile_seizure_simple",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_febrile_seizure",
+   "variant": "febrile_seizure_complex",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_malnutrition",
+   "variant": "malnutrition_moderate",
+   "category": "tuntas",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_malnutrition",
+   "variant": "malnutrition_severe_edema",
+   "category": "tuntas",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_croup",
+   "variant": "croup_mild",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_croup",
+   "variant": "croup_moderate",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_measles",
+   "variant": "measles_uncomplicated",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_measles",
+   "variant": "measles_complicated",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_chickenpox",
+   "variant": "chickenpox_typical",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_chickenpox",
+   "variant": "chickenpox_superinfected",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_neonatal",
+   "variant": "neonatal_sepsis_like",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_neonatal",
+   "variant": "neonatal_seizure_like",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_pertussis",
+   "variant": "pertussis_typical",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_pertussis",
+   "variant": "pertussis_infant_apnea",
+   "category": "tuntas",
+   "system": "sistem_respirasi",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_worms",
+   "variant": "worms_pinworm",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_worms",
+   "variant": "worms_ascariasis",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "paediatrics",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anc",
+   "variant": "anc_routine",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anc",
+   "variant": "anc_anemia_preg",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anc",
+   "variant": "anc_normal_counsel",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hyperemesis",
+   "variant": "hyperemesis_mild",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hyperemesis",
+   "variant": "hyperemesis_severe",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hdp",
+   "variant": "hdp_gest_htn",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hdp",
+   "variant": "hdp_severe_features",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hdp",
+   "variant": "hdp_hellp",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_ectopic",
+   "variant": "ectopic_stable_workup",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_ectopic",
+   "variant": "ectopic_ruptured",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_pph",
+   "variant": "pph_atony",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_pph",
+   "variant": "pph_retained",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_prom",
+   "variant": "prom_term_prom",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_prom",
+   "variant": "prom_preterm_threat",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_abortion",
+   "variant": "abortion_threatened",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_abortion",
+   "variant": "abortion_incomplete",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_abortion",
+   "variant": "abortion_imminent",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_discharge",
+   "variant": "discharge_candida",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_discharge",
+   "variant": "discharge_bv",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_discharge",
+   "variant": "discharge_cervicitis",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_aub",
+   "variant": "aub_heavy_stable",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_aub",
+   "variant": "aub_severe_anemic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_kb",
+   "variant": "kb_postpartum_choice",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_kb",
+   "variant": "kb_side_effects",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_mastitis",
+   "variant": "mastitis_early",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_mastitis",
+   "variant": "mastitis_abscess_watch",
+   "category": "tuntas",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_labor",
+   "variant": "labor_prolonged",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_labor",
+   "variant": "labor_arrest",
+   "category": "initial_management_and_referral",
+   "system": "sistem_reproduksi",
+   "specialty": "obstetrics_gynaecology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tension_headache",
+   "variant": "tension_headache_episodic",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tension_headache",
+   "variant": "tension_headache_chronic_stress",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tension_headache",
+   "variant": "tension_headache_vs_migraine",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_migraine",
+   "variant": "migraine_without_aura",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_migraine",
+   "variant": "migraine_frequent",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_bells",
+   "variant": "bells_typical",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_bells",
+   "variant": "bells_stroke_mimic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_meningitis",
+   "variant": "meningitis_bacterial",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_meningitis",
+   "variant": "meningitis_early_subtle",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_vertigo",
+   "variant": "vertigo_bppv",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_vertigo",
+   "variant": "vertigo_neuritis",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_carpal",
+   "variant": "carpal_mild",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_carpal",
+   "variant": "carpal_severe_motor",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_diab_neuro",
+   "variant": "diab_neuro_sensory",
+   "category": "tuntas",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_diab_neuro",
+   "variant": "diab_neuro_foot_risk",
+   "category": "initial_management_and_referral",
+   "system": "sistem_endokrin_metabolik_nutrisi",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_headache_redflag",
+   "variant": "headache_redflag_sah",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_headache_redflag",
+   "variant": "headache_redflag_cluster",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "neurology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_depression",
+   "variant": "depression_mild",
+   "category": "tuntas",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_depression",
+   "variant": "depression_moderate_somatic",
+   "category": "tuntas",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_depression",
+   "variant": "depression_severe_refer",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anxiety",
+   "variant": "anxiety_gad_mild",
+   "category": "tuntas",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_anxiety",
+   "variant": "anxiety_panic_attacks",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_insomnia",
+   "variant": "insomnia_primary",
+   "category": "tuntas",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_insomnia",
+   "variant": "insomnia_comorbid_mood",
+   "category": "tuntas",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_psychosis",
+   "variant": "psychosis_first_episode",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_psychosis",
+   "variant": "psychosis_schizophrenia",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_suicide",
+   "variant": "suicide_ideation",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_suicide",
+   "variant": "suicide_selfharm",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_alcohol",
+   "variant": "alcohol_withdrawal",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_alcohol",
+   "variant": "alcohol_intoxication",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_alcohol",
+   "variant": "alcohol_nicotine",
+   "category": "tuntas",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_ptsd",
+   "variant": "ptsd_ptsd",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_ptsd",
+   "variant": "ptsd_acute_stress",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_ptsd",
+   "variant": "ptsd_adjustment",
+   "category": "tuntas",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_ocd",
+   "variant": "ocd_mild_washing",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_ocd",
+   "variant": "ocd_severe_time",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_somatic",
+   "variant": "somatic_somatization",
+   "category": "initial_management_and_referral",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_somatic",
+   "variant": "somatic_health_worry",
+   "category": "tuntas",
+   "system": "psikiatri",
+   "specialty": "psychiatry",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_appendicitis",
+   "variant": "appendicitis_typical",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_appendicitis",
+   "variant": "appendicitis_atypical_woman",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_appendicitis",
+   "variant": "appendicitis_mass_abscess",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hernia",
+   "variant": "hernia_reducible",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hernia",
+   "variant": "hernia_strangulated",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_abscess",
+   "variant": "abscess_furuncle",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_abscess",
+   "variant": "abscess_carbuncle_dm",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_abscess",
+   "variant": "abscess_perianal",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_cellulitis",
+   "variant": "cellulitis_limb_typical",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_cellulitis",
+   "variant": "cellulitis_erysipelas",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_cellulitis",
+   "variant": "cellulitis_toxic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hemorrhoid",
+   "variant": "hemorrhoid_low_grade",
+   "category": "tuntas",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hemorrhoid",
+   "variant": "hemorrhoid_high_grade",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_cholecystitis",
+   "variant": "cholecystitis_acute",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_cholecystitis",
+   "variant": "cholecystitis_biliary_colic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_peritonitis",
+   "variant": "peritonitis_generalized",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_peritonitis",
+   "variant": "peritonitis_perforation",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_obstruction",
+   "variant": "obstruction_mechanical",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_obstruction",
+   "variant": "obstruction_adhesive",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_wound",
+   "variant": "wound_clean_lac",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_wound",
+   "variant": "wound_infected",
+   "category": "tuntas",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_intussusception",
+   "variant": "intussusception_typical",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_intussusception",
+   "variant": "intussusception_early",
+   "category": "initial_management_and_referral",
+   "system": "sistem_gi_hepatobilier_pankreas",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_backpain",
+   "variant": "backpain_radicular",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_backpain",
+   "variant": "backpain_redflag",
+   "category": "initial_management_and_referral",
+   "system": "sistem_saraf",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_sprain",
+   "variant": "sprain_ankle_mild",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_sprain",
+   "variant": "sprain_knee_lig",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_oa",
+   "variant": "oa_early",
+   "category": "tuntas",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_oa",
+   "variant": "oa_advanced",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_septic_joint",
+   "variant": "septic_joint_knee",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_septic_joint",
+   "variant": "septic_joint_febrile_child",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_osteomyelitis",
+   "variant": "osteomyelitis_hematogenous",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_osteomyelitis",
+   "variant": "osteomyelitis_diabetic_foot",
+   "category": "initial_management_and_referral",
+   "system": "sistem_muskuloskeletal",
+   "specialty": "surgery",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_atopic",
+   "variant": "atopic_child_flexural",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_atopic",
+   "variant": "atopic_adult_chronic",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_contact_derm",
+   "variant": "contact_derm_irritant",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_contact_derm",
+   "variant": "contact_derm_allergic",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tinea",
+   "variant": "tinea_corporis",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tinea",
+   "variant": "tinea_cruris",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_tinea",
+   "variant": "tinea_capitis",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_scabies",
+   "variant": "scabies_household",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_scabies",
+   "variant": "scabies_superinfected",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_impetigo",
+   "variant": "impetigo_localized",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_impetigo",
+   "variant": "impetigo_widespread",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_urticaria",
+   "variant": "urticaria_acute",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_urticaria",
+   "variant": "urticaria_chronic",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_acne",
+   "variant": "acne_mild_comedonal",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_acne",
+   "variant": "acne_inflammatory",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_psoriasis",
+   "variant": "psoriasis_mild_plaque",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_psoriasis",
+   "variant": "psoriasis_extensive_refer",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_zoster",
+   "variant": "zoster_uncomplicated",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_zoster",
+   "variant": "zoster_ophthalmic_watch",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_drug_eruption",
+   "variant": "drug_eruption_morbilliform",
+   "category": "tuntas",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_drug_eruption",
+   "variant": "drug_eruption_sjs_warning",
+   "category": "initial_management_and_referral",
+   "system": "sistem_kulit_integumen",
+   "specialty": "dermatology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_otitis_ext",
+   "variant": "otitis_ext_swimmer",
+   "category": "tuntas",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_otitis_ext",
+   "variant": "otitis_ext_diabetic_watch",
+   "category": "tuntas",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_otitis_media",
+   "variant": "otitis_media_serosa",
+   "category": "tuntas",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_otitis_media",
+   "variant": "otitis_media_acute",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_otitis_media",
+   "variant": "otitis_media_recurrent",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_sinusitis",
+   "variant": "sinusitis_viral_like",
+   "category": "tuntas",
+   "system": "sistem_indera_hidung",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_sinusitis",
+   "variant": "sinusitis_bacterial",
+   "category": "tuntas",
+   "system": "sistem_indera_hidung",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_rhinitis",
+   "variant": "rhinitis_seasonal",
+   "category": "tuntas",
+   "system": "sistem_indera_hidung",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_rhinitis",
+   "variant": "rhinitis_persistent",
+   "category": "tuntas",
+   "system": "sistem_indera_hidung",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_epistaxis",
+   "variant": "epistaxis_anterior_mild",
+   "category": "tuntas",
+   "system": "sistem_indera_hidung",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_epistaxis",
+   "variant": "epistaxis_recurrent_adult",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_pharyngitis",
+   "variant": "pharyngitis_viral",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_pharyngitis",
+   "variant": "pharyngitis_strep_like",
+   "category": "initial_management_and_referral",
+   "system": "sistem_respirasi",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_fb_ent",
+   "variant": "fb_ent_nasal",
+   "category": "tuntas",
+   "system": "sistem_indera_hidung",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_fb_ent",
+   "variant": "fb_ent_aural",
+   "category": "tuntas",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hearing",
+   "variant": "hearing_wax",
+   "category": "tuntas",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hearing",
+   "variant": "hearing_presbycusis",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_telinga",
+   "specialty": "ent",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_conjunctivitis",
+   "variant": "conjunctivitis_bacterial",
+   "category": "tuntas",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_conjunctivitis",
+   "variant": "conjunctivitis_viral",
+   "category": "tuntas",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_conjunctivitis",
+   "variant": "conjunctivitis_allergic",
+   "category": "tuntas",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hordeolum",
+   "variant": "hordeolum_stye",
+   "category": "tuntas",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_hordeolum",
+   "variant": "hordeolum_blepharitis",
+   "category": "tuntas",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_refractive",
+   "variant": "refractive_myopia",
+   "category": "tuntas",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_refractive",
+   "variant": "refractive_dryeye",
+   "category": "tuntas",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_glaucoma",
+   "variant": "glaucoma_acute_attack",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_glaucoma",
+   "variant": "glaucoma_subacute",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_corneal",
+   "variant": "corneal_abrasion",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_corneal",
+   "variant": "corneal_fb",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_keratitis",
+   "variant": "keratitis_lens_related",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  },
+  {
+   "family": "fam_keratitis",
+   "variant": "keratitis_ulcer_watch",
+   "category": "initial_management_and_referral",
+   "system": "sistem_indera_mata",
+   "specialty": "ophthalmology",
+   "status": "research_complete"
+  }
+ ],
+ "honesty": {
+  "status_families": "in_review (awaiting human review)",
+  "status_variants": "research_complete (capped, human gate beyond)",
+  "urls_invented": 0,
+  "categories": "read from exact SKD 2026 anchor entries",
+  "legacy_skd": "not mapped (no inference)"
+ }
+}

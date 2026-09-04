@@ -1,0 +1,42 @@
+id: fam_trauma
+family_type: disease
+title_id: Trauma Ekstremitas dan Luka
+title_en: Limb Trauma and Wounds
+primary_specialty: emergency
+cross_specialty_tags:
+- surgery
+presenting_complaints:
+- Swollen deformed arm after a fall
+- Deep cut with heavy bleeding
+population_tags:
+- adult
+- young adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Check neurovascular status distal to injury
+- Control bleeding + tetanus + analgesia
+- Splint and refer for definitive fixation
+common_differentials:
+- Sprain
+- Dislokasi
+- Kontusio tanpa fraktur
+active_variant_ids:
+- trauma_closed_fx
+- trauma_open_wound
+- trauma_neurovasc
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_fraktur-terbuka-tertutup
+  - sistem_vulnus-laceratum-punctum
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  - sistem_muskuloskeletal
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

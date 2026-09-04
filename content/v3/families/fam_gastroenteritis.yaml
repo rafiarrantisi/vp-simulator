@@ -1,0 +1,40 @@
+id: fam_gastroenteritis
+family_type: disease
+title_id: Gastroenteritis Akut
+title_en: Acute Gastroenteritis
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Watery diarrhea and vomiting
+- Diarrhea since yesterday
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Assess dehydration grade
+- Choose ORS vs IV fluids
+- Recognize dysentery needing antibiotics
+common_differentials:
+- Disentri basiler
+- Keracunan makanan
+- Demam tifoid
+active_variant_ids:
+- gastroenteritis_watery_mild
+- gastroenteritis_moderate_dehyd
+- gastroenteritis_dysentery
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_gastroenteritis-termasuk-kolera-giardiasis
+  - sistem_disentri-basiler-amuba
+  - sistem_keracunan-makanan
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

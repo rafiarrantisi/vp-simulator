@@ -1,0 +1,39 @@
+id: fam_zoster
+family_type: disease
+title_id: Herpes Zoster
+title_en: Herpes Zoster
+primary_specialty: dermatology
+cross_specialty_tags: []
+presenting_complaints:
+- Painful blister band on one side
+- Burning rash in a stripe
+population_tags:
+- adult
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize dermatomal pattern
+- Start antivirals within window
+- Watch eye involvement + neuralgia
+common_differentials:
+- Herpes simpleks
+- Selulitis
+- Kontak dermatitis
+active_variant_ids:
+- zoster_uncomplicated
+- zoster_ophthalmic_watch
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_herpes-zoster-tanpa-komplikasi
+  - sistem_herpes-zoster
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

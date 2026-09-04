@@ -1,0 +1,41 @@
+id: fam_vertigo
+family_type: disease
+title_id: Vertigo Posinal
+title_en: Positional Vertigo
+primary_specialty: neurology
+cross_specialty_tags:
+- ent
+presenting_complaints:
+- Spinning dizziness when turning in bed
+- Brief spinning when looking up
+population_tags:
+- adult
+- older adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Apply Dix-Hallpike thinking
+- Distinguish BPPV vs vestibular neuritis vs stroke
+- Teach repositioning + safety
+common_differentials:
+- Neuritis vestibularis
+- Stroke posterior
+- Meniere
+active_variant_ids:
+- vertigo_bppv
+- vertigo_neuritis
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_vertigo-benign-paroxysmal-positional-vertigo
+  - sistem_neuritis-vestibularis
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

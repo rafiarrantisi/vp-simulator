@@ -1,0 +1,40 @@
+id: fam_anxiety
+family_type: disease
+title_id: Kecemasan Ringan
+title_en: Mild Anxiety
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Constant worrying I cannot control
+- Heart racing with worry
+population_tags:
+- adult
+- young adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish anxiety from cardiac/thyroid mimics
+- Teach breathing + thought-record basics
+- Know SSRI/referral thresholds
+common_differentials:
+- Hipertiroid
+- Gangguan panik
+- Depresi
+active_variant_ids:
+- anxiety_gad_mild
+- anxiety_panic_attacks
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_gangguan-kecemasan-ringan
+  - psikiatri_gangguan-panik
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

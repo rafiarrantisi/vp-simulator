@@ -1,0 +1,35 @@
+id: fam_pres_dyspnea
+family_type: presentation
+title_id: Sesak Napas
+title_en: Shortness of Breath
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Shortness of breath
+- Difficulty breathing
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Grade severity with vitals/SpO2
+- Separate cardiac vs respiratory vs anaphylaxis patterns
+- Stabilize and refer severe cases
+common_differentials: []
+active_variant_ids:
+- cap_moderate_admit
+- copd_exacerbation
+- asthma_exacerbation
+- hf_acute_decomp
+- status_asthma_severe
+- anaphylaxis_typical_food
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

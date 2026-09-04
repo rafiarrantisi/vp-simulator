@@ -1,0 +1,39 @@
+id: fam_obstruction
+family_type: disease
+title_id: Ileus Obstruksi
+title_en: Bowel Obstruction
+primary_specialty: surgery
+cross_specialty_tags: []
+presenting_complaints:
+- Crampy belly pain with vomiting, no wind
+- Bloated belly, cannot pass stool or gas
+population_tags:
+- adult
+- older adult
+- postoperative
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit colic + obstipation + distension
+- Order X-ray + NGT/fluids pathway
+- Refer strangulation/complete cases urgently
+common_differentials:
+- Ileus paralitik
+- Konstipasi
+- Peritonitis
+active_variant_ids:
+- obstruction_mechanical
+- obstruction_adhesive
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_ileus-obstruksi
+  - sistem_ileus-paralitik
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

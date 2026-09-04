@@ -1,0 +1,33 @@
+id: fam_pres_headache
+family_type: presentation
+title_id: Sakit Kepala
+title_en: Headache
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Headache
+- Severe headache
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Screen headache red flags first
+- Distinguish primary vs secondary patterns
+- Refer thunderclap/meningitis patterns emergently
+common_differentials: []
+active_variant_ids:
+- tension_headache_episodic
+- migraine_without_aura
+- meningitis_early_subtle
+- htn_crisis_urgency
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

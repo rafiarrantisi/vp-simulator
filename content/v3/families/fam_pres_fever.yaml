@@ -1,0 +1,35 @@
+id: fam_pres_fever
+family_type: presentation
+title_id: Demam
+title_en: Fever
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Fever
+- Prolonged fever
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Map fever pattern + exposures
+- Choose first-line tests per pattern
+- Detect warning signs needing admission
+common_differentials: []
+active_variant_ids:
+- typhoid_uncomplicated
+- malaria_uncomplicated
+- dengue_001_mild
+- uti_adult_002
+- measles_uncomplicated
+- typhoid_prolonged
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

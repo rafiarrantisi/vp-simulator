@@ -1,0 +1,38 @@
+id: fam_chickenpox
+family_type: disease
+title_id: Varisela
+title_en: Chickenpox
+primary_specialty: paediatrics
+cross_specialty_tags: []
+presenting_complaints:
+- Itchy blister rash all over
+- Fever with crops of blisters
+population_tags:
+- child
+- school-age
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Stage the lesions
+- Give symptomatic care + isolation advice
+- Spot bacterial superinfection
+common_differentials:
+- Impetigo
+- Skabies
+- Gigitan serangga
+active_variant_ids:
+- chickenpox_typical
+- chickenpox_superinfected
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_varisela
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

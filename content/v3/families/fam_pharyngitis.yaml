@@ -1,0 +1,39 @@
+id: fam_pharyngitis
+family_type: disease
+title_id: Faringitis dan Tonsilitis
+title_en: Pharyngitis and Tonsillitis
+primary_specialty: ent
+cross_specialty_tags: []
+presenting_complaints:
+- Very sore throat with fever
+- Pain swallowing with swollen neck glands
+population_tags:
+- adolescent
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Apply fever/centor-style reasoning
+- Distinguish viral vs strep pattern
+- Reserve antibiotics + watch abscess
+common_differentials:
+- Mononukleosis
+- Difteria
+- GERD
+active_variant_ids:
+- pharyngitis_viral
+- pharyngitis_strep_like
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_faringitis
+  - sistem_tonsilitis-36
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_respirasi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,38 @@
+id: fam_hepatitis
+family_type: disease
+title_id: Hepatitis A
+title_en: Hepatitis A
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Yellow eyes with nausea
+- Dark urine and upper abdominal ache
+population_tags:
+- adolescent
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit exposure + prodrome history
+- Interpret ALT/bilirubin pattern
+- Give supportive care + hygiene counseling
+common_differentials:
+- Kolesistitis
+- Leptospirosis
+- Demam tifoid
+active_variant_ids:
+- hepatitis_typical
+- hepatitis_cholestatic
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_hepatitis-a-37
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

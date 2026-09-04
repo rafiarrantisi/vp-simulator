@@ -1,0 +1,34 @@
+id: fam_pres_red_eye
+family_type: presentation
+title_id: Mata Merah
+title_en: Red Eye
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Red eye
+- Painful red eye
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Separate benign vs sight-threatening red eye
+- Check vision/pain/halos triad
+- Refer keratitis/glaucoma patterns same-day
+common_differentials: []
+active_variant_ids:
+- conjunctivitis_bacterial
+- conjunctivitis_viral
+- conjunctivitis_allergic
+- keratitis_lens_related
+- glaucoma_subacute
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

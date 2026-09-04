@@ -1,0 +1,40 @@
+id: fam_measles
+family_type: disease
+title_id: Campak
+title_en: Measles
+primary_specialty: paediatrics
+cross_specialty_tags: []
+presenting_complaints:
+- Fever with red rash spreading down
+- Cough-red eyes-rash triad
+population_tags:
+- child
+- unvaccinated
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit vaccine + contact history
+- Give vitamin A + supportive care
+- Detect pneumonia/eye complications
+common_differentials:
+- Rubela
+- Varisela
+- Drug eruption
+active_variant_ids:
+- measles_uncomplicated
+- measles_complicated
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_morbili-campak-tanpa-komplikasi
+  - sistem_morbili-campak
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

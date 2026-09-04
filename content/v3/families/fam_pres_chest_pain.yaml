@@ -1,0 +1,34 @@
+id: fam_pres_chest_pain
+family_type: presentation
+title_id: Nyeri Dada
+title_en: Chest Pain
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Chest pain
+- Chest pressure
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Triage cardiac vs non-cardiac chest pain
+- Apply ECG/troponin pathway thinking
+- Refer ACS-pattern cases without delay
+common_differentials: []
+active_variant_ids:
+- acs_typical_stemi
+- acs_atypical_elderly
+- gerd_chestpain_ruleout
+- hf_edema_workup
+- hf_chronic_recog
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

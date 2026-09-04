@@ -1,0 +1,39 @@
+id: fam_child_diarrhea
+family_type: disease
+title_id: Diare Akut Anak
+title_en: Acute Childhood Diarrhea
+primary_specialty: paediatrics
+cross_specialty_tags: []
+presenting_complaints:
+- Child with frequent watery stools
+- Child vomiting with diarrhea
+population_tags:
+- child
+- toddler
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Grade dehydration in children
+- Give ORS/zinc counseling
+- Spot red flags needing admission
+common_differentials:
+- Disentri
+- Intususepsi
+- Infeksi saluran kemih
+active_variant_ids:
+- child_diarrhea_no_dehyd
+- child_diarrhea_some_dehyd
+- child_diarrhea_severe_dehyd
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_gastroenteritis-termasuk-kolera-giardiasis
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

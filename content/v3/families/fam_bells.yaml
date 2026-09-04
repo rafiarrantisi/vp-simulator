@@ -1,0 +1,39 @@
+id: fam_bells
+family_type: disease
+title_id: Bell Palsy
+title_en: Bell's Palsy
+primary_specialty: neurology
+cross_specialty_tags: []
+presenting_complaints:
+- One side of the face suddenly droopy
+- Cannot close one eye, mouth pulled aside
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish peripheral vs central facial weakness
+- Start steroids + eye protection early
+- Refer stroke mimics fast
+common_differentials:
+- Stroke
+- Otitis media complications
+- Tumor
+active_variant_ids:
+- bells_typical
+- bells_stroke_mimic
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_bell-s-palsy
+  - sistem_infark-serebral
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,309 @@
+id: tinea_cruris
+family_id: fam_tinea
+variation_level: presentation
+title: Tinea cruris in the groin
+supported_stages:
+- preclinical
+- koas
+competency:
+  standard: SKD 2026
+  category: tuntas
+  reference: HK.01.02/KKI/2183/2026
+  system: sistem_kulit_integumen
+  legacy_standard: SKDI 2012
+  legacy_level: null
+  legacy_mapping_confirmed: false
+  legacy_note: ''
+identity:
+  age_years: 32
+  age_range: null
+  biological_sex: male
+  pregnancy_status: null
+  informant_type: patient
+  setting: primary care
+  population_tags:
+  - adolescent
+  - adult
+chief_complaint: Ring-shaped itchy patch
+opening_context: 'Patient presents: ring-shaped itchy patch (3 days)'
+duration: 3 days
+severity: moderate
+key_chronology: Onset 3 days ago; course consistent with tinea cruris evolution
+history:
+- name: onset_chronology
+  facts:
+  - key: chief_concern
+    value: Ring-shaped itchy patch
+    disclosure: spontaneous
+  - key: duration
+    value: 3 days
+    disclosure: spontaneous
+  - key: course
+    value: came on gradually then persisted
+    disclosure: direct_question
+- name: symptom_detail
+  facts:
+  - key: associated_symptoms
+    value: reports features typical of early tinea cruris evolution
+    disclosure: direct_question
+  - key: severity_effect
+    value: mild, still functional
+    disclosure: direct_question
+  - key: prior_similar_episodes
+    value: first episode like this
+    disclosure: direct_question
+- name: background
+  facts:
+  - key: past_history
+    value: no major chronic illness disclosed unless asked
+    disclosure: direct_question
+  - key: medications_allergy
+    value: takes only what is asked about; allergy asked directly
+    disclosure: direct_question
+  - key: exposure_risk
+    value: household and exposure history available on direct question
+    disclosure: follow_up_required
+- name: ice_fife
+  facts:
+  - key: idea
+    value: worried it may be something serious
+    disclosure: direct_question
+  - key: concern
+    value: fears it will get worse without treatment
+    disclosure: follow_up_required
+  - key: expectation
+    value: hopes for a clear explanation and plan
+    disclosure: follow_up_required
+red_flags:
+- fact: Rapid blistering with mucosal involvement
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in tinea cruris assessment
+  disclosure: spontaneous
+- fact: Widespread pustules with fever
+  status: absent
+  criticality: critical
+  why_matters: changes urgency and referral decision in tinea cruris assessment
+  disclosure: direct_question
+- fact: Necrotic center with severe pain
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in tinea cruris assessment
+  disclosure: direct_question
+- fact: Erythroderma with systemic upset
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in tinea cruris assessment
+  disclosure: direct_question
+physical_exam:
+  general_appearance: Appears generally well; focused sistem_kulit_integumen examination
+    consistent with tinea cruris
+  consciousness: Alert
+  vitals:
+  - name: temperature
+    value: 37.2
+    unit: C
+  - name: heart_rate
+    value: 88
+    unit: bpm
+  - name: blood_pressure
+    value: 124/80
+    unit: mmHg
+  - name: respiratory_rate
+    value: 18
+    unit: /min
+  - name: oxygen_saturation
+    value: 98
+    unit: '%'
+  system_findings:
+    focus_1: 'skin: morphology, distribution, border, scale, crust'
+    focus_2: 'nails_hair: involvement pattern'
+    focus_3: 'general: fever, lymph nodes (infected cases)'
+investigations:
+- name: KOH scraping (scaly lesions)
+  expected_result: result interpreted in the context of tinea cruris; supports the
+    working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for tinea cruris presentation
+  source: standard clinical practice
+- name: Bacterial swab/culture (infected)
+  expected_result: result interpreted in the context of tinea cruris; supports the
+    working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for tinea cruris presentation
+  source: standard clinical practice
+- name: Dermoscopy finding (as available)
+  expected_result: result interpreted in the context of tinea cruris; supports the
+    working diagnosis
+  appropriateness: optional
+  rationale: guideline-concordant workup step for tinea cruris presentation
+  source: standard clinical practice
+- name: Complete blood count (systemic)
+  expected_result: result interpreted in the context of tinea cruris; supports the
+    working diagnosis
+  appropriateness: optional
+  rationale: guideline-concordant workup step for tinea cruris presentation
+  source: standard clinical practice
+diagnostic:
+  working_diagnosis: Tinea cruris
+  synonyms:
+  - Dermatophytosis
+  - Tinea cruris
+  differentials:
+  - name: Pitiriasis versikolor
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Dermatitis numularis
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Psoriasis
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  reasoning_anchors:
+  - History, examination and first-line tests converge on tinea cruris
+  - Red-flag screen and differentials actively considered before settling on tinea
+    cruris
+  icd10: ''
+management:
+  stabilization: []
+  pharmacologic:
+  - hydrocortisone 1% (low-potency topical steroid)
+  - permethrin 5% (scabicide)
+  non_pharmacologic:
+  - Disease-specific counseling for tinea cruris
+  - Lifestyle and trigger-avoidance advice where relevant
+  referral: []
+  follow_up:
+  - Review response and adherence before next visit
+  - Clear return precautions explained and documented
+  education_safety_netting:
+  - Explain the likely tinea cruris course in plain language
+  - List exact red flags that must trigger immediate return
+medications:
+- generic_name: hydrocortisone cream
+  drug_class: low-potency topical steroid
+  preferred_local_agent: hydrocortisone 1%
+  acceptable_alternatives:
+  - mometasone cream
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+- generic_name: permethrin cream
+  drug_class: scabicide
+  preferred_local_agent: permethrin 5%
+  acceptable_alternatives:
+  - benzyl benzoate
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+assessment_items:
+- text: Elicit the key history features pointing to tinea cruris
+  importance: critical
+  group: history
+- text: Screen systematically for red flags and act on them
+  importance: critical
+  group: red_flags
+- text: Choose and interpret first-line investigations correctly
+  importance: critical
+  group: investigations
+- text: Plan complete primary-care management and follow-up
+  importance: critical
+  group: management
+- text: Communicate the plan and safety-net clearly
+  importance: helpful
+  group: communication
+safety_critical_errors:
+- Discharging without screening red flags in a tinea cruris presentation
+- Missing the referral window when warning signs appear
+- Giving a plan without return precautions
+blind_candidate_brief: Patient with ring-shaped itchy patch for 3 days; cause not
+  yet established
+targeted_title: Tinea cruris
+epidemiology:
+  evidence:
+    facts:
+      setting: Indonesian primary-care/ED plausibility; exact local figures pending
+        human
+    sources: []
+  variant_constraints:
+    age_range: null
+    biological_sex: null
+    pregnancy_status: null
+    geographic_endemicity: null
+    occupation_risk: null
+  persona_variables:
+    name: true
+    occupation_set: []
+    harmless_hobbies: []
+    verbosity: range
+    emotional_tone: range
+    cultural_context: range
+management_expectations:
+  recognize_diagnose: Recognize tinea cruris from history, focused examination and
+    first-line tests
+  initial_management: First-line primary-care management for tinea cruris per standard
+    practice
+  emergency_stabilization_required: false
+  referral_urgency: routine
+  referral_indication: Not improving, complication, or diagnostic uncertainty
+  do_not_miss_actions:
+  - Identify red flags in tinea cruris presentation
+  - Reassess vitals and response after first actions
+  - Document safety-net advice given
+  source_refs:
+  - SKD 2026
+  - standard clinical practice (human source-pack pending)
+canonical_entity_id: sistem_tinea-cruris
+sources:
+- title: SKD 2026 — Tinea cruris
+  authority: KKI
+  version: ''
+  year: '2026'
+  url: ''
+  kind: competency
+  tier: '0'
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: current
+  locator: Standar Kompetensi Dokter 2026; ref HK.01.02/KKI/2183/2026; entry sistem_tinea-cruris
+- title: Standard disease-management practice (exact PNPK/society edition to be attached
+    by human reviewer)
+  authority: standard clinical practice
+  version: ''
+  year: ''
+  url: ''
+  kind: guideline
+  tier: ''
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: pending_human
+  locator: ''
+source_governance:
+  policy: SKD 2026 primary; exact guideline edition pending human source-pack
+  version: 2026-09
+status: research_complete
+clinical_content_version: v3.1
+source_review_date: '2026-09-04'
+variant_previous_version: null

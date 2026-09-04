@@ -1,0 +1,41 @@
+id: fam_dm2
+family_type: disease
+title_id: Diabetes Mellitus Tipe 2
+title_en: Type 2 Diabetes Mellitus
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Increased thirst and frequent urination
+- Routine diabetes control
+population_tags:
+- adult
+- middle-aged
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize classic hyperglycemia symptoms
+- Order and interpret fasting glucose/HbA1c
+- Start metformin-based management with lifestyle counseling
+- Detect hypoglycemia and adjust therapy
+common_differentials:
+- Diabetes mellitus tipe 1
+- Hiperglikemia hiperosmolar
+- Hipoglikemia
+active_variant_ids:
+- dm2_new_uncomplicated
+- dm2_uncontrolled_comorb
+- dm2_hypo_on_therapy
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_diabetes-mellitus-tipe-2
+  - sistem_hipoglikemia-ringan
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_endokrin_metabolik_nutrisi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,41 @@
+id: fam_hdp
+family_type: disease
+title_id: Hipertensi pada Kehamilan
+title_en: Hypertension in Pregnancy
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- High blood pressure found in pregnancy
+- Headache and swelling late in pregnancy
+population_tags:
+- pregnant woman
+- third trimester
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Measure BP + proteinuria correctly
+- Recognize severe-feature thresholds
+- Stabilize and refer urgently
+common_differentials:
+- Hipertensi kronik
+- Eklampsia
+- Sindrom HELLP
+active_variant_ids:
+- hdp_gest_htn
+- hdp_severe_features
+- hdp_hellp
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_antenatal-care-terpadu-berdasarkan-buku-kia
+  - sistem_eklampsia
+  - sistem_sindrom-hellp
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

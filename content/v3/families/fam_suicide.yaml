@@ -1,0 +1,38 @@
+id: fam_suicide
+family_type: disease
+title_id: Risiko Bunuh Diri
+title_en: Suicide Risk
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Wishing to disappear
+- Family worried about self-harm talk
+population_tags:
+- adolescent
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Ask directly about intent/plan/means
+- Remove means + safety plan
+- Escalate to emergency psychiatric care
+common_differentials:
+- Depresi berat
+- Gangguan penyesuaian
+- Kepribadian ambang
+active_variant_ids:
+- suicide_ideation
+- suicide_selfharm
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_ide-percobaan-bunuh-diri
+  - psikiatri_self-harm-behavior
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,320 @@
+id: acs_typical_stemi
+family_id: fam_acs
+variation_level: presentation
+title: Typical acute chest pain (STEMI pattern)
+supported_stages:
+- koas
+competency:
+  standard: SKD 2026
+  category: initial_management_and_referral
+  reference: HK.01.02/KKI/2183/2026
+  system: sistem_kardiovaskuler
+  legacy_standard: SKDI 2012
+  legacy_level: null
+  legacy_mapping_confirmed: false
+  legacy_note: ''
+identity:
+  age_years: 57
+  age_range: null
+  biological_sex: male
+  pregnancy_status: null
+  informant_type: patient
+  setting: emergency department
+  population_tags:
+  - middle-aged
+  - older adult
+chief_complaint: Chest pressure spreading to the arm
+opening_context: 'Patient presents: chest pressure spreading to the arm (1 day)'
+duration: 1 day
+severity: severe
+key_chronology: Onset 1 day ago; course consistent with sindrom koroner akut evolution
+history:
+- name: onset_chronology
+  facts:
+  - key: chief_concern
+    value: Heavy central chest pain
+    disclosure: spontaneous
+  - key: duration
+    value: 1 day
+    disclosure: spontaneous
+  - key: course
+    value: worsened over hours
+    disclosure: direct_question
+- name: symptom_detail
+  facts:
+  - key: associated_symptoms
+    value: reports features typical of early sindrom koroner akut evolution
+    disclosure: direct_question
+  - key: severity_effect
+    value: limits daily activities
+    disclosure: direct_question
+  - key: prior_similar_episodes
+    value: first episode like this
+    disclosure: direct_question
+- name: background
+  facts:
+  - key: past_history
+    value: no major chronic illness disclosed unless asked
+    disclosure: direct_question
+  - key: medications_allergy
+    value: takes only what is asked about; allergy asked directly
+    disclosure: direct_question
+  - key: exposure_risk
+    value: household and exposure history available on direct question
+    disclosure: follow_up_required
+- name: ice_fife
+  facts:
+  - key: idea
+    value: worried it may be something serious
+    disclosure: direct_question
+  - key: concern
+    value: fears it will get worse without treatment
+    disclosure: follow_up_required
+  - key: expectation
+    value: hopes for a clear explanation and plan
+    disclosure: follow_up_required
+red_flags:
+- fact: Chest pain with diaphoresis and radiation
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in sindrom koroner akut assessment
+  disclosure: spontaneous
+- fact: SBP < 90 with cold extremities
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in sindrom koroner akut assessment
+  disclosure: direct_question
+- fact: New severe breathlessness lying flat
+  status: present
+  criticality: high
+  why_matters: changes urgency and referral decision in sindrom koroner akut assessment
+  disclosure: direct_question
+- fact: Syncope with exertion
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in sindrom koroner akut assessment
+  disclosure: direct_question
+physical_exam:
+  general_appearance: Appears ill with abnormal vitals; focused sistem_kardiovaskuler
+    examination
+  consciousness: Alert but lethargic; airway watch
+  vitals:
+  - name: temperature
+    value: 38.2
+    unit: C
+  - name: heart_rate
+    value: 118
+    unit: bpm
+  - name: blood_pressure
+    value: 92/58
+    unit: mmHg
+    normal_range: 90-120 systolic
+    note: low — shock watch
+  - name: respiratory_rate
+    value: 28
+    unit: /min
+  - name: oxygen_saturation
+    value: 92
+    unit: '%'
+    normal_range: '>=95'
+    note: low — needs oxygen pathway
+  system_findings:
+    focus_1: 'heart: rate, rhythm, murmurs, JVP'
+    focus_2: 'lungs: basal crackles, effusion signs'
+    focus_3: 'extremities: edema, pulses, capillary refill'
+investigations:
+- name: ECG 12-lead
+  expected_result: result interpreted in the context of sindrom koroner akut; supports
+    the working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for sindrom koroner akut presentation
+  source: standard clinical practice
+- name: Chest X-ray
+  expected_result: findings supporting sindrom koroner akut workup; no contradictory
+    alternative pattern
+  appropriateness: essential
+  rationale: guideline-concordant workup step for sindrom koroner akut presentation
+  source: standard clinical practice
+- name: High-sensitivity troponin
+  expected_result: elevated, consistent with acute coronary pattern
+  appropriateness: essential
+  rationale: guideline-concordant workup step for sindrom koroner akut presentation
+  source: standard clinical practice
+- name: Echocardiography
+  expected_result: result interpreted in the context of sindrom koroner akut; supports
+    the working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for sindrom koroner akut presentation
+  source: standard clinical practice
+- name: Serum electrolytes + creatinine
+  expected_result: result interpreted in the context of sindrom koroner akut; supports
+    the working diagnosis
+  appropriateness: essential
+  rationale: guideline-concordant workup step for sindrom koroner akut presentation
+  source: standard clinical practice
+diagnostic:
+  working_diagnosis: Sindrom koroner akut
+  synonyms:
+  - Acute Coronary Syndrome
+  - Sindrom koroner akut
+  differentials:
+  - name: GERD
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Pneumotoraks
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Gagal jantung akut
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  reasoning_anchors:
+  - History, examination and first-line tests converge on sindrom koroner akut
+  - Red-flag screen and differentials actively considered before settling on sindrom
+    koroner akut
+  icd10: ''
+management:
+  stabilization:
+  - Position, oxygen, IV access, monitor vitals continuously
+  pharmacologic:
+  - amlodipine (calcium-channel blocker)
+  - bisoprolol (beta blocker)
+  non_pharmacologic:
+  - Disease-specific counseling for sindrom koroner akut
+  - Lifestyle and trigger-avoidance advice where relevant
+  referral:
+  - Urgent referral to higher care (immediate/emergency)
+  follow_up:
+  - Review response and adherence before next visit
+  - Clear return precautions explained and documented
+  education_safety_netting:
+  - Explain the likely sindrom koroner akut course in plain language
+  - List exact red flags that must trigger immediate return
+medications:
+- generic_name: amlodipine
+  drug_class: calcium-channel blocker
+  preferred_local_agent: amlodipine
+  acceptable_alternatives:
+  - candesartan
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: in_stock
+- generic_name: bisoprolol
+  drug_class: beta blocker
+  preferred_local_agent: bisoprolol
+  acceptable_alternatives:
+  - metoprolol
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+assessment_items:
+- text: Elicit the key history features pointing to sindrom koroner akut
+  importance: critical
+  group: history
+- text: Screen systematically for red flags and act on them
+  importance: critical
+  group: red_flags
+- text: Choose and interpret first-line investigations correctly
+  importance: critical
+  group: investigations
+- text: Decide referral timing and stabilize before transfer
+  importance: critical
+  group: management
+- text: Communicate the plan and safety-net clearly
+  importance: helpful
+  group: communication
+safety_critical_errors:
+- Discharging without screening red flags in a sindrom koroner akut presentation
+- Missing the referral window when warning signs appear
+- Giving a plan without return precautions
+blind_candidate_brief: Patient with chest pressure spreading to the arm for 1 day;
+  cause not yet established
+targeted_title: Sindrom koroner akut
+epidemiology:
+  evidence:
+    facts:
+      setting: Indonesian primary-care/ED plausibility; exact local figures pending
+        human
+    sources: []
+  variant_constraints:
+    age_range: null
+    biological_sex: null
+    pregnancy_status: null
+    geographic_endemicity: null
+    occupation_risk: null
+  persona_variables:
+    name: true
+    occupation_set: []
+    harmless_hobbies: []
+    verbosity: range
+    emotional_tone: range
+    cultural_context: range
+management_expectations:
+  recognize_diagnose: Recognize sindrom koroner akut from history, focused examination
+    and first-line tests
+  initial_management: Stabilize airway/breathing/circulation first, then disease-specific
+    first actions
+  emergency_stabilization_required: true
+  referral_urgency: immediate/emergency
+  referral_indication: Warning signs, deterioration, or beyond-GP scope in sindrom
+    koroner akut
+  do_not_miss_actions:
+  - Identify red flags in sindrom koroner akut presentation
+  - Reassess vitals and response after first actions
+  - Document safety-net advice given
+  source_refs:
+  - SKD 2026
+  - standard clinical practice (human source-pack pending)
+canonical_entity_id: sistem_sindrom-koroner-akut
+sources:
+- title: SKD 2026 — Sindrom koroner akut
+  authority: KKI
+  version: ''
+  year: '2026'
+  url: ''
+  kind: competency
+  tier: '0'
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: current
+  locator: Standar Kompetensi Dokter 2026; ref HK.01.02/KKI/2183/2026; entry sistem_sindrom-koroner-akut
+- title: Standard disease-management practice (exact PNPK/society edition to be attached
+    by human reviewer)
+  authority: standard clinical practice
+  version: ''
+  year: ''
+  url: ''
+  kind: guideline
+  tier: ''
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: pending_human
+  locator: ''
+source_governance:
+  policy: SKD 2026 primary; exact guideline edition pending human source-pack
+  version: 2026-09
+status: research_complete
+clinical_content_version: v3.1
+source_review_date: '2026-09-04'
+variant_previous_version: null

@@ -1,0 +1,40 @@
+id: fam_discharge
+family_type: disease
+title_id: Keputihan
+title_en: Vaginal Discharge
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Itchy white discharge
+- Foul-smelling discharge
+population_tags:
+- woman of reproductive age
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Characterize discharge + risk history
+- Apply syndromic management pathway
+- Give partner + prevention counseling
+common_differentials:
+- Kandidosis
+- Vaginosis bakterialis
+- Servisitis gonore
+active_variant_ids:
+- discharge_candida
+- discharge_bv
+- discharge_cervicitis
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_vulvovaginitis-candida
+  - sistem_vaginosis-bakterialis
+  - sistem_sindrom-duh-discharge-genital-gonore-dan-non-gonore
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

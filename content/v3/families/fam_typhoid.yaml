@@ -1,0 +1,42 @@
+id: fam_typhoid
+family_type: disease
+title_id: Demam Tifoid
+title_en: Typhoid Fever
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Prolonged stepwise fever
+- Fever with abdominal discomfort
+population_tags:
+- adolescent
+- adult
+- endemic-area resident
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize prolonged fever pattern
+- Order blood culture/Widal interpretation cautiously
+- Start appropriate antibiotics and detect complications
+common_differentials:
+- Dengue
+- Malaria
+- Gastroenteritis
+active_variant_ids:
+- typhoid_uncomplicated
+- typhoid_prolonged
+- typhoid_complicated
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_demam-tifoid
+  - sistem_demam-tifoid-dengan-komplikasi
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

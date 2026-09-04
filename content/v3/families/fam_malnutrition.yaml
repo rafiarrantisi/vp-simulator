@@ -1,0 +1,38 @@
+id: fam_malnutrition
+family_type: disease
+title_id: Malnutrisi Anak
+title_en: Child Malnutrition
+primary_specialty: paediatrics
+cross_specialty_tags: []
+presenting_complaints:
+- Child very thin with poor appetite
+- Child not gaining weight
+population_tags:
+- child
+- toddler
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Plot growth + edema check
+- Classify moderate vs severe
+- Start nutrition rehabilitation + infection screen
+common_differentials:
+- TB anak
+- Cacingan
+- Penyakit kronik
+active_variant_ids:
+- malnutrition_moderate
+- malnutrition_severe_edema
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_malnutrisi-energi-protein-40
+  - sistem_stunting-perawakan-pendek
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_endokrin_metabolik_nutrisi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,39 @@
+id: fam_conjunctivitis
+family_type: disease
+title_id: Konjungtivitis
+title_en: Conjunctivitis
+primary_specialty: ophthalmology
+cross_specialty_tags: []
+presenting_complaints:
+- Red itchy eyes with discharge
+- Red eyes since yesterday
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish bacterial/viral/allergic discharge
+- Start hygiene + topical pathway
+- Detect keratitis/glaucoma mimics
+common_differentials:
+- Keratitis
+- Glaukoma akut
+- Benda asing kornea
+active_variant_ids:
+- conjunctivitis_bacterial
+- conjunctivitis_viral
+- conjunctivitis_allergic
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_konjungtivitis-bakteri-virus-alergi
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_indera_mata
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

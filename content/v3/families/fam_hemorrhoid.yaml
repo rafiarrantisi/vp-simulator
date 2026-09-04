@@ -1,0 +1,39 @@
+id: fam_hemorrhoid
+family_type: disease
+title_id: Hemoroid
+title_en: Hemorrhoids
+primary_specialty: surgery
+cross_specialty_tags: []
+presenting_complaints:
+- Bleeding when passing stool
+- Itchy lump at the anus
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Grade + exclude red-flag bleeding
+- Start fiber/topical pathway
+- Refer high-grade/prolapsing piles
+common_differentials:
+- Fisura ani
+- Keganasan rektum
+- Prolaps rektum
+active_variant_ids:
+- hemorrhoid_low_grade
+- hemorrhoid_high_grade
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_hemoroid-grade-1-2
+  - sistem_hemoroid-grade-3-4
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

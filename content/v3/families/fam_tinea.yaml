@@ -1,0 +1,41 @@
+id: fam_tinea
+family_type: disease
+title_id: Tinea
+title_en: Dermatophytosis
+primary_specialty: dermatology
+cross_specialty_tags: []
+presenting_complaints:
+- Ring-shaped itchy patch
+- Itchy groin rash with clear edge
+population_tags:
+- adolescent
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize annular scaly border
+- Use KOH pathway + topical antifungals
+- Treat household spread
+common_differentials:
+- Pitiriasis versikolor
+- Dermatitis numularis
+- Psoriasis
+active_variant_ids:
+- tinea_corporis
+- tinea_cruris
+- tinea_capitis
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_tinea-corporis
+  - sistem_tinea-cruris
+  - sistem_tinea-kapitis
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,41 @@
+id: fam_anaphylaxis
+family_type: disease
+title_id: Reaksi Anafilaktik
+title_en: Anaphylaxis
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+presenting_complaints:
+- Sudden whole-body itching with lip swelling
+- Sudden breathlessness after a drug/insect sting
+population_tags:
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize airway/breathing/circulation compromise
+- Give IM adrenaline without delay
+- Plan observation + action plan
+common_differentials:
+- Urtikaria akut
+- Angioedema
+- Asma eksaserbasi
+active_variant_ids:
+- anaphylaxis_typical_food
+- anaphylaxis_drug_biphasic
+- anaphylaxis_angioedema
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_reaksi-anafilaktik
+  - sistem_angioedema
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_hemato_imunologi
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

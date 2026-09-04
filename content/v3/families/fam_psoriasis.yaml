@@ -1,0 +1,38 @@
+id: fam_psoriasis
+family_type: disease
+title_id: Psoriasis Ringan
+title_en: Mild Psoriasis
+primary_specialty: dermatology
+cross_specialty_tags: []
+presenting_complaints:
+- Thick silvery scaly plaques on elbows/knees
+- Scalp scaling with plaques
+population_tags:
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize silvery plaque + Auspitz thinking
+- Start emollient + topical pathway
+- Refer extensive/arthritic disease
+common_differentials:
+- Dermatitis seboroik
+- Tinea
+- Pitiriasis rosea
+active_variant_ids:
+- psoriasis_mild_plaque
+- psoriasis_extensive_refer
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_psoriasis-vulgaris-ringan
+  - sistem_psoriasis-vulgaris-sedang-dan-berat
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

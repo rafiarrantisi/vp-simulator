@@ -1,0 +1,37 @@
+id: fam_pph
+family_type: disease
+title_id: Perdarahan Pascasalin
+title_en: Postpartum Hemorrhage
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Heavy bleeding after delivery
+- Bleeding that will not stop after birth
+population_tags:
+- postpartum woman
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Quantify loss + uterine tone check
+- Massage + uterotonics + fluids pathway
+- Escalate to referral/balloon/surgical pathway
+common_differentials:
+- Retensio plasenta
+- Laserasi jalan lahir
+- Koagulopati
+active_variant_ids:
+- pph_atony
+- pph_retained
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_atonia-uteri
+  - sistem_retensio-sisa-plasenta
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

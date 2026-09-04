@@ -1,0 +1,37 @@
+id: fam_kb
+family_type: disease
+title_id: Keluarga Berencana
+title_en: Family Planning
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Want to discuss contraception
+- Choosing birth control after delivery
+population_tags:
+- woman of reproductive age
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit preferences + contraindications
+- Compare method effectiveness
+- Counsel side effects + follow-up
+common_differentials:
+- Amenorea laktasi
+- Infertilitas
+- Efek samping metode
+active_variant_ids:
+- kb_postpartum_choice
+- kb_side_effects
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_keluarga-berencana-masa-nifas
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

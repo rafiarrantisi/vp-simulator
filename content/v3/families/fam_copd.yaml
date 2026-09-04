@@ -1,0 +1,39 @@
+id: fam_copd
+family_type: disease
+title_id: PPOK
+title_en: COPD
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Chronic breathlessness on exertion
+- Worsening breathlessness with more sputum
+population_tags:
+- older adult
+- smoker
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Quantify smoking + exacerbation history
+- Distinguish stable vs exacerbation
+- Optimize inhalers + refer for rehab assessment
+common_differentials:
+- Asma bronkial
+- Gagal jantung
+- Bronkiektasis
+active_variant_ids:
+- copd_stable
+- copd_exacerbation
+- copd_severe_hypox
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_ppok-stabil
+  - sistem_ppok-eksaserbasi
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_respirasi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

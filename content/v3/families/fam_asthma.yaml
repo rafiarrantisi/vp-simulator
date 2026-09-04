@@ -1,0 +1,39 @@
+id: fam_asthma
+family_type: disease
+title_id: Asma Bronkial
+title_en: Bronchial Asthma
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Recurrent wheezing and shortness of breath
+- Night-time cough and chest tightness
+population_tags:
+- adolescent
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit trigger + variability history
+- Classify control level
+- Teach inhaler technique + action plan
+common_differentials:
+- PPOK
+- Gagal jantung
+- Alergi saluran napas
+active_variant_ids:
+- asthma_intermittent
+- asthma_persistent
+- asthma_exacerbation
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_asma-bronkial
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_respirasi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

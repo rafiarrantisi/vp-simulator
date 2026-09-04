@@ -1,0 +1,39 @@
+id: fam_sprain
+family_type: disease
+title_id: Keseleo
+title_en: Sprain
+primary_specialty: surgery
+cross_specialty_tags: []
+presenting_complaints:
+- Twisted ankle, now swollen
+- Knee gave way after twisting
+population_tags:
+- athlete
+- young adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Apply Ottawa + grade the sprain
+- RICE + rehab pathway
+- Refer instability/fracture pattern
+common_differentials:
+- Fraktur
+- Ruptur tendon Achilles
+- Dislokasi
+active_variant_ids:
+- sprain_ankle_mild
+- sprain_knee_lig
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_sprain-ankle-and-muscle
+  - sistem_ruptur-ligamen-lutut
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_muskuloskeletal
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

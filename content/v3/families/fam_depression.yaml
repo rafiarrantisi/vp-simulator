@@ -1,0 +1,40 @@
+id: fam_depression
+family_type: disease
+title_id: Depresi Ringan-Sedang
+title_en: Mild-Moderate Depression
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Feeling empty for weeks
+- Lost interest in everything
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit mood/anhedonia/sleep/appetite pattern
+- Screen suicide risk every time
+- Start counseling + SSRI pathway + follow-up
+common_differentials:
+- Gangguan penyesuaian
+- Hipotiroid
+- Anemia
+active_variant_ids:
+- depression_mild
+- depression_moderate_somatic
+- depression_severe_refer
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_gangguan-depresi-ringan-sedang
+  - psikiatri_gangguan-depresi-berat
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

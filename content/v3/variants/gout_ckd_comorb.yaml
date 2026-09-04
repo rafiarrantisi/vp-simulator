@@ -1,0 +1,309 @@
+id: gout_ckd_comorb
+family_id: fam_gout
+variation_level: presentation
+title: Gout flare with kidney-function concern
+supported_stages:
+- preclinical
+- koas
+competency:
+  standard: SKD 2026
+  category: tuntas
+  reference: HK.01.02/KKI/2183/2026
+  system: sistem_muskuloskeletal
+  legacy_standard: SKDI 2012
+  legacy_level: null
+  legacy_mapping_confirmed: false
+  legacy_note: ''
+identity:
+  age_years: 64
+  age_range: null
+  biological_sex: male
+  pregnancy_status: null
+  informant_type: patient
+  setting: primary care
+  population_tags:
+  - adult
+  - middle-aged
+chief_complaint: Recurrent painful joint attacks
+opening_context: 'Patient presents: recurrent painful joint attacks (5 days)'
+duration: 5 days
+severity: moderate-severe
+key_chronology: Onset 5 days ago; course consistent with artritis gout evolution
+history:
+- name: onset_chronology
+  facts:
+  - key: chief_concern
+    value: Recurrent painful joint attacks
+    disclosure: spontaneous
+  - key: duration
+    value: 5 days
+    disclosure: spontaneous
+  - key: course
+    value: worsened over hours
+    disclosure: direct_question
+- name: symptom_detail
+  facts:
+  - key: associated_symptoms
+    value: reports features typical of early artritis gout evolution
+    disclosure: direct_question
+  - key: severity_effect
+    value: limits daily activities
+    disclosure: direct_question
+  - key: prior_similar_episodes
+    value: first episode like this
+    disclosure: direct_question
+- name: background
+  facts:
+  - key: past_history
+    value: no major chronic illness disclosed unless asked
+    disclosure: direct_question
+  - key: medications_allergy
+    value: takes only what is asked about; allergy asked directly
+    disclosure: direct_question
+  - key: exposure_risk
+    value: household and exposure history available on direct question
+    disclosure: follow_up_required
+- name: ice_fife
+  facts:
+  - key: idea
+    value: worried it may be something serious
+    disclosure: direct_question
+  - key: concern
+    value: fears it will get worse without treatment
+    disclosure: follow_up_required
+  - key: expectation
+    value: hopes for a clear explanation and plan
+    disclosure: follow_up_required
+red_flags:
+- fact: Single hot joint with fever
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in artritis gout assessment
+  disclosure: spontaneous
+- fact: Back pain with saddle numbness or retention
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in artritis gout assessment
+  disclosure: direct_question
+- fact: Open fracture or neurovascular deficit
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in artritis gout assessment
+  disclosure: direct_question
+- fact: Fever with bone pain and ulcer
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in artritis gout assessment
+  disclosure: direct_question
+physical_exam:
+  general_appearance: Appears generally well; focused sistem_muskuloskeletal examination
+    consistent with artritis gout
+  consciousness: Alert
+  vitals:
+  - name: temperature
+    value: 38.0
+    unit: C
+  - name: heart_rate
+    value: 104
+    unit: bpm
+  - name: blood_pressure
+    value: 128/82
+    unit: mmHg
+  - name: respiratory_rate
+    value: 22
+    unit: /min
+  - name: oxygen_saturation
+    value: 96
+    unit: '%'
+  system_findings:
+    focus_1: 'joint: swelling, warmth, range of motion, effusion'
+    focus_2: 'spine: tenderness, straight-leg raise, neurology'
+    focus_3: 'gait_function: weight bearing, deformity'
+investigations:
+- name: Joint X-ray
+  expected_result: findings supporting artritis gout workup; no contradictory alternative
+    pattern
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for artritis gout presentation
+  source: standard clinical practice
+- name: Serum uric acid (monoarthritis)
+  expected_result: result interpreted in the context of artritis gout; supports the
+    working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for artritis gout presentation
+  source: standard clinical practice
+- name: CRP/ESR (inflammatory)
+  expected_result: result interpreted in the context of artritis gout; supports the
+    working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for artritis gout presentation
+  source: standard clinical practice
+- name: Synovial fluid analysis (hot joint)
+  expected_result: result interpreted in the context of artritis gout; supports the
+    working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for artritis gout presentation
+  source: standard clinical practice
+diagnostic:
+  working_diagnosis: Artritis Gout
+  synonyms:
+  - Artritis Gout
+  - Gout Arthritis
+  differentials:
+  - name: Artritis septik
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Osteoarthritis
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Pseudogout
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  reasoning_anchors:
+  - History, examination and first-line tests converge on artritis gout
+  - Red-flag screen and differentials actively considered before settling on artritis
+    gout
+  icd10: ''
+management:
+  stabilization: []
+  pharmacologic:
+  - ibuprofen (NSAID)
+  - colchicine (gout flare agent)
+  non_pharmacologic:
+  - Disease-specific counseling for artritis gout
+  - Lifestyle and trigger-avoidance advice where relevant
+  referral:
+  - Refer if not improving or warning signs develop
+  follow_up:
+  - Review response and adherence before next visit
+  - Clear return precautions explained and documented
+  education_safety_netting:
+  - Explain the likely artritis gout course in plain language
+  - List exact red flags that must trigger immediate return
+medications:
+- generic_name: ibuprofen
+  drug_class: NSAID
+  preferred_local_agent: ibuprofen
+  acceptable_alternatives:
+  - diclofenac
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+- generic_name: colchicine
+  drug_class: gout flare agent
+  preferred_local_agent: colchicine
+  acceptable_alternatives: []
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+assessment_items:
+- text: Elicit the key history features pointing to artritis gout
+  importance: critical
+  group: history
+- text: Screen systematically for red flags and act on them
+  importance: critical
+  group: red_flags
+- text: Choose and interpret first-line investigations correctly
+  importance: critical
+  group: investigations
+- text: Plan complete primary-care management and follow-up
+  importance: critical
+  group: management
+- text: Communicate the plan and safety-net clearly
+  importance: helpful
+  group: communication
+safety_critical_errors:
+- Discharging without screening red flags in a artritis gout presentation
+- Missing the referral window when warning signs appear
+- Giving a plan without return precautions
+blind_candidate_brief: Patient with recurrent painful joint attacks for 5 days; cause
+  not yet established
+targeted_title: Artritis Gout
+epidemiology:
+  evidence:
+    facts:
+      setting: Indonesian primary-care/ED plausibility; exact local figures pending
+        human
+    sources: []
+  variant_constraints:
+    age_range: null
+    biological_sex: null
+    pregnancy_status: null
+    geographic_endemicity: null
+    occupation_risk: null
+  persona_variables:
+    name: true
+    occupation_set: []
+    harmless_hobbies: []
+    verbosity: range
+    emotional_tone: range
+    cultural_context: range
+management_expectations:
+  recognize_diagnose: Recognize artritis gout from history, focused examination and
+    first-line tests
+  initial_management: First-line primary-care management for artritis gout per standard
+    practice
+  emergency_stabilization_required: false
+  referral_urgency: urgent (<24h) if warning signs
+  referral_indication: Not improving, complication, or diagnostic uncertainty
+  do_not_miss_actions:
+  - Identify red flags in artritis gout presentation
+  - Reassess vitals and response after first actions
+  - Document safety-net advice given
+  source_refs:
+  - SKD 2026
+  - standard clinical practice (human source-pack pending)
+canonical_entity_id: sistem_artritis-gout
+sources:
+- title: SKD 2026 — Artritis Gout
+  authority: KKI
+  version: ''
+  year: '2026'
+  url: ''
+  kind: competency
+  tier: '0'
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: current
+  locator: Standar Kompetensi Dokter 2026; ref HK.01.02/KKI/2183/2026; entry sistem_artritis-gout
+- title: Standard disease-management practice (exact PNPK/society edition to be attached
+    by human reviewer)
+  authority: standard clinical practice
+  version: ''
+  year: ''
+  url: ''
+  kind: guideline
+  tier: ''
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: pending_human
+  locator: ''
+source_governance:
+  policy: SKD 2026 primary; exact guideline edition pending human source-pack
+  version: 2026-09
+status: research_complete
+clinical_content_version: v3.1
+source_review_date: '2026-09-04'
+variant_previous_version: null

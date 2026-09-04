@@ -1,0 +1,327 @@
+id: abortion_threatened
+family_id: fam_abortion
+variation_level: presentation
+title: Threatened miscarriage, os closed
+supported_stages:
+- koas
+competency:
+  standard: SKD 2026
+  category: tuntas
+  reference: HK.01.02/KKI/2183/2026
+  system: sistem_reproduksi
+  legacy_standard: SKDI 2012
+  legacy_level: null
+  legacy_mapping_confirmed: false
+  legacy_note: ''
+identity:
+  age_years: 26
+  age_range: null
+  biological_sex: female
+  pregnancy_status: gestational age assessed at visit
+  informant_type: patient
+  setting: primary care
+  population_tags:
+  - first trimester
+  - pregnant woman
+chief_complaint: Cramping with tissue passage
+opening_context: 'Patient presents: cramping with tissue passage (2 days)'
+duration: 2 days
+severity: moderate
+key_chronology: Onset 2 days ago; course consistent with abortus insipien kurang dari
+  13 minggu evolution
+history:
+- name: onset_chronology
+  facts:
+  - key: chief_concern
+    value: Cramping with tissue passage
+    disclosure: spontaneous
+  - key: duration
+    value: 2 days
+    disclosure: spontaneous
+  - key: course
+    value: worsened over hours
+    disclosure: direct_question
+- name: symptom_detail
+  facts:
+  - key: associated_symptoms
+    value: reports features typical of early abortus insipien kurang dari 13 minggu
+      evolution
+    disclosure: direct_question
+  - key: severity_effect
+    value: mild, still functional
+    disclosure: direct_question
+  - key: prior_similar_episodes
+    value: first episode like this
+    disclosure: direct_question
+- name: background
+  facts:
+  - key: past_history
+    value: no major chronic illness disclosed unless asked
+    disclosure: direct_question
+  - key: medications_allergy
+    value: takes only what is asked about; allergy asked directly
+    disclosure: direct_question
+  - key: exposure_risk
+    value: household and exposure history available on direct question
+    disclosure: follow_up_required
+- name: ice_fife
+  facts:
+  - key: idea
+    value: worried it may be something serious
+    disclosure: direct_question
+  - key: concern
+    value: fears it will get worse without treatment
+    disclosure: follow_up_required
+  - key: expectation
+    value: hopes for a clear explanation and plan
+    disclosure: follow_up_required
+red_flags:
+- fact: Heavy vaginal bleeding with dizziness
+  status: present
+  criticality: critical
+  why_matters: changes urgency and referral decision in abortus insipien kurang dari
+    13 minggu assessment
+  disclosure: spontaneous
+- fact: Severe headache/visual change in pregnancy
+  status: absent
+  criticality: critical
+  why_matters: changes urgency and referral decision in abortus insipien kurang dari
+    13 minggu assessment
+  disclosure: direct_question
+- fact: Fluid gush with fever
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in abortus insipien kurang dari
+    13 minggu assessment
+  disclosure: direct_question
+- fact: Absent fetal movement with concern
+  status: absent
+  criticality: high
+  why_matters: changes urgency and referral decision in abortus insipien kurang dari
+    13 minggu assessment
+  disclosure: direct_question
+physical_exam:
+  general_appearance: Appears generally well; focused sistem_reproduksi examination
+    consistent with abortus insipien kurang dari 13 minggu
+  consciousness: Alert
+  vitals:
+  - name: temperature
+    value: 37.2
+    unit: C
+  - name: heart_rate
+    value: 88
+    unit: bpm
+  - name: blood_pressure
+    value: 124/80
+    unit: mmHg
+  - name: respiratory_rate
+    value: 18
+    unit: /min
+  - name: oxygen_saturation
+    value: 98
+    unit: '%'
+  system_findings:
+    focus_1: 'abdomen: fundal height, fetal lie/presentation (pregnancy), tenderness'
+    focus_2: 'vitals_bp: blood pressure + urine protein (pregnancy)'
+    focus_3: 'pelvic: discharge character, bleeding amount, cervical state (as indicated)'
+investigations:
+- name: Urine pregnancy test / beta-hCG
+  expected_result: positive, confirms pregnancy context for management decisions
+  appropriateness: essential
+  rationale: guideline-concordant workup step for abortus insipien kurang dari 13
+    minggu presentation
+  source: standard clinical practice
+- name: Hemoglobin
+  expected_result: result interpreted in the context of abortus insipien kurang dari
+    13 minggu; supports the working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for abortus insipien kurang dari 13
+    minggu presentation
+  source: standard clinical practice
+- name: Obstetric ultrasound
+  expected_result: result interpreted in the context of abortus insipien kurang dari
+    13 minggu; supports the working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for abortus insipien kurang dari 13
+    minggu presentation
+  source: standard clinical practice
+- name: Urinalysis + protein
+  expected_result: result interpreted in the context of abortus insipien kurang dari
+    13 minggu; supports the working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for abortus insipien kurang dari 13
+    minggu presentation
+  source: standard clinical practice
+- name: Blood group + rhesus
+  expected_result: result interpreted in the context of abortus insipien kurang dari
+    13 minggu; supports the working diagnosis
+  appropriateness: appropriate
+  rationale: guideline-concordant workup step for abortus insipien kurang dari 13
+    minggu presentation
+  source: standard clinical practice
+diagnostic:
+  working_diagnosis: Abortus Insipien kurang dari 13 minggu
+  synonyms:
+  - Abortus Insipien kurang dari 13 minggu
+  - Miscarriage Spectrum
+  differentials:
+  - name: Kehamilan ektopik
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Mola hidatidosa
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  - name: Perdarahan implantasi
+    discriminating_features: distinguished by its own hallmark features absent here
+    reverting: false
+  reasoning_anchors:
+  - History, examination and first-line tests converge on abortus insipien kurang
+    dari 13 minggu
+  - Red-flag screen and differentials actively considered before settling on abortus
+    insipien kurang dari 13 minggu
+  icd10: ''
+management:
+  stabilization: []
+  pharmacologic:
+  - ferrous sulfate (oral iron in pregnancy)
+  - methyldopa (antihypertensive option in pregnancy)
+  non_pharmacologic:
+  - Disease-specific counseling for abortus insipien kurang dari 13 minggu
+  - Lifestyle and trigger-avoidance advice where relevant
+  referral:
+  - Refer if not improving or warning signs develop
+  follow_up:
+  - Review response and adherence before next visit
+  - Clear return precautions explained and documented
+  education_safety_netting:
+  - Explain the likely abortus insipien kurang dari 13 minggu course in plain language
+  - List exact red flags that must trigger immediate return
+medications:
+- generic_name: ferrous sulfate
+  drug_class: oral iron in pregnancy
+  preferred_local_agent: ferrous sulfate
+  acceptable_alternatives: []
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: in_stock
+- generic_name: methyldopa
+  drug_class: antihypertensive option in pregnancy
+  preferred_local_agent: methyldopa
+  acceptable_alternatives:
+  - nifedipine
+  dose_range: per standard adult dosing (adjusted by human reviewer)
+  route: oral unless stated
+  frequency: per standard schedule
+  duration: per course guidance
+  contraindications:
+  - known allergy to the agent
+  monitoring:
+  - clinical response
+  - adverse effects
+  referral_restriction: ''
+  source_refs:
+  - Fornas formulary context (exact edition pending human)
+  formulary_status: unknown
+assessment_items:
+- text: Elicit the key history features pointing to abortus insipien kurang dari 13
+    minggu
+  importance: critical
+  group: history
+- text: Screen systematically for red flags and act on them
+  importance: critical
+  group: red_flags
+- text: Choose and interpret first-line investigations correctly
+  importance: critical
+  group: investigations
+- text: Plan complete primary-care management and follow-up
+  importance: critical
+  group: management
+- text: Communicate the plan and safety-net clearly
+  importance: helpful
+  group: communication
+safety_critical_errors:
+- Discharging without screening red flags in a abortus insipien kurang dari 13 minggu
+  presentation
+- Missing the referral window when warning signs appear
+- Giving a plan without return precautions
+blind_candidate_brief: Patient with cramping with tissue passage for 2 days; cause
+  not yet established
+targeted_title: Abortus Insipien kurang dari 13 minggu
+epidemiology:
+  evidence:
+    facts:
+      setting: Indonesian primary-care/ED plausibility; exact local figures pending
+        human
+    sources: []
+  variant_constraints:
+    age_range: null
+    biological_sex: female
+    pregnancy_status: pregnant
+    geographic_endemicity: null
+    occupation_risk: null
+  persona_variables:
+    name: true
+    occupation_set: []
+    harmless_hobbies: []
+    verbosity: range
+    emotional_tone: range
+    cultural_context: range
+management_expectations:
+  recognize_diagnose: Recognize abortus insipien kurang dari 13 minggu from history,
+    focused examination and first-line tests
+  initial_management: First-line primary-care management for abortus insipien kurang
+    dari 13 minggu per standard practice
+  emergency_stabilization_required: false
+  referral_urgency: urgent (<24h) if warning signs
+  referral_indication: Not improving, complication, or diagnostic uncertainty
+  do_not_miss_actions:
+  - Identify red flags in abortus insipien kurang dari 13 minggu presentation
+  - Reassess vitals and response after first actions
+  - Document safety-net advice given
+  source_refs:
+  - SKD 2026
+  - standard clinical practice (human source-pack pending)
+canonical_entity_id: sistem_abortus-insipien-kurang-dari-13-minggu
+sources:
+- title: SKD 2026 — Abortus Insipien kurang dari 13 minggu
+  authority: KKI
+  version: ''
+  year: '2026'
+  url: ''
+  kind: competency
+  tier: '0'
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: current
+  locator: Standar Kompetensi Dokter 2026; ref HK.01.02/KKI/2183/2026; entry sistem_abortus-insipien-kurang-dari-13-minggu
+- title: Standard disease-management practice (exact PNPK/society edition to be attached
+    by human reviewer)
+  authority: standard clinical practice
+  version: ''
+  year: ''
+  url: ''
+  kind: guideline
+  tier: ''
+  publication_date: ''
+  effective_date: ''
+  superseded_by: ''
+  review_status: pending_human
+  locator: ''
+source_governance:
+  policy: SKD 2026 primary; exact guideline edition pending human source-pack
+  version: 2026-09
+status: research_complete
+clinical_content_version: v3.1
+source_review_date: '2026-09-04'
+variant_previous_version: null

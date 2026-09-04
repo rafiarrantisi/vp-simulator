@@ -1,0 +1,32 @@
+id: fam_pres_vaginal_bleed
+family_type: presentation
+title_id: Perdarahan Vagina
+title_en: Vaginal Bleeding
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Vaginal bleeding
+- Bleeding in pregnancy
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Quantify bleeding + pregnancy test first
+- Separate obstetric vs gynecologic causes
+- Resuscitate heavy bleeders + refer
+common_differentials: []
+active_variant_ids:
+- abortion_threatened
+- ectopic_stable_workup
+- aub_heavy_stable
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

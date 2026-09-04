@@ -1,0 +1,37 @@
+id: fam_status_asthma
+family_type: disease
+title_id: Status Asmatikus
+title_en: Status Asthmaticus
+primary_specialty: emergency
+cross_specialty_tags: []
+presenting_complaints:
+- Severe breathlessness not relieved by inhaler
+- Can only speak a few words
+population_tags:
+- adolescent
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Grade severity (speech, SpO2, silent chest)
+- Give oxygen + nebulized/systemic therapy
+- Escalate to ICU pathway when failing
+common_differentials:
+- Anafilaksis
+- PPOK eksaserbasi
+- Gagal jantung akut
+active_variant_ids:
+- status_asthma_severe
+- status_asthma_nearfatal
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_status-asmatikus
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_respirasi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

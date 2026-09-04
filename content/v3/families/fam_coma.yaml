@@ -1,0 +1,39 @@
+id: fam_coma
+family_type: disease
+title_id: Penurunan Kesadaran
+title_en: Decreased Consciousness
+primary_specialty: emergency
+cross_specialty_tags:
+- neurology
+presenting_complaints:
+- Found unconscious by family
+- Increasingly drowsy since morning
+population_tags:
+- adult
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Run ABCDE + glucose first
+- Elicit toxin/metabolic/infection clues
+- Protect airway + urgent referral
+common_differentials:
+- Hipoglikemia
+- Stroke
+- Intoksikasi
+active_variant_ids:
+- coma_metabolic
+- coma_deep_coma
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_koma
+  - sistem_ensefalopati
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

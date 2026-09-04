@@ -1,0 +1,40 @@
+id: fam_alcohol
+family_type: disease
+title_id: Alkohol dan Zat
+title_en: Alcohol and Substances
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Shaking when not drinking
+- Family wants help to stop drinking
+population_tags:
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Quantify use + withdrawal signs
+- Manage withdrawal safely + refer
+- Deliver brief cessation counseling
+common_differentials:
+- Ansietas
+- Delirium
+- Kejang
+active_variant_ids:
+- alcohol_withdrawal
+- alcohol_intoxication
+- alcohol_nicotine
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_alcohol-withdrawal-syndrome
+  - psikiatri_intoksikasi-zat-psikoaktif
+  - psikiatri_ketergantungan-nikotin
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

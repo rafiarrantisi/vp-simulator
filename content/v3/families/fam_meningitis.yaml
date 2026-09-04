@@ -1,0 +1,37 @@
+id: fam_meningitis
+family_type: disease
+title_id: Meningitis
+title_en: Meningitis
+primary_specialty: neurology
+cross_specialty_tags: []
+presenting_complaints:
+- High fever with severe headache and stiff neck
+- Fever with rash that does not fade
+population_tags:
+- adolescent
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit Kernig/Brudzinski/photophobia
+- Start empiric antibiotics + lumbar puncture pathway
+- Isolate + refer urgently
+common_differentials:
+- Ensefalitis
+- Migren
+- Demam tifoid
+active_variant_ids:
+- meningitis_bacterial
+- meningitis_early_subtle
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_meningitis
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

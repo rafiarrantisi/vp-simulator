@@ -1,0 +1,39 @@
+id: fam_atopic
+family_type: disease
+title_id: Dermatitis Atopik
+title_en: Atopic Dermatitis
+primary_specialty: dermatology
+cross_specialty_tags: []
+presenting_complaints:
+- Itchy rash in elbow and knee folds
+- Dry itchy patches since childhood
+population_tags:
+- adolescent
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Map flexural + chronicity pattern
+- Start emollient + topical steroid pathway
+- Counsel trigger avoidance
+common_differentials:
+- Skabies
+- Dermatitis kontak
+- Psoriasis
+active_variant_ids:
+- atopic_child_flexural
+- atopic_adult_chronic
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_dermatitis-atopik-kecuali-recalcitrant
+  - sistem_dermatitis-seboroik
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

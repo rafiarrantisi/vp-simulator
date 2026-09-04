@@ -1918,6 +1918,7 @@ function QV2Catalogue({ onPick, onProgress }) {
   const [specs, setSpecs] = React.useState([]);
   const [filter, setFilter] = React.useState('');
   const [diff, setDiff] = React.useState('');
+  const [q, setQ] = React.useState('');
   const [err, setErr] = React.useState('');
 
   React.useEffect(() => {
@@ -1931,7 +1932,8 @@ function QV2Catalogue({ onPick, onProgress }) {
     _t('common.error') + ': ' + err);
   if (!cases) return React.createElement('div', { style: { padding: 40, color: 'var(--text-3)' } }, _t('common.loading'));
 
-  const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)));
+  const _qq = (q || '').toLowerCase().trim();
+  const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)) && (!_qq || ((c.presentation || '') + ' ' + (c.first_impression || '') + ' ' + (c.first_impression_id || '') + ' ' + (c.specialty || '')).toLowerCase().includes(_qq)));
   const DIFF_LABEL = { '1': _t('cases.difficulty_1'), '2': _t('cases.difficulty_2'), '3': _t('cases.difficulty_3') };
   return React.createElement('div', { style: { maxWidth: 'min(1080px, calc(100% - 24px))', margin: '0 auto', padding: '24px 16px' } },
     // GDV §4: pita suasana "Senja" — siluet rak arsip
@@ -1941,6 +1943,10 @@ function QV2Catalogue({ onPick, onProgress }) {
       children: onProgress && React.createElement('button', { onClick: onProgress, style: { marginTop: 14, padding: '8px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)', display: 'inline-flex', alignItems: 'center', gap: 6 } }, React.createElement(QIcon, { n: 'chart', s: 15 }), _t('dashboard.your_progress')) }),
     // Filter chips overlap the mood band
     React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
+      // search (existing visual language: rounded surface input; keeps 100+ families usable)
+      React.createElement('div', { style: { marginBottom: 10 } },
+        React.createElement('input', { value: q, onChange: (e) => setQ(e.target.value), placeholder: 'Search cases…',
+          style: { width: '100%', padding: '9px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' } })),
       // specialty filter chips
       React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
         [['', _t('cases.filter_all')]].concat(specs.map(s => [s, _qv2SpecLabel(s)])).map(([val, lab]) =>
@@ -1981,7 +1987,8 @@ function QV2Catalogue({ onPick, onProgress }) {
         React.createElement('div', { style: { fontSize: 12, color: 'var(--text-3)', fontStyle: 'italic' } }, c.first_impression_id || c.first_impression || c.chief_complaint),
         React.createElement('div', { style: { marginTop: 'auto', display: 'flex', gap: 12, fontSize: 11, color: 'var(--text-3)', fontWeight: 600 } },
           React.createElement('span', null, '◆ Difficulty ' + (c.difficulty || '–')),
-          React.createElement('span', null, '⏱ ~' + (c.estimated_minutes || '–') + ' min')))))
+          React.createElement('span', null, '⏱ ~' + (c.estimated_minutes || '–') + ' min'),
+          (c.eligible_variant_count >= 1) && React.createElement('span', null, '▦ ' + c.eligible_variant_count + ' cases')))))
   );
 }
 

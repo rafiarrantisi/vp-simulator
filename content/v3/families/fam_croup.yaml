@@ -1,0 +1,36 @@
+id: fam_croup
+family_type: disease
+title_id: Croup
+title_en: Croup Syndrome
+primary_specialty: paediatrics
+cross_specialty_tags: []
+presenting_complaints:
+- Child with barking cough at night
+- Noisy breathing with hoarse voice
+population_tags:
+- child
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Grade stridor + distress
+- Give nebulized/steroid pathway
+- Decide admission vs home observation
+common_differentials:
+- Benda asing jalan napas
+- Epiglotitis
+- Asma
+active_variant_ids:
+- croup_mild
+- croup_moderate
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_sindroma-croup
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_respirasi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

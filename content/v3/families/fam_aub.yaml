@@ -1,0 +1,37 @@
+id: fam_aub
+family_type: disease
+title_id: Perdarahan Uterus Abnormal
+title_en: Abnormal Uterine Bleeding
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Very heavy periods with clots
+- Bleeding between periods
+population_tags:
+- perimenopausal
+- woman of reproductive age
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Quantify loss + anemia signs
+- Order pregnancy test + ultrasound pathway
+- Stabilize heavy bleeders + refer
+common_differentials:
+- Abortus
+- Mioma
+- Kehamilan ektopik
+active_variant_ids:
+- aub_heavy_stable
+- aub_severe_anemic
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_perdarahan-uterus-abnormal-berat
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,38 @@
+id: fam_sinusitis
+family_type: disease
+title_id: Sinusitis Akut
+title_en: Acute Sinusitis
+primary_specialty: ent
+cross_specialty_tags: []
+presenting_complaints:
+- Thick nasal discharge with facial pressure
+- Cold lasting over 10 days with face pain
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Apply duration/severity/double-worsening rule
+- Start saline + decongestant pathway
+- Reserve antibiotics for bacterial pattern
+common_differentials:
+- Rhinitis akut
+- Migren
+- Sakit gigi
+active_variant_ids:
+- sinusitis_viral_like
+- sinusitis_bacterial
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_sinusitis-akut
+  - sistem_rhinitis-akut
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_indera_hidung
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

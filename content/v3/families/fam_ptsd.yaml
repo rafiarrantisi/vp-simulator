@@ -1,0 +1,40 @@
+id: fam_ptsd
+family_type: disease
+title_id: Trauma dan Stres
+title_en: Trauma and Stress
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Nightmares after an accident
+- Cannot stop reliving a frightening event
+population_tags:
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit re-experiencing/avoidance/arousal
+- Give grounding + trauma-focused referral
+- Screen function + suicide risk
+common_differentials:
+- Gangguan penyesuaian
+- Depresi
+- Gangguan panik
+active_variant_ids:
+- ptsd_ptsd
+- ptsd_acute_stress
+- ptsd_adjustment
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_post-traumatic-stress-disorder-ptsd
+  - psikiatri_acute-stress-disorder
+  - psikiatri_gangguan-penyesuaian
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

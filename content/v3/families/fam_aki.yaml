@@ -1,0 +1,37 @@
+id: fam_aki
+family_type: disease
+title_id: Gangguan Ginjal Akut
+title_en: Acute Kidney Injury
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Markedly reduced urination
+- Swelling with very little urine after diarrhea
+population_tags:
+- adult
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Link volume loss/nephrotoxins to oliguria
+- Order creatinine/electrolyte trend
+- Resuscitate, stop nephrotoxins, refer timely
+common_differentials:
+- Dehidrasi tanpa AKI
+- Obstruksi urin
+- Gagal jantung
+active_variant_ids:
+- aki_prerenal_dehyd
+- aki_hyperkalemia
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_acute-kidney-injury
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_ginjal_saluran_kemih
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

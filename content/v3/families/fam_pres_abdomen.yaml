@@ -1,0 +1,35 @@
+id: fam_pres_abdomen
+family_type: presentation
+title_id: Nyeri Perut
+title_en: Abdominal Pain
+primary_specialty: internal_medicine
+cross_specialty_tags:
+- emergency
+- paediatrics
+presenting_complaints:
+- Abdominal pain
+- Stomach ache
+population_tags:
+- adult
+- child
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Localize pain + peritoneal signs
+- Separate surgical vs medical abdomen
+- Refer surgical patterns early
+common_differentials: []
+active_variant_ids:
+- appendicitis_typical
+- gastritis_acute_nsaid
+- cholecystitis_acute
+- ectopic_stable_workup
+- gastroenteritis_watery_mild
+- gerd_typical
+source_governance:
+  policy: presentation umbrella — reuses canonical disease variants, holds no clinical
+    truth of its own
+  version: 2026-09
+status: in_review

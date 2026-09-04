@@ -1,0 +1,39 @@
+id: fam_anemia
+family_type: disease
+title_id: Anemia Defisiensi
+title_en: Deficiency Anemia
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Easily tired and pale
+- Fatigue with dizziness on standing
+population_tags:
+- adult
+- woman of reproductive age
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit bleeding/nutrition/menstrual history
+- Interpret Hb/MCV/ferritin pattern
+- Start iron replacement and find the cause
+common_differentials:
+- Anemia of chronic disease
+- Thalassemia trait
+- Acute blood loss
+active_variant_ids:
+- anemia_ida_woman
+- anemia_b12_elderly
+- anemia_severe_sympt
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_anemia-defisiensi-vitamin-mineral-besi-b12
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_hemato_imunologi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,39 @@
+id: fam_stroke
+family_type: disease
+title_id: Stroke Iskemik Akut
+title_en: Acute Ischemic Stroke
+primary_specialty: emergency
+cross_specialty_tags:
+- neurology
+presenting_complaints:
+- Sudden one-sided weakness
+- Sudden slurred speech with face droop
+population_tags:
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Establish last-known-well time
+- Apply FAST + glucose check
+- Activate stroke referral pathway fast
+common_differentials:
+- TIA
+- Hipoglikemia
+- Kejang Todd paresis
+active_variant_ids:
+- stroke_acute_window
+- stroke_delayed
+- stroke_tia_warning
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_infark-serebral
+  - sistem_tia
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_saraf
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

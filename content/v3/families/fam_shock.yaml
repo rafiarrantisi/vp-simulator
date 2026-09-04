@@ -1,0 +1,37 @@
+id: fam_shock
+family_type: disease
+title_id: Syok
+title_en: Shock
+primary_specialty: emergency
+cross_specialty_tags: []
+presenting_complaints:
+- Sudden cold sweats with weakness
+- Faint with fast heartbeat
+population_tags:
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize poor perfusion triad
+- Give fluids + vasopressor-access thinking
+- Find the source and refer to higher care
+common_differentials:
+- Dehidrasi berat
+- Anemia akut
+- Sinkop vasovagal
+active_variant_ids:
+- shock_septic
+- shock_hypovolemic
+- shock_cardiogenic
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_syok-septik-kardiogenik-neurogenik
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_kardiovaskuler
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

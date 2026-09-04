@@ -1,0 +1,37 @@
+id: fam_prom
+family_type: disease
+title_id: Ketuban Pecah Dini dan Prematuritas
+title_en: PROM and Preterm Labour
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Watery fluid leaking from vagina
+- Regular tightening before due date
+population_tags:
+- pregnant woman
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Confirm pooling/ferning pathway
+- Start antibiotics/steroid pathway per gestation
+- Arrange timely referral
+common_differentials:
+- Inkontinensia urin
+- Keputihan
+- Persalinan cukup bulan
+active_variant_ids:
+- prom_term_prom
+- prom_preterm_threat
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_ketuban-pecah-dini
+  - sistem_partus-prematurus-iminen
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

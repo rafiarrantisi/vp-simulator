@@ -1,0 +1,40 @@
+id: fam_tb
+family_type: disease
+title_id: Tuberkulosis Paru
+title_en: Pulmonary Tuberculosis
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Chronic cough over 2 weeks
+- Cough with night sweats and weight loss
+population_tags:
+- adult
+- household contact
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit chronicity + contact history
+- Order sputum molecular test and chest X-ray
+- Start standard regimen counseling + contact tracing
+common_differentials:
+- Pneumonia komunitas
+- Bronkitis kronik
+- Keganasan paru
+active_variant_ids:
+- tb_new_typical
+- tb_dm_comorb
+- tb_latent_contact
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_tb-paru-tanpa-komplikasi
+  - sistem_tb-laten-latent-tuberculosis-infection
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_respirasi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

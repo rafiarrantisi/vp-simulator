@@ -1,0 +1,37 @@
+id: fam_pertussis
+family_type: disease
+title_id: Pertusis
+title_en: Pertussis
+primary_specialty: paediatrics
+cross_specialty_tags: []
+presenting_complaints:
+- Child with fits of coughing and vomiting
+- Whooping cough spells
+population_tags:
+- child
+- infant
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit paroxysm/whoop/vomiting pattern
+- Arrange macrolide + prophylaxis counseling
+- Watch apnea in infants
+common_differentials:
+- Bronkitis akut
+- Asma
+- Benda asing
+active_variant_ids:
+- pertussis_typical
+- pertussis_infant_apnea
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_pertusis
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_respirasi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

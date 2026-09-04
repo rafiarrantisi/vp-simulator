@@ -1,0 +1,39 @@
+id: fam_hordeolum
+family_type: disease
+title_id: Hordeolum dan Blefaritis
+title_en: Hordeolum and Blepharitis
+primary_specialty: ophthalmology
+cross_specialty_tags: []
+presenting_complaints:
+- Painful bump on eyelid
+- Crusty eyelids in the morning
+population_tags:
+- adolescent
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish stye vs chalazion vs preseptal spread
+- Start warm compress + hygiene pathway
+- Refer vision-change/orbital cases
+common_differentials:
+- Kalazion
+- Selulitis preseptal
+- Dakrioadenitis
+active_variant_ids:
+- hordeolum_stye
+- hordeolum_blepharitis
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_hordeolum
+  - sistem_blefaritis
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_indera_mata
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

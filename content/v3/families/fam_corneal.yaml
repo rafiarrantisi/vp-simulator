@@ -1,0 +1,38 @@
+id: fam_corneal
+family_type: disease
+title_id: Trauma Kornea
+title_en: Corneal Trauma
+primary_specialty: ophthalmology
+cross_specialty_tags: []
+presenting_complaints:
+- Something hit the eye, now painful and watery
+- Eye pain after grinding work without goggles
+population_tags:
+- adult
+- worker
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit velocity/chemical context + vision check
+- Stain/protect + urgent ophthalmology referral
+- Update tetanus where relevant
+common_differentials:
+- Konjungtivitis
+- Laserasi kelopak
+- Luka bakar kimia
+active_variant_ids:
+- corneal_abrasion
+- corneal_fb
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_trauma-kornea
+  - sistem_benda-asing-di-kornea
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_indera_mata
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

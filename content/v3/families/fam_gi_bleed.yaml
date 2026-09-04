@@ -1,0 +1,37 @@
+id: fam_gi_bleed
+family_type: disease
+title_id: Perdarahan Gastrointestinal
+title_en: Gastrointestinal Bleeding
+primary_specialty: emergency
+cross_specialty_tags: []
+presenting_complaints:
+- Vomiting blood
+- Black tarry stools with dizziness
+population_tags:
+- adult
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Quantify loss + vitals + NSAID/liver history
+- Resuscitate + urgent endoscopy pathway
+- Refer to higher care early
+common_differentials:
+- Epistaksis tertelan
+- Hemoroid
+- Gastritis tanpa perdarahan
+active_variant_ids:
+- gi_bleed_upper_stable
+- gi_bleed_unstable
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_perdarahan-gastrointestinal
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_gi_hepatobilier_pankreas
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

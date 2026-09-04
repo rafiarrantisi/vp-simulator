@@ -1,0 +1,38 @@
+id: fam_acs
+family_type: disease
+title_id: Sindrom Koroner Akut
+title_en: Acute Coronary Syndrome
+primary_specialty: emergency
+cross_specialty_tags: []
+presenting_complaints:
+- Heavy central chest pain
+- Chest pressure spreading to the arm
+population_tags:
+- middle-aged
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit onset/character/radiation + risk factors
+- Order ECG + troponin pathway
+- Give loading antiplatelets + urgent referral
+common_differentials:
+- GERD
+- Pneumotoraks
+- Gagal jantung akut
+active_variant_ids:
+- acs_typical_stemi
+- acs_atypical_elderly
+- acs_unstable
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_sindrom-koroner-akut
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_kardiovaskuler
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

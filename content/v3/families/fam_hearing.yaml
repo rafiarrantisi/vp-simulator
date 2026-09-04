@@ -1,0 +1,39 @@
+id: fam_hearing
+family_type: disease
+title_id: Gangguan Dengar
+title_en: Hearing Loss
+primary_specialty: ent
+cross_specialty_tags: []
+presenting_complaints:
+- Gradually cannot hear well
+- Blocked ear with wax
+population_tags:
+- adult
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish conductive vs sensorineural pattern
+- Clear wax safely + audiometry pathway
+- Refer for hearing-aid assessment
+common_differentials:
+- Otitis media serosa
+- Otosklerosis
+- Benda asing
+active_variant_ids:
+- hearing_wax
+- hearing_presbycusis
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_presbiakusis
+  - sistem_serumen-prop
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_indera_telinga
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,39 @@
+id: fam_wound
+family_type: disease
+title_id: Luka dan Infeksi Luka
+title_en: Wounds and Wound Infection
+primary_specialty: surgery
+cross_specialty_tags: []
+presenting_complaints:
+- Cut that looks infected
+- Wound with spreading redness
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Assess depth/contamination/tetanus status
+- Clean + close vs refer pathway
+- Detect infection early
+common_differentials:
+- Selulitis
+- Abses
+- Gigitan hewan
+active_variant_ids:
+- wound_clean_lac
+- wound_infected
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_vulnus-laceratum-punctum
+  - sistem_luka-akut
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  - sistem_muskuloskeletal
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

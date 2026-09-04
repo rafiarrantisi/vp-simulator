@@ -1,0 +1,38 @@
+id: fam_mastitis
+family_type: disease
+title_id: Mastitis Laktasi
+title_en: Lactational Mastitis
+primary_specialty: obstetrics_gynaecology
+cross_specialty_tags: []
+presenting_complaints:
+- Painful red breast while breastfeeding
+- Breast lump with fever after delivery
+population_tags:
+- breastfeeding
+- postpartum woman
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Distinguish engorgement vs mastitis vs abscess
+- Support continued feeding + antibiotics pathway
+- Spot abscess needing drainage
+common_differentials:
+- Bendungan ASI
+- Abses payudara
+- Selulitis
+active_variant_ids:
+- mastitis_early
+- mastitis_abscess_watch
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_mastitis
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_reproduksi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

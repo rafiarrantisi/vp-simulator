@@ -1,0 +1,39 @@
+id: fam_oa
+family_type: disease
+title_id: Osteoarthritis Lutut
+title_en: Knee Osteoarthritis
+primary_specialty: surgery
+cross_specialty_tags: []
+presenting_complaints:
+- Knee pain worse with stairs
+- Stiff knees in the morning briefly
+population_tags:
+- older adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit mechanical pattern + crepitus
+- Start weight/exercise/analgesia plan
+- Refer advanced cases for arthroplasty assessment
+common_differentials:
+- Gout
+- Artritis reumatoid
+- Bursitis
+active_variant_ids:
+- oa_early
+- oa_advanced
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_osteoarthritis-grade-1-dan-2
+  - sistem_osteoarthritis-grade-3-dan-4
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - sistem_muskuloskeletal
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

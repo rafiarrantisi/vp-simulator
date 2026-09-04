@@ -1,0 +1,36 @@
+id: fam_glaucoma
+family_type: disease
+title_id: Glaukoma Akut
+title_en: Acute Glaucoma
+primary_specialty: ophthalmology
+cross_specialty_tags: []
+presenting_complaints:
+- Sudden very painful red eye with blurred vision
+- Eye pain with halos and nausea
+population_tags:
+- older adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Recognize painful red eye + halos + nausea triad
+- Check pressure-equivalent urgency + refer same-day
+- Never give dilating drops
+common_differentials:
+- Konjungtivitis
+- Keratitis
+- Migren
+active_variant_ids:
+- glaucoma_acute_attack
+- glaucoma_subacute
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_glaukoma-akut
+  skd_categories:
+  - initial_management_and_referral
+  skd_systems:
+  - sistem_indera_mata
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

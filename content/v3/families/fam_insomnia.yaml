@@ -1,0 +1,38 @@
+id: fam_insomnia
+family_type: disease
+title_id: Insomnia
+title_en: Insomnia
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Cannot fall asleep for months
+- Wake up many times at night
+population_tags:
+- adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Map sleep hygiene + screen apnea/mood/substances
+- Deliver CBT-I basics before pills
+- Limit hypnotics safely
+common_differentials:
+- Apnea tidur
+- Depresi
+- Hipertiroid
+active_variant_ids:
+- insomnia_primary
+- insomnia_comorbid_mood
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_insomnia
+  - psikiatri_sleep-disorder-ringan
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

@@ -1,0 +1,38 @@
+id: fam_somatic
+family_type: disease
+title_id: Keluhan Somatik
+title_en: Somatic Complaints
+primary_specialty: psychiatry
+cross_specialty_tags: []
+presenting_complaints:
+- Many body pains with normal tests
+- Worried about serious disease despite reassurance
+population_tags:
+- adult
+target_stages:
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Validate while avoiding over-testing
+- Set regular review + function goals
+- Coordinate single-GP care
+common_differentials:
+- Depresi
+- Gangguan ansietas
+- Penyakit organik
+active_variant_ids:
+- somatic_somatization
+- somatic_health_worry
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - psikiatri_gangguan-somatisasi
+  - psikiatri_phobia-spesifik
+  skd_categories:
+  - initial_management_and_referral
+  - tuntas
+  skd_systems:
+  - psikiatri
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

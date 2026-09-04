@@ -1,0 +1,39 @@
+id: fam_malaria
+family_type: disease
+title_id: Malaria
+title_en: Malaria
+primary_specialty: internal_medicine
+cross_specialty_tags: []
+presenting_complaints:
+- Intermittent high fever with chills
+- Fever with heavy sweating cycles
+population_tags:
+- adult
+- endemic-area resident
+- traveler
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Elicit travel/endemic exposure
+- Order thick/thin smear or RDT
+- Start antimalarials + counsel prevention
+common_differentials:
+- Demam dengue
+- Demam tifoid
+- Leptospirosis
+active_variant_ids:
+- malaria_uncomplicated
+- malaria_traveler
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_malaria-tanpa-komplikasi
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_hemato_imunologi
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review

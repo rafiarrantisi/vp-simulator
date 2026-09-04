@@ -1,0 +1,38 @@
+id: fam_acne
+family_type: disease
+title_id: Akne Vulgaris
+title_en: Acne Vulgaris
+primary_specialty: dermatology
+cross_specialty_tags: []
+presenting_complaints:
+- Pimples on face and back
+- Blackheads and painful bumps
+population_tags:
+- adolescent
+- young adult
+target_stages:
+- preclinical
+- koas
+skdi_mappings: {}
+learning_objectives:
+- Grade comedonal vs inflammatory
+- Start topical retinoid/BP pathway
+- Escalate severe/nodular cases
+common_differentials:
+- Rosacea
+- Folikulitis
+- Dermatitis perioral
+active_variant_ids:
+- acne_mild_comedonal
+- acne_inflammatory
+source_governance:
+  policy: SKD 2026 primary; categories read per-variant from exact catalog entries
+  version: 2026-09
+  skd_entry_ids:
+  - sistem_akne-vulgaris
+  skd_categories:
+  - tuntas
+  skd_systems:
+  - sistem_kulit_integumen
+  skd_reference: HK.01.02/KKI/2183/2026
+status: in_review
