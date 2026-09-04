@@ -797,6 +797,35 @@ window.QORA_THERAPIES = {
     'Arrange interpreter / translation services if needed',
     'Provide emergency contact numbers / crisis line',
   ],
+  // FASE 5: familiar Indonesian generic options first (formulary CONTEXT for
+  // suggestion ordering only — free text stays primary; correctness is judged
+  // against guideline truth, never against this list).
+  'Indonesia — Common generics (Fornas context)': [
+    'Paracetamol (parasetamol)',
+    'Amoxicillin (amoksisilin)',
+    'ORS / Oralit + zinc',
+    'Cetirizine (setirizin)',
+    'Omeprazole (omeprazol)',
+    'Metformin',
+    'Amlodipine (amlodipin)',
+    'Aspirin loading + referral (ACS pathway)',
+    'Salbutamol inhaler (reliever)',
+    'Permethrin 5% (skabies, household)',
+    'Ferrous sulfate (tablet tambah darah)',
+    'Ciprofloxacin (siprofloksasin)',
+    'Adrenaline IM (anafilaksis)',
+    'Diazepam rescue (kejang)',
+    'Sertraline (depresi — referral pathway)',
+    'Nystatin (kandidosis)',
+    'Chloramphenicol eye drops',
+    'Mupirocin ointment',
+    'Hydrocortisone cream',
+    'Albendazole (obat cacing)',
+    'Fluticasone nasal spray',
+    'Methyldopa (hipertensi kehamilan)',
+    'Candesartan (alternatif amlodipin)',
+    'Azithromycin (alternatif beta-laktam)',
+  ],
 };
 
 // Convenience: total item counts for reference

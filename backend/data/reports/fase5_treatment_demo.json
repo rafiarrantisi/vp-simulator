@@ -1,0 +1,300 @@
+{
+ "version": "1.0",
+ "passed": 23,
+ "total": 23,
+ "judge_dependency": "none — standalone advisory layer (FASE 5 stops here)",
+ "results": [
+  {
+   "variant": "acs_typical_stemi",
+   "stage": "koas",
+   "input": "aspirin 300 mg chewed + clopidogrel 300 mg, urgent referral",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "acs_typical_stemi",
+   "stage": "koas",
+   "input": "aspilet 300mg kunyah, rujuk segera",
+   "expect": "incomplete",
+   "got": "incomplete",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "acs_typical_stemi",
+   "stage": "koas",
+   "input": "clopidogrel 300 mg single dose",
+   "expect": "incomplete",
+   "got": "incomplete",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "acs_typical_stemi",
+   "stage": "koas",
+   "input": "ibuprofen for the chest pain",
+   "expect": "unsafe",
+   "got": "unsafe",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "acs_typical_stemi",
+   "stage": "koas",
+   "input": "aspirin 3000 mg",
+   "expect": "inappropriate",
+   "got": "inappropriate",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "cap_moderate_admit",
+   "stage": "koas",
+   "input": "amoxicillin 500 mg three times daily for 7 days",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "cap_moderate_admit",
+   "stage": "koas",
+   "input": "amoksisilin 500mg 3x sehari 7 hari",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "cap_moderate_admit",
+   "stage": "koas",
+   "input": "amoxcillin 500mg TID 7 days",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "cap_moderate_admit",
+   "stage": "koas",
+   "input": "azithromycin 500 mg once daily 3 days",
+   "expect": "acceptable",
+   "got": "acceptable",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "cap_moderate_admit",
+   "stage": "koas",
+   "input": "ciprofloxacin 500 mg",
+   "expect": "inappropriate",
+   "got": "inappropriate",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "child_diarrhea_some_dehyd",
+   "stage": "koas",
+   "input": "oralit setiap BAB cair + zinc 20 mg sehari selama 10 hari",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "child_diarrhea_some_dehyd",
+   "stage": "koas",
+   "input": "ORS after each loose stool + zinc",
+   "expect": "incomplete",
+   "got": "incomplete",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "child_diarrhea_some_dehyd",
+   "stage": "koas",
+   "input": "loperamide syrup",
+   "expect": "unsafe",
+   "got": "unsafe",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "child_diarrhea_some_dehyd",
+   "stage": "koas",
+   "input": "antibiotik",
+   "expect": "incomplete",
+   "got": "incomplete",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "dm2_uncontrolled_comorb",
+   "stage": "koas",
+   "input": "metformin 500 mg twice daily, titrated",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "dm2_uncontrolled_comorb",
+   "stage": "koas",
+   "input": "metformin",
+   "expect": "incomplete",
+   "got": "incomplete",
+   "ok": true,
+   "notes": [
+    "missing detail: dose, route, frequency",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "dm2_uncontrolled_comorb",
+   "stage": "koas",
+   "input": "glimepiride 2 mg once daily",
+   "expect": "acceptable",
+   "got": "acceptable",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "dm2_uncontrolled_comorb",
+   "stage": "preclinical",
+   "input": "metformin",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "asthma_persistent",
+   "stage": "koas",
+   "input": "salbutamol inhaler bila sesak",
+   "expect": "incomplete",
+   "got": "incomplete",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "asthma_persistent",
+   "stage": "koas",
+   "input": "budesonide formoterol controller + salbutamol PRN + technique check",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "not mentioned"
+   ]
+  },
+  {
+   "variant": "dengue_002_warning",
+   "stage": "koas",
+   "input": "paracetamol + fluids + monitor HCT",
+   "expect": "preferred",
+   "got": "preferred",
+   "ok": true,
+   "notes": []
+  },
+  {
+   "variant": "dengue_002_warning",
+   "stage": "koas",
+   "input": "ibuprofen for the fever",
+   "expect": "unsafe",
+   "got": "unsafe",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "NSAID in bleeding/dengue context — bleeding risk"
+   ]
+  },
+  {
+   "variant": "dengue_002_warning",
+   "stage": "koas",
+   "input": "aspirin",
+   "expect": "unsafe",
+   "got": "unsafe",
+   "ok": true,
+   "notes": [
+    "not mentioned",
+    "aspirin in bleeding context (analgesic use) — bleeding risk"
+   ]
+  }
+ ]
+}
