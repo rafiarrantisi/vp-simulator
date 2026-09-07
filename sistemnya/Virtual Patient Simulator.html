@@ -57,16 +57,21 @@
       // app, so layout adapts via JS matchMedia, not stylesheet media queries.
       const [isMobile, setIsMobile] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches);
       const [isTablet, setIsTablet] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
+      const [isWide, setIsWide] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(min-width: 1400px)').matches);
       React.useEffect(() => {
         var mqM = window.matchMedia('(max-width: 768px)');
         var mqT = window.matchMedia('(max-width: 1024px)');
+        var mqW = window.matchMedia('(min-width: 1400px)');
         var fm = function (e) { setIsMobile(e.matches); };
         var ft = function (e) { setIsTablet(e.matches); };
+        var fw = function (e) { setIsWide(e.matches); };
         if (mqM.addEventListener) mqM.addEventListener('change', fm); else mqM.addListener(fm);
         if (mqT.addEventListener) mqT.addEventListener('change', ft); else mqT.addListener(ft);
+        if (mqW.addEventListener) mqW.addEventListener('change', fw); else mqW.addListener(fw);
         return function () {
           if (mqM.removeEventListener) mqM.removeEventListener('change', fm); else mqM.removeListener(fm);
           if (mqT.removeEventListener) mqT.removeEventListener('change', ft); else mqT.removeListener(ft);
+          if (mqW.removeEventListener) mqW.removeEventListener('change', fw); else mqW.removeListener(fw);
         };
       }, []);
 
@@ -145,13 +150,13 @@
           border: '1px solid rgba(255,255,255,0.9)',
           boxShadow: '0 8px 26px rgba(34,19,48,0.09)',
           borderRadius: 18,
-          padding: '10px 16px', height: 54,
+          padding: isWide ? '12px 20px' : '10px 16px', height: isWide ? 62 : 54,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
         }},
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flexShrink: 0 }, onClick: () => navigate('dashboard') },
-            React.createElement(QoraLogo, { h: 28 }),
+            React.createElement(QoraLogo, { h: isWide ? 32 : 28 }),
             React.createElement('div', null,
-              React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--u900)', lineHeight: 1 } }, 'Qora'),
+              React.createElement('div', { style: { fontSize: isWide ? 16 : (isMobile ? 13 : 14), fontWeight: 800, color: 'var(--u900)', lineHeight: 1 } }, 'Qora'),
               !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--n500)', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
           // Nav — desktop/tablet: centered glass tabs; mobile: moved to a bottom tab bar
           !isMobile && React.createElement('nav', { style: {
@@ -162,10 +167,10 @@
             [['dashboard','Dashboard'],['cases','Cases'],['mentor','Mentor'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
-                padding: '5px 10px', borderRadius: 9, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+                padding: isWide ? '7px 14px' : '5px 10px', borderRadius: 9, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
                 background: screen === s ? 'rgba(92,63,150,0.12)' : 'transparent',
                 color: screen === s ? 'var(--u600)' : 'var(--n500)',
-                fontSize: 12.5, fontWeight: screen === s ? 600 : 500,
+                fontSize: isWide ? 14 : 12.5, fontWeight: screen === s ? 600 : 500,
                 cursor: 'pointer', transition: 'all 0.18s var(--ease)',
                 fontFamily: 'Plus Jakarta Sans',
               } }, l);
@@ -173,14 +178,14 @@
           // Right side
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 10, flexShrink: 0 } },
             React.createElement('button', { onClick: function() { setShowSettings(true); }, style: {
-              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: 10,
+              width: isWide ? 36 : (isMobile ? 30 : 32), height: isWide ? 36 : (isMobile ? 30 : 32), borderRadius: 10,
               background: 'rgba(255,255,255,0.7)', cursor: 'pointer',
               color: 'var(--n700)', border: '1px solid var(--u200)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }, title: 'Settings' },
               React.createElement(QIcon, { n: 'settings', s: 17 })),
             React.createElement('button', { onClick: function() { navigate('profile'); }, style: {
-              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: '50%',
+              width: isWide ? 36 : (isMobile ? 30 : 32), height: isWide ? 36 : (isMobile ? 30 : 32), borderRadius: '50%',
               background: 'var(--u600)', color: '#fff',
               border: screen === 'profile' ? '2px solid var(--u900)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
               fontFamily: 'Plus Jakarta Sans',
