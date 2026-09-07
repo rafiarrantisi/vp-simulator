@@ -43,26 +43,24 @@ function QLFeature({ icon, title, body, accent }) {
 /* ── Stats / Social proof ── */
 function QLStats() {
   var items = [
-    { icon: '🏥', num: '10', label: 'Specialties' },
-    { icon: '🎓', num: '2', label: 'Stages: pre-clinical & Koas' },
-    { icon: '🧭', num: '2', label: 'Training modes' },
-    { icon: '🌐', num: '2', label: 'Languages: ID + EN' },
+    { icon: '🏥', text: '10 specialties' },
+    { icon: '🧭', text: 'Anamnesis + OSCE modes' },
+    { icon: '🌐', text: 'Bahasa Indonesia + English' },
   ];
   return React.createElement('div', { className: 'au', style: {
-    display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap',
+    display: 'flex', justifyContent: 'center', gap: 10, flexWrap: 'wrap',
     margin: '40px auto 0', maxWidth: 'min(780px, 100%)',
   } },
-    items.map(function(item, i) {
-      return React.createElement('div', { key: item.label, style: {
-        display: 'flex', alignItems: 'center', gap: 10,
-        padding: '12px 20px', borderRadius: 'var(--r-md)',
+    items.map(function(item) {
+      return React.createElement('div', { key: item.text, style: {
+        display: 'flex', alignItems: 'center', gap: 8,
+        padding: '10px 18px', borderRadius: 999,
         background: 'var(--surface)', border: '1px solid var(--border)',
-        boxShadow: 'var(--sh-xs)',
+        boxShadow: 'var(--sh-xs)', fontSize: 13, fontWeight: 600,
+        color: 'var(--text-1)',
       } },
-        React.createElement('span', { style: { fontSize: 20 } }, item.icon),
-        React.createElement('div', null,
-          React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, item.num),
-          React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' } }, item.label)));
+        React.createElement('span', { style: { fontSize: 16 } }, item.icon),
+        item.text);
     }));
 }
 
@@ -94,23 +92,42 @@ function QLHowItWorks() {
     { icon: '🩺', step: '1', title: 'Conduct the interview', body: 'Ask targeted questions in free text. The AI patient answers only what you ask — just like a real lay patient.' },
     { icon: '📋', step: '2', title: 'List your differentials', body: 'Draft your differential diagnosis, order workup, and propose a management plan before seeing the answer key.' },
     { icon: '📊', step: '3', title: 'Get scored & revealed', body: 'Receive per-item hit/miss scoring, red-flag review, and a full model-answer checklist with management guidelines.' },
-    { icon: '🧭', step: '4', title: 'Follow your mentor plan', body: 'Your AI mentor turns every result into a daily mission, targeted coaching, and a readiness report that tells you when you are exam-ready.' },
   ];
+  var card = function(inner, key, cls, extraStyle) {
+    return React.createElement('div', { key: key, className: cls, style: Object.assign({
+      display: 'flex', gap: 16, alignItems: 'flex-start',
+      padding: 20, borderRadius: 'var(--r-lg)',
+      background: 'var(--surface)', border: '1px solid var(--border)',
+      boxShadow: 'var(--sh-sm)',
+    }, extraStyle || {}) }, inner);
+  };
   return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
+    card([
+      React.createElement('div', { key: 'i', style: {
+        width: 44, height: 44, borderRadius: 'var(--r-md)',
+        background: 'var(--primary)', color: '#fff',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 20, flexShrink: 0,
+      } }, '🧭'),
+      React.createElement('div', { key: 'b', style: { flex: 1 } },
+        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' } },
+          React.createElement('span', { style: {
+            fontSize: 11, fontWeight: 800, color: 'var(--primary)',
+            border: '1.5px dashed var(--primary)', padding: '2px 8px',
+            borderRadius: 999, lineHeight: '18px',
+          } }, 'Optional · start here'),
+          React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)' } }, 'Meet your mentor')),
+        React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, 'Tell the mentor your goal and timeline — it picks the right first case and builds your plan. Skip it and practise freely; the mentor is there when you want direction.')),
+    ], 'mentor', 'as', { border: '1.5px dashed var(--primary)', background: 'var(--primary-l)' }),
     steps.map(function(s, i) {
-      return React.createElement('div', { key: s.title, className: 'as d' + i, style: {
-        display: 'flex', gap: 16, alignItems: 'flex-start',
-        padding: 20, borderRadius: 'var(--r-lg)',
-        background: 'var(--surface)', border: '1px solid var(--border)',
-        boxShadow: 'var(--sh-sm)',
-      } },
-        React.createElement('div', { style: {
+      return card([
+        React.createElement('div', { key: 'i', style: {
           width: 44, height: 44, borderRadius: 'var(--r-md)',
           background: 'var(--primary-l)', color: 'var(--primary)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 20, fontWeight: 800, flexShrink: 0,
         } }, s.icon || s.step),
-        React.createElement('div', { style: { flex: 1 } },
+        React.createElement('div', { key: 'b', style: { flex: 1 } },
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 } },
             React.createElement('span', { style: {
               fontSize: 11, fontWeight: 800, color: 'var(--primary)',
@@ -118,7 +135,8 @@ function QLHowItWorks() {
               borderRadius: 999, lineHeight: '18px',
             } }, 'Step ' + s.step),
             React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)' } }, s.title)),
-          React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, s.body)));
+          React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, s.body)),
+      ], s.title, 'as d' + i, null);
     }));
 }
 
@@ -240,7 +258,7 @@ function QLPricing(props) {
     }));
 }
 
-/* ── Testimonials (carousel) ── */
+/* ── Testimonials (carousel with peeking neighbours) ── */
 function QLTestimonial() {
   var quotes = [
     { text: 'Pasien AI-nya nggak gampang bocor — harus benar-benar gali anamnesisnya. Buat latihan OSCE ini ngebantu banget.', name: 'Nadia Prameswari', meta: 'FK Universitas Indonesia · Koas' },
@@ -250,54 +268,82 @@ function QLTestimonial() {
   var idxState = React.useState(0);
   var idx = idxState[0];
   var setIdx = idxState[1];
-  var q = quotes[idx % quotes.length];
-  var dot = function(i) {
-    return React.createElement('button', {
-      key: i, onClick: function() { setIdx(i); }, 'aria-label': 'Show testimonial ' + (i + 1),
-      style: { width: i === idx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', cursor: 'pointer', background: i === idx ? 'var(--primary)' : 'var(--border)', transition: 'all 0.2s ease', padding: 0 },
-    });
+  var vwState = React.useState(0);
+  var vw = vwState[0];
+  var setVw = vwState[1];
+  var viewRef = React.useRef(null);
+  React.useEffect(function() {
+    var measure = function() {
+      if (viewRef.current) setVw(viewRef.current.offsetWidth || 0);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return function() { window.removeEventListener('resize', measure); };
+  }, []);
+  var GAP = 12;
+  var slideW = vw > 0 ? Math.round(vw * 0.78) : 0;
+  var offset = vw > 0 ? Math.round((vw - slideW) / 2 - idx * (slideW + GAP)) : 0;
+  var go = function(d) { setIdx((idx + d + quotes.length) % quotes.length); };
+  var card = function(q, i) {
+    var active = i === idx;
+    return React.createElement('div', { key: i, style: {
+      flex: '0 0 ' + (slideW > 0 ? slideW + 'px' : '78%'),
+      marginRight: GAP,
+      padding: 28, borderRadius: 'var(--r-xl)',
+      background: 'var(--surface)', border: '1px solid var(--border)',
+      boxShadow: 'var(--sh-md)', textAlign: 'center',
+      opacity: active ? 1 : 0.45,
+      transform: active ? 'scale(1)' : 'scale(0.94)',
+      transition: 'opacity 0.35s ease, transform 0.35s ease',
+    } },
+      React.createElement('div', { style: { fontSize: 32, marginBottom: 12, opacity: 0.3 } }, '❝'),
+      React.createElement('div', { style: { fontSize: 15, color: 'var(--text-1)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 16, minHeight: 78 } }, q.text),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 } },
+        React.createElement('div', { style: {
+          width: 32, height: 32, borderRadius: '50%',
+          background: 'var(--primary-l)', color: 'var(--primary)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 14, fontWeight: 700,
+        } }, q.name.charAt(0)),
+        React.createElement('div', { style: { textAlign: 'left' } },
+          React.createElement('div', { style: { fontSize: 12.5, fontWeight: 700, color: 'var(--text-1)' } }, q.name),
+          React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, q.meta))));
   };
   var arrow = function(dir, label) {
     return React.createElement('button', {
-      onClick: function() { setIdx((idx + dir + quotes.length) % quotes.length); }, 'aria-label': label,
+      onClick: function() { go(dir); }, 'aria-label': label,
       style: { width: 34, height: 34, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 15, fontWeight: 700, cursor: 'pointer', flexShrink: 0 },
     }, dir < 0 ? '‹' : '›');
   };
-  return React.createElement('div', { className: 'au', style: {
-    maxWidth: 'min(620px, calc(100% - 32px))', margin: '0 auto',
-    padding: 28, borderRadius: 'var(--r-xl)',
-    background: 'var(--surface)', border: '1px solid var(--border)',
-    boxShadow: 'var(--sh-md)', textAlign: 'center',
-  } },
-    React.createElement('div', { style: { fontSize: 32, marginBottom: 12, opacity: 0.3 } }, '❝'),
-    React.createElement('div', { key: idx, style: { fontSize: 15, color: 'var(--text-1)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 16, minHeight: 78 } }, q.text),
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 18 } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(680px, calc(100% - 32px))', margin: '0 auto' } },
+    React.createElement('div', { ref: viewRef, style: { overflow: 'hidden', padding: '8px 0 16px' } },
       React.createElement('div', { style: {
-        width: 32, height: 32, borderRadius: '50%',
-        background: 'var(--primary-l)', color: 'var(--primary)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 14, fontWeight: 700,
-      } }, q.name.charAt(0)),
-      React.createElement('div', { style: { textAlign: 'left' } },
-        React.createElement('div', { style: { fontSize: 12.5, fontWeight: 700, color: 'var(--text-1)' } }, q.name),
-        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, q.meta))),
+        display: 'flex', transform: 'translateX(' + offset + 'px)',
+        transition: 'transform 0.4s ease',
+      } }, quotes.map(card))),
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 } },
       arrow(-1, 'Previous testimonial'),
-      React.createElement('div', { style: { display: 'flex', gap: 6 } }, quotes.map(function(_, i) { return dot(i); })),
+      React.createElement('div', { style: { display: 'flex', gap: 6 } },
+        quotes.map(function(_, i) {
+          return React.createElement('button', {
+            key: i, onClick: function() { setIdx(i); }, 'aria-label': 'Show testimonial ' + (i + 1),
+            style: { width: i === idx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', cursor: 'pointer', background: i === idx ? 'var(--primary)' : 'var(--border)', transition: 'all 0.2s ease', padding: 0 },
+          });
+        })),
       arrow(1, 'Next testimonial')));
 }
 
 /* ── FAQ (accordion) ── */
 function QLFAQ() {
   var items = [
-    { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer for medical students. You interview a virtual patient, list your differentials, and get transparent per-item scoring plus a full model-answer reveal.' },
-    { q: 'Who is this for?', a: 'Pre-clinical students building history-taking skills and clinical students (koas) preparing for OSCEs — in Indonesian or English.' },
-    { q: 'How does scoring work?', a: 'Every case carries a structured checklist. The system evaluates your questions (did you cover the key items?), your differentials (red flags, appropriate breadth), and your management plan — then shows you exactly what you missed. Scores are graded conservatively, never inflated.' },
-    { q: 'How many cases are available?', a: 'A growing library of practice cases across 10 specialties (internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology), with new cases added regularly.' },
-    { q: 'What does the AI mentor do?', a: 'Your mentor turns every result into a plan: a daily mission with the right case, targeted coaching on your weak spots, and a readiness report that tells you when you are exam-ready.' },
-    { q: 'What do I get for free?', a: '5 free practice sessions every 30 days, across up to 3 different cases — including full scoring and the model-answer reveal. Subscribe for unlimited practice, all cases, mentor journeys, and readiness tracking.' },
-    { q: 'Can I use this on mobile?', a: 'Yes — Qora works on desktop, tablet, and phone. The interface adapts to your screen size.' },
-    { q: 'Is this a replacement for clinical training?', a: 'No. Qora is a study aid and practice tool. It complements — never replaces — real clinical exposure and supervision.' },
+    { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer for medical students. You interview a virtual patient in free text, list your differentials, propose a management plan — then get transparent per-item scoring plus a full model-answer reveal. It runs in Indonesian and English, on desktop and mobile.' },
+    { q: 'Who is this for?', a: 'Two stages: pre-clinical students building history-taking reflexes before touching the ward, and clinical students (koas) preparing for OSCEs and ukmppd-style stations. If you are outside these stages, the cases will feel either too basic or too narrow — we will expand when the content is ready.' },
+    { q: 'How does scoring work?', a: 'Every case carries a structured checklist covering history, red flags, differentials, investigations, and management. The system checks which items your questions actually covered, whether you caught the safety-critical red flags, and whether your management plan is safe — then shows you exactly what you missed. Scores are graded conservatively and capped when safety fails: a high checklist score never excuses a missed red flag.' },
+    { q: 'How many cases are available?', a: 'A growing library of practice cases across 10 specialties: internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology. Behind that sits a larger clinical library (120+ families) being prepared and clinically reviewed before release.' },
+    { q: 'What does the AI mentor do?', a: 'Three things, all optional. First, it plans: tell it your goal and exam timeline and it picks the right cases in the right order. Second, it coaches: after each session you get targeted feedback on your weak spots, not generic praise. Third, it tracks readiness: a report combining your scores, coverage, and safety record tells you when you are genuinely exam-ready. Skip any of it and practise freely — the mentor never locks content.' },
+    { q: 'What do I get for free?', a: '5 free practice sessions every 30 days, across up to 3 different cases — including full per-item scoring and the model-answer reveal. Subscribe for unlimited practice, the whole case library, daily mentor missions, and the exam-readiness report. Monthly and annual plans are available, with regional pricing for Indonesia and ASEAN.' },
+    { q: 'Can I use this on mobile?', a: 'Yes — Qora works on desktop, tablet, and phone, and the interface adapts to your screen size. Anamnesis practice works well in short bursts between classes; save the full timed OSCE mode for when you can focus.' },
+    { q: 'Is this a replacement for clinical training?', a: 'No. Qora is a study aid and practice tool. It complements — never replaces — real clinical exposure and supervision. It is not a medical device and does not give medical advice; every case is a training simulation with a fixed answer key.' },
   ];
   // One flat state array to comply with React hooks rules
   var openState = React.useState(function() {
@@ -517,7 +563,7 @@ function QoraLanding({ onLogin, onSubscribe }) {
       React.createElement(QLAudience, null)),
 
     // ── How it works ──
-    React.createElement(QLSection, { id: 'how-it-works', title: 'How it works', subtitle: 'Four steps from patient encounter to exam readiness.', dark: true },
+    React.createElement(QLSection, { id: 'how-it-works', title: 'How it works', subtitle: 'Meet your mentor if you want direction — then three steps from patient encounter to clinical mastery.', dark: true },
       React.createElement(QLHowItWorks, null)),
 
     // ── Specialties ──
@@ -526,7 +572,7 @@ function QoraLanding({ onLogin, onSubscribe }) {
 
     // ── Features ──
     React.createElement(QLSection, { id: 'features', title: 'Why Qora is different', subtitle: 'Built like a real examination — not a chatbot quiz.', dark: true },
-      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, textAlign: 'left' } },
+      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 16, textAlign: 'left' } },
         React.createElement(QLFeature, { icon: '\uD83D\uDDE3\uFE0F', title: 'Patients that make you ask', body: 'Like a real lay patient, they answer only what you ask and never volunteer the full story. You learn to elicit \u2014 not just receive.', accent: true }),
         React.createElement(QLFeature, { icon: '\uD83C\uDFAF', title: 'Transparent, calibrated scoring', body: 'Per-item hit/miss against a structured checklist, red-flag screening, and reasoning \u2014 graded conservatively, never inflated.', accent: true }),
         React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.', accent: true }),
