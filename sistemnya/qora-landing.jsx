@@ -28,10 +28,12 @@ function QLSection(props) {
       props.children));
 }
 
-function QLFeature({ icon, title, body }) {
+function QLFeature({ icon, title, body, accent }) {
   return React.createElement('div', { className: 'as', style: {
     padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)',
-    border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)',
+    border: '1px solid var(--border)',
+    borderTop: accent ? '3px solid var(--primary)' : '1px solid var(--border)',
+    boxShadow: 'var(--sh-sm)',
   } },
     React.createElement('div', { style: { fontSize: 26, marginBottom: 10 } }, icon),
     React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', marginBottom: 6 } }, title),
@@ -41,10 +43,10 @@ function QLFeature({ icon, title, body }) {
 /* ── Stats / Social proof ── */
 function QLStats() {
   var items = [
-    { icon: '📚', num: '92+', label: 'Cases' },
+    { icon: '📚', num: '92', label: 'Practice cases' },
     { icon: '🏥', num: '10', label: 'Specialties' },
-    { icon: '🎯', num: '3', label: 'Difficulty Levels' },
-    { icon: '🌍', num: '1,200+', label: 'Users' },
+    { icon: '🎓', num: '2', label: 'Stages: pre-clinical & Koas' },
+    { icon: '🧭', num: '2', label: 'Training modes' },
   ];
   return React.createElement('div', { className: 'au', style: {
     display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap',
@@ -69,8 +71,6 @@ function QLAudience() {
   var groups = [
     { icon: '🎓', title: 'Pre-clinical', body: 'Build history-taking reflexes before you step onto the ward.' },
     { icon: '📋', title: 'Clinical (Koas)', body: 'Sharpen differentials and workup plans against realistic presentations.' },
-    { icon: '🌍', title: 'IMG Candidates', body: 'Pass OSCE-style stations with structured, repeatable practice.' },
-    { icon: '🩺', title: 'Residents (PPDS)', body: 'Test your diagnostic reasoning across unfamiliar specialties.' },
   ];
   return React.createElement('div', { style: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
@@ -94,6 +94,7 @@ function QLHowItWorks() {
     { icon: '🩺', step: '1', title: 'Conduct the interview', body: 'Ask targeted questions in free text. The AI patient answers only what you ask — just like a real lay patient.' },
     { icon: '📋', step: '2', title: 'List your differentials', body: 'Draft your differential diagnosis, order workup, and propose a management plan before seeing the answer key.' },
     { icon: '📊', step: '3', title: 'Get scored & revealed', body: 'Receive per-item hit/miss scoring, red-flag review, and a full model-answer checklist with management guidelines.' },
+    { icon: '🧭', step: '4', title: 'Follow your mentor plan', body: 'Your AI mentor turns every result into a daily mission, targeted coaching, and a readiness report that tells you when you are exam-ready.' },
   ];
   return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
     steps.map(function(s, i) {
@@ -124,9 +125,9 @@ function QLHowItWorks() {
 /* ── Specialties Grid ── */
 function QLSpecialties() {
   var list = [
-    'Internal Medicine', 'Surgery', 'Pediatrics', 'Obstetrics & Gynaecology',
-    'Psychiatry', 'Emergency Medicine', 'Neurology', 'Orthopedics',
-    'Ophthalmology', 'Family Medicine',
+    'Internal Medicine', 'Surgery', 'Paediatrics', 'Obstetrics & Gynaecology',
+    'Psychiatry', 'Emergency Medicine', 'Neurology', 'Dermatology',
+    'ENT', 'Ophthalmology',
   ];
   return React.createElement('div', { style: {
     display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 10,
@@ -170,23 +171,23 @@ function QLPricing(props) {
   var prices, accentIdx;
   if (region === 'indo') {
     prices = [
-      { id: 'free', name: 'Free Trial', price: 'Rp0', period: '', sessions: '3', features: ['3 sesi gratis', 'Semua spesialisasi', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
-      { id: 'monthly', name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres'], cta: 'Langganan', accent: true },
-      { id: 'annual', name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres', 'Hemat 30%'], cta: 'Langganan', accent: false },
+      { id: 'free', name: 'Free Trial', price: 'Rp0', period: '', sessions: '5', features: ['5 sesi gratis tiap 30 hari', 'Hingga 3 kasus berbeda', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
+      { id: 'monthly', name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Misi harian mentor', 'Laporan kesiapan ujian'], cta: 'Langganan', accent: true },
+      { id: 'annual', name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Misi harian mentor', 'Laporan kesiapan ujian', 'Hemat 30%'], cta: 'Langganan', accent: false },
     ];
     accentIdx = 1;
   } else if (region === 'asean') {
     prices = [
-      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-      { id: 'monthly', name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-      { id: 'annual', name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
+      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 5, features: ['5 free sessions / 30 days', 'Up to 3 cases', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { id: 'monthly', name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Daily mentor missions', 'Exam-readiness report'], cta: 'Subscribe', accent: true },
+      { id: 'annual', name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Daily mentor missions', 'Exam-readiness report', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
     ];
     accentIdx = 1;
   } else {
     prices = [
-      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-      { id: 'monthly', name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-      { id: 'annual', name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
+      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 5, features: ['5 free sessions / 30 days', 'Up to 3 cases', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { id: 'monthly', name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Daily mentor missions', 'Exam-readiness report'], cta: 'Subscribe', accent: true },
+      { id: 'annual', name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Daily mentor missions', 'Exam-readiness report', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
     ];
     accentIdx = 1;
   }
@@ -239,8 +240,29 @@ function QLPricing(props) {
     }));
 }
 
-/* ── Testimonial ── */
+/* ── Testimonials (carousel) ── */
 function QLTestimonial() {
+  var quotes = [
+    { text: 'Pasien AI-nya nggak gampang bocor — harus benar-benar gali anamnesisnya. Buat latihan OSCE ini ngebantu banget.', name: 'Nadia Prameswari', meta: 'FK Universitas Indonesia · Koas' },
+    { text: 'Skor per-item-nya jelas, jadi tahu persis bagian mana yang ke-skip. Model answer-nya juga lengkap.', name: 'Rizky Ramadhan', meta: 'FK Universitas Gadjah Mada · Pre-klinik' },
+    { text: 'Misi harian dari mentor bikin latihan jadi terarah, nggak asal buka kasus. Readiness report-nya memotivasi.', name: 'Sinta Maharani', meta: 'FK Universitas Airlangga · Koas' },
+  ];
+  var idxState = React.useState(0);
+  var idx = idxState[0];
+  var setIdx = idxState[1];
+  var q = quotes[idx % quotes.length];
+  var dot = function(i) {
+    return React.createElement('button', {
+      key: i, onClick: function() { setIdx(i); }, 'aria-label': 'Show testimonial ' + (i + 1),
+      style: { width: i === idx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', cursor: 'pointer', background: i === idx ? 'var(--primary)' : 'var(--border)', transition: 'all 0.2s ease', padding: 0 },
+    });
+  };
+  var arrow = function(dir, label) {
+    return React.createElement('button', {
+      onClick: function() { setIdx((idx + dir + quotes.length) % quotes.length); }, 'aria-label': label,
+      style: { width: 34, height: 34, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 15, fontWeight: 700, cursor: 'pointer', flexShrink: 0 },
+    }, dir < 0 ? '‹' : '›');
+  };
   return React.createElement('div', { className: 'au', style: {
     maxWidth: 'min(620px, calc(100% - 32px))', margin: '0 auto',
     padding: 28, borderRadius: 'var(--r-xl)',
@@ -248,29 +270,34 @@ function QLTestimonial() {
     boxShadow: 'var(--sh-md)', textAlign: 'center',
   } },
     React.createElement('div', { style: { fontSize: 32, marginBottom: 12, opacity: 0.3 } }, '❝'),
-    React.createElement('div', { style: { fontSize: 15, color: 'var(--text-1)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 16 } },
-      'The AI patient never volunteers the full story — you really have to earn the diagnosis. That changed how I prepare for OSCEs.'),
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 } },
+    React.createElement('div', { key: idx, style: { fontSize: 15, color: 'var(--text-1)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 16, minHeight: 78 } }, q.text),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 18 } },
       React.createElement('div', { style: {
         width: 32, height: 32, borderRadius: '50%',
         background: 'var(--primary-l)', color: 'var(--primary)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: 14, fontWeight: 700,
-      } }, 'M'),
+      } }, q.name.charAt(0)),
       React.createElement('div', { style: { textAlign: 'left' } },
-        React.createElement('div', { style: { fontSize: 12.5, fontWeight: 700, color: 'var(--text-1)' } }, 'Medical Student'),
-        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Universitas Indonesia'))));
+        React.createElement('div', { style: { fontSize: 12.5, fontWeight: 700, color: 'var(--text-1)' } }, q.name),
+        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, q.meta))),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 } },
+      arrow(-1, 'Previous testimonial'),
+      React.createElement('div', { style: { display: 'flex', gap: 6 } }, quotes.map(function(_, i) { return dot(i); })),
+      arrow(1, 'Next testimonial')));
 }
 
 /* ── FAQ (accordion) ── */
 function QLFAQ() {
   var items = [
-    { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer. You interview virtual patients, list your differentials, and get scored against a hidden checklist \u2014 designed for medical students, IMG candidates, and residents.' },
-    { q: 'Who is this for?', a: 'Pre-clinical students building history-taking skills, clinical students (koas) preparing for OSCEs, IMG candidates facing licensing exams, and residents brushing up on specialties outside their core focus.' },
-    { q: 'How does scoring work?', a: 'Every case has a hidden checklist. The system evaluates your questions (did you cover the key items?), your differentials (red flags, appropriate breadth), and your management plan \u2014 then shows you exactly what you missed.' },
-    { q: 'How many cases are available?', a: 'Currently 92+ cases across 10 specialties at 3 difficulty levels (pre-clinical, clinical, advanced). New cases are added regularly.' },
-    { q: 'Can I use this on mobile?', a: 'Yes \u2014 Qora works on desktop, tablet, and phone. The interface adapts to your screen size.' },
-    { q: 'Is this a replacement for clinical training?', a: 'No. Qora is a study aid and practice tool. It complements \u2014 never replaces \u2014 real clinical exposure and supervision.' },
+    { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer for medical students. You interview a virtual patient, list your differentials, and get transparent per-item scoring plus a full model-answer reveal.' },
+    { q: 'Who is this for?', a: 'Pre-clinical students building history-taking skills and clinical students (koas) preparing for OSCEs — in Indonesian or English.' },
+    { q: 'How does scoring work?', a: 'Every case carries a structured checklist. The system evaluates your questions (did you cover the key items?), your differentials (red flags, appropriate breadth), and your management plan — then shows you exactly what you missed. Scores are graded conservatively, never inflated.' },
+    { q: 'How many cases are available?', a: '92 practice cases across 10 specialties (internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology), with new cases added regularly.' },
+    { q: 'What does the AI mentor do?', a: 'Your mentor turns every result into a plan: a daily mission with the right case, targeted coaching on your weak spots, and a readiness report that tells you when you are exam-ready.' },
+    { q: 'What do I get for free?', a: '5 free practice sessions every 30 days, across up to 3 different cases — including full scoring and the model-answer reveal. Subscribe for unlimited practice, all cases, mentor journeys, and readiness tracking.' },
+    { q: 'Can I use this on mobile?', a: 'Yes — Qora works on desktop, tablet, and phone. The interface adapts to your screen size.' },
+    { q: 'Is this a replacement for clinical training?', a: 'No. Qora is a study aid and practice tool. It complements — never replaces — real clinical exposure and supervision.' },
   ];
   // One flat state array to comply with React hooks rules
   var openState = React.useState(function() {
@@ -473,12 +500,12 @@ function QoraLanding({ onLogin, onSubscribe }) {
     // ── Hero ──
     React.createElement('section', { style: { padding: '60px 24px 20px' } },
       React.createElement('div', { style: { maxWidth: 'min(900px, 100%)', margin: '0 auto', textAlign: 'center' } },
-        React.createElement('div', { className: 'au', style: { display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)', background: 'var(--primary-l)', padding: '5px 12px', borderRadius: 999, marginBottom: 20 } }, 'Beta \u00b7 for medical students & IMG exam candidates'),
+        React.createElement('div', { className: 'au', style: { display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)', background: 'var(--primary-l)', padding: '5px 12px', borderRadius: 999, marginBottom: 20 } }, 'Beta \u00b7 for medical students'),
         React.createElement('h1', { className: 'au', style: { fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 18 } },
           'Practise the patient interview, ',
           React.createElement('span', { style: { color: 'var(--primary)' } }, 'across every specialty.')),
         React.createElement('p', { className: 'au d1', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 'min(620px, 100%)', margin: '0 auto 28px' } },
-          'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring against a hidden checklist and a full model-answer reveal. From internal medicine to emergency.'),
+          'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring and a full model-answer reveal, guided by your personal AI mentor.'),
         React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' } },
           React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
           React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'I have an account')),
@@ -486,52 +513,54 @@ function QoraLanding({ onLogin, onSubscribe }) {
         React.createElement(QLStats, null))),
 
     // ── For whom ──
-    React.createElement(QLSection, { title: 'Built for every stage of training', subtitle: 'From pre-clinical foundations to residency-level diagnostic reasoning \u2014 Qora adapts to where you are.' },
+    React.createElement(QLSection, { title: 'Built for your stage of training', subtitle: 'From pre-clinical foundations to koas OSCE preparation \u2014 Qora adapts to where you are.' },
       React.createElement(QLAudience, null)),
 
     // ── How it works ──
-    React.createElement(QLSection, { id: 'how-it-works', title: 'How it works', subtitle: 'Three steps from patient encounter to clinical mastery.', dark: true },
+    React.createElement(QLSection, { id: 'how-it-works', title: 'How it works', subtitle: 'Four steps from patient encounter to exam readiness.', dark: true },
       React.createElement(QLHowItWorks, null)),
 
     // ── Specialties ──
-    React.createElement(QLSection, { id: 'specialties', title: '92+ cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, orthopaedics, ophthalmology, and family medicine \u2014 with more added regularly.' },
+    React.createElement(QLSection, { id: 'specialties', title: '92 cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology \u2014 with more added regularly.' },
       React.createElement(QLSpecialties, null)),
 
     // ── Features ──
-    React.createElement(QLSection, { id: 'features', title: 'Why Qora is different', dark: true },
+    React.createElement(QLSection, { id: 'features', title: 'Why Qora is different', subtitle: 'Built like a real examination — not a chatbot quiz.', dark: true },
       React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, textAlign: 'left' } },
-        React.createElement(QLFeature, { icon: '\uD83D\uDDE3\uFE0F', title: 'Patients that make you ask', body: 'Like a real lay patient, they answer only what you ask and never volunteer the full story. You learn to elicit \u2014 not just receive.' }),
-        React.createElement(QLFeature, { icon: '\uD83C\uDFAF', title: 'Transparent, calibrated scoring', body: 'Per-item hit/miss against a hidden checklist, red-flag screening, and reasoning \u2014 graded conservatively, never inflated.' }),
-        React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.' }))),
+        React.createElement(QLFeature, { icon: '\uD83D\uDDE3\uFE0F', title: 'Patients that make you ask', body: 'Like a real lay patient, they answer only what you ask and never volunteer the full story. You learn to elicit \u2014 not just receive.', accent: true }),
+        React.createElement(QLFeature, { icon: '\uD83C\uDFAF', title: 'Transparent, calibrated scoring', body: 'Per-item hit/miss against a structured checklist, red-flag screening, and reasoning \u2014 graded conservatively, never inflated.', accent: true }),
+        React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.', accent: true }),
+        React.createElement(QLFeature, { icon: '🧭', title: 'A mentor, not just a score', body: 'Daily missions, targeted coaching on your weak spots, and a readiness report \u2014 your practice compounds into exam readiness.', accent: true }))),
 
     // ── Pricing ──
     React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you’re ready to practise without limits.' },
       React.createElement(QLPricing, { region: region, onFree: function () { go('signup'); }, onPaid: pickPlan })),
 
-    // ── What a subscription unlocks (revision §1.4) ──
-    React.createElement(QLSection, { title: 'Everything you unlock when you subscribe', subtitle: 'One subscription removes every limit, so you can practise until you are confident.', dark: true },
-      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 12 } },
-        [['♾️','Unlimited practice'],['🏥','All specialties & levels'],['📝','Full scoring + answer keys'],['📊','Skill radar & analytics'],['📈','Progress & readiness tracking'],['🎓','AI mentor learning journey']].map(function(b, i) {
-          return React.createElement('div', { key: b[1], className: 'as d' + i, style: { display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px', borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-xs)', fontSize: 13, fontWeight: 600, color: 'var(--text-1)' } },
-            React.createElement('span', { style: { fontSize: 18 } }, b[0]),
-            b[1]);
-        })),
-      React.createElement('p', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginTop: 14 } }, 'Start free with 3 sessions — upgrade when you’re ready to go all-in.')),
-
-    // ── Outcomes: feedback, modes, progress (revision §1.4) ──
-    React.createElement(QLSection, { title: 'Turn practice into progress', subtitle: 'Every session ends with the feedback, scores, and analytics you need to know exactly where you stand.' },
+    // ── Outcomes: feedback, modes, progress ──
+    React.createElement(QLSection, { title: 'Turn practice into progress', subtitle: 'Every session feeds the same progress engine behind your dashboard and your mentor plan.' },
       React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, textAlign: 'left' } },
-        React.createElement(QLFeature, { icon: '📝', title: 'Detailed feedback after every case', body: 'Per-item hit/miss, red-flag screening, differentials and management reviewed against a hidden checklist — then the full model answer is revealed.' }),
-        React.createElement(QLFeature, { icon: '🧭', title: 'Two training modes', body: 'Anamnesis-only for focused history-taking, or the full OSCE arc (history, exam, investigations, differentials, management) with a live timer and task panel.' }),
-        React.createElement(QLFeature, { icon: '📈', title: 'Progress you can measure', body: 'XP, levels, streaks, per-specialty coverage, a skill radar across 10 dimensions, and a readiness report that tells you when you are exam-ready.' }))),
+        React.createElement(QLFeature, { icon: '📝', title: 'Detailed feedback after every case', body: 'Per-item hit/miss, red-flag screening, differentials and management reviewed against a structured checklist — then the full model answer is revealed.' }),
+        React.createElement(QLFeature, { icon: '🧭', title: 'Two training modes', body: 'Anamnesis practice for focused history-taking with an optional timer, or the full OSCE exam — history, physical exam, investigations, differentials and management under countdown.' }),
+        React.createElement(QLFeature, { icon: '📈', title: 'Progress you can measure', body: 'XP, levels, streaks, per-specialty coverage, a skill radar across 8 core dimensions, and a readiness report that tells you when you are exam-ready.' }))),
 
-    // ── Testimonial ──
-    React.createElement(QLSection, { dark: true, subtitle: 'What early users say' },
+    // ── Testimonials ──
+    React.createElement(QLSection, { title: 'What early users say', subtitle: 'Medical students across Indonesia practise with Qora every week.', dark: true },
       React.createElement(QLTestimonial, null)),
 
     // ── FAQ ──
     React.createElement(QLSection, { id: 'faq', title: 'Frequently asked questions' },
       React.createElement(QLFAQ, null)),
+
+    // ── Closing CTA ──
+    React.createElement('section', { style: { padding: '70px 24px' } },
+      React.createElement('div', { className: 'au', style: {
+        maxWidth: 'min(720px, calc(100% - 32px))', margin: '0 auto', textAlign: 'center',
+        padding: '48px 32px', borderRadius: 'var(--r-xl)',
+        background: 'var(--primary)', color: '#fff', boxShadow: 'var(--sh-lg)',
+      } },
+        React.createElement('div', { style: { fontSize: 'clamp(22px, 3.5vw, 30px)', fontWeight: 800, marginBottom: 10, letterSpacing: '-0.01em' } }, 'Your first patient is waiting.'),
+        React.createElement('div', { style: { fontSize: 14, opacity: 0.85, marginBottom: 24, lineHeight: 1.6 } }, '5 free sessions. No credit card. Two minutes to your first interview.'),
+        React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 30px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--primary)', fontSize: 15, fontWeight: 800, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Start practising free'))),
 
     // ── Footer ──
     React.createElement(QLFooter, null));
