@@ -23,9 +23,9 @@ var _mtBtn = function (kind) {
   return base;
 };
 
-function _mtBar(fillPct, height) {
-  return React.createElement('div', { style: { height: height || 8, borderRadius: 99, background: 'var(--surface-3)', overflow: 'hidden' } },
-    React.createElement('div', { style: { width: Math.max(0, Math.min(100, fillPct)) + '%', height: '100%', borderRadius: 99, background: 'var(--primary)', transition: 'width 0.5s ease' } }));
+function _mtBar(fillPct, height, glass) {
+  return React.createElement('div', { style: { height: height || 8, borderRadius: 99, background: glass ? 'rgba(255,255,255,0.38)' : 'var(--surface-3)', overflow: 'hidden' } },
+    React.createElement('div', { style: { width: Math.max(0, Math.min(100, fillPct)) + '%', height: '100%', borderRadius: 99, background: glass ? '#fff' : 'var(--primary)', transition: 'width 0.5s ease' } }));
 }
 
 // ── Premium UI kit for the redesigned mentor flows ─────────────────────
@@ -402,22 +402,22 @@ function QJourneyDashboard(props) {
       : React.createElement(QAMoodBand, { scene: 'lentera', kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5), title: j.package_name || _mt('mentor.title'),
         sub: goalLine || '' }),
     React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobileM ? 12 : -24 } },
-    React.createElement('div', { style: { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--sh-sm)', padding: 20 } },
+    React.createElement('div', { style: { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 'var(--r-lg)', boxShadow: '0 12px 30px rgba(20,10,40,.28), inset 0 1px 0 rgba(255,255,255,.5)', padding: 20, color: '#fff', textShadow: '0 1px 6px rgba(20,10,40,.35)' } },
       // workload completion (planned %, honest progress — NOT readiness)
       React.createElement('div', { style: { marginBottom: 16 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
-          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } },
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, opacity: 0.9 } },
             _mt('mentor.progress').replace('{d}', j.current_day || 1).replace('{n}', total).replace('{p}', progress.percent || 0)),
-          React.createElement('span', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' } }, (progress.percent || 0) + '%')),
-        _mtBar(progress.percent || 0, 10)),
+          React.createElement('span', { style: { fontSize: 22, fontWeight: 800, lineHeight: 1, fontVariantNumeric: 'tabular-nums' } }, (progress.percent || 0) + '%')),
+        _mtBar(progress.percent || 0, 10, true)),
       // readiness now (evidence-driven; target % intentionally not shown)
       React.createElement('div', { style: { marginBottom: 4 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
-          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } },
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, opacity: 0.9 } },
             _mt('mentor.readiness') + ': ' + currentVal + '%'),
-          React.createElement('span', { style: { fontSize: 11, color: 'var(--text-3)', fontWeight: 600 } },
+          React.createElement('span', { style: { fontSize: 11, opacity: 0.85, fontWeight: 600 } },
             _mt('mentor.readiness_start') + ': ' + (r.start != null ? r.start : '–') + '%')),
-        _mtBar(currentVal, 10)))),
+        _mtBar(currentVal, 10, true)))),
     // 2 · Today's Mission (focus, time, encounters, why, CTA)
     mission && mission.state === 'ready' && React.createElement('div', { className: 'as', style: Object.assign({}, _mtCard, { marginTop: 12, padding: 18, border: '1.5px solid var(--primary)' }) },
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 } },
