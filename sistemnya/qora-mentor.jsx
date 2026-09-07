@@ -284,21 +284,33 @@ function QJourneyProposal(props) {
       (function() {
         var rt = proposal.reasoning || '';
         if (!rt) {
+          var ctx = (j && j.context) || {};
           var first = cases[0] || {};
           var last = cases[cases.length - 1] || {};
           var days = proposal.duration_days || cases.length || '';
-          var s1 = 'Rencana ' + days + ' hari ini disusun dari presentasi umum ke kompleks, '
-            + 'ditutup evaluasi menyerupai ujian di hari terakhir.';
+          var pkg = proposal.package_name || j.package_name || '';
+          var s1 = 'Rencana ' + days + ' hari' + (pkg ? ' "' + pkg + '"' : '')
+            + (ctx.goal && ctx.goal !== 'general' ? ' ini disusun untuk ' + ctx.goal : ' ini disusun')
+            + ' dari presentasi umum ke kompleks, supaya fondasimu kuat sebelum masuk materi yang lebih berat.';
+          var weak = ctx.weaknesses || [];
+          var weakTxt = weak.length ? weak.join(', ') : null;
           var s2 = '';
+          if (weakTxt) {
+            s2 = 'Karena titik lemahmu di ' + weakTxt + ', kasus-kasus dipilih untuk melatih area itu secara berulang. ';
+          }
           if (first.focus_area || first.case_id) {
-            s2 = 'Hari 1 mulai dari ' + (first.focus_area || first.case_id);
+            s2 += 'Hari 1 mulai dari ' + (first.focus_area || first.case_id);
             if ((last.focus_area || last.case_id) && cases.length > 1) s2 += ', lalu berlanjut ke ' + (last.focus_area || last.case_id);
-            s2 += ' supaya fondasimu kuat sebelum masuk materi yang lebih berat.';
+            s2 += '.';
           }
           var s3 = '';
+          var ms = proposal.milestones || [];
+          if (ms.length) {
+            s3 = 'Checkpoint: ' + ms.map(function(m) { return 'Hari ' + m.day + ' ' + m.checkpoint; }).join('; ') + '. ';
+          }
           if (r && (r.start != null || r.target != null)) {
-            s3 = 'Targetnya kesiapan naik dari ' + (r.start != null ? r.start + '%' : '?')
-              + ' ke ' + (r.target != null ? r.target + '%' : '?') + ' kalau semua hari diselesaikan.';
+            s3 += 'Kalau semua hari diselesaikan, kesiapan diproyeksikan naik dari '
+              + (r.start != null ? r.start + '%' : '?') + ' ke ' + (r.target != null ? r.target + '%' : '?') + '.';
           }
           rt = [s1, s2, s3].filter(Boolean).join(' ');
         }
@@ -306,11 +318,8 @@ function QJourneyProposal(props) {
       })(),
       changes.length > 0 && React.createElement('div', { style: { marginTop: 10, fontSize: 11, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '8px 12px', borderRadius: 10 } },
         _mt('mentor.changes') + ': ' + changes.join(', ')),
-      err && React.createElement('div', { style: { marginTop: 10, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, err),
-      React.createElement('div', { style: { marginTop: 18, display: 'flex', gap: 10, flexWrap: 'wrap' } },
-        React.createElement(_QBtn, { kind: 'p', lg: true, onClick: props.onAccept, style: { flex: 1, minWidth: 180 } }, _mt('mentor.accept')),
-        React.createElement(_QBtn, { kind: 'g', lg: true, onClick: function () { props.onCancel(); }, style: { minWidth: 120 } }, _mt('mentor.cancel')))),
-    React.createElement('div', Object.assign({}, _mtCard, { marginTop: 12, padding: 16 }),
+      err && React.createElement('div', { style: { marginTop: 10, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, err)),
+    React.createElement('div', Object.assign({}, _mtCard, { marginTop: 16, padding: 16 }),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 } },
         React.createElement(_Mtl, { n: 'edit', s: 14 }), _mt('mentor.customize')),
       React.createElement('div', { style: { display: 'flex', gap: 8, flexWrap: 'wrap' } },
@@ -320,7 +329,10 @@ function QJourneyProposal(props) {
           onKeyDown: function (e) { if (e.key === 'Enter') customize(); },
           style: { flex: 1, minWidth: 'min(220px, 100%)', padding: '10px 12px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 13, fontFamily: 'Plus Jakarta Sans', outline: 'none' },
         }),
-        React.createElement(_QBtn, { kind: 'g', onClick: customize, disabled: busy || !fb.trim() }, busy ? '…' : _mt('mentor.customize')))));
+        React.createElement(_QBtn, { kind: 'g', onClick: customize, disabled: busy || !fb.trim() }, busy ? '…' : _mt('mentor.customize')))),
+    React.createElement('div', { style: { marginTop: 16, display: 'flex', gap: 10, flexWrap: 'wrap' } },
+      React.createElement(_QBtn, { kind: 'p', lg: true, onClick: props.onAccept, style: { flex: 1, minWidth: 180 } }, _mt('mentor.accept')),
+      React.createElement(_QBtn, { kind: 'g', lg: true, onClick: function () { props.onCancel(); }, style: { minWidth: 120 } }, _mt('mentor.cancel'))));
 }
 
 // ── QJourneyDashboard: guided active journey (FASE 10) ─────────────────
