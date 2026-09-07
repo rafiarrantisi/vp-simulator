@@ -1586,14 +1586,15 @@ function QoraDashboard({ onNav, onStartCase }) {
     sub: 'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.' },
     // Floating glass level panel (GDV §9: one per band, hidden on narrow screens)
     React.createElement('div', { style: { position: 'absolute', right: 26, top: 24, width: 250, padding: '17px 19px', borderRadius: 18,
-      background: 'rgba(255,255,255,0.16)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-      border: '1px solid rgba(255,255,255,0.34)', boxShadow: '0 12px 30px rgba(20,10,40,.22), inset 0 1px 0 rgba(255,255,255,.4)', color: '#fff' } },
-      React.createElement('div', { style: { fontSize: 10, letterSpacing: '.16em', fontWeight: 700, opacity: .78, textTransform: 'uppercase' } }, _t('dashboard.level_progress')),
+      background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+      border: '1px solid rgba(255,255,255,0.55)', boxShadow: '0 12px 30px rgba(20,10,40,.28), inset 0 1px 0 rgba(255,255,255,.5)', color: '#fff',
+      textShadow: '0 1px 6px rgba(20,10,40,.35)' } },
+      React.createElement('div', { style: { fontSize: 10, letterSpacing: '.16em', fontWeight: 700, opacity: .9, textTransform: 'uppercase' } }, _t('dashboard.level_progress')),
       React.createElement('div', { style: { fontSize: 19, fontWeight: 800, letterSpacing: '-.02em', margin: '5px 0 3px', lineHeight: 1.25, overflowWrap: 'break-word', fontVariantNumeric: 'tabular-nums' } }, 'Lv ' + level + ' · ' + levelName),
-      React.createElement('div', { style: { fontSize: 12, opacity: .82, fontVariantNumeric: 'tabular-nums' } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' ' + _t('dashboard.xp_in_level')),
-      React.createElement('div', { style: { height: 6, borderRadius: 99, background: 'rgba(255,255,255,0.26)', overflow: 'hidden', marginTop: 11 } },
+      React.createElement('div', { style: { fontSize: 12, opacity: .93, fontVariantNumeric: 'tabular-nums' } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' ' + _t('dashboard.xp_in_level')),
+      React.createElement('div', { style: { height: 6, borderRadius: 99, background: 'rgba(255,255,255,0.38)', overflow: 'hidden', marginTop: 11 } },
         React.createElement('div', { style: { height: '100%', borderRadius: 99, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease)' } })),
-      React.createElement('div', { style: { fontSize: 11.5, opacity: .72, marginTop: 8, fontVariantNumeric: 'tabular-nums' } }, _t('dashboard.to_next_level', { n: 200 - xpInLevel }))),
+      React.createElement('div', { style: { fontSize: 11.5, opacity: .86, marginTop: 8, fontVariantNumeric: 'tabular-nums' } }, _t('dashboard.to_next_level', { n: 200 - xpInLevel }))),
     // CTA row (content preserved; constrained clear of the floating panel on desktop)
     React.createElement('div', { style: ctaRow },
       React.createElement('button', { onClick: () => onNav('cases'), style: ctaPrimary }, React.createElement(QIcon, { n: 'play', s: 15 }), _t('dashboard.start_new_case')),
@@ -1609,12 +1610,20 @@ function QoraDashboard({ onNav, onStartCase }) {
 
   // Compact art heroes cannot host the overlap (title would slide under the
   // cards), so mobile stats sit below the band on the page surface.
-  const stats = React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobile ? 12 : -72, display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: isMobile ? 10 : 14, marginBottom: isMobile ? 16 : 24 } },
+  const statCards = [
     React.createElement(QDStat, { label: _t('dashboard.cases_completed'), value: completedCases, icon: 'cases', compact: isMobile, sub: _t('dashboard.coverage') + ': ' + specKeys.length }),
     React.createElement(QDStat, { label: _t('dashboard.sessions'), value: totalSessions, icon: 'history', compact: isMobile, sub: 'practice encounters' }),
     // No evidence → '–', never a fake 0% verdict (FASE 9 onboarding state).
     React.createElement(QDStat, { label: _t('dashboard.avg_score'), value: hasEvidence ? avgScore + '%' : '–', icon: 'chart', compact: isMobile, sub: hasEvidence ? Object.keys(dims).length + ' dimensions' : _t('dashboard.onboarding_title') }),
-    React.createElement(QDStat, { label: _t('dashboard.streak'), value: p.streak ? p.streak + 'd' : '0d', icon: 'flame', compact: isMobile, sub: p.streak ? 'days in a row' : 'start your streak' }));
+    React.createElement(QDStat, { label: _t('dashboard.streak'), value: p.streak ? p.streak + 'd' : '0d', icon: 'flame', compact: isMobile, sub: p.streak ? 'days in a row' : 'start your streak' })];
+  // Desktop: inset the row so its outer edges break alignment with the hero
+  // band, and lift the first/last cards — floating, staggered rhythm.
+  const statItems = isMobile ? statCards : statCards.map(function(card, i) {
+    var lift = (i === 0 || i === statCards.length - 1);
+    return React.createElement('div', { key: i, style: lift ? { transform: 'translateY(-10px)' } : null }, card);
+  });
+  const stats = React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobile ? 12 : -72, display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: isMobile ? 10 : 14, marginBottom: isMobile ? 16 : 24, marginLeft: isMobile ? 0 : 14, marginRight: isMobile ? 0 : 14 } },
+    statItems);
 
   const journeyCard = activeJourney && React.createElement('div', { className: 'as', style: Object.assign({}, panel, { marginBottom: isMobile ? 16 : 20, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }) },
     React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: 'var(--primary-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', flexShrink: 0 } },
