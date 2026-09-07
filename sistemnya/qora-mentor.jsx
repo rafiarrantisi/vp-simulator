@@ -148,20 +148,9 @@ function _dayCardState(st) {
 }
 
 function QDayCarousel(props) {
-  var isTablet = (typeof useIsTablet === 'function') ? useIsTablet() : false;
-  var ref = React.useRef(null);
-  function scrollByDir(dir) {
-    var el = ref.current;
-    if (!el) return;
-    try { el.scrollBy({ left: dir * (el.clientWidth * 0.7), behavior: 'smooth' }); } catch (e) { el.scrollLeft += dir * 300; }
-  }
   var ls = props.cases || [];
-  return React.createElement('div', { style: { position: 'relative' } },
-    React.createElement('div', { ref: ref, style: {
-      display: 'flex', gap: 12, overflowX: 'auto', padding: '4px 2px 14px',
-      scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'thin',
-    } },
-      ls.map(function (c) {
+  return React.createElement('div', { style: { display: 'flex', flexDirection: 'column' } },
+      ls.map(function (c, ci) {
         // Status: trust real statuses on an ACTIVE journey; for a proposed
         // journey the cases carry a non-actionable status, so fall back to
         // day-based progression (Day 1 available, the rest locked).
@@ -176,56 +165,68 @@ function QDayCarousel(props) {
           : clickable
             ? _mt('mentor.available_now')
             : _mt('mentor.locked').replace('{d}', Math.max(1, (c.day || 2) - 1));
-        return React.createElement('button', {
-          key: c.day + '-' + st, className: 'daycard as',
-          onClick: function () { if (clickable && props.onStart) props.onStart(c); },
-          disabled: !clickable,
-          style: {
-            minWidth: 'min(240px, 82vw)', scrollSnapAlign: 'start', flexShrink: 0, appearance: 'none',
-            padding: 18, borderRadius: 'var(--r-xl)', textAlign: 'left',
-            background: s.bg, border: '1.5px solid ' + s.border,
-            borderTop: '4px solid ' + (st === 'completed' ? 'var(--teal)' : (clickable ? 'var(--primary)' : s.border)),
-            boxShadow: clickable ? 'var(--sh-md)' : 'none',
-            cursor: clickable ? 'pointer' : 'default',
-            opacity: st === 'locked' ? 0.72 : 1,
-            transition: 'transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease',
-            display: 'flex', flexDirection: 'column', gap: 9,
+        var last = ci === ls.length - 1;
+        var nodeBg = st === 'completed' ? 'var(--teal)' : (clickable ? 'var(--primary)' : 'var(--surface-2)');
+        var nodeFg = (st === 'completed' || clickable) ? '#fff' : 'var(--text-3)';
+        var nodeBorder = (st === 'completed' || clickable) ? 'none' : '1.5px solid var(--border)';
+        return React.createElement('div', { key: c.day + '-' + st, style: { display: 'flex', gap: 12, alignItems: 'stretch' } },
+          React.createElement('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 34 } },
+            React.createElement('div', { style: {
+              width: 34, height: 34, borderRadius: '50%', background: nodeBg, color: nodeFg, border: nodeBorder,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 13, fontWeight: 800, fontVariantNumeric: 'tabular-nums', flexShrink: 0,
+            } }, st === 'completed' ? '✓' : (st === 'locked' ? '\uD83D\uDD12' : c.day)),
+            !last && React.createElement('div', { style: {
+              width: 2, flex: 1, minHeight: 14, borderRadius: 2, margin: '6px 0',
+              background: st === 'completed' ? 'var(--teal)' : 'var(--border)',
+            } })),
+          React.createElement('button', {
+            onClick: function () { if (clickable && props.onStart) props.onStart(c); },
+            disabled: !clickable,
+            style: {
+              flex: 1, minWidth: 0, appearance: 'none', textAlign: 'left',
+              padding: '13px 16px', marginBottom: last ? 0 : 10, borderRadius: 'var(--r-lg)',
+              background: s.bg, border: '1.5px solid ' + s.border,
+              boxShadow: clickable ? 'var(--sh-sm)' : 'none',
+              cursor: clickable ? 'pointer' : 'default',
+              opacity: st === 'locked' ? 0.72 : 1,
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease',
+              display: 'flex', flexDirection: 'column', gap: 6,
+            },
           },
-        },
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 } },
-            React.createElement('span', { style: { fontSize: 21, fontWeight: 800, letterSpacing: '-0.02em', color: clickable ? 'var(--primary)' : 'var(--text-1)', fontVariantNumeric: 'tabular-nums' } }, (st === 'locked' ? '\uD83D\uDD12 ' : '') + 'Day ' + c.day),
+          React.createElement('div', { style: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 } },
+            React.createElement('span', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.35, minWidth: 0 } },
+              c.focus_area || c.case_id),
             React.createElement(_QPill, { kind: s.pill }, pillLabel)),
-          React.createElement('div', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.35 } },
-            c.focus_area || c.case_id),
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--text-3)', fontWeight: 500 } },
             React.createElement(_Mtl, { n: 'clock', s: 13 }), '~' + (c.estimated_minutes || 15) + ' min'),
           (clickable || st === 'completed') && React.createElement('div', { style: { marginTop: 2, display: 'inline-flex', alignItems: 'center', gap: 6, color: s.fg, fontSize: 12, fontWeight: 700 } },
             React.createElement(_Mtl, { n: st === 'completed' ? 'check' : 'play', s: 14 }),
-            st === 'completed' ? (c.score != null ? 'Skor ' + c.score + '%' : (props.doneLabel || 'Selesai')) : _mt('mentor.start_case')));
-      })),
-    !isTablet && React.createElement('div', { style: { display: 'flex', gap: 8, justifyContent: 'center', marginTop: 4 } },
-      React.createElement('button', { onClick: function () { scrollByDir(-1); }, style: { width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }, 'aria-label': 'Previous' },
-        React.createElement(_Mtl, { n: 'al', s: 16 })),
-      React.createElement('button', { onClick: function () { scrollByDir(1); }, style: { width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }, 'aria-label': 'Next' },
-        React.createElement(_Mtl, { n: 'ar', s: 16 }))));
+            st === 'completed' ? (c.score != null ? 'Skor ' + c.score + '%' : (props.doneLabel || 'Selesai')) : _mt('mentor.start_case'))))
+      }));
 }
+
+// ── Shared: "why this plan" as scannable bullet cards (§4.5) ──
 
 // ── Shared: "why this plan" as scannable bullet cards (§4.5) ──
 function QReasonCard(props) {
   var text = String(props.reasoning || '');
-  var raw = text.split(/\n|•|;/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 2; });
-  var points = raw.length > 1 ? raw
-    : text.split(/(?<=[.!?])\s+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 2; }).slice(0, 6);
+  var listed = /[•\n]/.test(text);
+  var points = listed
+    ? text.split(/\n|•|;/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 2; }).slice(0, 6)
+    : [text.trim()];
   if (!points.length) points = [text];
   return React.createElement('div', { style: { marginTop: 14, padding: '16px 18px', borderRadius: 'var(--r-lg)', background: 'var(--violet-l)', border: '1px solid var(--violet)' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--violet)', marginBottom: 10 } },
       React.createElement(_Mtl, { n: 'spark', s: 15 }), _mt('mentor.reasoning')),
-    React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 7 } },
-      points.map(function (pt, i) {
-        return React.createElement('div', { key: i, style: { display: 'flex', gap: 9, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.55 } },
-          React.createElement('span', { style: { color: 'var(--violet)', fontWeight: 800, flexShrink: 0 } }, '•'),
-          pt);
-      })));
+    (!listed
+      ? React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7 } }, points[0])
+      : React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 7 } },
+        points.map(function (pt, i) {
+          return React.createElement('div', { key: i, style: { display: 'flex', gap: 9, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.55 } },
+            React.createElement('span', { style: { color: 'var(--violet)', fontWeight: 800, flexShrink: 0 } }, '•'),
+            pt);
+        }))));
 }
 
 // ── QJourneyProposal ────────────────────────────────────────────────────
@@ -285,12 +286,21 @@ function QJourneyProposal(props) {
         if (!rt) {
           var first = cases[0] || {};
           var last = cases[cases.length - 1] || {};
-          var bits = [];
-          bits.push('Rencana ' + (proposal.duration_days || cases.length || '') + ' hari' + (proposal.package_name || j.package_name ? ' "' + (proposal.package_name || j.package_name) + '"' : ''));
-          if (first.focus_area || first.case_id) bits.push('mulai dari ' + (first.focus_area || first.case_id) + ' di Hari 1');
-          if ((last.focus_area || last.case_id) && cases.length > 1) bits.push('berlanjut ke ' + (last.focus_area || last.case_id));
-          if (r && (r.start != null || r.target != null)) bits.push('kesiapan ' + (r.start != null ? r.start + '%' : '?') + ' → ' + (r.target != null ? r.target + '%' : '?'));
-          rt = bits.filter(Boolean).join('; ') + '.';
+          var days = proposal.duration_days || cases.length || '';
+          var s1 = 'Rencana ' + days + ' hari ini disusun dari presentasi umum ke kompleks, '
+            + 'ditutup evaluasi menyerupai ujian di hari terakhir.';
+          var s2 = '';
+          if (first.focus_area || first.case_id) {
+            s2 = 'Hari 1 mulai dari ' + (first.focus_area || first.case_id);
+            if ((last.focus_area || last.case_id) && cases.length > 1) s2 += ', lalu berlanjut ke ' + (last.focus_area || last.case_id);
+            s2 += ' supaya fondasimu kuat sebelum masuk materi yang lebih berat.';
+          }
+          var s3 = '';
+          if (r && (r.start != null || r.target != null)) {
+            s3 = 'Targetnya kesiapan naik dari ' + (r.start != null ? r.start + '%' : '?')
+              + ' ke ' + (r.target != null ? r.target + '%' : '?') + ' kalau semua hari diselesaikan.';
+          }
+          rt = [s1, s2, s3].filter(Boolean).join(' ');
         }
         return rt && React.createElement(QReasonCard, { reasoning: rt });
       })(),
