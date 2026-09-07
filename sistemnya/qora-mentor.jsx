@@ -90,7 +90,7 @@ function QMentorChat(props) {
     { icon: '🎯', text: _mt('mentor.cap_coach') },
     { icon: '📈', text: _mt('mentor.cap_ready') },
   ];
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 800, margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', { style: {
       borderRadius: 'var(--r-xl)', padding: '26px 24px', marginBottom: 16,
       background: 'linear-gradient(135deg, var(--primary) 0%, #7B57C4 60%, #9B4A96 100%)',
@@ -102,10 +102,10 @@ function QMentorChat(props) {
           React.createElement(_Mtl, { n: 'spark', s: 22 })),
         React.createElement('div', { style: { fontSize: 22, fontWeight: 800, lineHeight: 1.15 } }, _mt('mentor.title'))),
       React.createElement('div', { style: { fontSize: 13.5, lineHeight: 1.65, opacity: 0.92, marginBottom: 14 } }, _mt('mentor.subtitle')),
-      React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
+      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 } },
         caps.map(function(c, i) {
-          return React.createElement('div', { key: i, style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 600, background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.25)', padding: '6px 12px', borderRadius: 999 } },
-            React.createElement('span', null, c.icon), c.text);
+          return React.createElement('div', { key: i, style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, fontSize: 11.5, fontWeight: 600, background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.25)', padding: '10px 6px', borderRadius: 12, textAlign: 'center', lineHeight: 1.35 } },
+            React.createElement('span', { style: { fontSize: 18 } }, c.icon), c.text);
         }))),
     React.createElement('div', Object.assign({}, _mtCard, { padding: 16 }),
       React.createElement('div', { style: { fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 } }, _mt('mentor.tell_qora')),
@@ -484,7 +484,7 @@ function QContinuityBanner(props) {
   var p = props.pending;
   if (!p) return null;
   var story = p.story_so_far || {};
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '16px auto 0', padding: '0 16px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 800, margin: '16px auto 0', padding: '0 16px' } },
     React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--violet-l)', border: '1px solid var(--violet)', boxShadow: 'var(--sh-sm)' } },
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 } },
         React.createElement('span', { style: { fontSize: 18 } }, '🔄'),
@@ -523,7 +523,7 @@ function QReadinessReport(props) {
   var readiness = r.readiness || {};
   var dims = readiness.dimensions || {};
   var interp = readiness.interpretation || {};
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 800, margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
       React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 14 } }, '📊 ' + _mt('mentor.readiness_report')),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginBottom: 14 } },
@@ -616,18 +616,18 @@ function QMentorScreen(props) {
   if (loading) return React.createElement('div', { style: { padding: 60, textAlign: 'center', color: 'var(--text-3)', fontSize: 13 } }, _mt('common.loading'));
   if (view === 'report' && report) {
     return React.createElement(React.Fragment, null,
-      React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0' } },
+      React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '16px 16px 0' } },
         React.createElement(_QBtn, { kind: 'g', onClick: function () { setView('dashboard'); } }, '← ' + _mt('mentor.back_to_journey'))),
       React.createElement(QReadinessReport, { data: report }));
   }
   if (view === 'proposal' && journey) {
     return React.createElement(React.Fragment, null,
-      err && React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
+      err && React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
       React.createElement(QJourneyProposal, { journey: journey, onAccept: accept, onUpdated: onUpdated, onCancel: cancel }));
   }
   if (view === 'dashboard' && journey) {
     return React.createElement(React.Fragment, null,
-      err && React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
+      err && React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
       React.createElement(QContinuityBanner, { pending: pending }),
       React.createElement(QoraErrorBoundary, { key: journey.id + '-' + journey.status, screen: 'mentor-journey',
         onBack: function () { try { qoraGo('/dashboard'); } catch (e) {} } },
