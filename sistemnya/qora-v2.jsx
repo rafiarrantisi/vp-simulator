@@ -171,7 +171,7 @@ function QV2Catalogue({ onPick, onProgress }) {
   const _qq = (q || '').toLowerCase().trim();
   const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)) && (!_qq || ((c.presentation || '') + ' ' + (c.first_impression || '') + ' ' + (c.first_impression_id || '') + ' ' + (c.specialty || '')).toLowerCase().includes(_qq)));
   const DIFF_LABEL = { '1': _t('cases.difficulty_1'), '2': _t('cases.difficulty_2'), '3': _t('cases.difficulty_3') };
-  return React.createElement('div', { style: { maxWidth: 'min(1080px, calc(100% - 24px))', margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { style: { maxWidth: 'min(1280px, calc(100% - 24px))', margin: '0 auto', padding: '24px 16px' } },
     // GDV §4: pita suasana "Senja" — siluet rak arsip
     React.createElement(QAMoodBand, { scene: 'senja', kicker: (specs.length ? specs.length + ' SPECIALTIES' : 'CASE LIBRARY'),
       title: _t('cases.title'),
@@ -1646,7 +1646,7 @@ function QoraDashboard({ onNav, onStartCase }) {
   const rightCol = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: isMobile ? 16 : 20, minWidth: 0 } },
     readinessCard, achieveCard, coverageCard);
 
-  return React.createElement('div', { style: { maxWidth: 'min(1100px, calc(100% - 32px))', margin: '0 auto', padding: isMobile ? '16px 0 calc(96px + env(safe-area-inset-bottom, 0px))' : '32px 0 calc(60px + env(safe-area-inset-bottom, 0px))' } },
+  return React.createElement('div', { style: { maxWidth: 'min(1280px, calc(100% - 32px))', margin: '0 auto', padding: isMobile ? '16px 0 calc(96px + env(safe-area-inset-bottom, 0px))' : '32px 0 calc(60px + env(safe-area-inset-bottom, 0px))' } },
     // ── Hero: pita suasana "Fajar" (GDV §4) — glass kept, never generic solid ──
     hero,
     stats,
