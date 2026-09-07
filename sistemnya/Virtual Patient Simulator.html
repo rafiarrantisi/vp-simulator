@@ -199,7 +199,7 @@
           React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: '38%', right: -70, border: '1.5px solid rgba(92,63,150,0.09)' } })),
 
         // Main content
-        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
+        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1, minHeight: isMobile ? 'calc(100vh - 320px)' : 'calc(100vh - 280px)' } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),

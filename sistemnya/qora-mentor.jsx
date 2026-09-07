@@ -84,14 +84,40 @@ function QMentorChat(props) {
       .then(function (j) { props.onJourney(j); })
       .catch(function (e) { setErr(e.message || 'Gagal membuat rencana'); setBusy(false); });
   }
+  var examples = [_mt('mentor.example_1'), _mt('mentor.example_2'), _mt('mentor.example_3')];
+  var caps = [
+    { icon: '🗺️', text: _mt('mentor.cap_plan') },
+    { icon: '🎯', text: _mt('mentor.cap_coach') },
+    { icon: '📈', text: _mt('mentor.cap_ready') },
+  ];
   return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '24px 16px' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 6 } },
-      React.createElement('div', { className: 'hdr-badge' }, React.createElement(_Mtl, { n: 'spark', s: 22 })),
-      React.createElement('div', null,
-        React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.15 } }, _mt('mentor.title')),
-        React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginTop: 2, fontWeight: 600 } }, _mt('mentor.subtitle')))),
+    React.createElement('div', { style: {
+      borderRadius: 'var(--r-xl)', padding: '26px 24px', marginBottom: 16,
+      background: 'linear-gradient(135deg, var(--primary) 0%, #7B57C4 60%, #9B4A96 100%)',
+      color: '#fff', boxShadow: 'var(--sh-lg)', position: 'relative', overflow: 'hidden',
+    } },
+      React.createElement('div', { style: { position: 'absolute', width: 200, height: 200, borderRadius: '50%', top: -90, right: -60, background: 'rgba(255,255,255,0.12)', pointerEvents: 'none' } }),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 } },
+        React.createElement('div', { style: { width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 } },
+          React.createElement(_Mtl, { n: 'spark', s: 22 })),
+        React.createElement('div', { style: { fontSize: 22, fontWeight: 800, lineHeight: 1.15 } }, _mt('mentor.title'))),
+      React.createElement('div', { style: { fontSize: 13.5, lineHeight: 1.65, opacity: 0.92, marginBottom: 14 } }, _mt('mentor.subtitle')),
+      React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8 } },
+        caps.map(function(c, i) {
+          return React.createElement('div', { key: i, style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 600, background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.25)', padding: '6px 12px', borderRadius: 999 } },
+            React.createElement('span', null, c.icon), c.text);
+        }))),
     React.createElement('div', Object.assign({}, _mtCard, { padding: 16 }),
       React.createElement('div', { style: { fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 } }, _mt('mentor.tell_qora')),
+      React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', marginBottom: 8 } }, _mt('mentor.try_label')),
+      React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
+        examples.map(function(ex, i) {
+          return React.createElement('button', { key: i, onClick: function() { setStory(ex); }, style: {
+            fontSize: 12, fontWeight: 600, color: 'var(--primary)', background: 'var(--primary-l)',
+            border: '1px solid var(--border)', borderRadius: 999, padding: '7px 13px', cursor: 'pointer',
+            fontFamily: 'Plus Jakarta Sans', textAlign: 'left',
+          } }, '✨ ' + ex);
+        })),
       React.createElement('textarea', {
         value: story, onChange: function (e) { setStory(e.target.value); },
         placeholder: _mt('mentor.chat_placeholder'),
