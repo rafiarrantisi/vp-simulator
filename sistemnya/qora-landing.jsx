@@ -521,7 +521,7 @@ function QoraLanding({ onLogin, onSubscribe }) {
       React.createElement(QLHowItWorks, null)),
 
     // ── Specialties ──
-    React.createElement(QLSection, { id: 'specialties', title: '92 cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology \u2014 with more added regularly.' },
+    React.createElement(QLSection, { id: 'specialties', title: '92 cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology \u2014 plus a growing library of 120+ clinical families in preparation.' },
       React.createElement(QLSpecialties, null)),
 
     // ── Features ──
