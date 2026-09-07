@@ -67,7 +67,8 @@ async function _apiFetch(path, opts, _retried) {
   var auth = _readApiAuth();
   if (auth && auth.token) headers['Authorization'] = 'Bearer ' + auth.token;
   var controller = new AbortController();
-  var timeout = setTimeout(function () { controller.abort(); }, 30000);
+  var timeoutMs = (opts && opts.timeoutMs) || 30000;
+  var timeout = setTimeout(function () { controller.abort(); }, timeoutMs);
   var res;
   try {
     res = await fetch(_apiBase() + path, {
@@ -76,8 +77,12 @@ async function _apiFetch(path, opts, _retried) {
       body: opts.body ? JSON.stringify(opts.body) : undefined,
       signal: controller.signal,
     });
-  } finally {
+  } catch (e) {
     clearTimeout(timeout);
+    if (e && (e.name === 'AbortError' || /abort/i.test(String((e && e.message) || '')))) {
+      throw new Error('Request timed out — the server is taking too long. Please try again.');
+    }
+    throw e;
   }
   if (res.status === 401 && !_retried && path.indexOf('/api/auth/') !== 0) {
     var nt = await _qoraRefreshToken();

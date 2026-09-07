@@ -80,7 +80,7 @@ function QMentorChat(props) {
     var s = story.trim();
     if (!s || busy) return;
     setBusy(true); setErr('');
-    qv2Fetch('/api/v2/mentor/story', { method: 'POST', body: { story: s } })
+    qv2Fetch('/api/v2/mentor/story', { method: 'POST', body: { story: s }, timeoutMs: 120000 })
       .then(function (j) { props.onJourney(j); })
       .catch(function (e) { setErr(e.message || 'Gagal membuat rencana'); setBusy(false); });
   }
@@ -184,6 +184,7 @@ function QDayCarousel(props) {
             minWidth: 'min(240px, 82vw)', scrollSnapAlign: 'start', flexShrink: 0, appearance: 'none',
             padding: 18, borderRadius: 'var(--r-xl)', textAlign: 'left',
             background: s.bg, border: '1.5px solid ' + s.border,
+            borderTop: '4px solid ' + (st === 'completed' ? 'var(--teal)' : (clickable ? 'var(--primary)' : s.border)),
             boxShadow: clickable ? 'var(--sh-md)' : 'none',
             cursor: clickable ? 'pointer' : 'default',
             opacity: st === 'locked' ? 0.72 : 1,
@@ -192,7 +193,7 @@ function QDayCarousel(props) {
           },
         },
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 } },
-            React.createElement('span', { style: { fontSize: 21, fontWeight: 800, letterSpacing: '-0.02em', color: clickable ? 'var(--primary)' : 'var(--text-1)', fontVariantNumeric: 'tabular-nums' } }, 'Day ' + c.day),
+            React.createElement('span', { style: { fontSize: 21, fontWeight: 800, letterSpacing: '-0.02em', color: clickable ? 'var(--primary)' : 'var(--text-1)', fontVariantNumeric: 'tabular-nums' } }, (st === 'locked' ? '\uD83D\uDD12 ' : '') + 'Day ' + c.day),
             React.createElement(_QPill, { kind: s.pill }, pillLabel)),
           React.createElement('div', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.35 } },
             c.focus_area || c.case_id),
@@ -240,7 +241,7 @@ function QJourneyProposal(props) {
   function customize() {
     if (!fb.trim() || busy) return;
     setBusy(true); setErr('');
-    qv2Fetch('/api/v2/mentor/journeys/' + j.id + '/customize', { method: 'POST', body: { feedback: fb } })
+    qv2Fetch('/api/v2/mentor/journeys/' + j.id + '/customize', { method: 'POST', body: { feedback: fb }, timeoutMs: 120000 })
       .then(function (d) {
         setChanges(d.changes || []);
         props.onUpdated(d.updated_proposal);
@@ -279,7 +280,20 @@ function QJourneyProposal(props) {
         React.createElement('div', { style: { height: '100%', borderRadius: 99, background: '#fff', width: startVal + '%', transition: 'width 1s var(--ease)' } }))),
     React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
       React.createElement(QDayCarousel, { cases: cases, onStart: startCase, doneLabel: 'Selesai' }),
-      proposal.reasoning && React.createElement(QReasonCard, { reasoning: proposal.reasoning }),
+      (function() {
+        var rt = proposal.reasoning || '';
+        if (!rt) {
+          var first = cases[0] || {};
+          var last = cases[cases.length - 1] || {};
+          var bits = [];
+          bits.push('Rencana ' + (proposal.duration_days || cases.length || '') + ' hari' + (proposal.package_name || j.package_name ? ' "' + (proposal.package_name || j.package_name) + '"' : ''));
+          if (first.focus_area || first.case_id) bits.push('mulai dari ' + (first.focus_area || first.case_id) + ' di Hari 1');
+          if ((last.focus_area || last.case_id) && cases.length > 1) bits.push('berlanjut ke ' + (last.focus_area || last.case_id));
+          if (r && (r.start != null || r.target != null)) bits.push('kesiapan ' + (r.start != null ? r.start + '%' : '?') + ' → ' + (r.target != null ? r.target + '%' : '?'));
+          rt = bits.filter(Boolean).join('; ') + '.';
+        }
+        return rt && React.createElement(QReasonCard, { reasoning: rt });
+      })(),
       changes.length > 0 && React.createElement('div', { style: { marginTop: 10, fontSize: 11, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '8px 12px', borderRadius: 10 } },
         _mt('mentor.changes') + ': ' + changes.join(', ')),
       err && React.createElement('div', { style: { marginTop: 10, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, err),
