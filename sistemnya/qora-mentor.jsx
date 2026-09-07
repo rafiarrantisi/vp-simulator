@@ -402,7 +402,7 @@ function QJourneyDashboard(props) {
       : React.createElement(QAMoodBand, { scene: 'lentera', kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5), title: j.package_name || _mt('mentor.title'),
         sub: goalLine || '' }),
     React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobileM ? 12 : -24 } },
-    React.createElement('div', { style: { background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)', border: '1px solid rgba(255,255,255,0.55)', borderRadius: 'var(--r-lg)', boxShadow: '0 12px 30px rgba(20,10,40,.28), inset 0 1px 0 rgba(255,255,255,.5)', padding: 20, color: '#fff', textShadow: '0 1px 6px rgba(20,10,40,.35)' } },
+    React.createElement('div', { style: { background: 'rgba(30,15,50,0.55)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)', border: '1px solid rgba(255,255,255,0.35)', borderRadius: 'var(--r-lg)', boxShadow: '0 12px 30px rgba(20,10,40,.35), inset 0 1px 0 rgba(255,255,255,.25)', padding: 20, color: '#fff', textShadow: '0 1px 6px rgba(20,10,40,.5)' } },
       // workload completion (planned %, honest progress — NOT readiness)
       React.createElement('div', { style: { marginBottom: 16 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
