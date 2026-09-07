@@ -171,11 +171,12 @@ function QLHowItWorks() {
         React.createElement('div', { key: 'b', style: { flex: 1 } },
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 } },
             React.createElement('span', { style: {
-              fontSize: 11, fontWeight: 800, color: 'var(--primary)',
-              background: 'var(--primary-l)', padding: '2px 8px',
-              borderRadius: 999, lineHeight: '18px',
-            } }, 'Step ' + s.step),
-            React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)' } }, s.title)),
+              fontSize: 10, fontWeight: 800, color: 'var(--primary)',
+              background: 'var(--primary-l)', padding: '3px 9px',
+              borderRadius: 999, lineHeight: '18px', letterSpacing: '0.06em',
+              whiteSpace: 'nowrap', flexShrink: 0,
+            } }, 'STEP ' + s.step),
+            React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', minWidth: 0 } }, s.title)),
           React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, s.body)),
       ], s.title, 'as d' + i, null);
     }));
@@ -250,13 +251,21 @@ function QLPricing(props) {
     ];
     accentIdx = 1;
   }
+  var mobile = useQLMobile();
+  if (mobile) {
+    return React.createElement(QLPriceSlider, { prices: prices, region: region, onFree: onFree, onPaid: onPaid });
+  }
   return React.createElement('div', { style: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
     gap: 16, alignItems: 'start',
   } },
     prices.map(function(p, i) {
-      var isAccent = p.accent;
-      return React.createElement('div', { key: p.name, className: 'as d' + i, style: {
+      return priceCard(p, i, p.accent, region, onFree, onPaid);
+    }));
+}
+
+function priceCard(p, i, isAccent, region, onFree, onPaid) {
+  return React.createElement('div', { key: p.name, className: 'as d' + i, style: {
         padding: 24, borderRadius: 'var(--r-xl)',
         background: isAccent ? 'var(--primary)' : 'var(--surface)',
         border: isAccent ? 'none' : '1px solid var(--border)',
@@ -296,7 +305,42 @@ function QLPricing(props) {
             transition: 'transform 0.15s ease, box-shadow 0.15s ease',
           },
         }, p.cta));
-    }));
+}
+
+function QLPriceSlider(props) {
+  var prices = props.prices;
+  var region = props.region;
+  var onFree = props.onFree;
+  var onPaid = props.onPaid;
+  var idxState = React.useState(1);
+  var idx = idxState[0];
+  var setIdx = idxState[1];
+  var go = function(d) { setIdx((idx + d + prices.length) % prices.length); };
+  var arrow = function(dir, label) {
+    return React.createElement('button', {
+      onClick: function() { go(dir); }, 'aria-label': label,
+      style: { width: 34, height: 34, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 15, fontWeight: 700, cursor: 'pointer', flexShrink: 0 },
+    }, dir < 0 ? '‹' : '›');
+  };
+  return React.createElement('div', { style: { maxWidth: 340, margin: '0 auto' } },
+    React.createElement('div', { style: { overflow: 'hidden', padding: '12px 2px 4px' } },
+      React.createElement('div', { style: {
+        display: 'flex', transform: 'translateX(-' + (idx * 100) + '%)',
+        transition: 'transform 0.35s ease',
+      } }, prices.map(function(p, i) {
+        return React.createElement('div', { key: p.name, style: { flex: '0 0 100%', padding: '0 2px' } },
+          priceCard(p, i, p.accent, region, onFree, onPaid));
+      }))),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginTop: 14 } },
+      arrow(-1, 'Previous plan'),
+      React.createElement('div', { style: { display: 'flex', gap: 6 } },
+        prices.map(function(p, i) {
+          return React.createElement('button', {
+            key: p.name, onClick: function() { setIdx(i); }, 'aria-label': 'Show ' + p.name + ' plan',
+            style: { width: i === idx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', cursor: 'pointer', background: i === idx ? 'var(--primary)' : 'var(--border)', transition: 'all 0.2s ease', padding: 0 },
+          });
+        })),
+      arrow(1, 'Next plan')));
 }
 
 /* ── Testimonials (carousel with peeking neighbours) ── */
