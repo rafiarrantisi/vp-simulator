@@ -43,10 +43,10 @@ function QLFeature({ icon, title, body, accent }) {
 /* ── Stats / Social proof ── */
 function QLStats() {
   var items = [
-    { icon: '📚', num: '92', label: 'Practice cases' },
     { icon: '🏥', num: '10', label: 'Specialties' },
     { icon: '🎓', num: '2', label: 'Stages: pre-clinical & Koas' },
     { icon: '🧭', num: '2', label: 'Training modes' },
+    { icon: '🌐', num: '2', label: 'Languages: ID + EN' },
   ];
   return React.createElement('div', { className: 'au', style: {
     display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap',
@@ -293,7 +293,7 @@ function QLFAQ() {
     { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer for medical students. You interview a virtual patient, list your differentials, and get transparent per-item scoring plus a full model-answer reveal.' },
     { q: 'Who is this for?', a: 'Pre-clinical students building history-taking skills and clinical students (koas) preparing for OSCEs — in Indonesian or English.' },
     { q: 'How does scoring work?', a: 'Every case carries a structured checklist. The system evaluates your questions (did you cover the key items?), your differentials (red flags, appropriate breadth), and your management plan — then shows you exactly what you missed. Scores are graded conservatively, never inflated.' },
-    { q: 'How many cases are available?', a: '92 practice cases across 10 specialties (internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology), with new cases added regularly.' },
+    { q: 'How many cases are available?', a: 'A growing library of practice cases across 10 specialties (internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology), with new cases added regularly.' },
     { q: 'What does the AI mentor do?', a: 'Your mentor turns every result into a plan: a daily mission with the right case, targeted coaching on your weak spots, and a readiness report that tells you when you are exam-ready.' },
     { q: 'What do I get for free?', a: '5 free practice sessions every 30 days, across up to 3 different cases — including full scoring and the model-answer reveal. Subscribe for unlimited practice, all cases, mentor journeys, and readiness tracking.' },
     { q: 'Can I use this on mobile?', a: 'Yes — Qora works on desktop, tablet, and phone. The interface adapts to your screen size.' },
@@ -521,7 +521,7 @@ function QoraLanding({ onLogin, onSubscribe }) {
       React.createElement(QLHowItWorks, null)),
 
     // ── Specialties ──
-    React.createElement(QLSection, { id: 'specialties', title: '92 cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology \u2014 plus a growing library of 120+ clinical families in preparation.' },
+    React.createElement(QLSection, { id: 'specialties', title: 'Cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology \u2014 plus a growing library of 120+ clinical families in preparation.' },
       React.createElement(QLSpecialties, null)),
 
     // ── Features ──
