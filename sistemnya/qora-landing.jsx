@@ -483,7 +483,7 @@ function QLFooter() {
       React.createElement('div', { style: { textAlign: mobile ? 'center' : 'right', fontSize: 12, color: 'var(--text-3)', lineHeight: 1.7 } },
         React.createElement('div', null, 'PT Qora Cendekia Medika'),
         React.createElement('div', null, 'info@qora.app · +62 821-2493-3053'),
-        React.createElement('div', { style: { marginTop: 4, fontSize: 10.5, color: 'var(--text-3)', opacity: 0.7 } }, '© 2026 Qora. All rights reserved. A study aid, not a medical device.'))));
+        React.createElement('div', { style: { marginTop: 4, fontSize: 10.5, color: 'var(--text-3)', opacity: 0.7 } }, '© 2026 Qora. All rights reserved. A study aid, not medical advice.'))));
 }
 
 // Load Google Identity Services once (external script).
