@@ -1651,7 +1651,7 @@ function QoraDashboard({ onNav, onStartCase }) {
       coverage.familiesCompleted + ' families · ' + coverage.variantsCompleted + ' variants · ' + coverage.osceSessions + ' OSCE'));
 
   const leftCol = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: isMobile ? 16 : 20, minWidth: 0 } },
-    nextCard, recentCard, skillsCard);
+    nextCard, recentCard);
   const rightCol = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: isMobile ? 16 : 20, minWidth: 0 } },
     readinessCard, achieveCard, coverageCard);
 
@@ -1664,7 +1664,9 @@ function QoraDashboard({ onNav, onStartCase }) {
     isMobile
       ? React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 } },
         nextCard, readinessCard, recentCard, skillsCard, achieveCard, coverageCard)
-      : React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'minmax(0, 1.35fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' } }, leftCol, rightCol));
+      : React.createElement(React.Fragment, null,
+        React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'minmax(0, 1.35fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' } }, leftCol, rightCol),
+        skillsCard && React.createElement('div', { style: { marginTop: 20 } }, skillsCard)));
 }
 
 // ── FASE 9 dashboard atoms (GDV-constrained, canonical-data only) ──
