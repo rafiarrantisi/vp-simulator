@@ -194,12 +194,12 @@ function QDayCarousel(props) {
               display: 'flex', flexDirection: 'column', gap: 6,
             },
           },
-          React.createElement('div', { style: { display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 } },
-            React.createElement('span', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.35, minWidth: 0 } },
-              c.focus_area || c.case_id),
+          React.createElement('div', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.35 } },
+            c.focus_area || c.case_id),
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 } },
+            React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--text-3)', fontWeight: 500, flexShrink: 0 } },
+              React.createElement(_Mtl, { n: 'clock', s: 13 }), '~' + (c.estimated_minutes || 15) + ' min'),
             React.createElement(_QPill, { kind: s.pill }, pillLabel)),
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--text-3)', fontWeight: 500 } },
-            React.createElement(_Mtl, { n: 'clock', s: 13 }), '~' + (c.estimated_minutes || 15) + ' min'),
           (clickable || st === 'completed') && React.createElement('div', { style: { marginTop: 2, display: 'inline-flex', alignItems: 'center', gap: 6, color: s.fg, fontSize: 12, fontWeight: 700 } },
             React.createElement(_Mtl, { n: st === 'completed' ? 'check' : 'play', s: 14 }),
             st === 'completed' ? (c.score != null ? 'Skor ' + c.score + '%' : (props.doneLabel || 'Selesai')) : _mt('mentor.start_case'))))
@@ -319,7 +319,7 @@ function QJourneyProposal(props) {
       changes.length > 0 && React.createElement('div', { style: { marginTop: 10, fontSize: 11, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '8px 12px', borderRadius: 10 } },
         _mt('mentor.changes') + ': ' + changes.join(', ')),
       err && React.createElement('div', { style: { marginTop: 10, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, err)),
-    React.createElement('div', Object.assign({}, _mtCard, { marginTop: 16, padding: 16 }),
+    React.createElement('div', Object.assign({}, _mtCard, { marginTop: 22, padding: 16 }),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 } },
         React.createElement(_Mtl, { n: 'edit', s: 14 }), _mt('mentor.customize')),
       React.createElement('div', { style: { display: 'flex', gap: 8, flexWrap: 'wrap' } },
@@ -393,7 +393,7 @@ function QJourneyDashboard(props) {
   var isMobileM = false;
   try { isMobileM = window.matchMedia('(max-width: 768px)').matches; } catch (e) {}
 
-  return React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px calc(40px + env(safe-area-inset-bottom, 0px))' } },
+  return React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '24px 16px calc(40px + env(safe-area-inset-bottom, 0px))' } },
     // 1 · Journey Header (GDV §4 lentera band; goal/date line, no target %)
     // Mobile gets the cropped art hero — the aspect-locked band clips text.
     isMobileM
@@ -401,7 +401,7 @@ function QJourneyDashboard(props) {
           title: j.package_name || _mt('mentor.title'), sub: goalLine || '' })
       : React.createElement(QAMoodBand, { scene: 'lentera', kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5), title: j.package_name || _mt('mentor.title'),
         sub: goalLine || '' }),
-    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobileM ? 12 : -56 } },
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobileM ? 12 : -24 } },
     React.createElement('div', { style: { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--sh-sm)', padding: 20 } },
       // workload completion (planned %, honest progress — NOT readiness)
       React.createElement('div', { style: { marginBottom: 16 } },
