@@ -33,9 +33,26 @@ try {
 } catch (e) {}
 
 /* ── Section wrapper ── */
+function useQLMobile() {
+  var st = React.useState(function() {
+    try { return window.matchMedia('(max-width: 640px)').matches; } catch (e) { return false; }
+  });
+  React.useEffect(function() {
+    var mq;
+    try { mq = window.matchMedia('(max-width: 640px)'); } catch (e) { return undefined; }
+    var fn = function(e) { st[1](e.matches); };
+    if (mq.addEventListener) mq.addEventListener('change', fn); else mq.addListener(fn);
+    return function() {
+      if (mq.removeEventListener) mq.removeEventListener('change', fn); else mq.removeListener(fn);
+    };
+  }, []);
+  return st[0];
+}
+
 function QLSection(props) {
+  var mobile = useQLMobile();
   return React.createElement('section', { id: props.id, style: {
-    padding: '60px 24px',
+    padding: mobile ? '48px 20px' : '60px 24px',
     background: props.dark ? 'var(--surface-2)' : 'transparent',
     borderBottom: props.dark ? 'none' : '1px solid var(--border)',
   } },
@@ -410,15 +427,16 @@ function QLFAQ() {
 
 /* ── Footer ── */
 function QLFooter() {
+  var mobile = useQLMobile();
   return React.createElement('footer', { style: {
     borderTop: '1px solid var(--border)', background: 'var(--surface)',
-    padding: '32px 24px',
+    padding: mobile ? '28px 20px' : '32px 24px',
   } },
-    React.createElement('div', { style: { maxWidth: 'min(920px, calc(100% - 32px))', margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 } },
+    React.createElement('div', { style: { maxWidth: 'min(920px, calc(100% - 32px))', margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: mobile ? 'center' : 'space-between', alignItems: 'center', gap: 16, textAlign: mobile ? 'center' : 'left' } },
       React.createElement('div', null,
         React.createElement('div', { style: { fontSize: 14, fontWeight: 800, color: 'var(--text-1)' } }, 'Qora'),
         React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 2 } }, 'Clinical Interview Trainer')),
-      React.createElement('div', { style: { textAlign: 'right', fontSize: 12, color: 'var(--text-3)', lineHeight: 1.7 } },
+      React.createElement('div', { style: { textAlign: mobile ? 'center' : 'right', fontSize: 12, color: 'var(--text-3)', lineHeight: 1.7 } },
         React.createElement('div', null, 'PT Qora Cendekia Medika'),
         React.createElement('div', null, 'info@qora.app · +62 821-2493-3053'),
         React.createElement('div', { style: { marginTop: 4, fontSize: 10.5, color: 'var(--text-3)', opacity: 0.7 } }, '© 2026 Qora. All rights reserved. A study aid, not a medical device.'))));
@@ -539,6 +557,7 @@ function QoraLanding({ onLogin, onSubscribe }) {
     if (typeof window.__setLocale === 'function') window.__setLocale(r);
   }, []);
   const go = (m) => { setMode(m); setView('auth'); };
+  const mobile = useQLMobile();
   // Pricing CTA → checkout. Logged-out visitors pick the plan now; after
   // login/signup the App's handleLogin resumes the checkout flow.
   const pickPlan = (id) => {
@@ -547,13 +566,13 @@ function QoraLanding({ onLogin, onSubscribe }) {
     go('signup');
   };
 
-  const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: 'min(1080px, calc(100% - 32px))', margin: '0 auto' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 8 } },
-      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' } }, 'Qora'),
-      React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' } }, 'Clinical interview trainer')),
-    React.createElement('div', { style: { display: 'flex', gap: 8 } },
-      React.createElement('button', { onClick: () => go('login'), style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Log in'),
-      React.createElement('button', { onClick: () => go('signup'), style: { padding: '7px 16px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Get started')));
+  const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, padding: '14px 16px', maxWidth: 'min(1080px, calc(100% - 32px))', margin: '0 auto' } },
+    React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 8, minWidth: 0 } },
+      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' } }, 'Qora'),
+      !mobile && React.createElement('div', { className: 'ql-tagline', style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, 'Clinical interview trainer')),
+    React.createElement('div', { style: { display: 'flex', gap: 8, flexShrink: 0 } },
+      React.createElement('button', { onClick: () => go('login'), style: { padding: '8px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, 'Log in'),
+      React.createElement('button', { onClick: () => go('signup'), style: { padding: '8px 14px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, 'Get started')));
 
   if (view === 'auth') {
     return React.createElement('div', { style: { minHeight: '100vh' } }, header,
@@ -568,7 +587,7 @@ function QoraLanding({ onLogin, onSubscribe }) {
       React.createElement('div', { style: { position: 'absolute', width: 260, height: 260, borderRadius: '50%', top: '62%', right: -80, border: '1.5px solid rgba(92,63,150,0.10)' } })),
     header,
     // ── Hero ──
-    React.createElement('section', { style: { padding: '60px 24px 20px' } },
+    React.createElement('section', { style: { padding: mobile ? '44px 20px 16px' : '60px 24px 20px' } },
       React.createElement('div', { style: { maxWidth: 'min(900px, 100%)', margin: '0 auto', textAlign: 'center' } },
         React.createElement('div', { className: 'au', style: { display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)', background: 'var(--primary-l)', padding: '5px 12px', borderRadius: 999, marginBottom: 20 } }, 'Beta \u00b7 for medical students'),
         React.createElement('h1', { className: 'au', style: { fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 18 } },
@@ -576,9 +595,9 @@ function QoraLanding({ onLogin, onSubscribe }) {
           React.createElement('span', { style: { color: 'var(--primary)' } }, 'across every specialty.')),
         React.createElement('p', { className: 'au d1', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 'min(620px, 100%)', margin: '0 auto 28px' } },
           'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring and a full model-answer reveal, guided by your personal AI mentor.'),
-        React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' } },
-          React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
-          React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'I have an account')),
+        React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap', flexDirection: mobile ? 'column' : 'row', alignItems: mobile ? 'stretch' : 'center', maxWidth: mobile ? 320 : 'none', marginLeft: 'auto', marginRight: 'auto' } },
+          React.createElement('button', { onClick: () => go('signup'), style: { padding: '14px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)', width: mobile ? '100%' : 'auto' } }, 'Start practising free'),
+          React.createElement('button', { onClick: () => go('login'), style: { padding: '14px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', width: mobile ? '100%' : 'auto' } }, 'I have an account')),
         // Stats
         React.createElement(QLStats, null))),
 
