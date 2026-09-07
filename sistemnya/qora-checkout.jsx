@@ -3,7 +3,7 @@
 // ------------------------------------------------------------
 // Single checkout flow across the whole product:
 //   Landing / Billing → pilih paket → #/checkout/<plan> → payment
-// Plan-aware via the hash segment (#/checkout/monthly | annual).
+// Plan-aware via the path segment (/checkout/monthly | annual).
 // The payment step executes the CURRENT gateway (Midtrans Snap
 // for IDR, Xendit hosted invoice fallback) through the existing
 // backend endpoints. The UI is provider-agnostic — swapping in
@@ -27,7 +27,7 @@ async function _coPay(planId, setBusy, setErr) {
         await _loadSnap();
         if (window.snap && window.snap.pay) {
           window.snap.pay(r.snap_token, {
-            onSuccess: function () { try { window.location.hash = '#/billing-success'; } catch (e) {} },
+            onSuccess: function () { try { qoraGo('/billing-success'); } catch (e) {} },
             onPending: function () { setErr('Payment pending — complete it to activate your plan.'); setBusy(false); },
             onError: function () { setErr('Payment failed — please try again.'); setBusy(false); },
             onClose: function () { setBusy(false); },
@@ -52,10 +52,10 @@ async function _coPay(planId, setBusy, setErr) {
 // ── Checkout screen ──────────────────────────────────────────
 function QoraCheckout(props) {
   var onNav = props.onNav;
-  // Plan id from the hash: #/checkout/<plan>
+  // Plan id from the path: /checkout/<plan>
   var planId = 'monthly';
   try {
-    var seg = (location.hash || '').replace(/^#\/?/, '').split('/');
+    var seg = qoraSegs();
     if (seg[0] === 'checkout' && seg[1]) planId = seg[1];
   } catch (e) {}
   var region = 'row';
@@ -105,7 +105,7 @@ function QoraCheckout(props) {
 
   function goBack() {
     if (typeof onNav === 'function') onNav('billing');
-    else try { window.location.hash = '#/billing'; } catch (e) {}
+    else try { qoraGo('/billing'); } catch (e) {}
   }
 
   // Loading / error states
@@ -206,5 +206,5 @@ window.QoraCheckout = QoraCheckout;
 
 // Global hook: any screen can jump straight to the checkout page.
 window.__goCheckout = function (planId) {
-  try { window.location.hash = '#/checkout/' + (planId || 'monthly'); } catch (e) {}
+  try { qoraGo('/checkout/' + (planId || 'monthly')); } catch (e) {}
 };

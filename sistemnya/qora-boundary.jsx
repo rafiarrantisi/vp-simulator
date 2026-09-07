@@ -24,7 +24,7 @@ class QoraErrorBoundary extends React.Component {
       var stack = '';
       try { stack = String((info && info.componentStack) || '').slice(0, 4000); } catch (e) {}
       var url = '';
-      try { url = String(window.location.hash || '').slice(0, 500); } catch (e) {}
+      try { url = String(window.location.pathname + window.location.hash || '').slice(0, 500); } catch (e) {}
       if (typeof qv2Fetch === 'function') {
         qv2Fetch('/api/ops/client-errors', {
           method: 'POST', timeout: 8000,

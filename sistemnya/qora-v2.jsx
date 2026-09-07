@@ -1893,13 +1893,17 @@ function QoraV2Screen() {
   const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
   const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
-  // ── Hash routing (Aug 2026): every screen has a URL so refresh/back keep
-  //    your place — #/cases, #/cases/<id>, #/session/<sid>, #/result, #/progress.
+  // ── Clean-URL routing: every screen has a path so refresh/back keep
+  //    your place — /cases, /cases/<id>, /session/<sid>, /result, /progress.
   function setHash(path) {
-    try { var want = '#/' + path; if (location.hash !== want) location.hash = want; } catch (e) {}
+    try { var want = '/' + String(path || '').replace(/^\/+/, ''); if (window.location.pathname !== want) window.history.pushState(null, '', want); } catch (e) {}
   }
   function hashParts() {
-    try { return (location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean); } catch (e) { return []; }
+    try {
+      var h = window.location.hash || '';
+      if (h.charAt(1) === '/') return h.replace(/^#\/?/, '').split('/').filter(Boolean);
+      return (window.location.pathname || '/').split('/').filter(Boolean);
+    } catch (e) { return []; }
   }
 
   const applyRoute = React.useCallback(function (parts) {
@@ -1938,8 +1942,8 @@ function QoraV2Screen() {
   React.useEffect(function () { applyRoute(hashParts()); }, []);
   React.useEffect(function () {
     var fn = function () { applyRoute(hashParts()); };
-    window.addEventListener('hashchange', fn);
-    return function () { window.removeEventListener('hashchange', fn); };
+    window.addEventListener('popstate', fn);
+    return function () { window.removeEventListener('popstate', fn); };
   }, [applyRoute]);
 
   let body;

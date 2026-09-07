@@ -163,7 +163,7 @@ function QoraBilling(props) {
   }, []);
 
   // All plan CTAs share ONE checkout flow (revision §5.3):
-  // Billing → pilih paket → #/checkout/<plan> → payment.
+  // Billing → pilih paket → /checkout/<plan> → payment.
   function goCheckout(planId) {
     setErr('');
     if (window.__goCheckout) window.__goCheckout(planId);

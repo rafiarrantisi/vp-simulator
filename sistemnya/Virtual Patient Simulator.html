@@ -38,11 +38,12 @@
 
     function App() {
       const [auth, setAuth] = React.useState(loadAuth);
-      // Hash routing (Aug 2026): the screen lives in the URL (#/dashboard,
-      // #/cases, #/cases/<id>, #/session/<sid>...) so refresh & back/forward
+      // Clean-URL routing: the screen lives in the path (/dashboard,
+      // /cases, /cases/<id>, /session/<sid>...) so refresh & back/forward
       // keep your place instead of always resetting to the dashboard.
+      // Legacy '#/...' bookmarks are migrated to clean paths at boot.
       const [screen, setScreen] = React.useState(() => {
-        var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
+        var h = qoraSegs()[0] || '';
         var authed = loadAuth();
         var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
         if (!authed && protectedHash) return 'qora-landing';
@@ -73,12 +74,12 @@
         setScreen(s);
         setScreenKey(k => k + 1);
         window.scrollTo(0, 0);
-        try { var want = '#/' + s; if (location.hash !== want) location.hash = want; } catch (e) {}
+        try { qoraGo('/' + s); } catch (e) {}
       }, []);
 
       React.useEffect(() => {
         var fn = function () {
-          var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
+          var h = qoraSegs()[0] || '';
           var next = null;
           var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
           if (protectedHash && !loadAuth()) next = 'qora-landing';
@@ -87,8 +88,8 @@
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
-        window.addEventListener('hashchange', fn);
-        return function () { window.removeEventListener('hashchange', fn); };
+        window.addEventListener('popstate', fn);
+        return function () { window.removeEventListener('popstate', fn); };
       }, []);
 
       const handleLogin = React.useCallback((credentials) => {
@@ -100,7 +101,7 @@
         if (pending) {
           try { localStorage.removeItem('qora_pending_checkout'); } catch (e) {}
           setScreen('checkout');
-          try { window.location.hash = '#/checkout/' + pending; } catch (e) {}
+          try { qoraGo('/checkout/' + pending); } catch (e) {}
         } else {
           navigate('dashboard');
         }

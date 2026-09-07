@@ -229,7 +229,7 @@ function QJourneyProposal(props) {
   var startVal = Math.max(0, Math.min(100, r.start || 0));
 
   function startCase(c) {
-    try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
+    try { qoraGo('/cases/' + c.case_id); } catch (e) {}
   }
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
@@ -314,10 +314,10 @@ function QJourneyDashboard(props) {
   }, [j.id, j.status, (progress.completed || 0)]);
 
   function startCase(c) {
-    // Navigate via hash ONLY — the App's hashchange listener maps
-    // #/cases/<id> → cases screen, and QoraV2Screen reads the full hash
+    // Navigate via clean URL ONLY — the App's popstate listener maps
+    // /cases/<id> → cases screen, and QoraV2Screen reads the full path
     // on mount (calling onNav('cases') would clobber the case id).
-    try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
+    try { qoraGo('/cases/' + c.case_id); } catch (e) {}
   }
 
   var missionCase = mission && mission.case_id ? { case_id: mission.case_id } : null;
@@ -472,7 +472,7 @@ function QContinuityBanner(props) {
         story.new_symptoms && story.new_symptoms.length > 0 &&
           React.createElement('div', null, '🆕 ' + _mt('mentor.new_complaint') + ': ' + story.new_symptoms.join(', '))),
       React.createElement('button', Object.assign({ onClick: function () {
-        try { window.location.hash = '#/cases/' + p.next_case_id; } catch (e) {}
+        try { qoraGo('/cases/' + p.next_case_id); } catch (e) {}
       } }, _mtBtn('primary')), '▶ ' + _mt('mentor.start_visit').replace('{n}', p.visit_number))));
 }
 
@@ -604,7 +604,7 @@ function QMentorScreen(props) {
       err && React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
       React.createElement(QContinuityBanner, { pending: pending }),
       React.createElement(QoraErrorBoundary, { key: journey.id + '-' + journey.status, screen: 'mentor-journey',
-        onBack: function () { try { window.location.hash = '#/dashboard'; } catch (e) {} } },
+        onBack: function () { try { qoraGo('/dashboard'); } catch (e) {} } },
         React.createElement(QJourneyDashboard, { journey: journey, onNav: props.onNav, onAbandon: abandon, onReport: openReport })));
   }
   return React.createElement(React.Fragment, null,

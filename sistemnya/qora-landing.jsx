@@ -8,6 +8,30 @@
 // reachable via the "Classic" link. Social login = deferred plug (disabled).
 // ============================================================
 
+/* ── Clean-URL routing helpers (shared global scope) ── */
+// The app uses real paths (/dashboard, /cases/<id>, ...) via history.pushState
+// so refresh & back/forward keep your place and links are shareable. Old '#/...'
+// bookmarks are migrated to clean paths once at boot (replaceState, no reload).
+function qoraGo(path) {
+  try {
+    var want = '/' + String(path || '').replace(/^\/+/, '');
+    if (window.location.pathname !== want) window.history.pushState(null, '', want);
+  } catch (e) {}
+}
+function qoraSegs() {
+  try {
+    var h = window.location.hash || '';
+    if (h.charAt(1) === '/') return h.replace(/^#\/?/, '').split('/').filter(Boolean);
+    return (window.location.pathname || '/').split('/').filter(Boolean);
+  } catch (e) { return []; }
+}
+try {
+  var __lh = window.location.hash || '';
+  if (__lh.charAt(1) === '/') {
+    window.history.replaceState(null, '', '/' + __lh.replace(/^#\/?/, ''));
+  }
+} catch (e) {}
+
 /* ── Section wrapper ── */
 function QLSection(props) {
   return React.createElement('section', { id: props.id, style: {
