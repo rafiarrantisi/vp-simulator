@@ -386,6 +386,11 @@ async def stream_turn(snap, user_id: str, text: str,
         clock.mark("llm_request_start")
         stream = v3_astream(v, history, text, language=lang, persona=persona)
         aiter = stream.__aiter__()
+        async def _close_upstream():
+            try:
+                await aiter.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
         try:
             first_sent = False
             while True:
@@ -410,13 +415,22 @@ async def stream_turn(snap, user_id: str, text: str,
                     yield chunk
                     if first_sent is False:
                         first_sent = True
+        except GeneratorExit:
+            outcome = "cancelled"
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            await _close_upstream()
+            raise
         except Exception as e:  # noqa: BLE001
             outcome = "failed_llm"
             clock.mark("request_complete")
             clock.finish(outcome)
             clock.log_summary()
+            await _close_upstream()
             yield f"(error: patient LLM failed — {(getattr(e, 'message', None) or e)})"
             return
+        await _close_upstream()
         reply = "".join(parts).strip()
         clock.mark("stream_complete")
         from app.database import SessionLocal as _SessionLocal
@@ -447,10 +461,15 @@ async def stream_turn(snap, user_id: str, text: str,
             nonlocal_slot_release()
 
     async def _gen_wrapped() -> AsyncIterator[str]:
+        it = gen()
         try:
-            async for chunk in gen():
+            async for chunk in it:
                 yield chunk
         finally:
+            try:
+                await it.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
             nonlocal_slot_release()
 
     return _gen_wrapped()

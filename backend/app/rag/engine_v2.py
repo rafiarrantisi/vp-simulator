@@ -52,9 +52,18 @@ async def astream_respond(case_id: str, history: list[dict], user_message: str,
     """Async twin of `stream_respond`: identical prompt assembly and params,
     nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
     system, messages = _prepare(case_id, history, user_message, language=language)
-    async for chunk in get_async_llm_client().astream(
-            system, messages, max_tokens=get_settings().llm_persona_max_tokens):
-        yield chunk
+    child = get_async_llm_client().astream(
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens)
+    try:
+        async for chunk in child:
+            yield chunk
+    finally:
+        aclose = getattr(child, "aclose", None)
+        if aclose is not None:
+            try:
+                await aclose()
+            except Exception:  # noqa: BLE001
+                pass
 
 
 async def arespond(case_id: str, history: list[dict], user_message: str,

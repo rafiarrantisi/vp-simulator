@@ -355,6 +355,11 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
         clock.mark("llm_request_start")
         stream = engine_v2.astream_respond(case_id, history, req.text, language=language)
         aiter = stream.__aiter__()
+        async def _close_upstream():
+            try:
+                await aiter.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
         try:
             first_sent = False
             while True:
@@ -381,6 +386,13 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
                     yield chunk
                     if first_sent is False:
                         first_sent = True
+        except GeneratorExit:
+            outcome = "cancelled"
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            await _close_upstream()
+            raise
         except FileNotFoundError:
             outcome = "failed_case_missing"
             clock.mark("request_complete")
@@ -394,7 +406,9 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
             clock.mark("request_complete")
             clock.finish(outcome)
             clock.log_summary()
+            await _close_upstream()
             raise
+        await _close_upstream()
         reply = "".join(parts).strip()
         clock.mark("stream_complete")
 
@@ -430,10 +444,15 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
                 limiter.release()
 
     async def _gen_wrapped():
+        it = gen()
         try:
-            async for chunk in gen():
+            async for chunk in it:
                 yield chunk
         finally:
+            try:
+                await it.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
             if slot_held:
                 limiter.release()
 

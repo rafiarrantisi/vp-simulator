@@ -120,9 +120,18 @@ async def astream_respond(v, history: list[dict], user_message: str,
     nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
     system, messages = _prepare(v, history, user_message,
                                 language=language, persona=persona)
-    async for chunk in get_async_llm_client().astream(
-            system, messages, max_tokens=get_settings().llm_persona_max_tokens):
-        yield chunk
+    child = get_async_llm_client().astream(
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens)
+    try:
+        async for chunk in child:
+            yield chunk
+    finally:
+        aclose = getattr(child, "aclose", None)
+        if aclose is not None:
+            try:
+                await aclose()
+            except Exception:  # noqa: BLE001
+                pass
 
 
 async def arespond(v, history: list[dict], user_message: str,
