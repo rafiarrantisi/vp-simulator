@@ -324,3 +324,37 @@ def evaluate_v3(v, transcript: list[dict], *,
             _empty_report(weights, "judge returned no parseable JSON")
     except Exception as e:  # scoring must never fail the session
         return _empty_report(weights, f"judge failed, valid fallback: {e}")
+
+
+async def aevaluate_v3(v, transcript: list[dict], *,
+                       learner_stage: str = "koas", ddx: dict | None = None,
+                       management: dict | None = None,
+                       pf_notes: str | None = None, pf_areas: list | None = None,
+                       with_pf: bool = False) -> dict:
+    """Async twin of `evaluate_v3`: identical prompt/normalize/fallback,
+    nonblocking upstream wait under the judge admission limit (§7.1f)."""
+    from app.rag.llm import get_async_llm_client, is_async_stub
+    from app.shared.admission import judge_limiter
+
+    weights = _v3_weights(learner_stage)
+    if is_stub() or is_async_stub():
+        return _empty_report(
+            weights, "Stub LLM: set LLM_API_KEY for real scoring. Valid V2 shape; scores 0.")
+    try:
+        system, user = build_judge_prompt(
+            v, transcript, learner_stage, weights, ddx=ddx, management=management,
+            pf_notes=pf_notes, pf_areas=pf_areas, with_pf=with_pf)
+        async with judge_limiter():
+            raw_text = await get_async_llm_client().agenerate(
+                system, user,
+                model=get_settings().llm_judge_model,
+                max_tokens=get_settings().llm_judge_max_tokens,
+                temperature=_JUDGE_TEMPERATURE,
+                timeout=_JUDGE_TIMEOUT_S,
+                max_retries=_JUDGE_MAX_RETRIES,
+            )
+        obj = _extract_json(raw_text)
+        return _normalize(obj, weights) if obj is not None else \
+            _empty_report(weights, "judge returned no parseable JSON")
+    except Exception as e:  # scoring must never fail the session
+        return _empty_report(weights, f"judge failed, valid fallback: {e}")

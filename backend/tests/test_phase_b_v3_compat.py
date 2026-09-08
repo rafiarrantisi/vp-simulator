@@ -253,10 +253,11 @@ def test_v3_engine_failure_does_not_fallback_to_v2(monkeypatch):
                     json={"case_id": FAMILY, "language": "en"}, headers=_auth(tok))
     assert r.status_code == 200, r.text
     sid = r.json()["data"]["sessionId"]
-    # force the V3 engine to raise on stream
-    def _boom(*a, **k):
+    # force the V3 engine to raise on stream (async path, same contract)
+    async def _boom(*a, **k):
         raise RuntimeError("v3 patient engine down")
-    monkeypatch.setattr("app.rag.engine_v3.stream_respond", _boom)
+        yield ""
+    monkeypatch.setattr("app.rag.engine_v3.astream_respond", _boom)
     r = client.post(f"/api/v2/sessions/{sid}/turns/stream",
                     json={"text": "Apa keluhan utama?"}, headers=_auth(tok))
     assert r.status_code == 200

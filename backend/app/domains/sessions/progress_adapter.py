@@ -11,12 +11,21 @@ adapts them via `adapt_session`, and derives unified progress/readiness.
 """
 from __future__ import annotations
 
+import os
+import threading
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session as OrmSession
 
 from app.domains.sessions.models import SessionRow
 
 _registry_cache = {}
+_registry_lock = threading.Lock()
+
+
+def _registry_cache_enabled() -> bool:
+    """Rollback switch (§6.5): QORA_REGISTRY_CACHE=0 restores per-call load."""
+    return os.environ.get("QORA_REGISTRY_CACHE", "1") != "0"
 
 
 def cached_registry():
@@ -25,12 +34,21 @@ def cached_registry():
     Content only changes on deploy + backend restart (same contract as the
     V2 catalogue lru_cache), so caching per worker is safe and keeps
     per-session loops (progress, history) from re-parsing on every row.
+
+    Double-checked locking: concurrent cold misses build once; a failed
+    build never poisons the cache. Disable via QORA_REGISTRY_CACHE=0.
     """
+    if not _registry_cache_enabled():
+        from app.domains.sessions.v3_compat_schemas import default_registry
+        return default_registry()
     reg = _registry_cache.get("reg")
     if reg is None:
-        from app.domains.sessions.v3_compat_schemas import default_registry
-        reg = default_registry()
-        _registry_cache["reg"] = reg
+        with _registry_lock:
+            reg = _registry_cache.get("reg")
+            if reg is None:
+                from app.domains.sessions.v3_compat_schemas import default_registry
+                reg = default_registry()
+                _registry_cache["reg"] = reg
     return reg
 
 
