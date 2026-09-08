@@ -340,3 +340,15 @@ def test_cancel_releases_admission_slot(monkeypatch):
         lim.release()
 
     asyncio.run(main())
+
+
+def test_lifespan_opens_and_closes_async_client():
+    import app.rag.llm as llm_mod
+    from app.main import app
+
+    llm_mod._async_client = None
+    with TestClient(app):
+        assert llm_mod._async_client is not None
+        opened = llm_mod._async_client
+    assert llm_mod._async_client is None, "lifespan shutdown must release client"
+    assert opened is not None
