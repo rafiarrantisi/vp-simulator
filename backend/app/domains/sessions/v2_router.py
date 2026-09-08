@@ -256,30 +256,35 @@ def v2_get_turns(session_id: str, user: User = Depends(get_current_user),
 @router.post("/sessions/{session_id}/turns", dependencies=[_ai_rl])
 async def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_current_user),
                   db: Session = Depends(get_db)):
-    s = _owned(db, session_id, user)
-    ensure_turnable(s.status)
-    if s.content_schema == "new":  # Phase B: V3 turn (fallback, non-stream)
+    from app.domains.sessions.turn_acceptance import (
+        accept_turn, finalize_patient_turn,
+    )
+    snap = accept_turn(db, session_id=session_id, user_id=user.id,
+                       text=req.text, input_type=req.input_type)
+    if snap.content_schema == "new":  # Phase B: V3 turn (fallback, non-stream)
         from app.domains.sessions import v3_compat_service as v3c
-        return ok(await v3c.turn(db, user, session_id, req.text, req.input_type))
-    history = _history(db, session_id)
+        return ok(await v3c.turn(snap, user.id, req.text, req.input_type))
+    history = [dict(h) for h in snap.history]
     # FASE 6: duplicate-send / stream→fallback retry returns stored reply.
-    dup = find_duplicate_reply(history, req.text)
-    if dup is not None:
-        return ok({"reply": dup, "audioUrl": None, "_deduped": True})
-    n = _next_turn_no(db, session_id)
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text, input_type=req.input_type))
+    if snap.dup_reply is not None:
+        return ok({"reply": snap.dup_reply, "audioUrl": None, "_deduped": True})
+    n = snap.turn_no
     try:
-        reply = await engine_v2.arespond(s.case_id, history, req.text, language=s.language)
+        reply = await engine_v2.arespond(snap.case_id, history, req.text, language=snap.language)
     except FileNotFoundError:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
-    db.add(SessionTurn(session_id=s.id, turn_number=n + 1, role="patient", content=reply))
-    db.commit()
-    try:  # best-effort cost guardrail
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{snap.case_id}' not found")
+    from app.database import SessionLocal as _SessionLocal
+
+    def _record(db2):
         tokens_in = (sum(len(h["content"]) for h in history) + len(req.text)) // 4
-        billing.record_session_cost(db, s.id, user.id, tokens_in, len(reply) // 4)
-        db.commit()
+        billing.record_session_cost(db2, snap.session_id, user.id, tokens_in, len(reply) // 4)
+
+    try:  # best-effort cost guardrail (+ fencing, same durability as before)
+        finalize_patient_turn(_SessionLocal, session_id=snap.session_id,
+                              turn_no=n + 1, reply=reply, user_id=user.id,
+                              record_cost=_record)
     except Exception:
-        db.rollback()
+        pass
     return ok({"reply": reply, "audioUrl": None})
 
 
@@ -296,37 +301,37 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
     """
     import anyio
 
+    from app.domains.sessions.turn_acceptance import accept_turn
     from app.shared.admission import admission_wait_s, conversation_limiter, idle_timeout_s
     from app.shared.perf_marks import TurnClock
     clock = TurnClock(route="v2_turn_stream", schema="legacy")
     clock.mark("request_received")
     clock.mark("auth_done")
-    s = _owned(db, session_id, user)
-    ensure_turnable(s.status)
-    if s.content_schema == "new":  # Phase B: V3 streaming (exact V2 contract)
+    # Phase 3: one atomic acceptance (lock + revalidate + history + number +
+    # persist + commit). Same errors/messages as the previous inline preflight.
+    snap = accept_turn(db, session_id=session_id, user_id=user.id,
+                       text=req.text, input_type=req.input_type)
+    if snap.content_schema == "new":  # Phase B: V3 streaming (exact V2 contract)
         from app.domains.sessions import v3_compat_service as v3c
         clock.mark("context_ready")
         db.close()
         return StreamingResponse(
-            await v3c.stream_turn(db, user, session_id, req.text, req.input_type),
+            await v3c.stream_turn(snap, user.id, req.text, req.input_type),
             media_type="text/plain; charset=utf-8",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
-    history = _history(db, session_id)
+    history = [dict(h) for h in snap.history]
     # FASE 6: duplicate-send retry on an interrupted stream replays stored text.
-    dup = find_duplicate_reply(history, req.text)
-    if dup is not None:
+    if snap.dup_reply is not None:
         async def _replay():
-            yield dup
+            yield snap.dup_reply
         return StreamingResponse(
             _replay(),
             media_type="text/plain; charset=utf-8",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
-    n = _next_turn_no(db, session_id)
-    user_id = user.id
-    case_id = s.case_id
-    language = s.language
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text, input_type=req.input_type))
-    db.commit()
+    n = snap.turn_no
+    user_id = snap.user_id
+    case_id = snap.case_id
+    language = snap.language
     clock.mark("context_ready")
     clock.mark("db_preflight_done")
     db.close()  # release pool connection before inference (H1 fix, Phase 2)
@@ -393,20 +398,26 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
         reply = "".join(parts).strip()
         clock.mark("stream_complete")
 
-        def _persist():
-            db2 = SessionLocal()
-            try:
-                db2.add(SessionTurn(session_id=session_id, turn_number=n + 1, role="patient", content=reply))
-                db2.commit()
-                tokens_in = (sum(len(h["content"]) for h in history) + len(req.text)) // 4
-                billing.record_session_cost(db2, session_id, user_id, tokens_in, len(reply) // 4)
-                db2.commit()
-            finally:
-                db2.close()
+        # Phase 3: fenced finalization (stale worker cannot overwrite newer
+        # results; same sequencing/billing as before).
+        from app.database import SessionLocal as _SessionLocal
+        from app.domains.sessions.turn_acceptance import finalize_patient_turn
+
+        def _record(db2):
+            tokens_in = (sum(len(h["content"]) for h in history) + len(req.text)) // 4
+            billing.record_session_cost(db2, session_id, user_id, tokens_in, len(reply) // 4)
 
         try:
             from app.shared.admission import db_limiter
-            await anyio.to_thread.run_sync(_persist, limiter=db_limiter())
+
+            def _finalize():
+                return finalize_patient_turn(
+                    _SessionLocal, session_id=session_id, turn_no=n + 1,
+                    reply=reply, user_id=user_id, record_cost=_record)
+
+            result = await anyio.to_thread.run_sync(_finalize, limiter=db_limiter())
+            if result == "superseded":
+                outcome = "superseded_stale"
             clock.mark("db_persist_complete")
         except Exception:
             outcome = "failed_persist"

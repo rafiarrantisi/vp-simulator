@@ -18,6 +18,21 @@ _connect_args = (
     else {}
 )
 
+def _pool_int(name: str, default: int) -> int:
+    """Pool knobs (§8.1q): env override, production defaults unchanged.
+
+    Defaults (10+10) are NOT tuned here — tuning follows measured hold
+    times and load evidence (Phase 5). Same values as before unless ops
+    sets the env explicitly.
+    """
+    import os
+
+    try:
+        return max(0, int(os.environ.get(name, default)))
+    except (TypeError, ValueError):
+        return default
+
+
 engine = create_engine(
     _settings.database_url,
     connect_args=_connect_args,
@@ -30,8 +45,8 @@ engine = create_engine(
     # pas burst gak menumpuk; pool_timeout=10 fail-fast (503) bukan hang 30s.
     pool_pre_ping=True,
     pool_recycle=300,
-    pool_size=10,
-    max_overflow=10,
+    pool_size=_pool_int("QORA_POOL_SIZE", 10),
+    max_overflow=_pool_int("QORA_POOL_OVERFLOW", 10),
     pool_timeout=10,
 )
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)

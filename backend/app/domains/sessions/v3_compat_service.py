@@ -277,45 +277,66 @@ def get_turns(db: OrmSession, session_id: str, user: User) -> dict:
     }
 
 
-async def turn(db: OrmSession, user: User, session_id: str, text: str,
+async def turn(snap, user_id: str, text: str,
                input_type: str = "text") -> dict:
-    """Non-stream fallback patient turn (exact V2 `{reply, audioUrl}`)."""
+    """Non-stream fallback patient turn (exact V2 `{reply, audioUrl}`).
+
+    Phase 3: takes an accepted TurnSnapshot (acceptance already committed by
+    the caller); resolves the frozen variant from cache; finalizes fenced.
+    """
     from app.rag.engine_v3 import arespond as v3_arespond
     from app.domains.billing import service as billing
-    s = _owned(db, session_id, user)
-    ensure_turnable(s.status)
-    _, v = _frozen_variant(db, s)
-    history = _history(db, session_id)
-    dup = find_duplicate_reply(history, text)
-    if dup is not None:
-        return {"reply": dup, "audioUrl": None, "_deduped": True}
-    n = _next_turn_no(db, session_id)
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user",
-                       content=text, input_type=input_type))
+    from app.domains.sessions.turn_acceptance import finalize_patient_turn
+    v = _resolve_frozen(snap)
+    history = [dict(h) for h in snap.history]
+    if snap.dup_reply is not None:
+        return {"reply": snap.dup_reply, "audioUrl": None, "_deduped": True}
+    n = snap.turn_no
     try:
-        reply = await v3_arespond(v, history, text, language=s.language or "en",
-                                  persona=_persona(s))
+        reply = await v3_arespond(v, history, text, language=snap.language or "en",
+                                  persona=snap.persona)
     except Exception as e:  # noqa: BLE001
-        db.rollback()
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"patient LLM failed: {e}")
-    db.add(SessionTurn(session_id=s.id, turn_number=n + 1, role="patient",
-                       content=reply))
-    db.commit()
-    try:
+    from app.database import SessionLocal as _SessionLocal
+
+    def _record(db2):
         tokens_in = (sum(len(h.get("content") or "") for h in history) + len(text)) // 4
-        billing.record_session_cost(db, s.id, user.id, tokens_in, len(reply) // 4)
-        db.commit()
+        billing.record_session_cost(db2, snap.session_id, user_id, tokens_in, len(reply) // 4)
+
+    try:
+        finalize_patient_turn(_SessionLocal, session_id=snap.session_id,
+                              turn_no=n + 1, reply=reply, user_id=user_id,
+                              record_cost=_record)
     except Exception:  # noqa: BLE001
-        db.rollback()
+        pass
     return {"reply": reply, "audioUrl": None}
 
 
-async def stream_turn(db: OrmSession, user: User, session_id: str, text: str,
+def _resolve_frozen(snap):
+    """Frozen variant from cache + hash check (no DB; mirrors _frozen_variant)."""
+    if not snap.variant_id:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            "v3 session has no frozen variant")
+    from app.domains.sessions.progress_adapter import cached_registry
+    reg = cached_registry()
+    v = reg.variants.get(snap.variant_id)
+    if v is None:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            f"v3 variant '{snap.variant_id}' not found")
+    if getattr(snap, "variant_canonical_hash", None):
+        if snap.variant_canonical_hash != v.canonical_hash():
+            raise HTTPException(status.HTTP_409_CONFLICT,
+                                "session clinical truth changed since start; refusing")
+    return v
+
+
+async def stream_turn(snap, user_id: str, text: str,
                       input_type: str = "text"):
     """Token-by-token raw text/plain stream (exact V2 streaming contract).
 
-    Phase 2: async generator — no thread waits on the LLM. Wire contract
-    unchanged (plain-text chunks, in-stream error string on LLM failure).
+    Phase 3: takes an accepted TurnSnapshot (acceptance already committed by
+    the caller). Wire contract unchanged (plain-text chunks, in-stream error
+    string on LLM failure).
     """
     import anyio
 
@@ -328,27 +349,18 @@ async def stream_turn(db: OrmSession, user: User, session_id: str, text: str,
     clock = TurnClock(route="v3_stream_turn", schema="new")
     clock.mark("request_received")
     clock.mark("auth_done")
-    s = _owned(db, session_id, user)
-    ensure_turnable(s.status)
-    _, v = _frozen_variant(db, s)
+    v = _resolve_frozen(snap)
     clock.mark("context_ready")
-    history = _history(db, session_id)
-    dup = find_duplicate_reply(history, text)
-    if dup is not None:
+    history = [dict(h) for h in snap.history]
+    if snap.dup_reply is not None:
         async def _replay() -> AsyncIterator[str]:
-            yield dup
+            yield snap.dup_reply
         return _replay()
-    n = _next_turn_no(db, session_id)
-    user_id = user.id
-    sid = s.id
-    lang = s.language or "en"
-    persona = _persona(s)
-    # persist the user turn before streaming (mirror v2)
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user",
-                       content=text, input_type=input_type))
-    db.commit()
+    n = snap.turn_no
+    sid = snap.session_id
+    lang = snap.language or "en"
+    persona = snap.persona
     clock.mark("db_preflight_done")
-    db.close()  # release pool connection before inference (H1 fix, Phase 2)
 
     limiter = conversation_limiter()
     try:
@@ -407,23 +419,24 @@ async def stream_turn(db: OrmSession, user: User, session_id: str, text: str,
             return
         reply = "".join(parts).strip()
         clock.mark("stream_complete")
-        from app.database import SessionLocal
+        from app.database import SessionLocal as _SessionLocal
+        from app.domains.sessions.turn_acceptance import finalize_patient_turn
 
-        def _persist():
-            db2 = SessionLocal()
-            try:
-                db2.add(SessionTurn(session_id=sid, turn_number=n + 1,
-                                    role="patient", content=reply))
-                db2.commit()
-                tokens_in = (sum(len(h.get("content") or "") for h in history) + len(text)) // 4
-                billing.record_session_cost(db2, sid, user_id, tokens_in, len(reply) // 4)
-                db2.commit()
-            finally:
-                db2.close()
+        def _record(db2):
+            tokens_in = (sum(len(h.get("content") or "") for h in history) + len(text)) // 4
+            billing.record_session_cost(db2, sid, user_id, tokens_in, len(reply) // 4)
 
         try:
             from app.shared.admission import db_limiter
-            await anyio.to_thread.run_sync(_persist, limiter=db_limiter())
+
+            def _finalize():
+                return finalize_patient_turn(
+                    _SessionLocal, session_id=sid, turn_no=n + 1,
+                    reply=reply, user_id=user_id, record_cost=_record)
+
+            result = await anyio.to_thread.run_sync(_finalize, limiter=db_limiter())
+            if result == "superseded":
+                outcome = "superseded_stale"
             clock.mark("db_persist_complete")
         except Exception:  # noqa: BLE001
             outcome = "failed_persist"
