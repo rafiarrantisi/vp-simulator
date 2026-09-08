@@ -10,14 +10,20 @@ diverifikasi tanpa kredensial). SDK di-import lazy.
 """
 from __future__ import annotations
 
+import asyncio
 import re
 import time
-from collections.abc import Iterator
+from collections.abc import AsyncIterator, Iterator
 from typing import Protocol
 
 from app.config import get_settings
 
 _RETRY = 3  # backoff utk 5xx/timeout (free tier sering flaky)
+
+
+def _is_transient(e: Exception) -> bool:
+    msg = str(e).lower()
+    return any(k in msg for k in ("timeout", "502", "503", "504", "rate", "overload"))
 
 
 def _with_retry(fn, retries: int | None = None):
@@ -28,13 +34,24 @@ def _with_retry(fn, retries: int | None = None):
             return fn()
         except Exception as e:  # noqa: BLE001 - retry transient apa pun
             last = e
-            msg = str(e).lower()
-            transient = any(
-                k in msg for k in ("timeout", "502", "503", "504", "rate", "overload")
-            )
-            if not transient or i == n - 1:
+            if not _is_transient(e) or i == n - 1:
                 raise
             time.sleep(1.5 * (i + 1))
+    raise last  # pragma: no cover
+
+
+async def _with_retry_async(fn, retries: int | None = None):
+    """Async twin of `_with_retry`: identical budget Predicates, nonblocking wait."""
+    last = None
+    n = _RETRY if retries is None else max(1, retries)
+    for i in range(n):
+        try:
+            return await fn()
+        except Exception as e:  # noqa: BLE001 - retry transient apa pun
+            last = e
+            if not _is_transient(e) or i == n - 1:
+                raise
+            await asyncio.sleep(1.5 * (i + 1))
     raise last  # pragma: no cover
 
 
@@ -49,6 +66,75 @@ class LlmClient(Protocol):
                  temperature: float | None = None,
                  timeout: float | None = None,
                  max_retries: int | None = None) -> str: ...
+
+
+class AsyncLlmClient(Protocol):
+    async def astream(self, system: str, messages: list[dict],
+                      model: str | None = None,
+                      max_tokens: int | None = None) -> AsyncIterator[str]: ...
+
+    async def agenerate(self, system: str, messages: list[dict],
+                        model: str | None = None,
+                        max_tokens: int | None = None,
+                        temperature: float | None = None,
+                        timeout: float | None = None,
+                        max_retries: int | None = None) -> str: ...
+
+
+class AsyncStubLlmClient:
+    """Async twin of the stub: deterministic, clearly marked, no network."""
+
+    PREFIX = "[STUB LLM] "  # must match StubLlmClient.PREFIX below
+
+    async def agenerate(self, system: str, messages: list[dict],
+                        model: str | None = None,
+                        max_tokens: int | None = None,
+                        temperature: float | None = None,
+                        timeout: float | None = None,
+                        max_retries: int | None = None) -> str:
+        return StubLlmClient().generate(
+            system, messages, model=model, max_tokens=max_tokens,
+            temperature=temperature, timeout=timeout, max_retries=max_retries)
+
+    async def astream(self, system: str, messages: list[dict],
+                      model: str | None = None,
+                      max_tokens: int | None = None) -> AsyncIterator[str]:
+        for tok in StubLlmClient().stream(system, messages):
+            yield tok
+
+
+def _openrouter_extra(base_url: str | None) -> dict | None:
+    """Reasoning-disabled guard (OpenRouter-only), shared sync/async."""
+    try:
+        if base_url and "openrouter" in str(base_url):
+            return {"reasoning": {"enabled": False}}
+    except Exception:  # noqa: BLE001
+        pass
+    return None
+
+
+def _chat_kwargs(*, model: str, system: str, messages: list[dict],
+                 temperature: float, max_tokens: int | None,
+                 timeout: float | None, stream: bool,
+                 extra_body: dict | None) -> dict:
+    """Single kwarg construction shared by sync + async adapters.
+
+    Any divergence here changes the wire contract; pinned by golden tests.
+    """
+    kwargs: dict = {
+        "model": model,
+        "messages": [{"role": "system", "content": system}, *messages],
+        "temperature": temperature,
+    }
+    if stream:
+        kwargs["stream"] = True
+    if max_tokens is not None:
+        kwargs["max_tokens"] = max_tokens
+    if timeout is not None and not stream:
+        kwargs["timeout"] = timeout
+    if extra_body:
+        kwargs["extra_body"] = extra_body
+    return kwargs
 
 
 class StubLlmClient:
@@ -117,8 +203,7 @@ def _openai_compatible(base_url: str | None):
         def _extra():
             try:
                 bu = str(getattr(client, "base_url", "") or "")
-                if "openrouter" in bu:
-                    return {"reasoning": {"enabled": False}}
+                return _openrouter_extra(bu)
             except Exception:  # noqa: BLE001
                 pass
             return None
@@ -126,18 +211,11 @@ def _openai_compatible(base_url: str | None):
         def generate(self, system, messages, model=None, max_tokens=None, temperature=None,
                      timeout=None, max_retries=None):
             def _call():
-                kwargs = {
-                    "model": model or s.llm_model,
-                    "messages": [{"role": "system", "content": system}, *messages],
-                    "temperature": 0.5 if temperature is None else temperature,
-                }
-                if max_tokens is not None:
-                    kwargs["max_tokens"] = max_tokens
-                if timeout is not None:
-                    kwargs["timeout"] = timeout
-                extra = self._extra()
-                if extra:
-                    kwargs["extra_body"] = extra
+                kwargs = _chat_kwargs(
+                    model=model or s.llm_model, system=system, messages=messages,
+                    temperature=0.5 if temperature is None else temperature,
+                    max_tokens=max_tokens, timeout=timeout, stream=False,
+                    extra_body=self._extra())
                 r = client.chat.completions.create(**kwargs)
                 if not getattr(r, "choices", None):
                     raise RuntimeError(
@@ -160,17 +238,10 @@ def _openai_compatible(base_url: str | None):
             return _with_retry(_call, retries=max_retries)
 
         def stream(self, system, messages, model=None, max_tokens=None):
-            kwargs = {
-                "model": model or s.llm_model,
-                "messages": [{"role": "system", "content": system}, *messages],
-                "temperature": 0.5,
-                "stream": True,
-            }
-            if max_tokens is not None:
-                kwargs["max_tokens"] = max_tokens
-            extra = self._extra()
-            if extra:
-                kwargs["extra_body"] = extra
+            kwargs = _chat_kwargs(
+                model=model or s.llm_model, system=system, messages=messages,
+                temperature=0.5, max_tokens=max_tokens, timeout=None,
+                stream=True, extra_body=self._extra())
             st = client.chat.completions.create(**kwargs)
             for ch in st:
                 if not getattr(ch, "choices", None):
@@ -240,3 +311,132 @@ def get_llm_client() -> LlmClient:
 
 def is_stub() -> bool:
     return isinstance(get_llm_client(), StubLlmClient)
+
+
+def _openai_async_compatible(base_url: str | None):
+    """OpenRouter & OpenAI via async SDK. One persistent client per worker,
+    opened at lifespan startup and closed at shutdown (§7.1a)."""
+    s = get_settings()
+    try:
+        from openai import AsyncOpenAI
+    except ImportError:
+        return None
+    headers = {}
+    if s.llm_site_url:
+        headers["HTTP-Referer"] = s.llm_site_url
+    if s.llm_app_title:
+        headers["X-Title"] = s.llm_app_title
+    aclient = AsyncOpenAI(
+        api_key=s.llm_api_key,
+        base_url=base_url or None,
+        default_headers=headers or None,
+        timeout=120.0,
+    )
+
+    def _content_guard(content) -> str:
+        content = content or ""
+        if not re.sub(r"[^0-9A-Za-z]", "", str(content)):
+            raise RuntimeError("LLM kembalikan konten kosong (overload/truncated?)")
+        return content
+
+    class _OAI_ASYNC:
+        _sdk = aclient
+
+        @staticmethod
+        def _extra():
+            try:
+                bu = str(getattr(aclient, "base_url", "") or "")
+                return _openrouter_extra(bu)
+            except Exception:  # noqa: BLE001
+                pass
+            return None
+
+        async def agenerate(self, system, messages, model=None, max_tokens=None,
+                            temperature=None, timeout=None, max_retries=None):
+            async def _call():
+                kwargs = _chat_kwargs(
+                    model=model or s.llm_model, system=system, messages=messages,
+                    temperature=0.5 if temperature is None else temperature,
+                    max_tokens=max_tokens, timeout=timeout, stream=False,
+                    extra_body=self._extra())
+                r = await aclient.chat.completions.create(**kwargs)
+                if not getattr(r, "choices", None):
+                    raise RuntimeError(
+                        f"LLM tanpa choices: {str(getattr(r, 'error', None) or repr(r))[:200]}"
+                    )
+                msg = r.choices[0].message
+                return _content_guard(msg.content)
+
+            return await _with_retry_async(_call, retries=max_retries)
+
+        async def astream(self, system, messages, model=None, max_tokens=None):
+            kwargs = _chat_kwargs(
+                model=model or s.llm_model, system=system, messages=messages,
+                temperature=0.5, max_tokens=max_tokens, timeout=None,
+                stream=True, extra_body=self._extra())
+            st = await aclient.chat.completions.create(**kwargs)
+            try:
+                async for ch in st:
+                    if not getattr(ch, "choices", None):
+                        continue
+                    d = ch.choices[0].delta.content
+                    if d:
+                        yield d
+            finally:
+                # Release the upstream connection on normal end AND on
+                # cancellation (Starlette cancels the generator) — §7.1k/l.
+                aclose = getattr(st, "aclose", None)
+                if aclose is not None:
+                    try:
+                        await aclose()
+                    except Exception:  # noqa: BLE001 - cleanup must not fail
+                        pass
+
+    return _OAI_ASYNC()
+
+
+def _build_async_client() -> AsyncLlmClient:
+    s = get_settings()
+    if not s.llm_api_key:
+        return AsyncStubLlmClient()
+    provider = (s.llm_provider or "").lower()
+    if provider == "openrouter":
+        return _openai_async_compatible(s.llm_base_url) or AsyncStubLlmClient()
+    if provider == "openai":
+        return _openai_async_compatible(None) or AsyncStubLlmClient()
+    return AsyncStubLlmClient()
+
+
+_async_client: AsyncLlmClient | None = None
+
+
+def get_async_llm_client() -> AsyncLlmClient:
+    """Per-worker persistent async client (lifespan opens it eagerly)."""
+    global _async_client
+    if _async_client is None:
+        _async_client = _build_async_client()
+    return _async_client
+
+
+async def open_async_llm() -> None:
+    """Lifespan startup: build the async client outside request path."""
+    get_async_llm_client()
+
+
+async def close_async_llm() -> None:
+    """Lifespan shutdown: close the persistent HTTP transport (§7.1a)."""
+    global _async_client
+    client, _async_client = _async_client, None
+    sdk = getattr(client, "_sdk", None)
+    close = getattr(sdk, "close", None)
+    if close is not None:
+        try:
+            result = close()
+            if asyncio.iscoroutine(result):
+                await result
+        except Exception:  # noqa: BLE001 - shutdown must not fail
+            pass
+
+
+def is_async_stub() -> bool:
+    return isinstance(get_async_llm_client(), AsyncStubLlmClient)

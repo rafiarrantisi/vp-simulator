@@ -254,94 +254,210 @@ def v2_get_turns(session_id: str, user: User = Depends(get_current_user),
 
 
 @router.post("/sessions/{session_id}/turns", dependencies=[_ai_rl])
-def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_current_user),
-            db: Session = Depends(get_db)):
-    s = _owned(db, session_id, user)
-    ensure_turnable(s.status)
-    if s.content_schema == "new":  # Phase B: V3 turn (fallback, non-stream)
+async def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_current_user),
+                  db: Session = Depends(get_db)):
+    from app.domains.sessions.turn_acceptance import (
+        accept_turn, finalize_patient_turn,
+    )
+    snap = accept_turn(db, session_id=session_id, user_id=user.id,
+                       text=req.text, input_type=req.input_type)
+    if snap.content_schema == "new":  # Phase B: V3 turn (fallback, non-stream)
         from app.domains.sessions import v3_compat_service as v3c
-        return ok(v3c.turn(db, user, session_id, req.text, req.input_type))
-    history = _history(db, session_id)
+        return ok(await v3c.turn(snap, user.id, req.text, req.input_type))
+    history = [dict(h) for h in snap.history]
     # FASE 6: duplicate-send / stream→fallback retry returns stored reply.
-    dup = find_duplicate_reply(history, req.text)
-    if dup is not None:
-        return ok({"reply": dup, "audioUrl": None, "_deduped": True})
-    n = _next_turn_no(db, session_id)
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text, input_type=req.input_type))
+    if snap.dup_reply is not None:
+        return ok({"reply": snap.dup_reply, "audioUrl": None, "_deduped": True})
+    n = snap.turn_no
     try:
-        reply = engine_v2.respond(s.case_id, history, req.text, language=s.language)
+        reply = await engine_v2.arespond(snap.case_id, history, req.text, language=snap.language)
     except FileNotFoundError:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
-    db.add(SessionTurn(session_id=s.id, turn_number=n + 1, role="patient", content=reply))
-    db.commit()
-    try:  # best-effort cost guardrail
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{snap.case_id}' not found")
+    from app.database import SessionLocal as _SessionLocal
+
+    def _record(db2):
         tokens_in = (sum(len(h["content"]) for h in history) + len(req.text)) // 4
-        billing.record_session_cost(db, s.id, user.id, tokens_in, len(reply) // 4)
-        db.commit()
+        billing.record_session_cost(db2, snap.session_id, user.id, tokens_in, len(reply) // 4)
+
+    try:  # best-effort cost guardrail (+ fencing, same durability as before)
+        finalize_patient_turn(_SessionLocal, session_id=snap.session_id,
+                              turn_no=n + 1, reply=reply, user_id=user.id,
+                              record_cost=_record)
     except Exception:
-        db.rollback()
+        pass
     return ok({"reply": reply, "audioUrl": None})
 
 
 @router.post("/sessions/{session_id}/turns/stream", dependencies=[_ai_rl])
-def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(get_current_user),
-                   db: Session = Depends(get_db)):
+async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(get_current_user),
+                         db: Session = Depends(get_db)):
     """Token-by-token streaming patient turn (pivot-v4 §5 / instruksi §5). Returns
     a chunked text/plain stream consumed by the chat UI with `fetch` + a reader.
 
-    The user turn is persisted before streaming; the patient turn + cost guardrail
-    are persisted on a FRESH session inside the generator, because the request-scoped
-    `db` is closed by the time the streaming body runs.
+    Phase 2: async endpoint — no thread waits on the LLM. The user turn is
+    persisted before streaming; the request session is closed before inference
+    (no pool connection held during LLM wait); persist runs as a bounded
+    thread unit. Wire contract unchanged (plain-text chunks, same errors).
     """
-    s = _owned(db, session_id, user)
-    ensure_turnable(s.status)
-    if s.content_schema == "new":  # Phase B: V3 streaming (exact V2 contract)
+    import anyio
+
+    from app.domains.sessions.turn_acceptance import accept_turn
+    from app.shared.admission import admission_wait_s, conversation_limiter, idle_timeout_s
+    from app.shared.perf_marks import TurnClock
+    clock = TurnClock(route="v2_turn_stream", schema="legacy")
+    clock.mark("request_received")
+    clock.mark("auth_done")
+    # Phase 3: one atomic acceptance (lock + revalidate + history + number +
+    # persist + commit). Same errors/messages as the previous inline preflight.
+    snap = accept_turn(db, session_id=session_id, user_id=user.id,
+                       text=req.text, input_type=req.input_type)
+    if snap.content_schema == "new":  # Phase B: V3 streaming (exact V2 contract)
         from app.domains.sessions import v3_compat_service as v3c
+        clock.mark("context_ready")
+        db.close()
         return StreamingResponse(
-            v3c.stream_turn(db, user, session_id, req.text, req.input_type),
+            await v3c.stream_turn(snap, user.id, req.text, req.input_type),
             media_type="text/plain; charset=utf-8",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
-    history = _history(db, session_id)
+    history = [dict(h) for h in snap.history]
     # FASE 6: duplicate-send retry on an interrupted stream replays stored text.
-    dup = find_duplicate_reply(history, req.text)
-    if dup is not None:
-        def _replay():
-            yield dup
+    if snap.dup_reply is not None:
+        async def _replay():
+            yield snap.dup_reply
         return StreamingResponse(
             _replay(),
             media_type="text/plain; charset=utf-8",
             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
-    n = _next_turn_no(db, session_id)
-    user_id = user.id
-    case_id = s.case_id
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text, input_type=req.input_type))
-    db.commit()
+    n = snap.turn_no
+    user_id = snap.user_id
+    case_id = snap.case_id
+    language = snap.language
+    clock.mark("context_ready")
+    clock.mark("db_preflight_done")
+    db.close()  # release pool connection before inference (H1 fix, Phase 2)
 
-    def gen():
+    limiter = conversation_limiter()
+    try:
+        with anyio.fail_after(admission_wait_s()):
+            await limiter.acquire()
+    except TimeoutError:
+        clock.mark("request_complete")
+        clock.finish("rejected_admission")
+        clock.log_summary()
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
+                            "server busy — please retry in a moment")
+    slot_held = True
+
+    async def gen():
+        nonlocal slot_held
         parts: list[str] = []
+        outcome = "complete"
+        clock.mark("llm_request_start")
+        stream = engine_v2.astream_respond(case_id, history, req.text, language=language)
+        aiter = stream.__aiter__()
+        async def _close_upstream():
+            try:
+                await aiter.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
         try:
-            for chunk in engine_v2.stream_respond(case_id, history, req.text, language=s.language):
+            first_sent = False
+            while True:
+                try:
+                    with anyio.fail_after(idle_timeout_s()):
+                        chunk = await aiter.__anext__()
+                except StopAsyncIteration:
+                    break
+                except TimeoutError:
+                    outcome = "failed_idle"
+                    raise
+                if first_sent:
+                    # Generator resumed => Starlette took the previous chunk.
+                    # Approximation of ASGI send (see perf_marks docs).
+                    clock.mark("first_content_sent")
+                    first_sent = None
                 if chunk:
+                    if not parts:
+                        clock.mark("llm_first_token")
+                        clock.mark("first_chunk_yielded")
                     parts.append(chunk)
+                    clock.count("chunks")
+                    clock.count("chunk_bytes", len(chunk))
                     yield chunk
+                    if first_sent is False:
+                        first_sent = True
+        except GeneratorExit:
+            outcome = "cancelled"
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            await _close_upstream()
+            raise
         except FileNotFoundError:
+            outcome = "failed_case_missing"
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
             yield f"(error: v2 case '{case_id}' not found)"
             return
+        except Exception:
+            if outcome == "complete":
+                outcome = "failed_llm"
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            await _close_upstream()
+            raise
+        await _close_upstream()
         reply = "".join(parts).strip()
-        db2 = SessionLocal()
-        try:
-            db2.add(SessionTurn(session_id=session_id, turn_number=n + 1, role="patient", content=reply))
-            db2.commit()
+        clock.mark("stream_complete")
+
+        # Phase 3: fenced finalization (stale worker cannot overwrite newer
+        # results; same sequencing/billing as before).
+        from app.database import SessionLocal as _SessionLocal
+        from app.domains.sessions.turn_acceptance import finalize_patient_turn
+
+        def _record(db2):
             tokens_in = (sum(len(h["content"]) for h in history) + len(req.text)) // 4
             billing.record_session_cost(db2, session_id, user_id, tokens_in, len(reply) // 4)
-            db2.commit()
+
+        try:
+            from app.shared.admission import db_limiter
+
+            def _finalize():
+                return finalize_patient_turn(
+                    _SessionLocal, session_id=session_id, turn_no=n + 1,
+                    reply=reply, user_id=user_id, record_cost=_record)
+
+            result = await anyio.to_thread.run_sync(_finalize, limiter=db_limiter())
+            if result == "superseded":
+                outcome = "superseded_stale"
+            clock.mark("db_persist_complete")
         except Exception:
-            db2.rollback()
+            outcome = "failed_persist"
         finally:
-            db2.close()
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            if slot_held:
+                slot_held = False
+                limiter.release()
+
+    async def _gen_wrapped():
+        it = gen()
+        try:
+            async for chunk in it:
+                yield chunk
+        finally:
+            try:
+                await it.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
+            if slot_held:
+                limiter.release()
 
     return StreamingResponse(
-        gen(),
+        _gen_wrapped(),
         media_type="text/plain; charset=utf-8",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
@@ -456,51 +572,83 @@ def _record_progress(user: User, case, report: dict) -> None:
 
 
 @router.post("/sessions/{session_id}/score", dependencies=[_ai_rl])
-def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_user),
-             db: Session = Depends(get_db)):
+async def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_user),
+                   db: Session = Depends(get_db)):
+    from app.domains.scoring.singleflight import run_singleflight
+    from app.shared.perf_marks import TurnClock
+    clock = TurnClock(route="v2_score", schema="legacy")
+    clock.mark("request_received")
+    clock.mark("auth_done")
     s = _owned(db, session_id, user)
     # Scoring may be retried by the browser/network after a slow judge call.
     # Return the stored report instead of awarding XP/progress twice.
     if s.status == "completed" and s.report:
+        clock.count("stored_report_hit")
+        clock.mark("request_complete")
+        clock.finish("stored")
+        clock.log_summary()
         return ok(s.report)
-    if s.content_schema == "new":  # Phase B: V3 scoring -> V2 report shape
-        from app.domains.sessions import v3_compat_service as v3c
-        return ok(v3c.score(
-            db, user, session_id, ddx=req.ddx, management=req.management,
-            mode=req.mode, overtime=req.overtime,
-            pf_notes=req.pf_notes, pf_areas=req.pf_areas))
+    clock.mark("context_ready")
+
+    async def _do():
+        if s.content_schema == "new":  # Phase B: V3 scoring -> V2 report shape
+            from app.domains.sessions import v3_compat_service as v3c
+            clock.count("judge_call")
+            return await v3c.score(
+                db, user, session_id, ddx=req.ddx, management=req.management,
+                mode=req.mode, overtime=req.overtime,
+                pf_notes=req.pf_notes, pf_areas=req.pf_areas)
+        try:
+            case = load_v2_case(s.case_id)
+        except FileNotFoundError:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
+        transcript = _history(db, session_id)
+        rubric_mode = _UI_MODE_TO_RUBRIC.get((req.mode or "").lower())
+        from app.rag.judge_v2 import aevaluate_v2
+        clock.count("judge_call")
+        report = await aevaluate_v2(case, transcript, mode=rubric_mode,
+                                    student_ddx=req.ddx, student_management=req.management,
+                                    student_pf={"notes": req.pf_notes or "", "areas": req.pf_areas or []})
+        if req.overtime:  # continued past the OSCE time limit (§4.3) -> small penalty
+            orig = int(report.get("overall", 0) or 0)
+            report["overall"] = max(0, orig - _OVERTIME_PENALTY)
+            report["overtime_penalty"] = _OVERTIME_PENALTY
+            report["summary"] = (report.get("summary", "") or "") + \
+                f" (−{_OVERTIME_PENALTY} for continuing past the OSCE time limit.)"
+        s.total_score = report.get("overall", 0)
+        s.report = report
+        s.status = "completed"
+        if s.ended_at is None:
+            s.ended_at = datetime.now(timezone.utc)
+        _record_progress(user, case, report)
+        try:  # Phase 12: judge outcome correlation (metadata only, never content)
+            from app.shared.observability import log_judge_event
+            from pipeline.clinical_contracts.versions import SCORING_VERSION
+            from app.rag.judge_v2 import is_stub as _judge_stub
+            log_judge_event(engine="v2", outcome="stub" if _judge_stub() else "ok",
+                            session_id=s.id, content_schema="legacy",
+                            scoring_version=SCORING_VERSION)
+        except Exception:
+            pass
+        db.commit()
+        clock.mark("db_persist_complete")
+        return report  # includes answer_key for the post-session reveal
+
+    # Phase 4: concurrent duplicate scoring shares one execution (§9.1d);
+    # progress/XP therefore recorded exactly once.
+    outcome = "complete"
     try:
-        case = load_v2_case(s.case_id)
-    except FileNotFoundError:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
-    transcript = _history(db, session_id)
-    rubric_mode = _UI_MODE_TO_RUBRIC.get((req.mode or "").lower())
-    report = evaluate_v2(case, transcript, mode=rubric_mode,
-                         student_ddx=req.ddx, student_management=req.management,
-                         student_pf={"notes": req.pf_notes or "", "areas": req.pf_areas or []})
-    if req.overtime:  # continued past the OSCE time limit (§4.3) -> small penalty
-        orig = int(report.get("overall", 0) or 0)
-        report["overall"] = max(0, orig - _OVERTIME_PENALTY)
-        report["overtime_penalty"] = _OVERTIME_PENALTY
-        report["summary"] = (report.get("summary", "") or "") + \
-            f" (−{_OVERTIME_PENALTY} for continuing past the OSCE time limit.)"
-    s.total_score = report.get("overall", 0)
-    s.report = report
-    s.status = "completed"
-    if s.ended_at is None:
-        s.ended_at = datetime.now(timezone.utc)
-    _record_progress(user, case, report)
-    try:  # Phase 12: judge outcome correlation (metadata only, never content)
-        from app.shared.observability import log_judge_event
-        from pipeline.clinical_contracts.versions import SCORING_VERSION
-        from app.rag.judge_v2 import is_stub as _judge_stub
-        log_judge_event(engine="v2", outcome="stub" if _judge_stub() else "ok",
-                        session_id=s.id, content_schema="legacy",
-                        scoring_version=SCORING_VERSION)
+        report, shared = await run_singleflight(f"score:{session_id}", _do)
+        if shared:
+            clock.count("singleflight_shared")
     except Exception:
-        pass
-    db.commit()
-    return ok(report)  # includes answer_key for the post-session reveal
+        outcome = "failed"
+        raise
+    finally:
+        clock.mark("request_complete")
+        clock.finish(outcome)
+        clock.log_summary()
+    return ok(report)
 
 
 # Gamification badges (§14). Derived from stats on each request — not stored.

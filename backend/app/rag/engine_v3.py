@@ -16,10 +16,10 @@ path (POST turns) is wired in STEP 9 §8 so the pilot talks to THIS engine.
 """
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import AsyncIterator, Iterator
 
 from app.config import get_settings
-from app.rag.llm import get_llm_client
+from app.rag.llm import get_async_llm_client, get_llm_client
 from app.rag.prompt import build_messages, is_first_turn
 from pipeline.case_v3.models import ClinicalVariant
 from pipeline.case_v3.runtime import candidate_safe_view
@@ -118,3 +118,33 @@ def stream_respond(v: ClinicalVariant, history: list[dict], user_message: str,
     yield from get_llm_client().stream(
         system, messages, max_tokens=get_settings().llm_persona_max_tokens
     )
+
+async def astream_respond(v, history: list[dict], user_message: str,
+                          language: str = "en",
+                          persona: dict | None = None) -> AsyncIterator[str]:
+    """Async twin of `stream_respond`: identical prompt assembly and params,
+    nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
+    system, messages = _prepare(v, history, user_message,
+                                language=language, persona=persona)
+    child = get_async_llm_client().astream(
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens)
+    try:
+        async for chunk in child:
+            yield chunk
+    finally:
+        aclose = getattr(child, "aclose", None)
+        if aclose is not None:
+            try:
+                await aclose()
+            except Exception:  # noqa: BLE001
+                pass
+
+
+async def arespond(v, history: list[dict], user_message: str,
+                   language: str = "en",
+                   persona: dict | None = None) -> str:
+    """Async twin of `respond`: identical assembly/params, nonblocking wait."""
+    system, messages = _prepare(v, history, user_message,
+                                language=language, persona=persona)
+    return (await get_async_llm_client().agenerate(
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens)).strip()

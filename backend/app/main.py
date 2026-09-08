@@ -102,7 +102,33 @@ async def lifespan(_app: FastAPI):
         _log.info("[catalog] pre-warm OK")
     except Exception:
         _log.warning("[catalog] pre-warm gagal", exc_info=True)
+    # Phase 1: pre-warm shared V3 registry (386 YAML reads, ~8s) so the first
+    # turn/catalogue view never pays a cold build holding request resources.
+    # Non-fatal: first request lazily builds under lock instead.
+    try:
+        from app.domains.sessions.progress_adapter import cached_registry
+        cached_registry()
+        _log.info("[registry] pre-warm OK")
+    except Exception:
+        _log.warning("[registry] pre-warm gagal", exc_info=True)
+    # Phase 2: open the persistent per-worker async LLM client + admission
+    # limiters in the worker loop (§7.1a/f). Non-fatal: lazy build on first
+    # async use; sync adapter remains the tested fallback artifact.
+    try:
+        from app.rag.llm import open_async_llm
+        from app.shared.admission import init_admission
+        await open_async_llm()
+        init_admission()
+        _log.info("[llm] async client + admission ready")
+    except Exception:
+        _log.warning("[llm] async pre-open gagal", exc_info=True)
     yield
+    # Shutdown: stop admitting (process going away), close HTTP transport.
+    try:
+        from app.rag.llm import close_async_llm
+        await close_async_llm()
+    except Exception:
+        pass
 
 
 app = FastAPI(title=_settings.app_name, version="0.15.0", lifespan=lifespan)

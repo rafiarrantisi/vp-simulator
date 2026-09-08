@@ -24,7 +24,7 @@ immutability + billing + idempotency rules as V2 (no silent bypass).
 """
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import AsyncIterator, Iterator
 from datetime import datetime, timezone
 import json
 
@@ -39,6 +39,7 @@ from app.domains.sessions.hardening import (
     general_with_vitals,
 )
 from app.domains.sessions.router import _history, _next_turn_no, _owned
+from app.domains.sessions.progress_adapter import cached_registry
 from app.domains.sessions.v3_compat_schemas import (
     default_registry, family_type, variant_opening_line,
 )
@@ -57,7 +58,7 @@ def library_cards(*, learner_stage: str = "koas") -> list[dict]:
     from app.domains.sessions.v3_compat_schemas import (
         family_to_card, family_variant_count,
     )
-    reg = default_registry()
+    reg = cached_registry()
     out = []
     for fid, fam in reg.families.items():
         if fam.status in ("draft",):
@@ -76,7 +77,7 @@ def start(db: OrmSession, user: User, *, case_id: str, language: str) -> dict:
     from pipeline.case_v3.persona import build_session_instance
     from app.domains.billing import service as billing
 
-    reg = default_registry()
+    reg = cached_registry()
     fam = reg.families.get(case_id)
     if fam is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"V3 family '{case_id}' not found")
@@ -241,7 +242,7 @@ def _frozen_variant(db: OrmSession, s: SessionRow) -> tuple:
     if not s.variant_id:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
                             "v3 session has no frozen variant")
-    reg = default_registry()
+    reg = cached_registry()
     v = reg.variants.get(s.variant_id)
     if v is None:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -276,89 +277,202 @@ def get_turns(db: OrmSession, session_id: str, user: User) -> dict:
     }
 
 
-def turn(db: OrmSession, user: User, session_id: str, text: str,
-         input_type: str = "text") -> dict:
-    """Non-stream fallback patient turn (exact V2 `{reply, audioUrl}`)."""
-    from app.rag.engine_v3 import respond as v3_respond
+async def turn(snap, user_id: str, text: str,
+               input_type: str = "text") -> dict:
+    """Non-stream fallback patient turn (exact V2 `{reply, audioUrl}`).
+
+    Phase 3: takes an accepted TurnSnapshot (acceptance already committed by
+    the caller); resolves the frozen variant from cache; finalizes fenced.
+    """
+    from app.rag.engine_v3 import arespond as v3_arespond
     from app.domains.billing import service as billing
-    s = _owned(db, session_id, user)
-    ensure_turnable(s.status)
-    _, v = _frozen_variant(db, s)
-    history = _history(db, session_id)
-    dup = find_duplicate_reply(history, text)
-    if dup is not None:
-        return {"reply": dup, "audioUrl": None, "_deduped": True}
-    n = _next_turn_no(db, session_id)
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user",
-                       content=text, input_type=input_type))
+    from app.domains.sessions.turn_acceptance import finalize_patient_turn
+    v = _resolve_frozen(snap)
+    history = [dict(h) for h in snap.history]
+    if snap.dup_reply is not None:
+        return {"reply": snap.dup_reply, "audioUrl": None, "_deduped": True}
+    n = snap.turn_no
     try:
-        reply = v3_respond(v, history, text, language=s.language or "en",
-                           persona=_persona(s))
+        reply = await v3_arespond(v, history, text, language=snap.language or "en",
+                                  persona=snap.persona)
     except Exception as e:  # noqa: BLE001
-        db.rollback()
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"patient LLM failed: {e}")
-    db.add(SessionTurn(session_id=s.id, turn_number=n + 1, role="patient",
-                       content=reply))
-    db.commit()
-    try:
+    from app.database import SessionLocal as _SessionLocal
+
+    def _record(db2):
         tokens_in = (sum(len(h.get("content") or "") for h in history) + len(text)) // 4
-        billing.record_session_cost(db, s.id, user.id, tokens_in, len(reply) // 4)
-        db.commit()
+        billing.record_session_cost(db2, snap.session_id, user_id, tokens_in, len(reply) // 4)
+
+    try:
+        finalize_patient_turn(_SessionLocal, session_id=snap.session_id,
+                              turn_no=n + 1, reply=reply, user_id=user_id,
+                              record_cost=_record)
     except Exception:  # noqa: BLE001
-        db.rollback()
+        pass
     return {"reply": reply, "audioUrl": None}
 
 
-def stream_turn(db: OrmSession, user: User, session_id: str, text: str,
-                input_type: str = "text") -> Iterator[str]:
-    """Token-by-token raw text/plain stream (exact V2 streaming contract)."""
-    from app.rag.engine_v3 import stream_respond as v3_stream
-    from app.domains.billing import service as billing
-    s = _owned(db, session_id, user)
-    ensure_turnable(s.status)
-    _, v = _frozen_variant(db, s)
-    history = _history(db, session_id)
-    dup = find_duplicate_reply(history, text)
-    if dup is not None:
-        def _replay() -> Iterator[str]:
-            yield dup
-        return _replay()
-    n = _next_turn_no(db, session_id)
-    user_id = user.id
-    sid = s.id
-    lang = s.language or "en"
-    persona = _persona(s)
-    # persist the user turn before streaming (mirror v2)
-    db.add(SessionTurn(session_id=s.id, turn_number=n, role="user",
-                       content=text, input_type=input_type))
-    db.commit()
+def _resolve_frozen(snap):
+    """Frozen variant from cache + hash check (no DB; mirrors _frozen_variant)."""
+    if not snap.variant_id:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            "v3 session has no frozen variant")
+    from app.domains.sessions.progress_adapter import cached_registry
+    reg = cached_registry()
+    v = reg.variants.get(snap.variant_id)
+    if v is None:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
+                            f"v3 variant '{snap.variant_id}' not found")
+    if getattr(snap, "variant_canonical_hash", None):
+        if snap.variant_canonical_hash != v.canonical_hash():
+            raise HTTPException(status.HTTP_409_CONFLICT,
+                                "session clinical truth changed since start; refusing")
+    return v
 
-    def gen() -> Iterator[str]:
+
+async def stream_turn(snap, user_id: str, text: str,
+                      input_type: str = "text"):
+    """Token-by-token raw text/plain stream (exact V2 streaming contract).
+
+    Phase 3: takes an accepted TurnSnapshot (acceptance already committed by
+    the caller). Wire contract unchanged (plain-text chunks, in-stream error
+    string on LLM failure).
+    """
+    import anyio
+
+    from app.rag.engine_v3 import astream_respond as v3_astream
+    from app.domains.billing import service as billing
+    from app.shared.admission import (
+        admission_wait_s, conversation_limiter, idle_timeout_s,
+    )
+    from app.shared.perf_marks import TurnClock
+    clock = TurnClock(route="v3_stream_turn", schema="new")
+    clock.mark("request_received")
+    clock.mark("auth_done")
+    v = _resolve_frozen(snap)
+    clock.mark("context_ready")
+    history = [dict(h) for h in snap.history]
+    if snap.dup_reply is not None:
+        async def _replay() -> AsyncIterator[str]:
+            yield snap.dup_reply
+        return _replay()
+    n = snap.turn_no
+    sid = snap.session_id
+    lang = snap.language or "en"
+    persona = snap.persona
+    clock.mark("db_preflight_done")
+
+    limiter = conversation_limiter()
+    try:
+        with anyio.fail_after(admission_wait_s()):
+            await limiter.acquire()
+    except TimeoutError:
+        clock.mark("request_complete")
+        clock.finish("rejected_admission")
+        clock.log_summary()
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
+                            "server busy — please retry in a moment")
+    slot_held = True
+
+    def nonlocal_slot_release():
+        nonlocal slot_held
+        if slot_held:
+            slot_held = False
+            limiter.release()
+
+    async def gen() -> AsyncIterator[str]:
         parts: list[str] = []
+        outcome = "complete"
+        clock.mark("llm_request_start")
+        stream = v3_astream(v, history, text, language=lang, persona=persona)
+        aiter = stream.__aiter__()
+        async def _close_upstream():
+            try:
+                await aiter.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
         try:
-            for chunk in v3_stream(v, history, text, language=lang, persona=persona):
+            first_sent = False
+            while True:
+                try:
+                    with anyio.fail_after(idle_timeout_s()):
+                        chunk = await aiter.__anext__()
+                except StopAsyncIteration:
+                    break
+                except TimeoutError:
+                    outcome = "failed_idle"
+                    raise
+                if first_sent:
+                    clock.mark("first_content_sent")
+                    first_sent = None
                 if chunk:
+                    if not parts:
+                        clock.mark("llm_first_token")
+                        clock.mark("first_chunk_yielded")
                     parts.append(chunk)
+                    clock.count("chunks")
+                    clock.count("chunk_bytes", len(chunk))
                     yield chunk
+                    if first_sent is False:
+                        first_sent = True
+        except GeneratorExit:
+            outcome = "cancelled"
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            await _close_upstream()
+            raise
         except Exception as e:  # noqa: BLE001
+            outcome = "failed_llm"
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            await _close_upstream()
             yield f"(error: patient LLM failed — {(getattr(e, 'message', None) or e)})"
             return
+        await _close_upstream()
         reply = "".join(parts).strip()
-        from app.database import SessionLocal
-        db2 = SessionLocal()
-        try:
-            db2.add(SessionTurn(session_id=sid, turn_number=n + 1,
-                                role="patient", content=reply))
-            db2.commit()
+        clock.mark("stream_complete")
+        from app.database import SessionLocal as _SessionLocal
+        from app.domains.sessions.turn_acceptance import finalize_patient_turn
+
+        def _record(db2):
             tokens_in = (sum(len(h.get("content") or "") for h in history) + len(text)) // 4
             billing.record_session_cost(db2, sid, user_id, tokens_in, len(reply) // 4)
-            db2.commit()
-        except Exception:  # noqa: BLE001
-            db2.rollback()
-        finally:
-            db2.close()
 
-    return gen()
+        try:
+            from app.shared.admission import db_limiter
+
+            def _finalize():
+                return finalize_patient_turn(
+                    _SessionLocal, session_id=sid, turn_no=n + 1,
+                    reply=reply, user_id=user_id, record_cost=_record)
+
+            result = await anyio.to_thread.run_sync(_finalize, limiter=db_limiter())
+            if result == "superseded":
+                outcome = "superseded_stale"
+            clock.mark("db_persist_complete")
+        except Exception:  # noqa: BLE001
+            outcome = "failed_persist"
+        finally:
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            nonlocal_slot_release()
+
+    async def _gen_wrapped() -> AsyncIterator[str]:
+        it = gen()
+        try:
+            async for chunk in it:
+                yield chunk
+        finally:
+            try:
+                await it.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
+            nonlocal_slot_release()
+
+    return _gen_wrapped()
 
 
 # ── physical exam ─────────────────────────────────────────────────────────
@@ -411,7 +525,7 @@ def _map_v2_assessment_to_score(v, ddx: dict | None, management: dict | None) ->
                       diagnosis_submitted=dx)
 
 
-def score(db: OrmSession, user: User, session_id: str, *,
+async def score(db: OrmSession, user: User, session_id: str, *,
           ddx: dict | None = None, management: dict | None = None,
           mode: str | None = None, overtime: bool = False,
           pf_notes: str | None = None, pf_areas: list[str] | None = None) -> dict:
@@ -422,7 +536,7 @@ def score(db: OrmSession, user: User, session_id: str, *,
     hit/miss with evidence, honest per-dimension scores, safety gates and a
     narrative examiner summary. Idempotent (returns stored report on retry).
     """
-    from app.rag.judge_v3 import evaluate_v3
+    from app.rag.judge_v3 import aevaluate_v3
     from app.domains.billing import service as billing
     s = _owned(db, session_id, user)
     if s.status == "completed" and s.report:
@@ -430,7 +544,7 @@ def score(db: OrmSession, user: User, session_id: str, *,
     _, v = _frozen_variant(db, s)
     transcript = _history(db, session_id)
     is_osce = (mode or "").lower() == "osce"
-    judge = evaluate_v3(
+    judge = await aevaluate_v3(
         v, transcript, learner_stage=s.learner_level or "koas",
         ddx=ddx, management=management,
         pf_notes=pf_notes, pf_areas=pf_areas, with_pf=is_osce)

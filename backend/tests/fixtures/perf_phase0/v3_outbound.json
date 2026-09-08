@@ -1,0 +1,19 @@
+{
+ "extra_body": {
+  "reasoning": {
+   "enabled": false
+  }
+ },
+ "max_tokens": 1024,
+ "model": "deepseek/deepseek-v4-flash",
+ "n_messages": 2,
+ "roles": [
+  "system",
+  "user"
+ ],
+ "stream": false,
+ "system_chars": 1441,
+ "system_sha256": "e8e72f2086694846a583697c4dbd9075ab7c702180d13ae44024f20de82c7c34",
+ "temperature": 0.5,
+ "timeout": null
+}

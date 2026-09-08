@@ -10,11 +10,11 @@ language via the `language` parameter (defaults to English).
 """
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import AsyncIterator, Iterator
 
 from app.config import get_settings
 from app.domains.cases.v2_catalog import load_v2_case
-from app.rag.llm import get_llm_client
+from app.rag.llm import get_async_llm_client, get_llm_client
 from app.rag.prompt import build_messages, is_first_turn
 from app.rag.prompt_v2 import build_patient_prompt
 
@@ -45,3 +45,30 @@ def stream_respond(case_id: str, history: list[dict], user_message: str,
     yield from get_llm_client().stream(
         system, messages, max_tokens=get_settings().llm_persona_max_tokens
     )
+
+
+async def astream_respond(case_id: str, history: list[dict], user_message: str,
+                          language: str = "en") -> AsyncIterator[str]:
+    """Async twin of `stream_respond`: identical prompt assembly and params,
+    nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
+    system, messages = _prepare(case_id, history, user_message, language=language)
+    child = get_async_llm_client().astream(
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens)
+    try:
+        async for chunk in child:
+            yield chunk
+    finally:
+        aclose = getattr(child, "aclose", None)
+        if aclose is not None:
+            try:
+                await aclose()
+            except Exception:  # noqa: BLE001
+                pass
+
+
+async def arespond(case_id: str, history: list[dict], user_message: str,
+                   language: str = "en") -> str:
+    """Async twin of `respond`: identical assembly/params, nonblocking wait."""
+    system, messages = _prepare(case_id, history, user_message, language=language)
+    return (await get_async_llm_client().agenerate(
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens)).strip()

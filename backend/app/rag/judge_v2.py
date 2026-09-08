@@ -485,3 +485,48 @@ def evaluate_v2(case: CaseV2, transcript: list[dict], *,
 
     report["answer_key"] = build_answer_key(case)
     return report
+
+
+async def aevaluate_v2(case, transcript: list[dict], *,
+                       mode: str | None = None,
+                       student_ddx: dict | None = None,
+                       student_management: dict | None = None,
+                       student_pf: dict | None = None) -> dict:
+    """Async twin of `evaluate_v2`: identical prompt/normalize/fallback,
+    nonblocking upstream wait under the judge admission limit (§7.1f)."""
+    from app.rag.llm import get_async_llm_client, is_async_stub
+    from app.shared.admission import judge_limiter
+
+    resolved_mode = (mode or case.frontmatter.get("mode_default") or "anamnesis").lower()
+    weights = resolve_weights(resolved_mode, case.frontmatter.get("scoring_weights_override"))
+
+    if is_stub() or is_async_stub():
+        report = _empty_report(resolved_mode, weights,
+                               "Stub LLM: set LLM_API_KEY for real scoring. Shape is valid; scores 0.")
+    else:
+        try:
+            system, user = build_judge_prompt(case, transcript, resolved_mode, weights,
+                                              student_ddx, student_management, student_pf)
+            async with judge_limiter():
+                raw_text = await get_async_llm_client().agenerate(
+                    system, user,
+                    model=get_settings().llm_judge_model,
+                    max_tokens=get_settings().llm_judge_max_tokens,
+                    temperature=_JUDGE_TEMPERATURE,
+                    timeout=_JUDGE_TIMEOUT_S,
+                    max_retries=_JUDGE_MAX_RETRIES,
+                )
+            obj = _extract_json(raw_text)
+            report = _normalize(obj, resolved_mode, weights) if obj is not None else \
+                _empty_report(resolved_mode, weights, "judge returned no parseable JSON")
+        except Exception as e:  # scoring must never fail the session
+            report = _empty_report(resolved_mode, weights, f"judge parse failed, valid fallback: {e}")
+            try:
+                from app.shared.observability import log_judge_event
+                from pipeline.clinical_contracts.versions import SCORING_VERSION
+                log_judge_event(engine="v2", outcome="error", session_id=None,
+                                content_schema="legacy", scoring_version=SCORING_VERSION)
+            except Exception:
+                pass
+    report["answer_key"] = build_answer_key(case)
+    return report
