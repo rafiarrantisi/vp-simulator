@@ -555,50 +555,81 @@ def _record_progress(user: User, case, report: dict) -> None:
 @router.post("/sessions/{session_id}/score", dependencies=[_ai_rl])
 async def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_current_user),
                    db: Session = Depends(get_db)):
+    from app.domains.scoring.singleflight import run_singleflight
+    from app.shared.perf_marks import TurnClock
+    clock = TurnClock(route="v2_score", schema="legacy")
+    clock.mark("request_received")
+    clock.mark("auth_done")
     s = _owned(db, session_id, user)
     # Scoring may be retried by the browser/network after a slow judge call.
     # Return the stored report instead of awarding XP/progress twice.
     if s.status == "completed" and s.report:
+        clock.count("stored_report_hit")
+        clock.mark("request_complete")
+        clock.finish("stored")
+        clock.log_summary()
         return ok(s.report)
-    if s.content_schema == "new":  # Phase B: V3 scoring -> V2 report shape
-        from app.domains.sessions import v3_compat_service as v3c
-        return ok(await v3c.score(
-            db, user, session_id, ddx=req.ddx, management=req.management,
-            mode=req.mode, overtime=req.overtime,
-            pf_notes=req.pf_notes, pf_areas=req.pf_areas))
+    clock.mark("context_ready")
+
+    async def _do():
+        if s.content_schema == "new":  # Phase B: V3 scoring -> V2 report shape
+            from app.domains.sessions import v3_compat_service as v3c
+            clock.count("judge_call")
+            return await v3c.score(
+                db, user, session_id, ddx=req.ddx, management=req.management,
+                mode=req.mode, overtime=req.overtime,
+                pf_notes=req.pf_notes, pf_areas=req.pf_areas)
+        try:
+            case = load_v2_case(s.case_id)
+        except FileNotFoundError:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
+        transcript = _history(db, session_id)
+        rubric_mode = _UI_MODE_TO_RUBRIC.get((req.mode or "").lower())
+        from app.rag.judge_v2 import aevaluate_v2
+        clock.count("judge_call")
+        report = await aevaluate_v2(case, transcript, mode=rubric_mode,
+                                    student_ddx=req.ddx, student_management=req.management,
+                                    student_pf={"notes": req.pf_notes or "", "areas": req.pf_areas or []})
+        if req.overtime:  # continued past the OSCE time limit (§4.3) -> small penalty
+            orig = int(report.get("overall", 0) or 0)
+            report["overall"] = max(0, orig - _OVERTIME_PENALTY)
+            report["overtime_penalty"] = _OVERTIME_PENALTY
+            report["summary"] = (report.get("summary", "") or "") + \
+                f" (−{_OVERTIME_PENALTY} for continuing past the OSCE time limit.)"
+        s.total_score = report.get("overall", 0)
+        s.report = report
+        s.status = "completed"
+        if s.ended_at is None:
+            s.ended_at = datetime.now(timezone.utc)
+        _record_progress(user, case, report)
+        try:  # Phase 12: judge outcome correlation (metadata only, never content)
+            from app.shared.observability import log_judge_event
+            from pipeline.clinical_contracts.versions import SCORING_VERSION
+            from app.rag.judge_v2 import is_stub as _judge_stub
+            log_judge_event(engine="v2", outcome="stub" if _judge_stub() else "ok",
+                            session_id=s.id, content_schema="legacy",
+                            scoring_version=SCORING_VERSION)
+        except Exception:
+            pass
+        db.commit()
+        clock.mark("db_persist_complete")
+        return report  # includes answer_key for the post-session reveal
+
+    # Phase 4: concurrent duplicate scoring shares one execution (§9.1d);
+    # progress/XP therefore recorded exactly once.
+    outcome = "complete"
     try:
-        case = load_v2_case(s.case_id)
-    except FileNotFoundError:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
-    transcript = _history(db, session_id)
-    rubric_mode = _UI_MODE_TO_RUBRIC.get((req.mode or "").lower())
-    from app.rag.judge_v2 import aevaluate_v2
-    report = await aevaluate_v2(case, transcript, mode=rubric_mode,
-                                student_ddx=req.ddx, student_management=req.management,
-                                student_pf={"notes": req.pf_notes or "", "areas": req.pf_areas or []})
-    if req.overtime:  # continued past the OSCE time limit (§4.3) -> small penalty
-        orig = int(report.get("overall", 0) or 0)
-        report["overall"] = max(0, orig - _OVERTIME_PENALTY)
-        report["overtime_penalty"] = _OVERTIME_PENALTY
-        report["summary"] = (report.get("summary", "") or "") + \
-            f" (−{_OVERTIME_PENALTY} for continuing past the OSCE time limit.)"
-    s.total_score = report.get("overall", 0)
-    s.report = report
-    s.status = "completed"
-    if s.ended_at is None:
-        s.ended_at = datetime.now(timezone.utc)
-    _record_progress(user, case, report)
-    try:  # Phase 12: judge outcome correlation (metadata only, never content)
-        from app.shared.observability import log_judge_event
-        from pipeline.clinical_contracts.versions import SCORING_VERSION
-        from app.rag.judge_v2 import is_stub as _judge_stub
-        log_judge_event(engine="v2", outcome="stub" if _judge_stub() else "ok",
-                        session_id=s.id, content_schema="legacy",
-                        scoring_version=SCORING_VERSION)
+        report, shared = await run_singleflight(f"score:{session_id}", _do)
+        if shared:
+            clock.count("singleflight_shared")
     except Exception:
-        pass
-    db.commit()
-    return ok(report)  # includes answer_key for the post-session reveal
+        outcome = "failed"
+        raise
+    finally:
+        clock.mark("request_complete")
+        clock.finish(outcome)
+        clock.log_summary()
+    return ok(report)
 
 
 # Gamification badges (§14). Derived from stats on each request — not stored.

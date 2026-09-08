@@ -36,6 +36,25 @@ def _mk_session(h, case_id):
 
 
 @pytest.fixture(autouse=True)
+def _clean_event_loop():
+    """asyncio.run() leaves a closed current loop behind, breaking legacy
+    get_event_loop() users in later tests. Ensure an open loop instead."""
+    import asyncio
+
+    yield
+    try:
+        closed = asyncio.get_event_loop().is_closed()
+    except RuntimeError:
+        closed = True
+    if closed:
+        try:
+            asyncio.set_event_loop(asyncio.new_event_loop())
+        except Exception:
+            pass
+
+
+
+@pytest.fixture(autouse=True)
 def _clean_llm_singletons():
     """LLM settings/client singletons leak across tests (lru_cache + module
     globals). Reset before/after so stub isolation from conftest holds."""
@@ -352,3 +371,78 @@ def test_lifespan_opens_and_closes_async_client():
         opened = llm_mod._async_client
     assert llm_mod._async_client is None, "lifespan shutdown must release client"
     assert opened is not None
+
+
+def test_score_stored_fast_path_skips_judge(monkeypatch):
+    import app.rag.judge_v2 as j2
+    from app.main import app
+
+    calls = []
+
+    async def counting(*a, **k):
+        calls.append(1)
+        return {"overall": 61, "summary": "s"}
+
+    monkeypatch.setattr(j2, "aevaluate_v2", counting)
+    with TestClient(app) as h:
+        sid, headers = _mk_session(h, "em_anaphylaxis_001")
+        h.post(f"/api/v2/sessions/{sid}/turns", json={"text": "halo?"},
+               headers=headers)
+        r1 = h.post(f"/api/v2/sessions/{sid}/score",
+                    json={"ddx": {}, "management": {}}, headers=headers)
+        assert r1.status_code == 200, r1.text[:200]
+        assert len(calls) == 1
+        first = r1.json()["data"]
+        r2 = h.post(f"/api/v2/sessions/{sid}/score",
+                    json={"ddx": {}, "management": {}}, headers=headers)
+        assert r2.status_code == 200
+        assert len(calls) == 1, "stored report must not re-invoke the judge"
+        assert r2.json()["data"]["overall"] == first["overall"]
+
+
+def test_concurrent_duplicate_score_single_judge(monkeypatch):
+    import asyncio
+    import threading
+
+    import app.rag.judge_v2 as j2
+    from app.main import app
+
+    release = threading.Event()
+    calls = []
+
+    async def gated(*a, **k):
+        calls.append(1)
+        await asyncio.to_thread(release.wait, 10)
+        return {"overall": 62, "summary": "s"}
+
+    monkeypatch.setattr(j2, "aevaluate_v2", gated)
+    with TestClient(app) as h:
+        sid, headers = _mk_session(h, "em_anaphylaxis_001")
+        h.post(f"/api/v2/sessions/{sid}/turns", json={"text": "halo?"},
+               headers=headers)
+        results, errors = [], []
+
+        def fire():
+            try:
+                r = h.post(f"/api/v2/sessions/{sid}/score",
+                           json={"ddx": {}, "management": {}}, headers=headers)
+                results.append((r.status_code, r.json()["data"]["overall"]))
+            except Exception as e:  # noqa: BLE001
+                errors.append(e)
+
+        t1, t2 = threading.Thread(target=fire), threading.Thread(target=fire)
+        t1.start()
+        t2.start()
+        import time as _t
+
+        deadline = _t.time() + 10
+        while len(calls) < 1 and _t.time() < deadline:
+            _t.sleep(0.05)
+        _t.sleep(0.5)  # let the second request join the flight
+        release.set()
+        t1.join()
+        t2.join()
+        assert not errors, errors
+        assert len(results) == 2
+        assert results[0] == results[1] == (200, 62)
+        assert len(calls) == 1, f"judge executed {len(calls)}x for one session"

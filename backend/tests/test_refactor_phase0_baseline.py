@@ -85,6 +85,25 @@ class FakeOpenAI:
 
 
 @pytest.fixture(autouse=True)
+def _clean_event_loop():
+    """asyncio.run() leaves a closed current loop behind, breaking legacy
+    get_event_loop() users in later tests. Ensure an open loop instead."""
+    import asyncio
+
+    yield
+    try:
+        closed = asyncio.get_event_loop().is_closed()
+    except RuntimeError:
+        closed = True
+    if closed:
+        try:
+            asyncio.set_event_loop(asyncio.new_event_loop())
+        except Exception:
+            pass
+
+
+
+@pytest.fixture(autouse=True)
 def _clean_llm_singletons():
     """LLM settings/client singletons leak across tests (lru_cache + module
     globals). Reset before/after so stub isolation from conftest holds."""
