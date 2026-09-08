@@ -12,8 +12,8 @@
   "user"
  ],
  "stream": false,
- "system_chars": 1441,
- "system_sha256": "e8e72f2086694846a583697c4dbd9075ab7c702180d13ae44024f20de82c7c34",
+ "system_chars": 1818,
+ "system_sha256": "723c64f0346c50cf917aee7f092e97bb2b1cb804bbeded3bd6da9f6745950d54",
  "temperature": 0.5,
  "timeout": null
 }
