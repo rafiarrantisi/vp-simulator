@@ -1,0 +1,483 @@
+{
+  "catalog_schema_version": 1,
+  "researched_at": "2026-09-09",
+  "scope_note": "Scoped acquisition seed, NOT an exhaustive mapping of Qora 122 families/264 variants. Three default documents for four historically observed disease families. Case IDs and publication eligibility require current-repository audit. Active means latest source edition observed, NOT approved clinical evidence.",
+  "discovery_pages": [
+    "https://kemkes.go.id/id/media/list/pedoman/pedoman-nasional-pelayanan-kedokteran-pnpk/kumpulan-pnpk-tahun-2026",
+    "https://kemkes.go.id/id/media/list/pedoman/pedoman-nasional-pelayanan-kedokteran-pnpk/pnpk-2025",
+    "https://keslan.kemkes.go.id/produkhukum"
+  ],
+  "documents": [
+    {
+      "edition_id": "PNPK-UTI-2025",
+      "source_id": "PNPK-UTI",
+      "condition_slug": "urinary-tract-infection",
+      "title": "PNPK Tata Laksana Infeksi Saluran Kemih",
+      "year": 2025,
+      "revision": "2025",
+      "decision_number": "HK.01.07/MENKES/762/2025",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Urologi",
+        "Penyakit Dalam",
+        "Pediatri",
+        "Obstetri"
+      ],
+      "population": "lintas populasi; pilih section spesifik",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1767064829_322232.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": "2025-07-29",
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": true,
+      "priority": "P0",
+      "qora_family_ids": [
+        "fam_uti",
+        "fam_pyelonephritis"
+      ],
+      "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+      "notes": "Satu dokumen mencakup beberapa populasi. Pemetaan pielonefritis/nonhamil/hamil/anak wajib dibedakan.",
+      "supersedes": [],
+      "superseded_by": [],
+      "supersession_evidence": null
+    },
+    {
+      "edition_id": "PNPK-HYPERTENSION-ADULT-2026",
+      "source_id": "PNPK-HYPERTENSION-ADULT",
+      "condition_slug": "hypertension-adult",
+      "title": "PNPK Tata Laksana Hipertensi Dewasa",
+      "year": 2026,
+      "revision": "2026",
+      "decision_number": "HK.01.07/MENKES/303/2026",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Penyakit Dalam",
+        "Kardiovaskular"
+      ],
+      "population": "dewasa",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": "2026-04-17",
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": true,
+      "priority": "P0",
+      "qora_family_ids": [
+        "fam_hypertension"
+      ],
+      "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+      "notes": "",
+      "supersedes": [
+        "PNPK-HYPERTENSION-ADULT-2021"
+      ],
+      "superseded_by": [],
+      "supersession_evidence": {
+        "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf",
+        "pdf_page_1based": 3,
+        "section": "Diktum KETUJUH"
+      }
+    },
+    {
+      "edition_id": "PNPK-DENGUE-ADULT-2020",
+      "source_id": "PNPK-DENGUE-ADULT",
+      "condition_slug": "dengue-adult",
+      "title": "PNPK Tata Laksana Infeksi Dengue pada Dewasa",
+      "year": 2020,
+      "revision": "2020",
+      "decision_number": "HK.01.07/MENKES/9845/2020",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Penyakit Dalam",
+        "Infeksi"
+      ],
+      "population": "dewasa",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610413358_685089.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": "2020-11-30",
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": true,
+      "priority": "P0",
+      "qora_family_ids": [
+        "fam_dengue"
+      ],
+      "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+      "notes": "Hanya variant dewasa. Latest PNPK yang ditemukan bukan jaminan semua isi tetap paling mutakhir; review klaim secara spesifik.",
+      "supersedes": [],
+      "superseded_by": [],
+      "supersession_evidence": null
+    },
+    {
+      "edition_id": "PNPK-DENGUE-CHILD-2021",
+      "source_id": "PNPK-DENGUE-CHILD",
+      "condition_slug": "dengue-child",
+      "title": "PNPK Tata Laksana Infeksi Dengue Anak dan Remaja",
+      "year": 2021,
+      "revision": "2021",
+      "decision_number": "HK.01.07/MENKES/4636/2021",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Pediatri",
+        "Infeksi"
+      ],
+      "population": "anak dan remaja",
+      "official_url": "https://kemkes.go.id/app_asset/file_content_download/17001076746555959a3506a2.33052739.pdf",
+      "landing_url": "https://kemkes.go.id/id/pnpk-2021---infeksi-dengue-anak-dan-remaja",
+      "effective_date": "2021-05-03",
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "source_hold",
+      "selected_by_default": false,
+      "priority": "P0",
+      "qora_family_ids": [
+        "fam_dengue",
+        "fam_fever_child"
+      ],
+      "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+      "notes": "SOURCE HOLD: halaman PDF pertama bertuliskan RANCANGAN; copy keslan juga memuat label sama. Perlu klarifikasi salinan final melalui sumber resmi. Jangan publish mapping dari salinan ini sebelum resolve. fam_fever_child hanya variant dengue yang applicable, bukan seluruh keluarga demam.",
+      "supersedes": [],
+      "superseded_by": [],
+      "supersession_evidence": null
+    },
+    {
+      "edition_id": "PNPK-CATARACT-ADULT-2026",
+      "source_id": "PNPK-CATARACT-ADULT",
+      "condition_slug": "cataract-adult",
+      "title": "PNPK Tata Laksana Katarak pada Dewasa",
+      "year": 2026,
+      "revision": "2026",
+      "decision_number": "HK.01.07/MENKES/67/2026",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Oftalmologi"
+      ],
+      "population": "dewasa",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1776933479_335376.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": "2026-02-02",
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P1",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Ophthalmology Qora diketahui ada; exact case/family ID belum tersedia. Jadikan pilot tambahan setelah inventory.",
+      "supersedes": [
+        "PNPK-CATARACT-ADULT-2018"
+      ],
+      "superseded_by": [],
+      "supersession_evidence": {
+        "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1776933479_335376.pdf",
+        "pdf_page_1based": 3,
+        "section": "Diktum KETUJUH"
+      }
+    },
+    {
+      "edition_id": "PNPK-GLAUCOMA-2023",
+      "source_id": "PNPK-GLAUCOMA",
+      "condition_slug": "glaucoma",
+      "title": "PNPK Tata Laksana Glaukoma",
+      "year": 2023,
+      "revision": "2023",
+      "decision_number": "HK.01.07/MENKES/1488/2023",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Oftalmologi"
+      ],
+      "population": "subtipe dan populasi harus dimapping",
+      "official_url": "https://kemkes.go.id/app_asset/file_content_download/169984318565518c7105ecc8.12913477.pdf",
+      "landing_url": "https://kemkes.go.id/id/pnpk-2023---tata-laksana-glaukoma",
+      "effective_date": "2023-07-20",
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P1",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Mendukung pilot mata akut versus kronik. Jangan generalisasi satu rekomendasi untuk semua jenis glaukoma.",
+      "supersedes": [],
+      "superseded_by": [],
+      "supersession_evidence": null
+    },
+    {
+      "edition_id": "PNPK-CORNEAL-ULCER-BACTERIAL-2025",
+      "source_id": "PNPK-CORNEAL-ULCER-BACTERIAL",
+      "condition_slug": "corneal-ulcer-bacterial",
+      "title": "PNPK Tatalaksana Ulkus Kornea Bakteri",
+      "year": 2025,
+      "revision": "2025",
+      "decision_number": "HK.01.07/MENKES/723/2025",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Oftalmologi"
+      ],
+      "population": "ulkus kornea bakteri",
+      "official_url": "https://kemkes.go.id/app_asset/file_content_download/176214289169082aab15c850.47447872.pdf",
+      "landing_url": "https://kemkes.go.id/id/pedoman-nasional-pelayanan-klinis-tatalaksana-ulkus-kornea-bakteri",
+      "effective_date": null,
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P1",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Kandidat corpus oftalmologi; tidak menjadi pedoman semua mata merah/ulkus jamur/herpes.",
+      "supersedes": [],
+      "superseded_by": [],
+      "supersession_evidence": null
+    },
+    {
+      "edition_id": "PNPK-TUBERCULOSIS-2019",
+      "source_id": "PNPK-TUBERCULOSIS",
+      "condition_slug": "tuberculosis",
+      "title": "PNPK Tata Laksana Tuberkulosis",
+      "year": 2019,
+      "revision": "2019",
+      "decision_number": "HK.01.07/MENKES/755/2019",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Pulmonologi",
+        "Penyakit Dalam",
+        "Pediatri"
+      ],
+      "population": "sesuai bagian dan subpopulasi",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610422577_801904.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": null,
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P1",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "TB dalam prompt pengguna adalah contoh; exact corpus ID belum terverifikasi. Repository Kemenkes menampilkan terbitan buku 2020; tidak dianggap otomatis PNPK baru. Juknis TB anak 2023 di luar scope PNPK-only. Edisi 2014 tercatat, tetapi hubungan pencabutan belum dikonfirmasi dari PDF 2019.",
+      "supersedes": [],
+      "superseded_by": [],
+      "supersession_evidence": null
+    },
+    {
+      "edition_id": "PNPK-DM2-ADULT-2026",
+      "source_id": "PNPK-DM2-ADULT",
+      "condition_slug": "diabetes-type2-adult",
+      "title": "PNPK Tata Laksana Diabetes Melitus Tipe 2 Dewasa",
+      "year": 2026,
+      "revision": "2026",
+      "decision_number": "HK.01.07/MENKES/302/2026",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Penyakit Dalam",
+        "Endokrinologi"
+      ],
+      "population": "dewasa DM tipe 2",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1777518085_672976.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": null,
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P1",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Kandidat hanya jika condition atau komorbiditas dalam registry; bukan DM anak.",
+      "supersedes": [
+        "PNPK-DM2-ADULT-2020"
+      ],
+      "superseded_by": [],
+      "supersession_evidence": {
+        "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1777518085_672976.pdf",
+        "pdf_page_1based": 3,
+        "section": "Diktum KETUJUH"
+      }
+    },
+    {
+      "edition_id": "PNPK-CKD-2023",
+      "source_id": "PNPK-CKD",
+      "condition_slug": "chronic-kidney-disease",
+      "title": "PNPK Tata Laksana Penyakit Ginjal Kronik",
+      "year": 2023,
+      "revision": "2023",
+      "decision_number": "HK.01.07/MENKES/1634/2023",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Penyakit Dalam",
+        "Nefrologi"
+      ],
+      "population": "sesuai bagian dan stadium",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1701934559_345195.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": null,
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P1",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Kandidat komorbiditas; jangan whitelist hanya karena specialty sama atau penyakit melibatkan ginjal.",
+      "supersedes": [],
+      "superseded_by": [],
+      "supersession_evidence": null
+    },
+    {
+      "edition_id": "PNPK-PNEUMONIA-ADULT-2025",
+      "source_id": "PNPK-PNEUMONIA-ADULT",
+      "condition_slug": "pneumonia-adult",
+      "title": "PNPK Tata Laksana Pneumonia pada Dewasa",
+      "year": 2025,
+      "revision": "2025",
+      "decision_number": "HK.01.07/MENKES/1168/2025",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Pulmonologi",
+        "Penyakit Dalam"
+      ],
+      "population": "dewasa",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1785740675_310402.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": null,
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+      "status": "active",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P1",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Diunggah dalam portal pada 2026, tetapi nomor keputusan dan tahun PNPK adalah 2025. Kandidat diagnosis pembanding TB bila actual variant membutuhkannya.",
+      "supersedes": [
+        "PNPK-PNEUMONIA-ADULT-2023"
+      ],
+      "superseded_by": [],
+      "supersession_evidence": {
+        "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1785740675_310402.pdf",
+        "pdf_page_1based": 3,
+        "section": "Diktum KETUJUH"
+      }
+    },
+    {
+      "edition_id": "PNPK-HYPERTENSION-ADULT-2021",
+      "source_id": "PNPK-HYPERTENSION-ADULT",
+      "condition_slug": "hypertension-adult",
+      "title": "PNPK Tata Laksana Hipertensi Dewasa",
+      "year": 2021,
+      "revision": "2021",
+      "decision_number": "HK.01.07/MENKES/4634/2021",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Penyakit Dalam",
+        "Kardiovaskular"
+      ],
+      "population": "dewasa",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1660186120_529286.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": null,
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "historical_edition",
+      "status": "superseded",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P2",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Arsip provenance; jangan dipilih untuk release case baru.",
+      "supersedes": [],
+      "superseded_by": [
+        "PNPK-HYPERTENSION-ADULT-2026"
+      ],
+      "supersession_evidence": {
+        "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf",
+        "pdf_page_1based": 3,
+        "section": "Diktum KETUJUH"
+      }
+    },
+    {
+      "edition_id": "PNPK-CATARACT-ADULT-2018",
+      "source_id": "PNPK-CATARACT-ADULT",
+      "condition_slug": "cataract-adult",
+      "title": "PNPK Tata Laksana Katarak pada Dewasa",
+      "year": 2018,
+      "revision": "2018",
+      "decision_number": "HK.01.07/MENKES/557/2018",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Oftalmologi"
+      ],
+      "population": "dewasa",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610415530_332811.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": null,
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "historical_edition",
+      "status": "superseded",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P2",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Arsip provenance; digantikan keputusan 67/2026.",
+      "supersedes": [],
+      "superseded_by": [
+        "PNPK-CATARACT-ADULT-2026"
+      ],
+      "supersession_evidence": {
+        "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1776933479_335376.pdf",
+        "pdf_page_1based": 3,
+        "section": "Diktum KETUJUH"
+      }
+    },
+    {
+      "edition_id": "PNPK-DM2-ADULT-2020",
+      "source_id": "PNPK-DM2-ADULT",
+      "condition_slug": "diabetes-type2-adult",
+      "title": "PNPK Tata Laksana Diabetes Melitus Tipe 2 Dewasa",
+      "year": 2020,
+      "revision": "2020",
+      "decision_number": "HK.01.07/MENKES/603/2020",
+      "publisher": "Kementerian Kesehatan Republik Indonesia",
+      "specialty": [
+        "Penyakit Dalam",
+        "Endokrinologi"
+      ],
+      "population": "dewasa DM tipe 2",
+      "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610340996_61925.pdf",
+      "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+      "effective_date": null,
+      "research_checked_at": "2026-09-09",
+      "latest_assessment": "historical_edition",
+      "status": "superseded",
+      "clinical_review_status": "unreviewed",
+      "selected_by_default": false,
+      "priority": "P2",
+      "qora_family_ids": [],
+      "qora_mapping_basis": "condition_candidate_current_case_id_not_verified",
+      "notes": "Arsip provenance; digantikan keputusan 302/2026.",
+      "supersedes": [],
+      "superseded_by": [
+        "PNPK-DM2-ADULT-2026"
+      ],
+      "supersession_evidence": {
+        "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1777518085_672976.pdf",
+        "pdf_page_1based": 3,
+        "section": "Diktum KETUJUH"
+      }
+    }
+  ]
+}

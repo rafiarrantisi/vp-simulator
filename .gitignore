@@ -52,3 +52,4 @@ Thumbs.db
 deploy/cloudflare/.wrangler/
 .qora-credentials*
 qora-credentials.env
+clinical_sources/**/*.pdf

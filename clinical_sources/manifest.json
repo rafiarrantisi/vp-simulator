@@ -1,0 +1,292 @@
+{
+  "created_at": "2026-09-09T09:21:58+00:00",
+  "documents": {
+    "PNPK-DENGUE-ADULT-2020": {
+      "artifacts": [
+        {
+          "artifact_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+          "content_type": "application/pdf",
+          "downloaded_at": "2026-09-09T09:22:01+00:00",
+          "etag": "W/\"b9027-5b8a994252780\"",
+          "file_size": 757799,
+          "last_modified": "Tue, 12 Jan 2021 01:02:38 GMT",
+          "local_path": "dengue-adult/2020/PNPK-DENGUE-ADULT-2020/6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b.pdf",
+          "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610413358_685089.pdf",
+          "resolved_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610413358_685089.pdf",
+          "review_status": "unreviewed",
+          "sha256": "6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+          "source_metadata_at_acquisition": {
+            "clinical_review_status": "unreviewed",
+            "condition_slug": "dengue-adult",
+            "decision_number": "HK.01.07/MENKES/9845/2020",
+            "edition_id": "PNPK-DENGUE-ADULT-2020",
+            "effective_date": "2020-11-30",
+            "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+            "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+            "notes": "Hanya variant dewasa. Latest PNPK yang ditemukan bukan jaminan semua isi tetap paling mutakhir; review klaim secara spesifik.",
+            "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610413358_685089.pdf",
+            "population": "dewasa",
+            "priority": "P0",
+            "publisher": "Kementerian Kesehatan Republik Indonesia",
+            "qora_family_ids": [
+              "fam_dengue"
+            ],
+            "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+            "research_checked_at": "2026-09-09",
+            "revision": "2020",
+            "selected_by_default": true,
+            "source_id": "PNPK-DENGUE-ADULT",
+            "specialty": [
+              "Penyakit Dalam",
+              "Infeksi"
+            ],
+            "status": "active",
+            "superseded_by": [],
+            "supersedes": [],
+            "supersession_evidence": null,
+            "title": "PNPK Tata Laksana Infeksi Dengue pada Dewasa",
+            "year": 2020
+          },
+          "validation": {
+            "file_size": 757799,
+            "method": "pypdf+signature+eof",
+            "page_count": 64
+          }
+        }
+      ],
+      "last_local_verified_at": "2026-09-09T09:22:16+00:00",
+      "last_remote_checked_at": "2026-09-09T09:22:01+00:00",
+      "latest_observed_sha256": "6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+      "metadata": {
+        "clinical_review_status": "unreviewed",
+        "condition_slug": "dengue-adult",
+        "decision_number": "HK.01.07/MENKES/9845/2020",
+        "edition_id": "PNPK-DENGUE-ADULT-2020",
+        "effective_date": "2020-11-30",
+        "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+        "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+        "notes": "Hanya variant dewasa. Latest PNPK yang ditemukan bukan jaminan semua isi tetap paling mutakhir; review klaim secara spesifik.",
+        "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610413358_685089.pdf",
+        "population": "dewasa",
+        "priority": "P0",
+        "publisher": "Kementerian Kesehatan Republik Indonesia",
+        "qora_family_ids": [
+          "fam_dengue"
+        ],
+        "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+        "research_checked_at": "2026-09-09",
+        "revision": "2020",
+        "selected_by_default": true,
+        "source_id": "PNPK-DENGUE-ADULT",
+        "specialty": [
+          "Penyakit Dalam",
+          "Infeksi"
+        ],
+        "status": "active",
+        "superseded_by": [],
+        "supersedes": [],
+        "supersession_evidence": null,
+        "title": "PNPK Tata Laksana Infeksi Dengue pada Dewasa",
+        "year": 2020
+      }
+    },
+    "PNPK-HYPERTENSION-ADULT-2026": {
+      "artifacts": [
+        {
+          "artifact_id": "PNPK-HYPERTENSION-ADULT-2026@sha256:f706d247d8f05bbaa2d140969f31ab269af7c11307608913bdfcac04d8a74835",
+          "content_type": "application/pdf",
+          "downloaded_at": "2026-09-09T09:22:00+00:00",
+          "etag": "W/\"1aa950-65340ba303c88\"",
+          "file_size": 1747280,
+          "last_modified": "Tue, 02 Jun 2026 08:02:06 GMT",
+          "local_path": "hypertension-adult/2026/PNPK-HYPERTENSION-ADULT-2026/f706d247d8f05bbaa2d140969f31ab269af7c11307608913bdfcac04d8a74835.pdf",
+          "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf",
+          "resolved_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf",
+          "review_status": "unreviewed",
+          "sha256": "f706d247d8f05bbaa2d140969f31ab269af7c11307608913bdfcac04d8a74835",
+          "source_metadata_at_acquisition": {
+            "clinical_review_status": "unreviewed",
+            "condition_slug": "hypertension-adult",
+            "decision_number": "HK.01.07/MENKES/303/2026",
+            "edition_id": "PNPK-HYPERTENSION-ADULT-2026",
+            "effective_date": "2026-04-17",
+            "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+            "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+            "notes": "",
+            "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf",
+            "population": "dewasa",
+            "priority": "P0",
+            "publisher": "Kementerian Kesehatan Republik Indonesia",
+            "qora_family_ids": [
+              "fam_hypertension"
+            ],
+            "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+            "research_checked_at": "2026-09-09",
+            "revision": "2026",
+            "selected_by_default": true,
+            "source_id": "PNPK-HYPERTENSION-ADULT",
+            "specialty": [
+              "Penyakit Dalam",
+              "Kardiovaskular"
+            ],
+            "status": "active",
+            "superseded_by": [],
+            "supersedes": [
+              "PNPK-HYPERTENSION-ADULT-2021"
+            ],
+            "supersession_evidence": {
+              "pdf_page_1based": 3,
+              "section": "Diktum KETUJUH",
+              "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf"
+            },
+            "title": "PNPK Tata Laksana Hipertensi Dewasa",
+            "year": 2026
+          },
+          "validation": {
+            "file_size": 1747280,
+            "method": "pypdf+signature+eof",
+            "page_count": 90
+          }
+        }
+      ],
+      "last_local_verified_at": "2026-09-09T09:22:16+00:00",
+      "last_remote_checked_at": "2026-09-09T09:22:00+00:00",
+      "latest_observed_sha256": "f706d247d8f05bbaa2d140969f31ab269af7c11307608913bdfcac04d8a74835",
+      "metadata": {
+        "clinical_review_status": "unreviewed",
+        "condition_slug": "hypertension-adult",
+        "decision_number": "HK.01.07/MENKES/303/2026",
+        "edition_id": "PNPK-HYPERTENSION-ADULT-2026",
+        "effective_date": "2026-04-17",
+        "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+        "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+        "notes": "",
+        "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf",
+        "population": "dewasa",
+        "priority": "P0",
+        "publisher": "Kementerian Kesehatan Republik Indonesia",
+        "qora_family_ids": [
+          "fam_hypertension"
+        ],
+        "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+        "research_checked_at": "2026-09-09",
+        "revision": "2026",
+        "selected_by_default": true,
+        "source_id": "PNPK-HYPERTENSION-ADULT",
+        "specialty": [
+          "Penyakit Dalam",
+          "Kardiovaskular"
+        ],
+        "status": "active",
+        "superseded_by": [],
+        "supersedes": [
+          "PNPK-HYPERTENSION-ADULT-2021"
+        ],
+        "supersession_evidence": {
+          "pdf_page_1based": 3,
+          "section": "Diktum KETUJUH",
+          "url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1780387327_362636.pdf"
+        },
+        "title": "PNPK Tata Laksana Hipertensi Dewasa",
+        "year": 2026
+      }
+    },
+    "PNPK-UTI-2025": {
+      "artifacts": [
+        {
+          "artifact_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba",
+          "content_type": "application/pdf",
+          "downloaded_at": "2026-09-09T09:21:59+00:00",
+          "etag": "W/\"90ddb-64722d774d074\"",
+          "file_size": 593371,
+          "last_modified": "Tue, 30 Dec 2025 03:20:29 GMT",
+          "local_path": "urinary-tract-infection/2025/PNPK-UTI-2025/a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba.pdf",
+          "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1767064829_322232.pdf",
+          "resolved_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1767064829_322232.pdf",
+          "review_status": "unreviewed",
+          "sha256": "a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba",
+          "source_metadata_at_acquisition": {
+            "clinical_review_status": "unreviewed",
+            "condition_slug": "urinary-tract-infection",
+            "decision_number": "HK.01.07/MENKES/762/2025",
+            "edition_id": "PNPK-UTI-2025",
+            "effective_date": "2025-07-29",
+            "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+            "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+            "notes": "Satu dokumen mencakup beberapa populasi. Pemetaan pielonefritis/nonhamil/hamil/anak wajib dibedakan.",
+            "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1767064829_322232.pdf",
+            "population": "lintas populasi; pilih section spesifik",
+            "priority": "P0",
+            "publisher": "Kementerian Kesehatan Republik Indonesia",
+            "qora_family_ids": [
+              "fam_uti",
+              "fam_pyelonephritis"
+            ],
+            "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+            "research_checked_at": "2026-09-09",
+            "revision": "2025",
+            "selected_by_default": true,
+            "source_id": "PNPK-UTI",
+            "specialty": [
+              "Urologi",
+              "Penyakit Dalam",
+              "Pediatri",
+              "Obstetri"
+            ],
+            "status": "active",
+            "superseded_by": [],
+            "supersedes": [],
+            "supersession_evidence": null,
+            "title": "PNPK Tata Laksana Infeksi Saluran Kemih",
+            "year": 2025
+          },
+          "validation": {
+            "file_size": 593371,
+            "method": "pypdf+signature+eof",
+            "page_count": 111
+          }
+        }
+      ],
+      "last_local_verified_at": "2026-09-09T09:22:16+00:00",
+      "last_remote_checked_at": "2026-09-09T09:21:59+00:00",
+      "latest_observed_sha256": "a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba",
+      "metadata": {
+        "clinical_review_status": "unreviewed",
+        "condition_slug": "urinary-tract-infection",
+        "decision_number": "HK.01.07/MENKES/762/2025",
+        "edition_id": "PNPK-UTI-2025",
+        "effective_date": "2025-07-29",
+        "landing_url": "https://keslan.kemkes.go.id/produkhukum",
+        "latest_assessment": "latest_official_pnpk_found_in_scoped_search",
+        "notes": "Satu dokumen mencakup beberapa populasi. Pemetaan pielonefritis/nonhamil/hamil/anak wajib dibedakan.",
+        "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1767064829_322232.pdf",
+        "population": "lintas populasi; pilih section spesifik",
+        "priority": "P0",
+        "publisher": "Kementerian Kesehatan Republik Indonesia",
+        "qora_family_ids": [
+          "fam_uti",
+          "fam_pyelonephritis"
+        ],
+        "qora_mapping_basis": "historical_audit_2026-09-03_reconfirm_current_registry",
+        "research_checked_at": "2026-09-09",
+        "revision": "2025",
+        "selected_by_default": true,
+        "source_id": "PNPK-UTI",
+        "specialty": [
+          "Urologi",
+          "Penyakit Dalam",
+          "Pediatri",
+          "Obstetri"
+        ],
+        "status": "active",
+        "superseded_by": [],
+        "supersedes": [],
+        "supersession_evidence": null,
+        "title": "PNPK Tata Laksana Infeksi Saluran Kemih",
+        "year": 2025
+      }
+    }
+  },
+  "manifest_schema_version": 1,
+  "updated_at": "2026-09-09T09:22:16+00:00"
+}
