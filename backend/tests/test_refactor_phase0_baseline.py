@@ -130,6 +130,14 @@ def fake_openai(monkeypatch):
     import app.rag.llm as llm_mod
 
     monkeypatch.setattr(llm_mod, "_client", None)
+    # Neutralize stale per-module get_llm_client patches left by other
+    # files (observed non-deterministic revert): force the real dispatch.
+    import app.rag.engine_v2 as _e2
+    import app.rag.engine_v3 as _e3
+    monkeypatch.setattr(_e2, "get_llm_client", llm_mod.get_llm_client,
+                        raising=False)
+    monkeypatch.setattr(_e3, "get_llm_client", llm_mod.get_llm_client,
+                        raising=False)
     from app.config import get_settings
 
     get_settings.cache_clear()
