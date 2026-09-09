@@ -1,0 +1,20 @@
+[
+ {
+  "approval_record_id": "",
+  "placeholders": [
+   "label",
+   "status_word",
+   "reason",
+   "ref"
+  ],
+  "review_status": "draft",
+  "statuses": [
+   "hit",
+   "partial",
+   "miss"
+  ],
+  "template_id": "T--evidence-001",
+  "template_revision": 1,
+  "text": "Item {label} {status_word} pada penilaian ini. {reason} [{ref}]"
+ }
+]

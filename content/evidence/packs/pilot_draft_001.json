@@ -1,0 +1,28 @@
+[
+ {
+  "allowed_conditions": [
+   "uti",
+   "cystitis",
+   "pyelonephritis",
+   "dengue"
+  ],
+  "clinical_content_version": "v3.0",
+  "compatible_scoring_versions": [
+   "qora-score-1.0"
+  ],
+  "content_release_id": "rel-pnpk-pilot-draft-1",
+  "families": [
+   "fam_uti",
+   "fam_dengue"
+  ],
+  "pack_id": "PNPK-PILOT-DRAFT-001",
+  "pack_revision": 1,
+  "review_record": {},
+  "supported_modes": [
+   "practice"
+  ],
+  "supported_stages": [
+   "koas"
+  ]
+ }
+]

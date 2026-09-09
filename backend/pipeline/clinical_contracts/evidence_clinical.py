@@ -39,6 +39,9 @@ class EvidenceSpan:
     printed_page_label: str | None = None
     locator: str = ""  # paragraph/table/figure locator
     excerpt_hash: str = ""
+    # Authoring-only review aid: short quoted passage. NEVER part of the
+    # compiled runtime payload (stripped by the compiler digest).
+    excerpt: str = ""
 
     def validate(self) -> list[str]:
         errs = []
@@ -204,6 +207,10 @@ class ClinicalEvidencePack:
     templates: list[EvidenceTemplate] = field(default_factory=list)
     review_record: dict = field(default_factory=dict)
     compiler_version: str = ""
+    # Runtime citation subset (small, pinned): source_version_id ->
+    # {source_id,title,publisher,year,decision_number,official_url,
+    #  document_sha256}. Part of the digest.
+    sources: dict = field(default_factory=dict)
 
     def payload_digest_fields(self) -> dict:
         """Exact fields covered by pack_sha256 (stable key order at build)."""
@@ -218,6 +225,7 @@ class ClinicalEvidencePack:
             "scoring_rubric_digest": self.scoring_rubric_digest,
             "case_binding_digest": self.case_binding_digest,
             "source_versions": self.source_versions,
+            "sources": self.sources,
             "claims": [asdict(c) for c in self.claims],
             "mappings": [asdict(m) for m in self.mappings],
             "templates": [asdict(t) for t in self.templates],

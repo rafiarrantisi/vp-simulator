@@ -615,6 +615,10 @@ async def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_cu
             report["overtime_penalty"] = _OVERTIME_PENALTY
             report["summary"] = (report.get("summary", "") or "") + \
                 f" (−{_OVERTIME_PENALTY} for continuing past the OSCE time limit.)"
+        from app.domains.scoring.evidence_integration import maybe_enrich_report
+        maybe_enrich_report(report, variant_id="", canonical_hash="",
+                            rubric_items=[], mode=(req.mode or "practice"),
+                            learner_stage="koas", clock=clock)
         s.total_score = report.get("overall", 0)
         s.report = report
         s.status = "completed"

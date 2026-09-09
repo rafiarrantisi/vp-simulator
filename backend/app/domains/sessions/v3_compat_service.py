@@ -556,11 +556,19 @@ async def score(db: OrmSession, user: User, session_id: str, *,
         det = None
     debrief = build_debrief(v, score=det, family_title=v.family_id)
 
-    # V2 answer key + per_item overlay (QV2Result consumes these)
+    # V2 answer key + per_item overlay (QV2Result consumes these).
+    # Canonical rubric IDs attach here (normalized exact match) so the
+    # evidence composer can map without fuzzy guessing.
     ak = _v2_answer_key(v)
     judge_per_item = judge.get("per_item") or []
     ak_per_item = _v2_per_item(v, det) if det else []
-    merged_per_item = _merge_per_item(ak, judge_per_item, ak_per_item)
+    try:
+        from pipeline.judge.evidence import build_rubric_from_variant
+        _merge_rubric = build_rubric_from_variant(v)
+    except Exception:
+        _merge_rubric = []
+    merged_per_item = _merge_per_item(ak, judge_per_item, ak_per_item,
+                                      rubric_items=_merge_rubric)
 
     report = {
         "overall": int(round(judge.get("overall", 0) or 0)),
@@ -585,6 +593,16 @@ async def score(db: OrmSession, user: User, session_id: str, *,
     if overtime:
         report["overall"] = max(0, report["overall"] - 10)
         report["overtime_penalty"] = 10
+    from pipeline.judge.evidence import build_rubric_from_variant
+    from app.domains.scoring.evidence_integration import maybe_enrich_report
+    try:
+        _rubric = build_rubric_from_variant(v)
+    except Exception:
+        _rubric = []
+    maybe_enrich_report(report, variant_id=v.id,
+                        canonical_hash=v.canonical_hash(),
+                        rubric_items=_rubric, mode=(mode or "practice"),
+                        learner_stage=s.learner_level or "koas")
     s.total_score = report["overall"]
     s.report = report
     s.status = "completed"
@@ -615,26 +633,60 @@ async def score(db: OrmSession, user: User, session_id: str, *,
     return report
 
 
-def _merge_per_item(ak: dict, judge_items: list[dict], det_items: list[dict]) -> list[dict]:
+def _normalize_rubric_text(text) -> str:
+    """Canonical text normalization shared with the evidence composer.
+
+    Strips leading imperative scaffolding so rubric `expected` text
+    ("Ask about dysuria") compares equal to answer-key text ("dysuria").
+    Exact equality after normalization only — no fuzzy matching.
+    """
+    t = " ".join(str(text or "").split()).lower()
+    for prefix in ("ask about ", "order ", "screen red flag: ",
+                   "screen for ", "screen ", "consider differential: ",
+                   "consider ", "explain ", "recommend ", "give ", "advise ",
+                   "avoid unsafe action: "):
+        if t.startswith(prefix):
+            return t[len(prefix):]
+    return t
+
+
+def _merge_per_item(ak: dict, judge_items: list[dict], det_items: list[dict],
+                    rubric_items: list[dict] | None = None) -> list[dict]:
     """Answer-key items overlaid with the judge's hit/miss status. Every item in
-    the V2 answer key gets a status (judge's, else deterministic, else not_asked)."""
+    the V2 answer key gets a status (judge's, else deterministic, else not_asked).
+
+    When `rubric_items` are provided, each row also carries `rubric_ids`: the
+    canonical rubric items whose normalized expected text equals the row text.
+    The evidence composer uses ONLY these IDs (plus direct text equality) —
+    never fuzzy matching.
+    """
     out = []
     judge_map = {str(i.get("item", "")).lower(): i.get("status", "miss")
                  for i in judge_items if isinstance(i, dict)}
     det_map = {str(i.get("item", "")).lower(): i.get("status", "miss")
                for i in det_items if isinstance(i, dict)}
+    rubric_by_text: dict[str, list[str]] = {}
+    for r in rubric_items or []:
+        if isinstance(r, dict) and r.get("item_id"):
+            rubric_by_text.setdefault(
+                _normalize_rubric_text(r.get("expected")), []).append(
+                    str(r.get("item_id")))
     # anamnesis checklist items + red flags
     for grp in (ak.get("anamnesis_checklist") or []):
         for it in (grp.get("items") or []):
             txt = str(it.get("item", "")).lower()
             status = judge_map.get(txt, det_map.get(txt, "not_asked"))
             out.append({"dimension": "info_gathering", "item": it.get("item", ""),
-                        "status": status, "evidence": ""})
+                        "status": status, "evidence": "",
+                        "rubric_ids": rubric_by_text.get(
+                            _normalize_rubric_text(it.get("item")), [])})
     for it in (ak.get("red_flags") or []):
         txt = str(it.get("item", "")).lower()
         status = judge_map.get(txt, det_map.get(txt, "not_asked"))
         out.append({"dimension": "management_safety", "item": it.get("item", ""),
-                    "status": status, "evidence": ""})
+                    "status": status, "evidence": "",
+                    "rubric_ids": rubric_by_text.get(
+                        _normalize_rubric_text(it.get("item")), [])})
     return out
 
 

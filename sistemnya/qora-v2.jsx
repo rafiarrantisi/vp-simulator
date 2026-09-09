@@ -1153,6 +1153,36 @@ function QNumeric({ value, ms, style }) {
   return React.createElement('span', { style: style || {} }, n);
 }
 
+// Clinical evidence rationale (PNPK pilot): additive namespace only.
+// Renders nothing when report.clinical_evidence is absent (old reports).
+function QV2ClinicalEvidence({ clinical }) {
+  const [expanded, setExpanded] = React.useState(false);
+  if (!clinical || clinical.status !== 'available' || !(clinical.items || []).length) return null;
+  const items = clinical.items || [];
+  const shown = expanded ? items : items.slice(0, 5);
+  const refs = clinical.references || [];
+  const refById = {};
+  refs.forEach(function (r) { refById[r.citation_id] = r; });
+  return React.createElement('div', { className: 'as', style: { marginBottom: 16, padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, '\uD83D\uDCD6 Clinical rationale'),
+    React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', marginBottom: 12 } }, 'Guideline-grounded notes linked to official sources. Scores are unaffected.'),
+    shown.map(function (it, i) {
+      return React.createElement('div', { key: it.target_id || i, style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.6, padding: '7px 0', borderTop: i ? '1px solid var(--border)' : 'none' } }, it.rationale);
+    }),
+    items.length > 5 && React.createElement('button', { onClick: function () { setExpanded(!expanded); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontSize: 12.5, cursor: 'pointer', padding: '6px 0 0', fontFamily: 'Plus Jakarta Sans' } }, expanded ? 'Show fewer' : 'Show all ' + items.length + ' notes'),
+    refs.length > 0 && React.createElement('div', { style: { marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--border)' } },
+      React.createElement('div', { style: { fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 } }, 'Referensi klinis'),
+      refs.map(function (r) {
+        var secs = (r.section_path || []).join(' \u203A ');
+        var pages = (r.pdf_page_start && r.pdf_page_end) ? ' hlm. ' + r.pdf_page_start + (r.pdf_page_end !== r.pdf_page_start ? '\u2013' + r.pdf_page_end : '') : '';
+        return React.createElement('div', { key: r.citation_id, style: { fontSize: 12, color: 'var(--text-2)', lineHeight: 1.55, marginBottom: 6 } },
+          React.createElement('span', { style: { fontWeight: 800, color: 'var(--primary)', marginRight: 6 } }, '[' + r.citation_id.replace('ref-', '') + ']'),
+          React.createElement('span', null, (r.title || r.source_id || '') + (r.year ? ' (' + r.year + ')' : '') + (r.decision_number ? ' · ' + r.decision_number : '')),
+          (secs || pages) && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)' } }, [secs, pages].filter(Boolean).join(' · ')),
+          r.official_url && React.createElement('a', { href: r.official_url + '#page=' + (r.pdf_page_start || 1), target: '_blank', rel: 'noreferrer', style: { fontSize: 11.5, color: 'var(--primary)', fontWeight: 600 } }, 'Buka PDF resmi'));
+      })));
+}
+
 function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
@@ -1245,6 +1275,8 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
     // Examiner verdict first (§10.1) — the debrief leads with what a real examiner
     // would say, so the feedback is the first thing the learner reads.
     report.summary && React.createElement('div', { className: 'as d1', style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, padding: 14, borderRadius: 'var(--r-md)', background: 'var(--primary-ll)', marginBottom: 16 } }, report.summary),
+    // Clinical evidence rationale (PNPK pilot, additive; absent on old reports)
+    React.createElement(QV2ClinicalEvidence, { clinical: report.clinical_evidence }),
     // overall + dimensions
     React.createElement('div', { className: 'as', style: { display: 'flex', alignItems: 'center', gap: 18, padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
       React.createElement('div', { className: 'as', style: { fontSize: 38, fontWeight: 800, color: 'var(--primary)', minWidth: 56, textAlign: 'center' } }, React.createElement(QNumeric, { value: (report.overall != null ? report.overall : 0), ms: 800 })),

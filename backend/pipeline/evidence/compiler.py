@@ -47,6 +47,17 @@ def _load_json(path: Path):
         raise CompileError(f"unreadable JSON {path}: {e}")
 
 
+def _payload_canonical(payload: dict) -> dict:
+    """Remove authoring-only review aids from the hashed payload."""
+    import copy
+
+    payload = copy.deepcopy(payload)
+    for c in payload.get("claims") or []:
+        for sp in c.get("evidence_spans") or []:
+            sp.pop("excerpt", None)
+    return payload
+
+
 def _sha(obj) -> str:
     return hashlib.sha256(
         json.dumps(obj, ensure_ascii=False, sort_keys=True,
@@ -148,6 +159,10 @@ def _check_applicability(claim: ClinicalClaim, variant, errors: list[str]) -> No
         errors.append(f"claim {claim.claim_id}: pregnancy=yes on non-pregnant {variant.id}")
     if preg == "no" and vpreg in ("yes", "pregnant", "true", "1"):
         errors.append(f"claim {claim.claim_id}: pregnancy=no on pregnant {variant.id}")
+    sex = str(app.get("sex") or "any").lower()
+    vsex = str(getattr(getattr(variant, "identity", None), "biological_sex", "") or "").lower()
+    if sex in ("male", "female") and vsex and vsex != sex:
+        errors.append(f"claim {claim.claim_id}: sex={sex} on {vsex} {variant.id}")
     try:
         age = getattr(getattr(variant, "identity", None), "age_years", None)
         lo = app.get("min_age_years")
@@ -161,8 +176,15 @@ def _check_applicability(claim: ClinicalClaim, variant, errors: list[str]) -> No
 
 def compile_pack(pack_def: dict, *, claims_dir: Path, mappings_dir: Path,
                  templates_dir: Path, catalog: dict, manifest: dict,
-                 registry, pdf_root: Path | None) -> tuple[ClinicalEvidencePack, list[CaseEvidenceConfig]]:
-    """Compile one pack definition. Raises CompileError listing ALL problems."""
+                 registry, pdf_root: Path | None,
+                 allow_draft: bool = False):
+    """Compile one pack definition. Raises CompileError listing ALL problems.
+
+    allow_draft=True (authoring iteration only): approval gaps are REPORTED
+    as the third return value instead of failing, every other rule still
+    enforced, and the pack digest is still computed. Draft output must never
+    be published or loaded at runtime.
+    """
     errors: list[str] = []
     pack_id = str(pack_def.get("pack_id") or "")
     if not pack_id:
@@ -193,9 +215,9 @@ def compile_pack(pack_def: dict, *, claims_dir: Path, mappings_dir: Path,
     by_claim = {c.claim_id: c for c in claims}
     by_template = {t.template_id: t for t in templates}
 
-    # catalog whitelist: edition_id -> entry
+    # catalog whitelist: edition_id -> entry (supports documents/editions/sources shapes)
     editions = {}
-    for ed in catalog.get("editions", []) + catalog.get("sources", []):
+    for ed in (catalog.get("documents") or []) + (catalog.get("editions") or []) + (catalog.get("sources") or []):
         eid = ed.get("edition_id") or ed.get("source_id")
         if eid:
             editions[eid] = ed
@@ -312,7 +334,13 @@ def compile_pack(pack_def: dict, *, claims_dir: Path, mappings_dir: Path,
                 errors.append(f"claim {c.claim_id}: conditions {sorted(conds)} outside pack allowlist")
 
     if errors:
-        raise CompileError("pack invalid:\n- " + "\n- ".join(sorted(set(errors))))
+        approval_gaps = [e for e in errors
+                         if "not approved" in e or "without approval_record_id" in e]
+        if not (allow_draft and len(approval_gaps) == len(errors)):
+            raise CompileError("pack invalid:\n- " + "\n- ".join(sorted(set(errors))))
+        draft_gaps: list[str] = sorted(set(approval_gaps))
+    else:
+        draft_gaps = []
 
     # family defaults -> explicit per-variant bindings
     bindings: list[CaseEvidenceConfig] = []
@@ -345,6 +373,24 @@ def compile_pack(pack_def: dict, *, claims_dir: Path, mappings_dir: Path,
         if errs:
             raise CompileError("binding invalid:\n- " + "\n- ".join(errs))
 
+    sources_detail: dict[str, dict] = {}
+    for c in claims:
+        for sp in c.evidence_spans:
+            sv = sp.source_version_id
+            if sv in sources_detail:
+                continue
+            ed_id = sv.split("@sha256:")[0] if "@sha256:" in sv else sv
+            ed = editions.get(ed_id, {})
+            art = artifacts.get(sv, {})
+            sources_detail[sv] = {
+                "source_id": ed.get("source_id"),
+                "title": ed.get("title"),
+                "publisher": ed.get("publisher"),
+                "year": ed.get("year"),
+                "decision_number": ed.get("decision_number"),
+                "official_url": art.get("official_url") or ed.get("official_url"),
+                "document_sha256": art.get("sha256"),
+            }
     pack = ClinicalEvidencePack(
         pack_id=pack_id,
         pack_schema_version=PACK_SCHEMA_VERSION,
@@ -360,9 +406,12 @@ def compile_pack(pack_def: dict, *, claims_dir: Path, mappings_dir: Path,
         templates=sorted(templates, key=lambda t: t.template_id),
         review_record=dict(pack_def.get("review_record") or {}),
         compiler_version=COMPILER_VERSION,
+        sources=sources_detail,
     )
-    digest = _sha(pack.payload_digest_fields())
+    digest = _sha(_payload_canonical(pack.payload_digest_fields()))
     pack.pack_sha256 = digest
+    if draft_gaps:
+        pack._draft_gaps = draft_gaps  # type: ignore[attr-defined]
     for b in bindings:
         b.evidence_pack_sha256 = digest
     return pack, bindings
@@ -374,7 +423,7 @@ def emit_pack(pack: ClinicalEvidencePack, bindings: list[CaseEvidenceConfig],
     from dataclasses import asdict
 
     out_dir.mkdir(parents=True, exist_ok=True)
-    payload = pack.payload_digest_fields()
+    payload = _payload_canonical(pack.payload_digest_fields())
     assert _sha(payload) == pack.pack_sha256, "digest mismatch (non-determinism?)"
     pack_path = out_dir / f"{pack.pack_sha256}.json"
     pack_path.write_text(json.dumps(payload, ensure_ascii=False, indent=1,

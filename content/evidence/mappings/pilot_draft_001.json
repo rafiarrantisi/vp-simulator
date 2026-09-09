@@ -1,0 +1,130 @@
+[
+ {
+  "applicable_variant_ids": [
+   "uti_adult_002"
+  ],
+  "approval_record_id": "",
+  "canonical_target_id": "hx_1",
+  "claim_ids": [
+   "UTI-DX-001"
+  ],
+  "display_priority": 1,
+  "mapping_id": "M-UTI-HX-001",
+  "review_status": "draft",
+  "target_kind": "per_item",
+  "template_id": "T--evidence-001",
+  "trigger_statuses": [
+   "hit",
+   "partial"
+  ]
+ },
+ {
+  "applicable_variant_ids": [
+   "uti_adult_002"
+  ],
+  "approval_record_id": "",
+  "canonical_target_id": "hx_2",
+  "claim_ids": [
+   "UTI-DX-001"
+  ],
+  "display_priority": 2,
+  "mapping_id": "M-UTI-HX-002",
+  "review_status": "draft",
+  "target_kind": "per_item",
+  "template_id": "T--evidence-001",
+  "trigger_statuses": [
+   "hit",
+   "partial"
+  ]
+ },
+ {
+  "applicable_variant_ids": [
+   "uti_adult_002"
+  ],
+  "approval_record_id": "",
+  "canonical_target_id": "hx_4",
+  "claim_ids": [
+   "UTI-RF-001"
+  ],
+  "display_priority": 2,
+  "mapping_id": "M-UTI-HX-004",
+  "review_status": "draft",
+  "target_kind": "per_item",
+  "template_id": "T--evidence-001",
+  "trigger_statuses": [
+   "hit"
+  ]
+ },
+ {
+  "applicable_variant_ids": [
+   "dengue_001_mild"
+  ],
+  "approval_record_id": "",
+  "canonical_target_id": "hx_1",
+  "claim_ids": [
+   "DENG-INV-001"
+  ],
+  "display_priority": 1,
+  "mapping_id": "M-DENG-HX-001",
+  "review_status": "draft",
+  "target_kind": "per_item",
+  "template_id": "T--evidence-001",
+  "trigger_statuses": [
+   "hit"
+  ]
+ },
+ {
+  "applicable_variant_ids": [
+   "dengue_001_mild"
+  ],
+  "approval_record_id": "",
+  "canonical_target_id": "hx_8",
+  "claim_ids": [
+   "DENG-RF-001"
+  ],
+  "display_priority": 2,
+  "mapping_id": "M-DENG-HX-008",
+  "review_status": "draft",
+  "target_kind": "per_item",
+  "template_id": "T--evidence-001",
+  "trigger_statuses": [
+   "hit"
+  ]
+ },
+ {
+  "applicable_variant_ids": [
+   "dengue_001_mild"
+  ],
+  "approval_record_id": "",
+  "canonical_target_id": "hx_9",
+  "claim_ids": [
+   "DENG-RF-001"
+  ],
+  "display_priority": 2,
+  "mapping_id": "M-DENG-HX-009",
+  "review_status": "draft",
+  "target_kind": "per_item",
+  "template_id": "T--evidence-001",
+  "trigger_statuses": [
+   "hit"
+  ]
+ },
+ {
+  "applicable_variant_ids": [
+   "dengue_001_mild"
+  ],
+  "approval_record_id": "",
+  "canonical_target_id": "hx_10",
+  "claim_ids": [
+   "DENG-RF-001"
+  ],
+  "display_priority": 2,
+  "mapping_id": "M-DENG-HX-010",
+  "review_status": "draft",
+  "target_kind": "per_item",
+  "template_id": "T--evidence-001",
+  "trigger_statuses": [
+   "hit"
+  ]
+ }
+]
