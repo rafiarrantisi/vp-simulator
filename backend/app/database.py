@@ -74,7 +74,6 @@ def init_db() -> None:
     from app.domains.billing import models as _billing  # noqa: F401
     from app.domains.cases import models as _cases  # noqa: F401
     from app.domains.exam import models as _exam  # noqa: F401
-    from app.domains.eye_photos import models as _eye_photos  # noqa: F401
     from app.domains.mentor import models as _mentor  # noqa: F401
     from app.domains.sessions import models as _sessions  # noqa: F401
 

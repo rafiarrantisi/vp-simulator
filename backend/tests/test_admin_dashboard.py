@@ -6,9 +6,6 @@ Cover:
   - POST /api/admin/cases (create kasus baru)
   - PATCH /api/admin/cases/{caseId} (edit metadata)
   - POST /api/admin/cases/{caseId}/ingest (re-ingest)
-  - POST /api/admin/eye-photos (upload multipart)
-  - GET /api/cases/{caseId}/eye-photos (public list)
-  - DELETE /api/admin/eye-photos/{photoId}
   - GET /api/admin/audit (audit log terisi)
   - GET /api/admin/whoami
 
@@ -16,8 +13,6 @@ DB = sqlite dev (sama dgn smoke test). User dipromote ke admin via DB
 direct setelah signup — bypass _seed_admin_user (yg butuh ADMIN_EMAIL env).
 """
 from __future__ import annotations
-
-import io
 
 import pytest
 from fastapi.testclient import TestClient
@@ -230,64 +225,6 @@ def test_admin_lock_unlock_case(admin_h):
     r2 = client.patch(f"/api/admin/cases/{_NEW_CASE_ID}", headers=admin_h,
                       json={"metadata": {"locked": False}})
     assert r2.status_code == 200, r2.text
-
-
-# ── Eye Photos ────────────────────────────────────────────────────────────
-_PNG_1X1 = (
-    b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
-    b"\x08\x06\x00\x00\x00\x1f\x15\xc4\x89\x00\x00\x00\rIDATx\x9cc\xfa\xcf"
-    b"\x00\x00\x00\x03\x00\x01\x9b\xb9\xe3\x9f\x00\x00\x00\x00IEND\xaeB`\x82"
-)
-
-
-def test_eye_photo_upload_admin_only(student_h):
-    files = {"file": ("t.png", io.BytesIO(_PNG_1X1), "image/png")}
-    r = client.post(
-        "/api/admin/eye-photos", headers=student_h,
-        files=files, data={"case_id": _NEW_CASE_ID, "eye": "OD", "caption": "test"},
-    )
-    assert r.status_code == 403, r.text
-
-
-def test_eye_photo_upload_and_list(admin_h, student_h):
-    files = {"file": ("test1.png", io.BytesIO(_PNG_1X1), "image/png")}
-    r = client.post(
-        "/api/admin/eye-photos", headers=admin_h,
-        files=files, data={"case_id": _NEW_CASE_ID, "eye": "OD", "caption": "Test 1"},
-    )
-    assert r.status_code == 200, r.text
-    photo = r.json()["data"]
-    assert photo["caseId"] == _NEW_CASE_ID
-    assert photo["eye"] == "OD"
-    assert photo["src"].startswith("/api/uploads/eye-photos/")
-    photo_id = photo["id"]
-
-    # Viewer and binary assets require authentication; photos are not public.
-    assert client.get(f"/api/cases/{_NEW_CASE_ID}/eye-photos").status_code == 401
-    r2 = client.get(f"/api/cases/{_NEW_CASE_ID}/eye-photos", headers=student_h).json()
-    assert r2["success"]
-    assert any(p["id"] == photo_id for p in r2["data"])
-
-    # Admin list w/ filter case_id
-    r3 = client.get(f"/api/admin/eye-photos?case_id={_NEW_CASE_ID}", headers=admin_h).json()
-    assert r3["success"]
-    assert len(r3["data"]) >= 1
-
-    # Cleanup: delete
-    r4 = client.delete(f"/api/admin/eye-photos/{photo_id}", headers=admin_h)
-    assert r4.status_code == 200
-    # Verify gone
-    r5 = client.get(f"/api/cases/{_NEW_CASE_ID}/eye-photos", headers=student_h).json()
-    assert not any(p["id"] == photo_id for p in r5["data"])
-
-
-def test_eye_photo_reject_non_image(admin_h):
-    files = {"file": ("bad.txt", io.BytesIO(b"not an image"), "text/plain")}
-    r = client.post(
-        "/api/admin/eye-photos", headers=admin_h,
-        files=files, data={"case_id": _NEW_CASE_ID, "eye": "", "caption": ""},
-    )
-    assert r.status_code == 400
 
 
 # ── Audit log ─────────────────────────────────────────────────────────────

@@ -17,7 +17,6 @@ from app.domains.auth.router import router as auth_router
 from app.domains.billing.router import router as billing_router
 from app.domains.cases.router import admin_router as cases_admin_router
 from app.domains.cases.router import router as cases_router
-from app.domains.eye_photos.router import router as eye_photos_router
 from app.domains.exam.router import router as exam_router
 from app.domains.mentor.router import router as mentor_router
 from app.domains.ops.router import router as ops_router
@@ -145,7 +144,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_router, v2_router, v3_router, exam_router, scoring_router, ai_router, eye_photos_router, admin_router, billing_router, mentor_router, analytics_router, ops_router):
+for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_router, v2_router, v3_router, exam_router, scoring_router, ai_router, admin_router, billing_router, mentor_router, analytics_router, ops_router):
     app.include_router(r)
 
 
@@ -206,9 +205,6 @@ async def _unhandled_exception_handler(request, exc: Exception):
     return resp
 
 
-# Eye-photo files are served by the authenticated route in
-# `domains.eye_photos.router`; do not mount StaticFiles here, because that
-# would bypass auth for anyone who knows a UUID filename.
 
 
 @app.get("/health")

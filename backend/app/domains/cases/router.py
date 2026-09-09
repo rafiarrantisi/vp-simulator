@@ -7,7 +7,6 @@ from app.database import get_db
 from app.domains.auth.models import User
 from app.domains.cases import service as case_svc
 from app.domains.cases.models import CaseRegistry
-from app.domains.eye_photos import service as photo_svc
 from app.shared.dependencies import require_admin
 from app.shared.envelope import ok
 
@@ -103,8 +102,7 @@ def admin_list_cases(
     _admin: User = Depends(require_admin),
 ):
     rows = db.scalars(select(CaseRegistry.case_id)).all()
-    counts = photo_svc.count_by_case(db, rows)
-    data = case_svc.list_admin(db, photo_counts=counts)
+    data = case_svc.list_admin(db, photo_counts={})
     return ok(data, meta={"total": len(data), "page": 0, "limit": len(data)})
 
 
