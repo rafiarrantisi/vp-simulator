@@ -92,7 +92,8 @@ class AsyncStubLlmClient:
                         temperature: float | None = None,
                         timeout: float | None = None,
                         max_retries: int | None = None,
-                        fast: bool = False) -> str:
+                        fast: bool = False,
+                        session_id: str | None = None) -> str:
         return StubLlmClient().generate(
             system, messages, model=model, max_tokens=max_tokens,
             temperature=temperature, timeout=timeout, max_retries=max_retries)
