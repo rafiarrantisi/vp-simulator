@@ -137,15 +137,15 @@ function QoraCheckout(props) {
     !paymentsLive && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginBottom: 18, marginTop: 8 } },
       isID ? 'Semua fitur sedang terbuka selama Qora masih beta.' : 'Everything is currently unlocked while Qora is in beta.'),
 
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, alignItems: 'start', marginTop: 18 } },
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(340px, 100%), 1fr))', gap: 16, alignItems: 'start', marginTop: 18 } },
       // ── Left: order summary ──
       React.createElement('div', { className: 'as', style: { padding: 22, borderRadius: 'var(--r-xl)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-md)' } },
         React.createElement('div', { style: { fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 12 } }, '\uD83D\uDED2 ' + (isID ? 'Ringkasan pesanan' : 'Order summary')),
         plan
           ? React.createElement('div', null,
-              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8, marginBottom: 2 } },
-                React.createElement('div', { style: { fontSize: 17, fontWeight: 800, color: 'var(--text-1)' } }, plan.label || planId),
-                React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)' } }, priceFull)),
+              React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', rowGap: 4, columnGap: 8, marginBottom: 2 } },
+                React.createElement('div', { style: { fontSize: 17, fontWeight: 800, color: 'var(--text-1)', minWidth: 0 } }, plan.label || planId),
+                React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)', whiteSpace: 'nowrap' } }, priceFull)),
               React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 14 } },
                 isID ? 'Paket ' + planId + ' · ' + sessionsText : planId + ' plan · ' + sessionsText),
               React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 8, padding: '14px 0', borderTop: '1px solid var(--border)' } },
