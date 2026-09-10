@@ -25,6 +25,7 @@ identity:
   - adult
   - older adult
 chief_complaint: Spinning dizziness when turning in bed
+patient_opening: "Doctor, I get this spinning dizziness."
 opening_context: 'Patient presents: spinning dizziness when turning in bed (5 days)'
 duration: 5 days
 severity: moderate-severe

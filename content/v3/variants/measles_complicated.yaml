@@ -25,6 +25,7 @@ identity:
   - child
   - unvaccinated
 chief_complaint: Fever with red rash spreading down
+patient_opening: "Doctor, my baby has a fever and a rash."
 opening_context: 'Mother brings her baby: fever with red rash spreading down (1 day)'
 duration: 1 day
 severity: severe

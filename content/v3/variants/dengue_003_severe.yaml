@@ -16,6 +16,7 @@ identity:
   population_tags: [adolescent, endemic-area resident]
 
 chief_complaint: "Child felt dizzy and collapsed at home after 5 days of fever"
+patient_opening: "Doctor, my son is barely responding."
 opening_context: "Teenager brought to ED unconscious-ish (lethargic), cold and clammy, after fever for 5 days and a day of abdominal pain"
 duration: "5 days"
 severity: critical

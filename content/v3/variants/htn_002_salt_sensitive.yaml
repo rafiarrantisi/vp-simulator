@@ -16,6 +16,7 @@ identity:
   population_tags: [adult, post_menopausal, high_salt_diet]
 
 chief_complaint: "Morning headaches, especially occipital, for the past 3 months"
+patient_opening: "Doctor, I keep waking up with headaches."
 opening_context: "56yo woman complains of dull morning occipital headaches, tiredness; BP 158/100; not previously known hypertensive"
 duration: "3 months"
 severity: moderate

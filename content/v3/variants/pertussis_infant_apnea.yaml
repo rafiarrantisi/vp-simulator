@@ -25,6 +25,7 @@ identity:
   - infant
   - neonate
 chief_complaint: Child with fits of coughing and vomiting
+patient_opening: "Doctor, my baby has these coughing fits where she stops breathing."
 opening_context: 'Mother brings her baby: child with fits of coughing and vomiting
   (1 day)'
 duration: 1 day

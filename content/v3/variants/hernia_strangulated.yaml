@@ -25,6 +25,7 @@ identity:
   - adult
   - older adult
 chief_complaint: Lump in the groin when straining
+patient_opening: "Doctor, I've got this lump in my groin."
 opening_context: 'Patient presents: lump in the groin when straining (1 day)'
 duration: 1 day
 severity: severe

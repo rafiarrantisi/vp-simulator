@@ -23,6 +23,7 @@ identity:
   population_tags:
   - adult
 chief_complaint: Rash days after starting a new drug
+patient_opening: "Doctor, I've got this rash after starting a new drug."
 opening_context: 'Patient presents: rash days after starting a new drug (1 day)'
 duration: 1 day
 severity: severe

@@ -24,6 +24,7 @@ identity:
   - adult
   - young adult
 chief_complaint: Vomiting with deep fast breathing in diabetes
+patient_opening: "Doctor, I can't stop vomiting."
 opening_context: 'Patient presents: vomiting with deep fast breathing in diabetes
   (1 day)'
 duration: 1 day

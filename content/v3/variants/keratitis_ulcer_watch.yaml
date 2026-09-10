@@ -24,6 +24,7 @@ identity:
   - adult
   - contact-lens wearer
 chief_complaint: Contact-lens wearer with painful red eye
+patient_opening: "Doctor, my eye is red and painful."
 opening_context: 'Patient presents: contact-lens wearer with painful red eye (1 day)'
 duration: 1 day
 severity: severe

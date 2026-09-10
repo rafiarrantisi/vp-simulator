@@ -16,6 +16,7 @@ identity:
   population_tags: [toddler]
 
 chief_complaint: "Child has had fever for 3 days, now fussy and passing cloudy urine"
+patient_opening: "Doctor, my little girl has a fever and won't drink."
 opening_context: "Mother brings child who is intermittently febrile, refuses to drink"
 duration: "3 days"
 severity: moderate

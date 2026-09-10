@@ -16,6 +16,7 @@ identity:
   population_tags: [adult, pregnant, gravida_2]
 
 chief_complaint: "Fever, chills and right-sided flank pain for a day"
+patient_opening: "Doctor, I'm pregnant and I've got this pain in my right side."
 opening_context: "27yo G2P1 at ~22 weeks pregnancy with fever, chills, right flank pain, nausea; LMP confirms pregnancy; UTI in pregnancy = complicated"
 duration: "1 day"
 severity: severe

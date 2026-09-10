@@ -24,6 +24,7 @@ identity:
   - adult
   - older adult
 chief_complaint: Increasingly drowsy since morning
+patient_opening: "Doctor, they are increasingly drowsy."
 opening_context: 'Patient presents: increasingly drowsy since morning (1 day)'
 duration: 1 day
 severity: severe

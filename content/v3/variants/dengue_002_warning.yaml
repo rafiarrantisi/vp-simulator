@@ -16,6 +16,7 @@ identity:
   population_tags: [adult, endemic-area resident]
 
 chief_complaint: "Fever 5 days, now with abdominal pain and vomiting"
+patient_opening: "Doctor, I still have this fever."
 opening_context: "Adult presents on day 5 of fever: now has mild abdominal pain, one episode of vomiting, and is anxious"
 duration: "5 days"
 severity: severe

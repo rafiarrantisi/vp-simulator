@@ -16,6 +16,7 @@ identity:
   population_tags: [adult, non_pregnant]
 
 chief_complaint: "Painful, frequent urination and burning for 2 days"
+patient_opening: "Doctor, it stings when I pee."
 opening_context: "34yo non-pregnant woman with dysuria, frequency, urgency; afebrile; no flank pain"
 duration: "2 days"
 severity: mild

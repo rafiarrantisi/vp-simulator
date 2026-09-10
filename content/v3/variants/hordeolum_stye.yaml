@@ -25,6 +25,7 @@ identity:
   - adolescent
   - adult
 chief_complaint: Crusty eyelids in the morning
+patient_opening: "Doctor, my eyelids are crusty."
 opening_context: 'Patient presents: crusty eyelids in the morning (3 days)'
 duration: 3 days
 severity: moderate

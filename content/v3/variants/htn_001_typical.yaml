@@ -16,6 +16,7 @@ identity:
   population_tags: [adult, overweight]
 
 chief_complaint: "Met for a routine check-up; BP found raised on several readings"
+patient_opening: "Doctor, I'm here for my annual health check."
 opening_context: "48yo man, no specific complaint, annual health check; BP 152/96 on repeat (seated, both arms)"
 duration: "asymptomatic, recent finding"
 severity: moderate

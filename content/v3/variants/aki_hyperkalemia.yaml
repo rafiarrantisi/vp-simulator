@@ -24,6 +24,7 @@ identity:
   - adult
   - older adult
 chief_complaint: Swelling with very little urine after diarrhea
+patient_opening: "Doctor, I'm hardly passing any urine."
 opening_context: 'Patient presents: swelling with very little urine after diarrhea
   (1 day)'
 duration: 1 day

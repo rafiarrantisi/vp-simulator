@@ -16,6 +16,7 @@ identity:
   population_tags: [elderly, male]
 
 chief_complaint: "Painful urination, feeling of incomplete voiding, low-grade fever"
+patient_opening: "Doctor, I'm having trouble passing urine."
 opening_context: "68yo man with dysuria, hesitancy, weak stream and incomplete emptying; on top of low-grade fever; GU symptoms in a man = COMPLICATED UTI by definition"
 duration: "1 week, worsening"
 severity: moderate

@@ -16,6 +16,7 @@ identity:
   population_tags: [adult]
 
 chief_complaint: "Fever with pain in the lower back/flank for 2 days"
+patient_opening: "Doctor, I've got a bad pain in my left side."
 opening_context: "42yo non-pregnant woman with high fever, rigors, left flank pain, dysuria; unwell-appearing"
 duration: "2 days"
 severity: moderate

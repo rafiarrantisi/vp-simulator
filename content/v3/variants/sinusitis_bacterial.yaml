@@ -24,6 +24,7 @@ identity:
   population_tags:
   - adult
 chief_complaint: Cold lasting over 10 days with face pain
+patient_opening: "Doctor, I've got this pressure in my face."
 opening_context: 'Patient presents: cold lasting over 10 days with face pain (5 days)'
 duration: 5 days
 severity: moderate-severe

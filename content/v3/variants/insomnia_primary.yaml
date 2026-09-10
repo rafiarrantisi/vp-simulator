@@ -24,6 +24,7 @@ identity:
   population_tags:
   - adult
 chief_complaint: Cannot fall asleep for months
+patient_opening: "Doctor, I cannot fall asleep."
 opening_context: 'Patient presents: cannot fall asleep for months (3 days)'
 duration: 3 days
 severity: moderate

@@ -25,6 +25,7 @@ identity:
   - adult
   - child
 chief_complaint: Red eyes since yesterday
+patient_opening: "Doctor, my eyes are red."
 opening_context: 'Patient presents: red eyes since yesterday (3 days)'
 duration: 3 days
 severity: moderate

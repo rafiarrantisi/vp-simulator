@@ -25,6 +25,7 @@ identity:
   - adult
   - household contact
 chief_complaint: Chronic cough over 2 weeks
+patient_opening: "Doctor, I've got this cough that won't go away."
 opening_context: 'Patient presents: chronic cough over 2 weeks (3 days)'
 duration: 3 days
 severity: moderate

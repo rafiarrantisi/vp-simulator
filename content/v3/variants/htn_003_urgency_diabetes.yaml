@@ -16,6 +16,7 @@ identity:
   population_tags: [adult, diabetic]
 
 chief_complaint: "BP 178/108 noticed at screening; not feeling unwell"
+patient_opening: "Doctor, I was told my blood pressure is very high."
 opening_context: "61yo man with known T2DM and untreated high BP; BP 178/108, no symptoms of end-organ damage; risk-category: hypertensive urgency (NOT emergency) because no ongoing organ injury"
 duration: "known HTN untreated; BP high on this visit"
 severity: moderate

@@ -92,6 +92,7 @@ def load_variant(raw: dict) -> ClinicalVariant:
     )
     v.chief_complaint = str(raw.get("chief_complaint") or "")
     v.opening_context = str(raw.get("opening_context") or "")
+    v.patient_opening = str(raw.get("patient_opening") or "")
     v.duration = str(raw.get("duration") or "")
     v.severity = str(raw.get("severity") or "")
     v.key_chronology = str(raw.get("key_chronology") or "")

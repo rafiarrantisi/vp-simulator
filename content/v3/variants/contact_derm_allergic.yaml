@@ -24,6 +24,7 @@ identity:
   population_tags:
   - adult
 chief_complaint: Rash after new soap/detergent
+patient_opening: "Doctor, I've got this rash."
 opening_context: 'Patient presents: rash after new soap/detergent (5 days)'
 duration: 5 days
 severity: moderate-severe

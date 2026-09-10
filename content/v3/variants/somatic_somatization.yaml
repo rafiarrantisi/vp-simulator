@@ -23,6 +23,7 @@ identity:
   population_tags:
   - adult
 chief_complaint: Worried about serious disease despite reassurance
+patient_opening: "Doctor, I'm worried I might have something serious."
 opening_context: 'Patient presents: worried about serious disease despite reassurance
   (3 days)'
 duration: 3 days

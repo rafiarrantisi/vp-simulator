@@ -24,6 +24,7 @@ identity:
   - adult
   - diabetic on therapy
 chief_complaint: Found drowsy and sweaty
+patient_opening: "Doctor, they were found drowsy and sweaty."
 opening_context: 'Patient presents: found drowsy and sweaty (5 days)'
 duration: 5 days
 severity: moderate-severe

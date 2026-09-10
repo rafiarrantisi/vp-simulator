@@ -431,6 +431,7 @@ class ClinicalVariant:
     identity: IdentityConstraints = field(default_factory=IdentityConstraints)
     chief_complaint: str = ""
     opening_context: str = ""
+    patient_opening: str = ""  # hand-written one-info patient voice for the chat bubble; falls back to revoiced opening_context
     duration: str = ""
     severity: str = ""
     key_chronology: str = ""

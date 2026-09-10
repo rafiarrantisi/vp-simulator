@@ -25,6 +25,7 @@ identity:
   - adult
   - child
 chief_complaint: Ear pain with fever after flu
+patient_opening: "Doctor, my baby keeps tugging at her ear."
 opening_context: 'Mother brings her baby: ear pain with fever after flu (3 days)'
 duration: 3 days
 severity: moderate

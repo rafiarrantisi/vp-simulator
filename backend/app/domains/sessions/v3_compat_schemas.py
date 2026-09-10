@@ -10,6 +10,8 @@ session's persisted `content_schema`.
 """
 from __future__ import annotations
 
+import re
+
 from pipeline.case_v3.loader import CaseRegistry
 from pipeline.case_v3.models import CaseFamily, ClinicalVariant
 from pipeline.case_v3.vocab import FamilyType
@@ -113,6 +115,24 @@ def family_variant_count(reg: CaseRegistry, fam: CaseFamily,
 
 
 def variant_opening_line(v: ClinicalVariant) -> str:
-    """V2 uses `case.find_section('opening line')`. Mirror it from V3 truth
-    without leaking the diagnosis."""
-    return v.opening_context or v.chief_complaint or ""
+    """First patient bubble: ONE chief complaint in patient voice, never the
+    clinical shorthand (no durations, vitals, negatives, or diagnoses — those
+    are elicited during the interview, as in V2's `opening line`).
+
+    `patient_opening` (hand-written per variant) wins; otherwise the uniform
+    `opening_context` pattern is mechanically revoiced. `opening_context`
+    itself is untouched (station brief + persona SETTING still need it)."""
+    po = str(getattr(v, "patient_opening", "") or "").strip()
+    if po:
+        return po
+    oc = str(v.opening_context or v.chief_complaint or "").strip()
+    mother = bool(re.match(r"^Mother brings\b", oc, re.I))
+    body = re.sub(r"^(Patient presents|Mother brings her baby|Mother brings child[^:]*)\s*:\s*", "", oc, flags=re.I)
+    body = re.sub(r"\s*\(\d+\s*[a-z]+\)\s*\.?\s*$", "", body, flags=re.I).strip().rstrip(".")
+    if not body:
+        return str(v.chief_complaint or "")
+    body = body[0].lower() + body[1:]
+    if mother:
+        body = re.sub(r"^(child with|baby|child|newborn)\b\s*", "", body, flags=re.I)
+        return f"Doctor, I'm worried about my baby \u2014 {body}."
+    return f"Doctor, I'm here about {body}."

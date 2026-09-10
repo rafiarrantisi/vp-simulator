@@ -24,6 +24,7 @@ identity:
   population_tags:
   - adult
 chief_complaint: Burning chest sensation after meals
+patient_opening: "Doctor, I've got this burning sensation in my chest."
 opening_context: 'Patient presents: burning chest sensation after meals (3 days)'
 duration: 3 days
 severity: moderate

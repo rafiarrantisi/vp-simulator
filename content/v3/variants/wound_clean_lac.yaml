@@ -24,6 +24,7 @@ identity:
   population_tags:
   - adult
 chief_complaint: Cut that looks infected
+patient_opening: "Doctor, I've got this cut that looks infected."
 opening_context: 'Patient presents: cut that looks infected (3 days)'
 duration: 3 days
 severity: moderate

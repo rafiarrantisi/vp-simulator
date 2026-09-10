@@ -23,6 +23,7 @@ identity:
   population_tags:
   - older adult
 chief_complaint: Sudden very painful red eye with blurred vision
+patient_opening: "Doctor, my right eye suddenly hurts a lot and looks red."
 opening_context: 'Patient presents: sudden very painful red eye with blurred vision
   (1 day)'
 duration: 1 day

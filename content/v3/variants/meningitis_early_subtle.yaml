@@ -24,6 +24,7 @@ identity:
   - adolescent
   - adult
 chief_complaint: High fever with severe headache and stiff neck
+patient_opening: "Doctor, I have a terrible headache and a high fever."
 opening_context: 'Patient presents: high fever with severe headache and stiff neck
   (5 days)'
 duration: 5 days

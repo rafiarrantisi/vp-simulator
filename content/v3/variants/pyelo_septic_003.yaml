@@ -16,6 +16,7 @@ identity:
   population_tags: [elderly, diabetic]
 
 chief_complaint: "Collapsed at home with high fever, rigors and severe right flank pain"
+patient_opening: "Doctor, my father is confused and has a fever."
 opening_context: "70yo male with poorly-controlled diabetes, acute confusion, fever, right flank pain; tachycardic, hypotensive — septic shock with suspected obstructed/emphysematous pyelonephritis"
 duration: "acute, under 24h"
 severity: critical

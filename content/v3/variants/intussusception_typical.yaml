@@ -24,6 +24,7 @@ identity:
   - infant
   - neonate
 chief_complaint: Baby screaming in bouts with vomiting
+patient_opening: "Doctor, my baby keeps screaming in bouts."
 opening_context: 'Mother brings her baby: baby screaming in bouts with vomiting (1
   day)'
 duration: 1 day

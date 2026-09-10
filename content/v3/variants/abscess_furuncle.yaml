@@ -24,6 +24,7 @@ identity:
   population_tags:
   - adult
 chief_complaint: Boil that keeps growing
+patient_opening: "Doctor, I've got this boil that keeps growing."
 opening_context: 'Patient presents: boil that keeps growing (3 days)'
 duration: 3 days
 severity: moderate

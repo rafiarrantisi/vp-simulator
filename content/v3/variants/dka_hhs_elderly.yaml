@@ -24,6 +24,7 @@ identity:
   - adult
   - young adult
 chief_complaint: Rapid breathing with fruity-smelling breath
+patient_opening: "Doctor, I feel very short of breath."
 opening_context: 'Patient presents: rapid breathing with fruity-smelling breath (5
   days)'
 duration: 5 days

@@ -23,6 +23,7 @@ identity:
   population_tags:
   - child
 chief_complaint: Child with barking cough at night
+patient_opening: "Doctor, my baby has this barking cough."
 opening_context: 'Mother brings her baby: child with barking cough at night (1 day)'
 duration: 1 day
 severity: severe
