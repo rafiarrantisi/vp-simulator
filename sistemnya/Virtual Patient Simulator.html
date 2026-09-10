@@ -48,7 +48,7 @@
         var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
         if (!authed && protectedHash) return 'qora-landing';
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
-        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
+        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'privacy', 'terms'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
       });
       const [screenKey, setScreenKey] = React.useState(0);
@@ -89,7 +89,7 @@
           var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
           if (protectedHash && !loadAuth()) next = 'qora-landing';
           else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
-          else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
+          else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'privacy', 'terms'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
@@ -209,7 +209,9 @@
           screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
           screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
           (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
-          screen === 'checkout' && React.createElement(QoraCheckout, { onNav: navigate })),
+          screen === 'checkout' && React.createElement(QoraCheckout, { onNav: navigate }),
+          screen === 'privacy' && React.createElement(QLPrivacy, null),
+          screen === 'terms' && React.createElement(QLTerms, null)),
 
         // Consistent company footer on all authenticated pages (revision §2.2/§6.2)
         isLoggedIn && React.createElement(QLFooter, null),

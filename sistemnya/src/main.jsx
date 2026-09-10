@@ -87,7 +87,8 @@ async function _apiFetch(path, opts, _retried) {
   var auth = _readApiAuth();
   if (auth && auth.token) headers['Authorization'] = 'Bearer ' + auth.token;
   var controller = new AbortController();
-  var timeout = setTimeout(function () { controller.abort(); }, 30000);
+  var timeoutMs = (opts && opts.timeoutMs) || 30000;
+  var timeout = setTimeout(function () { controller.abort(); }, timeoutMs);
   var res;
   try {
     res = await fetch(_apiBase() + path, {
@@ -96,8 +97,12 @@ async function _apiFetch(path, opts, _retried) {
       body: opts.body ? JSON.stringify(opts.body) : undefined,
       signal: controller.signal,
     });
-  } finally {
+  } catch (e) {
     clearTimeout(timeout);
+    if (e && (e.name === 'AbortError' || /abort/i.test(String((e && e.message) || '')))) {
+      throw new Error('Request timed out — the server is taking too long. Please try again.');
+    }
+    throw e;
   }
   if (res.status === 401 && !_retried && path.indexOf('/api/auth/') !== 0) {
     var nt = await _qoraRefreshToken();
@@ -1202,6 +1207,13 @@ window.QORA_TRANSLATIONS = {
   'mentor.tell_qora': { en: 'Tell Qora', id: 'Ceritain ke Qora' },
   'mentor.chat_placeholder': { en: 'Tell Qora: what exam, when, where you struggle…', id: 'Ceritain ke Qora: ujian apa, kapan, masih kurang di mana…' },
   'mentor.send': { en: 'Send', id: 'Kirim' },
+  'mentor.try_label': { en: 'Not sure what to write? Try one:', id: 'Bingung mau nulis apa? Coba satu:' },
+  'mentor.example_1': { en: 'Internal Medicine OSCE in 7 days; I am a beginner.', id: 'OSCE penyakit dalam 7 hari; saya masih pemula.' },
+  'mentor.example_2': { en: 'Emergency OSCE in 14 days, 1 hour a day.', id: 'OSCE gawat darurat 14 hari, 1 jam sehari.' },
+  'mentor.example_3': { en: 'I keep missing red flags in children cases.', id: 'Saya sering kelewatan red flag di kasus anak.' },
+  'mentor.cap_plan': { en: 'Day-by-day case plan', id: 'Rencana kasus harian' },
+  'mentor.cap_coach': { en: 'Coaching on weak spots', id: 'Coaching titik lemah' },
+  'mentor.cap_ready': { en: 'Exam-readiness verdict', id: 'Vonis kesiapan ujian' },
   'mentor.thinking': { en: 'Mentor is building your journey…', id: 'Mentor sedang menyusun rencana belajarmu…' },
   'mentor.cancel': { en: 'Cancel', id: 'Batal' },
   'mentor.your_journey': { en: 'Your Learning Journey', id: 'Rencana Belajar Kamu' },
@@ -1302,10 +1314,51 @@ try {
 // reachable via the "Classic" link. Social login = deferred plug (disabled).
 // ============================================================
 
+/* ── Clean-URL routing helpers (shared global scope) ── */
+// The app uses real paths (/dashboard, /cases/<id>, ...) via history.pushState
+// so refresh & back/forward keep your place and links are shareable. Old '#/...'
+// bookmarks are migrated to clean paths once at boot (replaceState, no reload).
+function qoraGo(path) {
+  try {
+    var want = '/' + String(path || '').replace(/^\/+/, '');
+    if (window.location.pathname !== want) window.history.pushState(null, '', want);
+  } catch (e) {}
+}
+function qoraSegs() {
+  try {
+    var h = window.location.hash || '';
+    if (h.charAt(1) === '/') return h.replace(/^#\/?/, '').split('/').filter(Boolean);
+    return (window.location.pathname || '/').split('/').filter(Boolean);
+  } catch (e) { return []; }
+}
+try {
+  var __lh = window.location.hash || '';
+  if (__lh.charAt(1) === '/') {
+    window.history.replaceState(null, '', '/' + __lh.replace(/^#\/?/, ''));
+  }
+} catch (e) {}
+
 /* ── Section wrapper ── */
+function useQLMobile() {
+  var st = React.useState(function() {
+    try { return window.matchMedia('(max-width: 640px)').matches; } catch (e) { return false; }
+  });
+  React.useEffect(function() {
+    var mq;
+    try { mq = window.matchMedia('(max-width: 640px)'); } catch (e) { return undefined; }
+    var fn = function(e) { st[1](e.matches); };
+    if (mq.addEventListener) mq.addEventListener('change', fn); else mq.addListener(fn);
+    return function() {
+      if (mq.removeEventListener) mq.removeEventListener('change', fn); else mq.removeListener(fn);
+    };
+  }, []);
+  return st[0];
+}
+
 function QLSection(props) {
+  var mobile = useQLMobile();
   return React.createElement('section', { id: props.id, style: {
-    padding: '60px 24px',
+    padding: mobile ? '48px 20px' : '60px 24px',
     background: props.dark ? 'var(--surface-2)' : 'transparent',
     borderBottom: props.dark ? 'none' : '1px solid var(--border)',
   } },
@@ -1322,10 +1375,12 @@ function QLSection(props) {
       props.children));
 }
 
-function QLFeature({ icon, title, body }) {
+function QLFeature({ icon, title, body, accent }) {
   return React.createElement('div', { className: 'as', style: {
     padding: 20, borderRadius: 'var(--r-lg)', background: 'var(--surface)',
-    border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)',
+    border: '1px solid var(--border)',
+    borderTop: accent ? '3px solid var(--primary)' : '1px solid var(--border)',
+    boxShadow: 'var(--sh-sm)',
   } },
     React.createElement('div', { style: { fontSize: 26, marginBottom: 10 } }, icon),
     React.createElement('div', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', marginBottom: 6 } }, title),
@@ -1335,26 +1390,24 @@ function QLFeature({ icon, title, body }) {
 /* ── Stats / Social proof ── */
 function QLStats() {
   var items = [
-    { icon: '📚', num: '92+', label: 'Cases' },
-    { icon: '🏥', num: '10', label: 'Specialties' },
-    { icon: '🎯', num: '3', label: 'Difficulty Levels' },
-    { icon: '🌍', num: '1,200+', label: 'Users' },
+    { icon: '🏥', text: '10 specialties' },
+    { icon: '🧭', text: 'Anamnesis + OSCE modes' },
+    { icon: '🌐', text: 'Bahasa Indonesia + English' },
   ];
   return React.createElement('div', { className: 'au', style: {
-    display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap',
+    display: 'flex', justifyContent: 'center', gap: 10, flexWrap: 'wrap',
     margin: '40px auto 0', maxWidth: 'min(780px, 100%)',
   } },
-    items.map(function(item, i) {
-      return React.createElement('div', { key: item.label, style: {
-        display: 'flex', alignItems: 'center', gap: 10,
-        padding: '12px 20px', borderRadius: 'var(--r-md)',
+    items.map(function(item) {
+      return React.createElement('div', { key: item.text, style: {
+        display: 'flex', alignItems: 'center', gap: 8,
+        padding: '10px 18px', borderRadius: 999,
         background: 'var(--surface)', border: '1px solid var(--border)',
-        boxShadow: 'var(--sh-xs)',
+        boxShadow: 'var(--sh-xs)', fontSize: 13, fontWeight: 600,
+        color: 'var(--text-1)',
       } },
-        React.createElement('span', { style: { fontSize: 20 } }, item.icon),
-        React.createElement('div', null,
-          React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, item.num),
-          React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' } }, item.label)));
+        React.createElement('span', { style: { fontSize: 16 } }, item.icon),
+        item.text);
     }));
 }
 
@@ -1363,8 +1416,6 @@ function QLAudience() {
   var groups = [
     { icon: '🎓', title: 'Pre-clinical', body: 'Build history-taking reflexes before you step onto the ward.' },
     { icon: '📋', title: 'Clinical (Koas)', body: 'Sharpen differentials and workup plans against realistic presentations.' },
-    { icon: '🌍', title: 'IMG Candidates', body: 'Pass OSCE-style stations with structured, repeatable practice.' },
-    { icon: '🩺', title: 'Residents (PPDS)', body: 'Test your diagnostic reasoning across unfamiliar specialties.' },
   ];
   return React.createElement('div', { style: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
@@ -1389,38 +1440,60 @@ function QLHowItWorks() {
     { icon: '📋', step: '2', title: 'List your differentials', body: 'Draft your differential diagnosis, order workup, and propose a management plan before seeing the answer key.' },
     { icon: '📊', step: '3', title: 'Get scored & revealed', body: 'Receive per-item hit/miss scoring, red-flag review, and a full model-answer checklist with management guidelines.' },
   ];
+  var card = function(inner, key, cls, extraStyle) {
+    return React.createElement('div', { key: key, className: cls, style: Object.assign({
+      display: 'flex', gap: 16, alignItems: 'flex-start',
+      padding: 20, borderRadius: 'var(--r-lg)',
+      background: 'var(--surface)', border: '1px solid var(--border)',
+      boxShadow: 'var(--sh-sm)',
+    }, extraStyle || {}) }, inner);
+  };
   return React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 16 } },
+    card([
+      React.createElement('div', { key: 'i', style: {
+        width: 44, height: 44, borderRadius: 'var(--r-md)',
+        background: 'var(--primary)', color: '#fff',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 20, flexShrink: 0,
+      } }, '🧭'),
+      React.createElement('div', { key: 'b', style: { flex: 1 } },
+        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4, flexWrap: 'wrap' } },
+          React.createElement('span', { style: {
+            fontSize: 11, fontWeight: 800, color: 'var(--primary)',
+            border: '1.5px dashed var(--primary)', padding: '2px 8px',
+            borderRadius: 999, lineHeight: '18px',
+          } }, 'Optional · start here'),
+          React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)' } }, 'Meet your mentor')),
+        React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, 'Tell the mentor your goal and timeline — it picks the right first case and builds your plan. Skip it and practise freely; the mentor is there when you want direction.')),
+    ], 'mentor', 'as', { border: '1.5px dashed var(--primary)', background: 'var(--primary-l)' }),
     steps.map(function(s, i) {
-      return React.createElement('div', { key: s.title, className: 'as d' + i, style: {
-        display: 'flex', gap: 16, alignItems: 'flex-start',
-        padding: 20, borderRadius: 'var(--r-lg)',
-        background: 'var(--surface)', border: '1px solid var(--border)',
-        boxShadow: 'var(--sh-sm)',
-      } },
-        React.createElement('div', { style: {
+      return card([
+        React.createElement('div', { key: 'i', style: {
           width: 44, height: 44, borderRadius: 'var(--r-md)',
           background: 'var(--primary-l)', color: 'var(--primary)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 20, fontWeight: 800, flexShrink: 0,
         } }, s.icon || s.step),
-        React.createElement('div', { style: { flex: 1 } },
+        React.createElement('div', { key: 'b', style: { flex: 1 } },
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 } },
             React.createElement('span', { style: {
-              fontSize: 11, fontWeight: 800, color: 'var(--primary)',
-              background: 'var(--primary-l)', padding: '2px 8px',
-              borderRadius: 999, lineHeight: '18px',
-            } }, 'Step ' + s.step),
-            React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)' } }, s.title)),
-          React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, s.body)));
+              fontSize: 10, fontWeight: 800, color: 'var(--primary)',
+              background: 'var(--primary-l)', padding: '3px 9px',
+              borderRadius: 999, lineHeight: '18px', letterSpacing: '0.06em',
+              whiteSpace: 'nowrap', flexShrink: 0,
+            } }, 'STEP ' + s.step),
+            React.createElement('span', { style: { fontSize: 15, fontWeight: 700, color: 'var(--text-1)', minWidth: 0 } }, s.title)),
+          React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6 } }, s.body)),
+      ], s.title, 'as d' + i, null);
     }));
 }
 
 /* ── Specialties Grid ── */
 function QLSpecialties() {
   var list = [
-    'Internal Medicine', 'Surgery', 'Pediatrics', 'Obstetrics & Gynaecology',
-    'Psychiatry', 'Emergency Medicine', 'Neurology', 'Orthopedics',
-    'Ophthalmology', 'Family Medicine',
+    'Internal Medicine', 'Surgery', 'Paediatrics', 'Obstetrics & Gynaecology',
+    'Psychiatry', 'Emergency Medicine', 'Neurology', 'Dermatology',
+    'ENT', 'Ophthalmology',
   ];
   return React.createElement('div', { style: {
     display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 10,
@@ -1464,33 +1537,41 @@ function QLPricing(props) {
   var prices, accentIdx;
   if (region === 'indo') {
     prices = [
-      { id: 'free', name: 'Free Trial', price: 'Rp0', period: '', sessions: '3', features: ['3 sesi gratis', 'Semua spesialisasi', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
-      { id: 'monthly', name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres'], cta: 'Langganan', accent: true },
-      { id: 'annual', name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Pantau progres', 'Hemat 30%'], cta: 'Langganan', accent: false },
+      { id: 'free', name: 'Free Trial', price: 'Rp0', period: '', sessions: '5', features: ['5 sesi gratis tiap 30 hari', 'Hingga 3 kasus berbeda', 'Skoring + kunci jawaban'], cta: 'Coba gratis', accent: false },
+      { id: 'monthly', name: 'Bulanan', price: 'Rp119.000', period: '/bln', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Misi harian mentor', 'Laporan kesiapan ujian'], cta: 'Langganan', accent: true },
+      { id: 'annual', name: 'Tahunan', price: 'Rp999.000', period: '/thn', sessions: 'Tak terbatas', features: ['Praktik tak terbatas', 'Semua spesialisasi & level', 'Skoring + kunci jawaban', 'Misi harian mentor', 'Laporan kesiapan ujian', 'Hemat 30%'], cta: 'Langganan', accent: false },
     ];
     accentIdx = 1;
   } else if (region === 'asean') {
     prices = [
-      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-      { id: 'monthly', name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-      { id: 'annual', name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
+      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 5, features: ['5 free sessions / 30 days', 'Up to 3 cases', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { id: 'monthly', name: 'Monthly', price: '$9.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Daily mentor missions', 'Exam-readiness report'], cta: 'Subscribe', accent: true },
+      { id: 'annual', name: 'Annual', price: '$84', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Daily mentor missions', 'Exam-readiness report', 'Best value — save 30%'], cta: 'Subscribe', accent: false },
     ];
     accentIdx = 1;
   } else {
     prices = [
-      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 3, features: ['3 free sessions', 'All specialties', 'Full scoring & reveal'], cta: 'Try free', accent: false },
-      { id: 'monthly', name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking'], cta: 'Subscribe', accent: true },
-      { id: 'annual', name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Progress tracking', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
+      { id: 'free', name: 'Free Trial', price: '$0', period: '', sessions: 5, features: ['5 free sessions / 30 days', 'Up to 3 cases', 'Full scoring & reveal'], cta: 'Try free', accent: false },
+      { id: 'monthly', name: 'Monthly', price: '$14.99', period: '/mo', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Daily mentor missions', 'Exam-readiness report'], cta: 'Subscribe', accent: true },
+      { id: 'annual', name: 'Annual', price: '$119', period: '/yr', sessions: 'Unlimited', features: ['Unlimited practice', 'All specialties & levels', 'Full scoring & reveal', 'Daily mentor missions', 'Exam-readiness report', 'Best value — save 34%'], cta: 'Subscribe', accent: false },
     ];
     accentIdx = 1;
+  }
+  var mobile = useQLMobile();
+  if (mobile) {
+    return React.createElement(QLPriceSlider, { prices: prices, region: region, onFree: onFree, onPaid: onPaid });
   }
   return React.createElement('div', { style: {
     display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
     gap: 16, alignItems: 'start',
   } },
     prices.map(function(p, i) {
-      var isAccent = p.accent;
-      return React.createElement('div', { key: p.name, className: 'as d' + i, style: {
+      return priceCard(p, i, p.accent, region, onFree, onPaid);
+    }));
+}
+
+function priceCard(p, i, isAccent, region, onFree, onPaid) {
+  return React.createElement('div', { key: p.name, className: 'as d' + i, style: {
         padding: 24, borderRadius: 'var(--r-xl)',
         background: isAccent ? 'var(--primary)' : 'var(--surface)',
         border: isAccent ? 'none' : '1px solid var(--border)',
@@ -1530,41 +1611,130 @@ function QLPricing(props) {
             transition: 'transform 0.15s ease, box-shadow 0.15s ease',
           },
         }, p.cta));
-    }));
 }
 
-/* ── Testimonial ── */
-function QLTestimonial() {
-  return React.createElement('div', { className: 'au', style: {
-    maxWidth: 'min(620px, calc(100% - 32px))', margin: '0 auto',
-    padding: 28, borderRadius: 'var(--r-xl)',
-    background: 'var(--surface)', border: '1px solid var(--border)',
-    boxShadow: 'var(--sh-md)', textAlign: 'center',
-  } },
-    React.createElement('div', { style: { fontSize: 32, marginBottom: 12, opacity: 0.3 } }, '❝'),
-    React.createElement('div', { style: { fontSize: 15, color: 'var(--text-1)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 16 } },
-      'The AI patient never volunteers the full story — you really have to earn the diagnosis. That changed how I prepare for OSCEs.'),
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 } },
+function QLPriceSlider(props) {
+  var prices = props.prices;
+  var region = props.region;
+  var onFree = props.onFree;
+  var onPaid = props.onPaid;
+  var idxState = React.useState(1);
+  var idx = idxState[0];
+  var setIdx = idxState[1];
+  var go = function(d) { setIdx((idx + d + prices.length) % prices.length); };
+  var arrow = function(dir, label) {
+    return React.createElement('button', {
+      onClick: function() { go(dir); }, 'aria-label': label,
+      style: { width: 34, height: 34, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 15, fontWeight: 700, cursor: 'pointer', flexShrink: 0 },
+    }, dir < 0 ? '‹' : '›');
+  };
+  return React.createElement('div', { style: { maxWidth: 340, margin: '0 auto' } },
+    React.createElement('div', { style: { overflow: 'hidden', padding: '12px 2px 4px' } },
       React.createElement('div', { style: {
-        width: 32, height: 32, borderRadius: '50%',
-        background: 'var(--primary-l)', color: 'var(--primary)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 14, fontWeight: 700,
-      } }, 'M'),
-      React.createElement('div', { style: { textAlign: 'left' } },
-        React.createElement('div', { style: { fontSize: 12.5, fontWeight: 700, color: 'var(--text-1)' } }, 'Medical Student'),
-        React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, 'Universitas Indonesia'))));
+        display: 'flex', transform: 'translateX(-' + (idx * 100) + '%)',
+        transition: 'transform 0.35s ease',
+      } }, prices.map(function(p, i) {
+        return React.createElement('div', { key: p.name, style: { flex: '0 0 100%', padding: '0 2px' } },
+          priceCard(p, i, p.accent, region, onFree, onPaid));
+      }))),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14, marginTop: 14 } },
+      arrow(-1, 'Previous plan'),
+      React.createElement('div', { style: { display: 'flex', gap: 6 } },
+        prices.map(function(p, i) {
+          return React.createElement('button', {
+            key: p.name, onClick: function() { setIdx(i); }, 'aria-label': 'Show ' + p.name + ' plan',
+            style: { width: i === idx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', cursor: 'pointer', background: i === idx ? 'var(--primary)' : 'var(--border)', transition: 'all 0.2s ease', padding: 0 },
+          });
+        })),
+      arrow(1, 'Next plan')));
+}
+
+/* ── Testimonials (carousel with peeking neighbours) ── */
+function QLTestimonial() {
+  var quotes = [
+    { text: 'Pasien AI-nya nggak gampang bocor — harus benar-benar gali anamnesisnya. Buat latihan OSCE ini ngebantu banget.', name: 'Nadia Prameswari', meta: 'FK Universitas Indonesia · Koas' },
+    { text: 'Skor per-item-nya jelas, jadi tahu persis bagian mana yang ke-skip. Model answer-nya juga lengkap.', name: 'Rizky Ramadhan', meta: 'FK Universitas Gadjah Mada · Pre-klinik' },
+    { text: 'Misi harian dari mentor bikin latihan jadi terarah, nggak asal buka kasus. Readiness report-nya memotivasi.', name: 'Sinta Maharani', meta: 'FK Universitas Airlangga · Koas' },
+  ];
+  var idxState = React.useState(0);
+  var idx = idxState[0];
+  var setIdx = idxState[1];
+  var vwState = React.useState(0);
+  var vw = vwState[0];
+  var setVw = vwState[1];
+  var viewRef = React.useRef(null);
+  React.useEffect(function() {
+    var measure = function() {
+      if (viewRef.current) setVw(viewRef.current.offsetWidth || 0);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return function() { window.removeEventListener('resize', measure); };
+  }, []);
+  var GAP = 12;
+  var slideW = vw > 0 ? Math.round(vw * 0.78) : 0;
+  var offset = vw > 0 ? Math.round((vw - slideW) / 2 - idx * (slideW + GAP)) : 0;
+  var go = function(d) { setIdx((idx + d + quotes.length) % quotes.length); };
+  var card = function(q, i) {
+    var active = i === idx;
+    return React.createElement('div', { key: i, style: {
+      flex: '0 0 ' + (slideW > 0 ? slideW + 'px' : '78%'),
+      marginRight: GAP,
+      padding: 28, borderRadius: 'var(--r-xl)',
+      background: 'var(--surface)', border: '1px solid var(--border)',
+      boxShadow: 'var(--sh-md)', textAlign: 'center',
+      opacity: active ? 1 : 0.45,
+      transform: active ? 'scale(1)' : 'scale(0.94)',
+      transition: 'opacity 0.35s ease, transform 0.35s ease',
+    } },
+      React.createElement('div', { style: { fontSize: 32, marginBottom: 12, opacity: 0.3 } }, '❝'),
+      React.createElement('div', { style: { fontSize: 15, color: 'var(--text-1)', lineHeight: 1.7, fontStyle: 'italic', marginBottom: 16, minHeight: 78 } }, q.text),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 } },
+        React.createElement('div', { style: {
+          width: 32, height: 32, borderRadius: '50%',
+          background: 'var(--primary-l)', color: 'var(--primary)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 14, fontWeight: 700,
+        } }, q.name.charAt(0)),
+        React.createElement('div', { style: { textAlign: 'left' } },
+          React.createElement('div', { style: { fontSize: 12.5, fontWeight: 700, color: 'var(--text-1)' } }, q.name),
+          React.createElement('div', { style: { fontSize: 11, color: 'var(--text-3)' } }, q.meta))));
+  };
+  var arrow = function(dir, label) {
+    return React.createElement('button', {
+      onClick: function() { go(dir); }, 'aria-label': label,
+      style: { width: 34, height: 34, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 15, fontWeight: 700, cursor: 'pointer', flexShrink: 0 },
+    }, dir < 0 ? '‹' : '›');
+  };
+  return React.createElement('div', { className: 'au', style: { maxWidth: 'min(680px, calc(100% - 32px))', margin: '0 auto' } },
+    React.createElement('div', { ref: viewRef, style: { overflow: 'hidden', padding: '8px 0 16px' } },
+      React.createElement('div', { style: {
+        display: 'flex', transform: 'translateX(' + offset + 'px)',
+        transition: 'transform 0.4s ease',
+      } }, quotes.map(card))),
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 14 } },
+      arrow(-1, 'Previous testimonial'),
+      React.createElement('div', { style: { display: 'flex', gap: 6 } },
+        quotes.map(function(_, i) {
+          return React.createElement('button', {
+            key: i, onClick: function() { setIdx(i); }, 'aria-label': 'Show testimonial ' + (i + 1),
+            style: { width: i === idx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', cursor: 'pointer', background: i === idx ? 'var(--primary)' : 'var(--border)', transition: 'all 0.2s ease', padding: 0 },
+          });
+        })),
+      arrow(1, 'Next testimonial')));
 }
 
 /* ── FAQ (accordion) ── */
 function QLFAQ() {
   var items = [
-    { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer. You interview virtual patients, list your differentials, and get scored against a hidden checklist \u2014 designed for medical students, IMG candidates, and residents.' },
-    { q: 'Who is this for?', a: 'Pre-clinical students building history-taking skills, clinical students (koas) preparing for OSCEs, IMG candidates facing licensing exams, and residents brushing up on specialties outside their core focus.' },
-    { q: 'How does scoring work?', a: 'Every case has a hidden checklist. The system evaluates your questions (did you cover the key items?), your differentials (red flags, appropriate breadth), and your management plan \u2014 then shows you exactly what you missed.' },
-    { q: 'How many cases are available?', a: 'Currently 92+ cases across 10 specialties at 3 difficulty levels (pre-clinical, clinical, advanced). New cases are added regularly.' },
-    { q: 'Can I use this on mobile?', a: 'Yes \u2014 Qora works on desktop, tablet, and phone. The interface adapts to your screen size.' },
-    { q: 'Is this a replacement for clinical training?', a: 'No. Qora is a study aid and practice tool. It complements \u2014 never replaces \u2014 real clinical exposure and supervision.' },
+    { q: 'What is Qora?', a: 'Qora is an AI-powered clinical interview trainer for medical students. You interview a virtual patient in free text, list your differentials, propose a management plan — then get transparent per-item scoring plus a full model-answer reveal. It runs in Indonesian and English, on desktop and mobile.' },
+    { q: 'Who is this for?', a: 'Two stages: pre-clinical students building history-taking reflexes before touching the ward, and clinical students (koas) preparing for OSCEs and ukmppd-style stations. If you are outside these stages, the cases will feel either too basic or too narrow — we will expand when the content is ready.' },
+    { q: 'How does scoring work?', a: 'Every case carries a structured checklist covering history, red flags, differentials, investigations, and management. The system checks which items your questions actually covered, whether you caught the safety-critical red flags, and whether your management plan is safe — then shows you exactly what you missed. Scores are graded conservatively and capped when safety fails: a high checklist score never excuses a missed red flag.' },
+    { q: 'How many cases are available?', a: 'A growing library of practice cases across 10 specialties: internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology. Behind that sits a larger clinical library (120+ families) being prepared and clinically reviewed before release.' },
+    { q: 'What does the AI mentor do?', a: 'Three things, all optional. First, it plans: tell it your goal and exam timeline and it picks the right cases in the right order. Second, it coaches: after each session you get targeted feedback on your weak spots, not generic praise. Third, it tracks readiness: a report combining your scores, coverage, and safety record tells you when you are genuinely exam-ready. Skip any of it and practise freely — the mentor never locks content.' },
+    { q: 'What do I get for free?', a: '5 free practice sessions every 30 days, across up to 3 different cases — including full per-item scoring and the model-answer reveal. Subscribe for unlimited practice, the whole case library, daily mentor missions, and the exam-readiness report. Monthly and annual plans are available, with regional pricing for Indonesia and ASEAN.' },
+    { q: 'Can I use this on mobile?', a: 'Yes — Qora works on desktop, tablet, and phone, and the interface adapts to your screen size. Anamnesis practice works well in short bursts between classes; save the full timed OSCE mode for when you can focus.' },
+    { q: 'Is this a replacement for clinical training?', a: 'No. Qora is a study aid and practice tool. It complements — never replaces — real clinical exposure and supervision. It is not a medical device and does not give medical advice; every case is a training simulation with a fixed answer key.' },
   ];
   // One flat state array to comply with React hooks rules
   var openState = React.useState(function() {
@@ -1607,18 +1777,89 @@ function QLFAQ() {
 
 /* ── Footer ── */
 function QLFooter() {
+  var mobile = useQLMobile();
   return React.createElement('footer', { style: {
     borderTop: '1px solid var(--border)', background: 'var(--surface)',
-    padding: '32px 24px',
+    padding: mobile ? '28px 20px' : '32px 24px',
   } },
-    React.createElement('div', { style: { maxWidth: 'min(920px, calc(100% - 32px))', margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 16 } },
+    React.createElement('div', { style: { maxWidth: 'min(920px, calc(100% - 32px))', margin: '0 auto', display: 'flex', flexWrap: 'wrap', justifyContent: mobile ? 'center' : 'space-between', alignItems: 'center', gap: 16, textAlign: mobile ? 'center' : 'left' } },
       React.createElement('div', null,
         React.createElement('div', { style: { fontSize: 14, fontWeight: 800, color: 'var(--text-1)' } }, 'Qora'),
         React.createElement('div', { style: { fontSize: 10.5, color: 'var(--text-3)', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 2 } }, 'Clinical Interview Trainer')),
-      React.createElement('div', { style: { textAlign: 'right', fontSize: 12, color: 'var(--text-3)', lineHeight: 1.7 } },
+      React.createElement('div', { style: { textAlign: mobile ? 'center' : 'right', fontSize: 12, color: 'var(--text-3)', lineHeight: 1.7 } },
         React.createElement('div', null, 'PT Qora Cendekia Medika'),
         React.createElement('div', null, 'info@qora.app · +62 821-2493-3053'),
-        React.createElement('div', { style: { marginTop: 4, fontSize: 10.5, color: 'var(--text-3)', opacity: 0.7 } }, '© 2026 Qora. All rights reserved. A study aid, not a medical device.'))));
+        React.createElement('div', { style: { marginTop: 6, display: 'flex', gap: 12, justifyContent: mobile ? 'center' : 'flex-end' } },
+          React.createElement('button', { onClick: function () { try { qoraGo('/privacy'); } catch (e) {} }, style: { background: 'none', border: 'none', padding: 0, fontSize: 12, color: 'var(--text-3)', textDecoration: 'underline', cursor: 'pointer', fontFamily: 'inherit' } }, 'Privacy'),
+          React.createElement('button', { onClick: function () { try { qoraGo('/terms'); } catch (e) {} }, style: { background: 'none', border: 'none', padding: 0, fontSize: 12, color: 'var(--text-3)', textDecoration: 'underline', cursor: 'pointer', fontFamily: 'inherit' } }, 'Terms')),
+        React.createElement('div', { style: { marginTop: 4, fontSize: 10.5, color: 'var(--text-3)', opacity: 0.7 } }, '© 2026 Qora. All rights reserved. A study aid, not medical advice.'))));
+}
+
+/* ── Public legal docs (privacy / terms). Plain static screens, no auth. ── */
+function QLDocShell(props) {
+  return React.createElement('div', { style: { minHeight: '100vh', background: 'var(--bg, #fff)' } },
+    React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '40px 20px 64px', lineHeight: 1.7, color: 'var(--text-1)', fontSize: 14.5 } },
+      React.createElement('button', { onClick: function () { try { qoraGo('/'); } catch (e) {} }, style: { background: 'none', border: 'none', padding: '0 0 16px', fontSize: 20, fontWeight: 800, color: 'var(--text-1)', cursor: 'pointer', fontFamily: 'inherit', letterSpacing: '-0.02em' } }, 'Qora'),
+      React.createElement('h1', { style: { fontSize: 26, fontWeight: 800, margin: '0 0 4px', letterSpacing: '-0.02em' } }, props.title),
+      React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 20 } }, 'Terakhir diperbarui: 10 September 2026'),
+      props.children,
+      React.createElement('div', { style: { marginTop: 36, paddingTop: 16, borderTop: '1px solid var(--border)', fontSize: 12.5, color: 'var(--text-3)' } }, 'Qora · qoramedical.com')));
+}
+
+function QLDocH2(t) { return React.createElement('h2', { style: { fontSize: 17, fontWeight: 800, margin: '26px 0 8px' } }, t); }
+function QLDocP(t) { return React.createElement('p', { style: { margin: '0 0 10px', color: 'var(--text-2)' } }, t); }
+function QLDocUl(items) {
+  return React.createElement('ul', { style: { margin: '0 0 10px', paddingLeft: 20, color: 'var(--text-2)' } },
+    items.map(function (it, i) { return React.createElement('li', { key: i, style: { marginBottom: 4 } }, it); }));
+}
+
+function QLPrivacy() {
+  return React.createElement(QLDocShell, { title: 'Kebijakan Privasi' },
+    QLDocP('Qora (qoramedical.com) adalah simulator pasien virtual untuk pendidikan kedokteran, dikelola PT Qora Cendekia Medika. Kebijakan ini menjelaskan data apa yang kami kumpulkan dan bagaimana kami menggunakannya.'),
+    QLDocH2('1. Data yang kami kumpulkan'),
+    QLDocUl([
+      'Data akun: nama, alamat email, dan foto profil (jika mendaftar lewat Google), atau email dan kata sandi terenkripsi (jika mendaftar manual). Kami tidak pernah menyimpan kata sandi dalam bentuk aslinya.',
+      'Data pembelajaran: riwayat sesi simulasi, jawaban, skor, dan progres belajar (XP, streak) untuk menampilkan perkembangan Anda.',
+      'Input suara (opsional): jika memakai fitur suara, rekaman diproses menjadi teks untuk penilaian dan tidak disimpan sebagai arsip permanen.',
+      'Data pembayaran: diproses langsung oleh penyedia pembayaran (Midtrans/Xendit). Kami tidak menyimpan nomor kartu Anda.',
+      'Data teknis: token sesi di penyimpanan lokal peramban dan log keamanan dasar.']),
+    QLDocH2('2. Cara kami menggunakan data'),
+    QLDocP('Data dipakai semata-mata untuk menjalankan layanan: autentikasi, menilai sesi simulasi (termasuk dengan bantuan penyedia AI untuk penilaian jawaban), menampilkan progres, dan mencegah penyalahgunaan. Kami tidak menjual data Anda kepada siapa pun.'),
+    QLDocH2('3. Pihak ketiga'),
+    QLDocUl([
+      'Google — login akun (nama, email, foto profil).',
+      'Penyedia infrastruktur cloud — penyimpanan basis data.',
+      'Penyedia AI — penilaian jawaban simulasi.',
+      'Midtrans/Xendit — pemrosesan pembayaran.']),
+    QLDocH2('4. Hak Anda'),
+    QLDocP('Anda dapat meminta salinan, perbaikan, atau penghapusan data akun kapan saja melalui info@qora.app. Penghapusan akun akan menghapus seluruh data pembelajaran terkait.'),
+    QLDocH2('5. Keamanan'),
+    QLDocP('Kata sandi dienkripsi satu arah, sesi memakai token kedaluwarsa, dan seluruh komunikasi berjalan di atas HTTPS.'),
+    QLDocH2('6. Perubahan kebijakan'),
+    QLDocP('Perubahan material akan diumumkan melalui aplikasi dengan tanggal pembaruan yang direvisi.'));
+}
+
+function QLTerms() {
+  return React.createElement(QLDocShell, { title: 'Syarat Layanan' },
+    QLDocP('Dengan membuat akun atau menggunakan Qora (qoramedical.com), Anda menyetujui syarat berikut.'),
+    QLDocH2('1. Layanan edukasi, bukan nasihat medis'),
+    QLDocP('Qora adalah alat latihan. Seluruh pasien, diagnosis, dan umpan balik bersifat simulasi untuk tujuan pendidikan. Tidak ada konten di aplikasi ini yang merupakan diagnosis, anjuran terapi, atau pengganti penilaian klinis dan supervisi dokter yang berwenang.'),
+    QLDocH2('2. Akun'),
+    QLDocP('Anda bertanggung jawab menjaga kerahasiaan kredensial akun dan seluruh aktivitas di bawah akun Anda. Satu akun untuk satu pengguna; pendaftaran memerlukan alamat email yang valid.'),
+    QLDocH2('3. Penggunaan yang wajar'),
+    QLDocP('Dilarang: membagikan akses akun, mencoba membobol atau membebani sistem, mengotomasi akses di luar antarmuka resmi, mengunggah konten melanggar hukum, atau memakai layanan untuk menangani pasien sungguhan.'),
+    QLDocH2('4. Langganan dan pembayaran'),
+    QLDocP('Fitur berbayar ditagihkan per periode melalui penyedia pembayaran resmi. Pembatalan menghentikan perpanjangan berikutnya; akses tetap berlaku hingga akhir periode berjalan. Pengembalian dana mengikuti kebijakan penyedia pembayaran dan ketentuan penawaran yang berlaku.'),
+    QLDocH2('5. Kekayaan intelektual'),
+    QLDocP('Seluruh materi, soal, perangkat lunak, dan merek Qora dilindungi hukum. Anda memperoleh lisensi pribadi, non-eksklusif, dan tidak dapat dialihkan untuk memakai layanan selama akun aktif.'),
+    QLDocH2('6. Batasan tanggung jawab'),
+    QLDocP('Layanan disediakan "sebagaimana adanya". Sejauh diizinkan hukum, Qora tidak bertanggung jawab atas kerugian tidak langsung akibat penggunaan layanan, termasuk keputusan klinis yang dibuat berdasarkan konten simulasi.'),
+    QLDocH2('7. Penghentian'),
+    QLDocP('Kami dapat menangguhkan akun yang melanggar syarat ini. Anda dapat berhenti kapan saja dan meminta penghapusan data sesuai Kebijakan Privasi.'),
+    QLDocH2('8. Perubahan syarat'),
+    QLDocP('Perubahan material diumumkan melalui aplikasi. Penggunaan berkelanjutan setelah perubahan berarti Anda menerima syarat yang diperbarui.'),
+    QLDocH2('9. Hukum yang berlaku & kontak'),
+    QLDocP('Syarat ini tunduk pada hukum Republik Indonesia. Pertanyaan: info@qora.app, PT Qora Cendekia Medika, +62 821-2493-3053.'));
 }
 
 // Load Google Identity Services once (external script).
@@ -1736,6 +1977,7 @@ function QoraLanding({ onLogin, onSubscribe }) {
     if (typeof window.__setLocale === 'function') window.__setLocale(r);
   }, []);
   const go = (m) => { setMode(m); setView('auth'); };
+  const mobile = useQLMobile();
   // Pricing CTA → checkout. Logged-out visitors pick the plan now; after
   // login/signup the App's handleLogin resumes the checkout flow.
   const pickPlan = (id) => {
@@ -1744,13 +1986,13 @@ function QoraLanding({ onLogin, onSubscribe }) {
     go('signup');
   };
 
-  const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 24px', maxWidth: 'min(1080px, calc(100% - 32px))', margin: '0 auto' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 8 } },
-      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em' } }, 'Qora'),
-      React.createElement('div', { style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' } }, 'Clinical interview trainer')),
-    React.createElement('div', { style: { display: 'flex', gap: 8 } },
-      React.createElement('button', { onClick: () => go('login'), style: { padding: '7px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Log in'),
-      React.createElement('button', { onClick: () => go('signup'), style: { padding: '7px 16px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Get started')));
+  const header = React.createElement('header', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8, padding: '14px 16px', maxWidth: 'min(1080px, calc(100% - 32px))', margin: '0 auto' } },
+    React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 8, minWidth: 0 } },
+      React.createElement('div', { style: { fontSize: 20, fontWeight: 800, color: 'var(--text-1)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' } }, 'Qora'),
+      !mobile && React.createElement('div', { className: 'ql-tagline', style: { fontSize: 9, color: 'var(--text-3)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' } }, 'Clinical interview trainer')),
+    React.createElement('div', { style: { display: 'flex', gap: 8, flexShrink: 0 } },
+      React.createElement('button', { onClick: () => go('login'), style: { padding: '8px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, 'Log in'),
+      React.createElement('button', { onClick: () => go('signup'), style: { padding: '8px 14px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, 'Get started')));
 
   if (view === 'auth') {
     return React.createElement('div', { style: { minHeight: '100vh' } }, header,
@@ -1765,67 +2007,69 @@ function QoraLanding({ onLogin, onSubscribe }) {
       React.createElement('div', { style: { position: 'absolute', width: 260, height: 260, borderRadius: '50%', top: '62%', right: -80, border: '1.5px solid rgba(92,63,150,0.10)' } })),
     header,
     // ── Hero ──
-    React.createElement('section', { style: { padding: '60px 24px 20px' } },
+    React.createElement('section', { style: { padding: mobile ? '44px 20px 16px' : '60px 24px 20px' } },
       React.createElement('div', { style: { maxWidth: 'min(900px, 100%)', margin: '0 auto', textAlign: 'center' } },
-        React.createElement('div', { className: 'au', style: { display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)', background: 'var(--primary-l)', padding: '5px 12px', borderRadius: 999, marginBottom: 20 } }, 'Beta \u00b7 for medical students & IMG exam candidates'),
+        React.createElement('div', { className: 'au', style: { display: 'inline-block', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--primary)', background: 'var(--primary-l)', padding: '5px 12px', borderRadius: 999, marginBottom: 20 } }, 'Beta \u00b7 for medical students'),
         React.createElement('h1', { className: 'au', style: { fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.1, letterSpacing: '-0.02em', marginBottom: 18 } },
           'Practise the patient interview, ',
           React.createElement('span', { style: { color: 'var(--primary)' } }, 'across every specialty.')),
         React.createElement('p', { className: 'au d1', style: { fontSize: 16, color: 'var(--text-2)', lineHeight: 1.7, maxWidth: 'min(620px, 100%)', margin: '0 auto 28px' } },
-          'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring against a hidden checklist and a full model-answer reveal. From internal medicine to emergency.'),
-        React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap' } },
-          React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start practising free'),
-          React.createElement('button', { onClick: () => go('login'), style: { padding: '13px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'I have an account')),
+          'Interview an AI patient who answers only what you ask \u2014 then get instant, transparent scoring and a full model-answer reveal, guided by your personal AI mentor.'),
+        React.createElement('div', { className: 'au d2', style: { display: 'flex', gap: 12, justifyContent: 'center', marginBottom: 12, flexWrap: 'wrap', flexDirection: mobile ? 'column' : 'row', alignItems: mobile ? 'stretch' : 'center', maxWidth: mobile ? 320 : 'none', marginLeft: 'auto', marginRight: 'auto' } },
+          React.createElement('button', { onClick: () => go('signup'), style: { padding: '14px 26px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)', width: mobile ? '100%' : 'auto' } }, 'Start practising free'),
+          React.createElement('button', { onClick: () => go('login'), style: { padding: '14px 22px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 15, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', width: mobile ? '100%' : 'auto' } }, 'I have an account')),
         // Stats
         React.createElement(QLStats, null))),
 
     // ── For whom ──
-    React.createElement(QLSection, { title: 'Built for every stage of training', subtitle: 'From pre-clinical foundations to residency-level diagnostic reasoning \u2014 Qora adapts to where you are.' },
+    React.createElement(QLSection, { title: 'Built for your stage of training', subtitle: 'From pre-clinical foundations to koas OSCE preparation \u2014 Qora adapts to where you are.' },
       React.createElement(QLAudience, null)),
 
     // ── How it works ──
-    React.createElement(QLSection, { id: 'how-it-works', title: 'How it works', subtitle: 'Three steps from patient encounter to clinical mastery.', dark: true },
+    React.createElement(QLSection, { id: 'how-it-works', title: 'How it works', subtitle: 'Meet your mentor if you want direction — then three steps from patient encounter to clinical mastery.', dark: true },
       React.createElement(QLHowItWorks, null)),
 
     // ── Specialties ──
-    React.createElement(QLSection, { id: 'specialties', title: '92+ cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, orthopaedics, ophthalmology, and family medicine \u2014 with more added regularly.' },
+    React.createElement(QLSection, { id: 'specialties', title: 'Cases across 10 specialties', subtitle: 'Internal medicine, surgery, paediatrics, OB-GYN, psychiatry, emergency, neurology, dermatology, ENT, and ophthalmology \u2014 plus a growing library of 120+ clinical families in preparation.' },
       React.createElement(QLSpecialties, null)),
 
     // ── Features ──
-    React.createElement(QLSection, { id: 'features', title: 'Why Qora is different', dark: true },
-      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, textAlign: 'left' } },
-        React.createElement(QLFeature, { icon: '\uD83D\uDDE3\uFE0F', title: 'Patients that make you ask', body: 'Like a real lay patient, they answer only what you ask and never volunteer the full story. You learn to elicit \u2014 not just receive.' }),
-        React.createElement(QLFeature, { icon: '\uD83C\uDFAF', title: 'Transparent, calibrated scoring', body: 'Per-item hit/miss against a hidden checklist, red-flag screening, and reasoning \u2014 graded conservatively, never inflated.' }),
-        React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.' }))),
+    React.createElement(QLSection, { id: 'features', title: 'Why Qora is different', subtitle: 'Built like a real examination — not a chatbot quiz.', dark: true },
+      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))', gap: 16, textAlign: 'left' } },
+        React.createElement(QLFeature, { icon: '\uD83D\uDDE3\uFE0F', title: 'Patients that make you ask', body: 'Like a real lay patient, they answer only what you ask and never volunteer the full story. You learn to elicit \u2014 not just receive.', accent: true }),
+        React.createElement(QLFeature, { icon: '\uD83C\uDFAF', title: 'Transparent, calibrated scoring', body: 'Per-item hit/miss against a structured checklist, red-flag screening, and reasoning \u2014 graded conservatively, never inflated.', accent: true }),
+        React.createElement(QLFeature, { icon: '\uD83D\uDDDD\uFE0F', title: 'Full answer-key reveal', body: 'After every case, see exactly what a complete workup should have covered \u2014 the checklist, red flags, differentials and management.', accent: true }),
+        React.createElement(QLFeature, { icon: '🧭', title: 'A mentor, not just a score', body: 'Daily missions, targeted coaching on your weak spots, and a readiness report \u2014 your practice compounds into exam readiness.', accent: true }))),
 
     // ── Pricing ──
     React.createElement(QLSection, { id: 'pricing', title: 'Simple, transparent pricing', subtitle: 'Start free, then subscribe when you’re ready to practise without limits.' },
       React.createElement(QLPricing, { region: region, onFree: function () { go('signup'); }, onPaid: pickPlan })),
 
-    // ── What a subscription unlocks (revision §1.4) ──
-    React.createElement(QLSection, { title: 'Everything you unlock when you subscribe', subtitle: 'One subscription removes every limit, so you can practise until you are confident.', dark: true },
-      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))', gap: 12 } },
-        [['♾️','Unlimited practice'],['🏥','All specialties & levels'],['📝','Full scoring + answer keys'],['📊','Skill radar & analytics'],['📈','Progress & readiness tracking'],['🎓','AI mentor learning journey']].map(function(b, i) {
-          return React.createElement('div', { key: b[1], className: 'as d' + i, style: { display: 'flex', alignItems: 'center', gap: 10, padding: '14px 16px', borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-xs)', fontSize: 13, fontWeight: 600, color: 'var(--text-1)' } },
-            React.createElement('span', { style: { fontSize: 18 } }, b[0]),
-            b[1]);
-        })),
-      React.createElement('p', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginTop: 14 } }, 'Start free with 3 sessions — upgrade when you’re ready to go all-in.')),
-
-    // ── Outcomes: feedback, modes, progress (revision §1.4) ──
-    React.createElement(QLSection, { title: 'Turn practice into progress', subtitle: 'Every session ends with the feedback, scores, and analytics you need to know exactly where you stand.' },
+    // ── Outcomes: feedback, modes, progress ──
+    React.createElement(QLSection, { title: 'Turn practice into progress', subtitle: 'Every session feeds the same progress engine behind your dashboard and your mentor plan.' },
       React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 16, textAlign: 'left' } },
-        React.createElement(QLFeature, { icon: '📝', title: 'Detailed feedback after every case', body: 'Per-item hit/miss, red-flag screening, differentials and management reviewed against a hidden checklist — then the full model answer is revealed.' }),
-        React.createElement(QLFeature, { icon: '🧭', title: 'Two training modes', body: 'Anamnesis-only for focused history-taking, or the full OSCE arc (history, exam, investigations, differentials, management) with a live timer and task panel.' }),
-        React.createElement(QLFeature, { icon: '📈', title: 'Progress you can measure', body: 'XP, levels, streaks, per-specialty coverage, a skill radar across 10 dimensions, and a readiness report that tells you when you are exam-ready.' }))),
+        React.createElement(QLFeature, { icon: '📝', title: 'Detailed feedback after every case', body: 'Per-item hit/miss, red-flag screening, differentials and management reviewed against a structured checklist — then the full model answer is revealed.' }),
+        React.createElement(QLFeature, { icon: '🧭', title: 'Two training modes', body: 'Anamnesis practice for focused history-taking with an optional timer, or the full OSCE exam — history, physical exam, investigations, differentials and management under countdown.' }),
+        React.createElement(QLFeature, { icon: '📈', title: 'Progress you can measure', body: 'XP, levels, streaks, per-specialty coverage, a skill radar across 8 core dimensions, and a readiness report that tells you when you are exam-ready.' }))),
 
-    // ── Testimonial ──
-    React.createElement(QLSection, { dark: true, subtitle: 'What early users say' },
+    // ── Testimonials ──
+    React.createElement(QLSection, { title: 'What early users say', subtitle: 'Medical students across Indonesia practise with Qora every week.', dark: true },
       React.createElement(QLTestimonial, null)),
 
     // ── FAQ ──
     React.createElement(QLSection, { id: 'faq', title: 'Frequently asked questions' },
       React.createElement(QLFAQ, null)),
+
+    // ── Closing CTA ──
+    React.createElement('section', { style: { padding: '70px 24px' } },
+      React.createElement('div', { className: 'au', style: {
+        maxWidth: 'min(720px, calc(100% - 32px))', margin: '0 auto', textAlign: 'center',
+        padding: '48px 32px', borderRadius: 'var(--r-xl)',
+        background: 'var(--primary)', color: '#fff', boxShadow: 'var(--sh-lg)',
+      } },
+        React.createElement('div', { style: { fontSize: 'clamp(22px, 3.5vw, 30px)', fontWeight: 800, marginBottom: 10, letterSpacing: '-0.01em' } }, 'Your first patient is waiting.'),
+        React.createElement('div', { style: { fontSize: 14, opacity: 0.85, marginBottom: 24, lineHeight: 1.6 } }, '5 free sessions. No credit card. Two minutes to your first interview.'),
+        React.createElement('button', { onClick: () => go('signup'), style: { padding: '13px 30px', borderRadius: 12, border: 'none', background: '#fff', color: 'var(--primary)', fontSize: 15, fontWeight: 800, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Start practising free'))),
 
     // ── Footer ──
     React.createElement(QLFooter, null));
@@ -2009,7 +2253,7 @@ function QV2Catalogue({ onPick, onProgress }) {
   const _qq = (q || '').toLowerCase().trim();
   const shown = cases.filter(c => (!filter || c.specialty === filter) && (!diff || String(c.difficulty) === String(diff)) && (!_qq || ((c.presentation || '') + ' ' + (c.first_impression || '') + ' ' + (c.first_impression_id || '') + ' ' + (c.specialty || '')).toLowerCase().includes(_qq)));
   const DIFF_LABEL = { '1': _t('cases.difficulty_1'), '2': _t('cases.difficulty_2'), '3': _t('cases.difficulty_3') };
-  return React.createElement('div', { style: { maxWidth: 'min(1080px, calc(100% - 24px))', margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { style: { maxWidth: 'min(1280px, calc(100% - 24px))', margin: '0 auto', padding: '24px 16px' } },
     // GDV §4: pita suasana "Senja" — siluet rak arsip
     React.createElement(QAMoodBand, { scene: 'senja', kicker: (specs.length ? specs.length + ' SPECIALTIES' : 'CASE LIBRARY'),
       title: _t('cases.title'),
@@ -2991,6 +3235,36 @@ function QNumeric({ value, ms, style }) {
   return React.createElement('span', { style: style || {} }, n);
 }
 
+// Clinical evidence rationale (PNPK pilot): additive namespace only.
+// Renders nothing when report.clinical_evidence is absent (old reports).
+function QV2ClinicalEvidence({ clinical }) {
+  const [expanded, setExpanded] = React.useState(false);
+  if (!clinical || clinical.status !== 'available' || !(clinical.items || []).length) return null;
+  const items = clinical.items || [];
+  const shown = expanded ? items : items.slice(0, 5);
+  const refs = clinical.references || [];
+  const refById = {};
+  refs.forEach(function (r) { refById[r.citation_id] = r; });
+  return React.createElement('div', { className: 'as', style: { marginBottom: 16, padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)' } },
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 800, color: 'var(--text-1)', marginBottom: 4 } }, '\uD83D\uDCD6 Clinical rationale'),
+    React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', marginBottom: 12 } }, 'Guideline-grounded notes linked to official sources. Scores are unaffected.'),
+    shown.map(function (it, i) {
+      return React.createElement('div', { key: it.target_id || i, style: { fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.6, padding: '7px 0', borderTop: i ? '1px solid var(--border)' : 'none' } }, it.rationale);
+    }),
+    items.length > 5 && React.createElement('button', { onClick: function () { setExpanded(!expanded); }, style: { border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontSize: 12.5, cursor: 'pointer', padding: '6px 0 0', fontFamily: 'Plus Jakarta Sans' } }, expanded ? 'Show fewer' : 'Show all ' + items.length + ' notes'),
+    refs.length > 0 && React.createElement('div', { style: { marginTop: 12, paddingTop: 10, borderTop: '1px solid var(--border)' } },
+      React.createElement('div', { style: { fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8 } }, 'Referensi klinis'),
+      refs.map(function (r) {
+        var secs = (r.section_path || []).join(' \u203A ');
+        var pages = (r.pdf_page_start && r.pdf_page_end) ? ' hlm. ' + r.pdf_page_start + (r.pdf_page_end !== r.pdf_page_start ? '\u2013' + r.pdf_page_end : '') : '';
+        return React.createElement('div', { key: r.citation_id, style: { fontSize: 12, color: 'var(--text-2)', lineHeight: 1.55, marginBottom: 6 } },
+          React.createElement('span', { style: { fontWeight: 800, color: 'var(--primary)', marginRight: 6 } }, '[' + r.citation_id.replace('ref-', '') + ']'),
+          React.createElement('span', null, (r.title || r.source_id || '') + (r.year ? ' (' + r.year + ')' : '') + (r.decision_number ? ' · ' + r.decision_number : '')),
+          (secs || pages) && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)' } }, [secs, pages].filter(Boolean).join(' · ')),
+          r.official_url && React.createElement('a', { href: r.official_url + '#page=' + (r.pdf_page_start || 1), target: '_blank', rel: 'noreferrer', style: { fontSize: 11.5, color: 'var(--primary)', fontWeight: 600 } }, 'Buka PDF resmi'));
+      })));
+}
+
 function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
   const ak = report.answer_key || {};
   const dims = report.per_dimension || {};
@@ -3083,6 +3357,8 @@ function QV2Result({ report, caseSummary, onAgain, onLibrary, sessionId }) {
     // Examiner verdict first (§10.1) — the debrief leads with what a real examiner
     // would say, so the feedback is the first thing the learner reads.
     report.summary && React.createElement('div', { className: 'as d1', style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.6, padding: 14, borderRadius: 'var(--r-md)', background: 'var(--primary-ll)', marginBottom: 16 } }, report.summary),
+    // Clinical evidence rationale (PNPK pilot, additive; absent on old reports)
+    React.createElement(QV2ClinicalEvidence, { clinical: report.clinical_evidence }),
     // overall + dimensions
     React.createElement('div', { className: 'as', style: { display: 'flex', alignItems: 'center', gap: 18, padding: 18, borderRadius: 'var(--r-lg)', background: 'var(--surface)', border: '1px solid var(--border)', boxShadow: 'var(--sh-sm)', marginBottom: 16 } },
       React.createElement('div', { className: 'as', style: { fontSize: 38, fontWeight: 800, color: 'var(--primary)', minWidth: 56, textAlign: 'center' } }, React.createElement(QNumeric, { value: (report.overall != null ? report.overall : 0), ms: 800 })),
@@ -3424,14 +3700,15 @@ function QoraDashboard({ onNav, onStartCase }) {
     sub: 'Practise taking a structured history across every specialty. Each virtual patient brings a new clinical challenge.' },
     // Floating glass level panel (GDV §9: one per band, hidden on narrow screens)
     React.createElement('div', { style: { position: 'absolute', right: 26, top: 24, width: 250, padding: '17px 19px', borderRadius: 18,
-      background: 'rgba(255,255,255,0.16)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)',
-      border: '1px solid rgba(255,255,255,0.34)', boxShadow: '0 12px 30px rgba(20,10,40,.22), inset 0 1px 0 rgba(255,255,255,.4)', color: '#fff' } },
-      React.createElement('div', { style: { fontSize: 10, letterSpacing: '.16em', fontWeight: 700, opacity: .78, textTransform: 'uppercase' } }, _t('dashboard.level_progress')),
+      background: 'rgba(255,255,255,0.32)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)',
+      border: '1px solid rgba(255,255,255,0.55)', boxShadow: '0 12px 30px rgba(20,10,40,.28), inset 0 1px 0 rgba(255,255,255,.5)', color: '#fff',
+      textShadow: '0 1px 6px rgba(20,10,40,.35)' } },
+      React.createElement('div', { style: { fontSize: 10, letterSpacing: '.16em', fontWeight: 700, opacity: .9, textTransform: 'uppercase' } }, _t('dashboard.level_progress')),
       React.createElement('div', { style: { fontSize: 19, fontWeight: 800, letterSpacing: '-.02em', margin: '5px 0 3px', lineHeight: 1.25, overflowWrap: 'break-word', fontVariantNumeric: 'tabular-nums' } }, 'Lv ' + level + ' · ' + levelName),
-      React.createElement('div', { style: { fontSize: 12, opacity: .82, fontVariantNumeric: 'tabular-nums' } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' ' + _t('dashboard.xp_in_level')),
-      React.createElement('div', { style: { height: 6, borderRadius: 99, background: 'rgba(255,255,255,0.26)', overflow: 'hidden', marginTop: 11 } },
+      React.createElement('div', { style: { fontSize: 12, opacity: .93, fontVariantNumeric: 'tabular-nums' } }, React.createElement(QNumeric, { value: xpInLevel, ms: 800 }), ' ' + _t('dashboard.xp_in_level')),
+      React.createElement('div', { style: { height: 6, borderRadius: 99, background: 'rgba(255,255,255,0.38)', overflow: 'hidden', marginTop: 11 } },
         React.createElement('div', { style: { height: '100%', borderRadius: 99, background: '#fff', width: levelProgress + '%', transition: 'width 1s var(--ease)' } })),
-      React.createElement('div', { style: { fontSize: 11.5, opacity: .72, marginTop: 8, fontVariantNumeric: 'tabular-nums' } }, _t('dashboard.to_next_level', { n: 200 - xpInLevel }))),
+      React.createElement('div', { style: { fontSize: 11.5, opacity: .86, marginTop: 8, fontVariantNumeric: 'tabular-nums' } }, _t('dashboard.to_next_level', { n: 200 - xpInLevel }))),
     // CTA row (content preserved; constrained clear of the floating panel on desktop)
     React.createElement('div', { style: ctaRow },
       React.createElement('button', { onClick: () => onNav('cases'), style: ctaPrimary }, React.createElement(QIcon, { n: 'play', s: 15 }), _t('dashboard.start_new_case')),
@@ -3447,12 +3724,20 @@ function QoraDashboard({ onNav, onStartCase }) {
 
   // Compact art heroes cannot host the overlap (title would slide under the
   // cards), so mobile stats sit below the band on the page surface.
-  const stats = React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobile ? 12 : -72, display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: isMobile ? 10 : 14, marginBottom: isMobile ? 16 : 24 } },
+  const statCards = [
     React.createElement(QDStat, { label: _t('dashboard.cases_completed'), value: completedCases, icon: 'cases', compact: isMobile, sub: _t('dashboard.coverage') + ': ' + specKeys.length }),
     React.createElement(QDStat, { label: _t('dashboard.sessions'), value: totalSessions, icon: 'history', compact: isMobile, sub: 'practice encounters' }),
     // No evidence → '–', never a fake 0% verdict (FASE 9 onboarding state).
     React.createElement(QDStat, { label: _t('dashboard.avg_score'), value: hasEvidence ? avgScore + '%' : '–', icon: 'chart', compact: isMobile, sub: hasEvidence ? Object.keys(dims).length + ' dimensions' : _t('dashboard.onboarding_title') }),
-    React.createElement(QDStat, { label: _t('dashboard.streak'), value: p.streak ? p.streak + 'd' : '0d', icon: 'flame', compact: isMobile, sub: p.streak ? 'days in a row' : 'start your streak' }));
+    React.createElement(QDStat, { label: _t('dashboard.streak'), value: p.streak ? p.streak + 'd' : '0d', icon: 'flame', compact: isMobile, sub: p.streak ? 'days in a row' : 'start your streak' })];
+  // Desktop: inset the row so its outer edges break alignment with the hero
+  // band, and lift the first/last cards — floating, staggered rhythm.
+  const statItems = isMobile ? statCards : statCards.map(function(card, i) {
+    var lift = (i === 0 || i === statCards.length - 1);
+    return React.createElement('div', { key: i, style: lift ? { transform: 'translateY(-10px)' } : null }, card);
+  });
+  const stats = React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobile ? 12 : -72, display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(auto-fit, minmax(min(165px, 100%), 1fr))', gap: isMobile ? 10 : 14, marginBottom: isMobile ? 16 : 24, marginLeft: isMobile ? 0 : 14, marginRight: isMobile ? 0 : 14 } },
+    statItems);
 
   const journeyCard = activeJourney && React.createElement('div', { className: 'as', style: Object.assign({}, panel, { marginBottom: isMobile ? 16 : 20, display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }) },
     React.createElement('div', { style: { width: 42, height: 42, borderRadius: 12, background: 'var(--primary-l)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)', flexShrink: 0 } },
@@ -3480,11 +3765,11 @@ function QoraDashboard({ onNav, onStartCase }) {
       coverage.familiesCompleted + ' families · ' + coverage.variantsCompleted + ' variants · ' + coverage.osceSessions + ' OSCE'));
 
   const leftCol = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: isMobile ? 16 : 20, minWidth: 0 } },
-    nextCard, recentCard, skillsCard);
+    nextCard, recentCard);
   const rightCol = React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: isMobile ? 16 : 20, minWidth: 0 } },
     readinessCard, achieveCard, coverageCard);
 
-  return React.createElement('div', { style: { maxWidth: 'min(1100px, calc(100% - 32px))', margin: '0 auto', padding: isMobile ? '16px 0 calc(96px + env(safe-area-inset-bottom, 0px))' : '32px 0 calc(60px + env(safe-area-inset-bottom, 0px))' } },
+  return React.createElement('div', { style: { maxWidth: 'min(1280px, calc(100% - 32px))', margin: '0 auto', padding: isMobile ? '16px 0 calc(96px + env(safe-area-inset-bottom, 0px))' : '32px 0 calc(60px + env(safe-area-inset-bottom, 0px))' } },
     // ── Hero: pita suasana "Fajar" (GDV §4) — glass kept, never generic solid ──
     hero,
     stats,
@@ -3493,7 +3778,9 @@ function QoraDashboard({ onNav, onStartCase }) {
     isMobile
       ? React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 } },
         nextCard, readinessCard, recentCard, skillsCard, achieveCard, coverageCard)
-      : React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'minmax(0, 1.35fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' } }, leftCol, rightCol));
+      : React.createElement(React.Fragment, null,
+        React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'minmax(0, 1.35fr) minmax(0, 1fr)', gap: 20, alignItems: 'start' } }, leftCol, rightCol),
+        skillsCard && React.createElement('div', { style: { marginTop: 20 } }, skillsCard)));
 }
 
 // ── FASE 9 dashboard atoms (GDV-constrained, canonical-data only) ──
@@ -3731,13 +4018,17 @@ function QoraV2Screen() {
   const [onboard, setOnboard] = React.useState(() => { try { return !localStorage.getItem('qora_onboarded'); } catch (e) { return true; } });
   const dismiss = () => { try { localStorage.setItem('qora_onboarded', '1'); } catch (e) {} setOnboard(false); };
 
-  // ── Hash routing (Aug 2026): every screen has a URL so refresh/back keep
-  //    your place — #/cases, #/cases/<id>, #/session/<sid>, #/result, #/progress.
+  // ── Clean-URL routing: every screen has a path so refresh/back keep
+  //    your place — /cases, /cases/<id>, /session/<sid>, /result, /progress.
   function setHash(path) {
-    try { var want = '#/' + path; if (location.hash !== want) location.hash = want; } catch (e) {}
+    try { var want = '/' + String(path || '').replace(/^\/+/, ''); if (window.location.pathname !== want) window.history.pushState(null, '', want); } catch (e) {}
   }
   function hashParts() {
-    try { return (location.hash || '').replace(/^#\/?/, '').split('/').filter(Boolean); } catch (e) { return []; }
+    try {
+      var h = window.location.hash || '';
+      if (h.charAt(1) === '/') return h.replace(/^#\/?/, '').split('/').filter(Boolean);
+      return (window.location.pathname || '/').split('/').filter(Boolean);
+    } catch (e) { return []; }
   }
 
   const applyRoute = React.useCallback(function (parts) {
@@ -3776,8 +4067,8 @@ function QoraV2Screen() {
   React.useEffect(function () { applyRoute(hashParts()); }, []);
   React.useEffect(function () {
     var fn = function () { applyRoute(hashParts()); };
-    window.addEventListener('hashchange', fn);
-    return function () { window.removeEventListener('hashchange', fn); };
+    window.addEventListener('popstate', fn);
+    return function () { window.removeEventListener('popstate', fn); };
   }, [applyRoute]);
 
   let body;
@@ -3923,7 +4214,7 @@ class QoraErrorBoundary extends React.Component {
       var stack = '';
       try { stack = String((info && info.componentStack) || '').slice(0, 4000); } catch (e) {}
       var url = '';
-      try { url = String(window.location.hash || '').slice(0, 500); } catch (e) {}
+      try { url = String(window.location.pathname + window.location.hash || '').slice(0, 500); } catch (e) {}
       if (typeof qv2Fetch === 'function') {
         qv2Fetch('/api/ops/client-errors', {
           method: 'POST', timeout: 8000,
@@ -4219,7 +4510,7 @@ function QoraBilling(props) {
   }, []);
 
   // All plan CTAs share ONE checkout flow (revision §5.3):
-  // Billing → pilih paket → #/checkout/<plan> → payment.
+  // Billing → pilih paket → /checkout/<plan> → payment.
   function goCheckout(planId) {
     setErr('');
     if (window.__goCheckout) window.__goCheckout(planId);
@@ -4373,9 +4664,9 @@ var _mtBtn = function (kind) {
   return base;
 };
 
-function _mtBar(fillPct, height) {
-  return React.createElement('div', { style: { height: height || 8, borderRadius: 99, background: 'var(--surface-3)', overflow: 'hidden' } },
-    React.createElement('div', { style: { width: Math.max(0, Math.min(100, fillPct)) + '%', height: '100%', borderRadius: 99, background: 'var(--primary)', transition: 'width 0.5s ease' } }));
+function _mtBar(fillPct, height, glass) {
+  return React.createElement('div', { style: { height: height || 8, borderRadius: 99, background: glass ? 'rgba(255,255,255,0.38)' : 'var(--surface-3)', overflow: 'hidden' } },
+    React.createElement('div', { style: { width: Math.max(0, Math.min(100, fillPct)) + '%', height: '100%', borderRadius: 99, background: glass ? '#fff' : 'var(--primary)', transition: 'width 0.5s ease' } }));
 }
 
 // ── Premium UI kit for the redesigned mentor flows ─────────────────────
@@ -4430,18 +4721,44 @@ function QMentorChat(props) {
     var s = story.trim();
     if (!s || busy) return;
     setBusy(true); setErr('');
-    qv2Fetch('/api/v2/mentor/story', { method: 'POST', body: { story: s } })
+    qv2Fetch('/api/v2/mentor/story', { method: 'POST', body: { story: s }, timeoutMs: 120000 })
       .then(function (j) { props.onJourney(j); })
       .catch(function (e) { setErr(e.message || 'Gagal membuat rencana'); setBusy(false); });
   }
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '24px 16px' } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 6 } },
-      React.createElement('div', { className: 'hdr-badge' }, React.createElement(_Mtl, { n: 'spark', s: 22 })),
-      React.createElement('div', null,
-        React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.15 } }, _mt('mentor.title')),
-        React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginTop: 2, fontWeight: 600 } }, _mt('mentor.subtitle')))),
+  var examples = [_mt('mentor.example_1'), _mt('mentor.example_2'), _mt('mentor.example_3')];
+  var caps = [
+    { icon: '🗺️', text: _mt('mentor.cap_plan') },
+    { icon: '🎯', text: _mt('mentor.cap_coach') },
+    { icon: '📈', text: _mt('mentor.cap_ready') },
+  ];
+  return React.createElement('div', { className: 'au', style: { maxWidth: 800, margin: '0 auto', padding: '24px 16px' } },
+    React.createElement('div', { style: {
+      borderRadius: 'var(--r-xl)', padding: '26px 24px', marginBottom: 16,
+      background: 'linear-gradient(135deg, var(--primary) 0%, #7B57C4 60%, #9B4A96 100%)',
+      color: '#fff', boxShadow: 'var(--sh-lg)', position: 'relative', overflow: 'hidden',
+    } },
+      React.createElement('div', { style: { position: 'absolute', width: 200, height: 200, borderRadius: '50%', top: -90, right: -60, background: 'rgba(255,255,255,0.12)', pointerEvents: 'none' } }),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 } },
+        React.createElement('div', { style: { width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 } },
+          React.createElement(_Mtl, { n: 'spark', s: 22 })),
+        React.createElement('div', { style: { fontSize: 22, fontWeight: 800, lineHeight: 1.15 } }, _mt('mentor.title'))),
+      React.createElement('div', { style: { fontSize: 13.5, lineHeight: 1.65, opacity: 0.92, marginBottom: 14 } }, _mt('mentor.subtitle')),
+      React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 } },
+        caps.map(function(c, i) {
+          return React.createElement('div', { key: i, style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, fontSize: 11.5, fontWeight: 600, background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.25)', padding: '10px 6px', borderRadius: 12, textAlign: 'center', lineHeight: 1.35 } },
+            React.createElement('span', { style: { fontSize: 18 } }, c.icon), c.text);
+        }))),
     React.createElement('div', Object.assign({}, _mtCard, { padding: 16 }),
       React.createElement('div', { style: { fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 } }, _mt('mentor.tell_qora')),
+      React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', marginBottom: 8 } }, _mt('mentor.try_label')),
+      React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 10 } },
+        examples.map(function(ex, i) {
+          return React.createElement('button', { key: i, onClick: function() { setStory(ex); }, style: {
+            fontSize: 12, fontWeight: 600, color: 'var(--primary)', background: 'var(--primary-l)',
+            border: '1px solid var(--border)', borderRadius: 999, padding: '7px 13px', cursor: 'pointer',
+            fontFamily: 'Plus Jakarta Sans', textAlign: 'left',
+          } }, '✨ ' + ex);
+        })),
       React.createElement('textarea', {
         value: story, onChange: function (e) { setStory(e.target.value); },
         placeholder: _mt('mentor.chat_placeholder'),
@@ -4472,20 +4789,9 @@ function _dayCardState(st) {
 }
 
 function QDayCarousel(props) {
-  var isTablet = (typeof useIsTablet === 'function') ? useIsTablet() : false;
-  var ref = React.useRef(null);
-  function scrollByDir(dir) {
-    var el = ref.current;
-    if (!el) return;
-    try { el.scrollBy({ left: dir * (el.clientWidth * 0.7), behavior: 'smooth' }); } catch (e) { el.scrollLeft += dir * 300; }
-  }
   var ls = props.cases || [];
-  return React.createElement('div', { style: { position: 'relative' } },
-    React.createElement('div', { ref: ref, style: {
-      display: 'flex', gap: 12, overflowX: 'auto', padding: '4px 2px 14px',
-      scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'thin',
-    } },
-      ls.map(function (c) {
+  return React.createElement('div', { style: { display: 'flex', flexDirection: 'column' } },
+      ls.map(function (c, ci) {
         // Status: trust real statuses on an ACTIVE journey; for a proposed
         // journey the cases carry a non-actionable status, so fall back to
         // day-based progression (Day 1 available, the rest locked).
@@ -4500,55 +4806,68 @@ function QDayCarousel(props) {
           : clickable
             ? _mt('mentor.available_now')
             : _mt('mentor.locked').replace('{d}', Math.max(1, (c.day || 2) - 1));
-        return React.createElement('button', {
-          key: c.day + '-' + st, className: 'daycard as',
-          onClick: function () { if (clickable && props.onStart) props.onStart(c); },
-          disabled: !clickable,
-          style: {
-            minWidth: 'min(220px, 80vw)', scrollSnapAlign: 'start', flexShrink: 0, appearance: 'none',
-            padding: 16, borderRadius: 'var(--r-lg)', textAlign: 'left',
-            background: s.bg, border: '1.5px solid ' + s.border,
-            boxShadow: clickable ? 'var(--sh-sm)' : 'none',
-            cursor: clickable ? 'pointer' : 'default',
-            opacity: st === 'locked' ? 0.72 : 1,
-            transition: 'transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease',
-            display: 'flex', flexDirection: 'column', gap: 9,
+        var last = ci === ls.length - 1;
+        var nodeBg = st === 'completed' ? 'var(--teal)' : (clickable ? 'var(--primary)' : 'var(--surface-2)');
+        var nodeFg = (st === 'completed' || clickable) ? '#fff' : 'var(--text-3)';
+        var nodeBorder = (st === 'completed' || clickable) ? 'none' : '1.5px solid var(--border)';
+        return React.createElement('div', { key: c.day + '-' + st, style: { display: 'flex', gap: 12, alignItems: 'stretch' } },
+          React.createElement('div', { style: { display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 34 } },
+            React.createElement('div', { style: {
+              width: 34, height: 34, borderRadius: '50%', background: nodeBg, color: nodeFg, border: nodeBorder,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 13, fontWeight: 800, fontVariantNumeric: 'tabular-nums', flexShrink: 0,
+            } }, st === 'completed' ? '✓' : (st === 'locked' ? '\uD83D\uDD12' : c.day)),
+            !last && React.createElement('div', { style: {
+              width: 2, flex: 1, minHeight: 14, borderRadius: 2, margin: '6px 0',
+              background: st === 'completed' ? 'var(--teal)' : 'var(--border)',
+            } })),
+          React.createElement('button', {
+            onClick: function () { if (clickable && props.onStart) props.onStart(c); },
+            disabled: !clickable,
+            style: {
+              flex: 1, minWidth: 0, appearance: 'none', textAlign: 'left',
+              padding: '13px 16px', marginBottom: last ? 0 : 10, borderRadius: 'var(--r-lg)',
+              background: s.bg, border: '1.5px solid ' + s.border,
+              boxShadow: clickable ? 'var(--sh-sm)' : 'none',
+              cursor: clickable ? 'pointer' : 'default',
+              opacity: st === 'locked' ? 0.72 : 1,
+              transition: 'transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease',
+              display: 'flex', flexDirection: 'column', gap: 6,
+            },
           },
-        },
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 6 } },
-            React.createElement('span', { style: { fontSize: 11, fontWeight: 800, letterSpacing: '0.05em', textTransform: 'uppercase', color: 'var(--text-1)' } }, 'Day ' + c.day),
-            React.createElement(_QPill, { kind: s.pill }, pillLabel)),
           React.createElement('div', { style: { fontSize: 14.5, fontWeight: 700, color: 'var(--text-1)', lineHeight: 1.35 } },
             c.focus_area || c.case_id),
-          React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--text-3)', fontWeight: 500 } },
-            React.createElement(_Mtl, { n: 'clock', s: 13 }), '~' + (c.estimated_minutes || 15) + ' min'),
+          React.createElement('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 } },
+            React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, color: 'var(--text-3)', fontWeight: 500, flexShrink: 0 } },
+              React.createElement(_Mtl, { n: 'clock', s: 13 }), '~' + (c.estimated_minutes || 15) + ' min'),
+            React.createElement(_QPill, { kind: s.pill }, pillLabel)),
           (clickable || st === 'completed') && React.createElement('div', { style: { marginTop: 2, display: 'inline-flex', alignItems: 'center', gap: 6, color: s.fg, fontSize: 12, fontWeight: 700 } },
             React.createElement(_Mtl, { n: st === 'completed' ? 'check' : 'play', s: 14 }),
-            st === 'completed' ? (c.score != null ? 'Skor ' + c.score + '%' : (props.doneLabel || 'Selesai')) : _mt('mentor.start_case')));
-      })),
-    !isTablet && React.createElement('div', { style: { display: 'flex', gap: 8, justifyContent: 'center', marginTop: 4 } },
-      React.createElement('button', { onClick: function () { scrollByDir(-1); }, style: { width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }, 'aria-label': 'Previous' },
-        React.createElement(_Mtl, { n: 'al', s: 16 })),
-      React.createElement('button', { onClick: function () { scrollByDir(1); }, style: { width: 36, height: 36, borderRadius: '50%', border: '1px solid var(--border)', background: 'var(--surface)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)' }, 'aria-label': 'Next' },
-        React.createElement(_Mtl, { n: 'ar', s: 16 }))));
+            st === 'completed' ? (c.score != null ? 'Skor ' + c.score + '%' : (props.doneLabel || 'Selesai')) : _mt('mentor.start_case'))))
+      }));
 }
+
+// ── Shared: "why this plan" as scannable bullet cards (§4.5) ──
 
 // ── Shared: "why this plan" as scannable bullet cards (§4.5) ──
 function QReasonCard(props) {
   var text = String(props.reasoning || '');
-  var raw = text.split(/\n|•|;/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 2; });
-  var points = raw.length > 1 ? raw
-    : text.split(/(?<=[.!?])\s+/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 2; }).slice(0, 6);
+  var listed = /[•\n]/.test(text);
+  var points = listed
+    ? text.split(/\n|•|;/).map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 2; }).slice(0, 6)
+    : [text.trim()];
   if (!points.length) points = [text];
   return React.createElement('div', { style: { marginTop: 14, padding: '16px 18px', borderRadius: 'var(--r-lg)', background: 'var(--violet-l)', border: '1px solid var(--violet)' } },
     React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--violet)', marginBottom: 10 } },
       React.createElement(_Mtl, { n: 'spark', s: 15 }), _mt('mentor.reasoning')),
-    React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 7 } },
-      points.map(function (pt, i) {
-        return React.createElement('div', { key: i, style: { display: 'flex', gap: 9, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.55 } },
-          React.createElement('span', { style: { color: 'var(--violet)', fontWeight: 800, flexShrink: 0 } }, '•'),
-          pt);
-      })));
+    (!listed
+      ? React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', lineHeight: 1.7 } }, points[0])
+      : React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: 7 } },
+        points.map(function (pt, i) {
+          return React.createElement('div', { key: i, style: { display: 'flex', gap: 9, fontSize: 12.5, color: 'var(--text-2)', lineHeight: 1.55 } },
+            React.createElement('span', { style: { color: 'var(--violet)', fontWeight: 800, flexShrink: 0 } }, '•'),
+            pt);
+        }))));
 }
 
 // ── QJourneyProposal ────────────────────────────────────────────────────
@@ -4564,7 +4883,7 @@ function QJourneyProposal(props) {
   function customize() {
     if (!fb.trim() || busy) return;
     setBusy(true); setErr('');
-    qv2Fetch('/api/v2/mentor/journeys/' + j.id + '/customize', { method: 'POST', body: { feedback: fb } })
+    qv2Fetch('/api/v2/mentor/journeys/' + j.id + '/customize', { method: 'POST', body: { feedback: fb }, timeoutMs: 120000 })
       .then(function (d) {
         setChanges(d.changes || []);
         props.onUpdated(d.updated_proposal);
@@ -4579,33 +4898,69 @@ function QJourneyProposal(props) {
   var startVal = Math.max(0, Math.min(100, r.start || 0));
 
   function startCase(c) {
-    try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
+    try { qoraGo('/cases/' + c.case_id); } catch (e) {}
   }
 
-  return React.createElement('div', { className: 'au', style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 800, margin: '0 auto', padding: '24px 16px' } },
+    React.createElement('div', { style: {
+      borderRadius: 'var(--r-xl)', padding: '26px 24px', marginBottom: 16,
+      background: 'linear-gradient(135deg, var(--primary) 0%, #7B57C4 60%, #9B4A96 100%)',
+      color: '#fff', boxShadow: 'var(--sh-lg)', position: 'relative', overflow: 'hidden',
+    } },
+      React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: -100, right: -70, background: 'rgba(255,255,255,0.12)', pointerEvents: 'none' } }),
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 } },
+        React.createElement('div', { style: { width: 40, height: 40, borderRadius: 12, background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 } },
+          React.createElement(_Mtl, { n: 'spark', s: 22 })),
+        React.createElement('div', { style: { fontSize: 11, letterSpacing: '.16em', fontWeight: 800, opacity: 0.85, textTransform: 'uppercase' } }, _mt('mentor.your_journey'))),
+      React.createElement('div', { style: { fontSize: 24, fontWeight: 800, lineHeight: 1.2, marginBottom: 12, textShadow: '0 2px 14px rgba(20,10,40,.3)' } }, proposal.package_name || j.package_name || ''),
+      React.createElement('div', { style: { display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 12.5, fontWeight: 700, background: 'rgba(255,255,255,0.16)', border: '1px solid rgba(255,255,255,0.28)', padding: '7px 14px', borderRadius: 999, marginBottom: 16, fontVariantNumeric: 'tabular-nums' } },
+        React.createElement(_Mtl, { n: 'clock', s: 14 }), _mt('mentor.days').replace('{d}', proposal.duration_days || cases.length || '').replace('{m}', '45-60')),
+      React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
+        React.createElement('span', { style: { fontSize: 12, fontWeight: 600, opacity: 0.9 } }, _mt('mentor.readiness_start')),
+        React.createElement('span', { style: { fontSize: 26, fontWeight: 800, lineHeight: 1, textShadow: '0 2px 10px rgba(20,10,40,.3)', fontVariantNumeric: 'tabular-nums' } }, startVal + '%')),
+      React.createElement('div', { style: { height: 8, borderRadius: 99, background: 'rgba(255,255,255,0.3)', overflow: 'hidden' } },
+        React.createElement('div', { style: { height: '100%', borderRadius: 99, background: '#fff', width: startVal + '%', transition: 'width 1s var(--ease)' } }))),
     React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
-      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 } },
-        React.createElement('div', { className: 'hdr-badge' }, React.createElement(_Mtl, { n: 'spark', s: 22 })),
-        React.createElement('div', null,
-          React.createElement('div', { style: { fontSize: 19, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, _mt('mentor.your_journey')),
-          React.createElement('div', { style: { fontSize: 13.5, fontWeight: 600, color: 'var(--text-3)', marginTop: 2 } }, proposal.package_name || j.package_name || ''))),
-      React.createElement('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 18 } },
-        React.createElement('span', { className: 'qchip' },
-          React.createElement(_Mtl, { n: 'clock', s: 13 }), _mt('mentor.days').replace('{d}', proposal.duration_days || cases.length || '').replace('{m}', '45-60'))),
-      React.createElement('div', { style: { marginBottom: 18 } },
-        React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
-          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } }, _mt('mentor.readiness_start')),
-          React.createElement('span', { style: { fontSize: 26, fontWeight: 800, color: 'var(--primary)', lineHeight: 1 } }, startVal + '%')),
-        _mtBar(startVal, 10)),
       React.createElement(QDayCarousel, { cases: cases, onStart: startCase, doneLabel: 'Selesai' }),
-      proposal.reasoning && React.createElement(QReasonCard, { reasoning: proposal.reasoning }),
+      (function() {
+        var rt = proposal.reasoning || '';
+        if (!rt) {
+          var ctx = (j && j.context) || {};
+          var first = cases[0] || {};
+          var last = cases[cases.length - 1] || {};
+          var days = proposal.duration_days || cases.length || '';
+          var pkg = proposal.package_name || j.package_name || '';
+          var s1 = 'Rencana ' + days + ' hari' + (pkg ? ' "' + pkg + '"' : '')
+            + (ctx.goal && ctx.goal !== 'general' ? ' ini disusun untuk ' + ctx.goal : ' ini disusun')
+            + ' dari presentasi umum ke kompleks, supaya fondasimu kuat sebelum masuk materi yang lebih berat.';
+          var weak = ctx.weaknesses || [];
+          var weakTxt = weak.length ? weak.join(', ') : null;
+          var s2 = '';
+          if (weakTxt) {
+            s2 = 'Karena titik lemahmu di ' + weakTxt + ', kasus-kasus dipilih untuk melatih area itu secara berulang. ';
+          }
+          if (first.focus_area || first.case_id) {
+            s2 += 'Hari 1 mulai dari ' + (first.focus_area || first.case_id);
+            if ((last.focus_area || last.case_id) && cases.length > 1) s2 += ', lalu berlanjut ke ' + (last.focus_area || last.case_id);
+            s2 += '.';
+          }
+          var s3 = '';
+          var ms = proposal.milestones || [];
+          if (ms.length) {
+            s3 = 'Checkpoint: ' + ms.map(function(m) { return 'Hari ' + m.day + ' ' + m.checkpoint; }).join('; ') + '. ';
+          }
+          if (r && (r.start != null || r.target != null)) {
+            s3 += 'Kalau semua hari diselesaikan, kesiapan diproyeksikan naik dari '
+              + (r.start != null ? r.start + '%' : '?') + ' ke ' + (r.target != null ? r.target + '%' : '?') + '.';
+          }
+          rt = [s1, s2, s3].filter(Boolean).join(' ');
+        }
+        return rt && React.createElement(QReasonCard, { reasoning: rt });
+      })(),
       changes.length > 0 && React.createElement('div', { style: { marginTop: 10, fontSize: 11, color: 'var(--teal-d)', background: 'var(--teal-l)', padding: '8px 12px', borderRadius: 10 } },
         _mt('mentor.changes') + ': ' + changes.join(', ')),
-      err && React.createElement('div', { style: { marginTop: 10, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, err),
-      React.createElement('div', { style: { marginTop: 18, display: 'flex', gap: 10, flexWrap: 'wrap' } },
-        React.createElement(_QBtn, { kind: 'p', lg: true, onClick: props.onAccept, style: { flex: 1, minWidth: 180 } }, _mt('mentor.accept')),
-        React.createElement(_QBtn, { kind: 'g', lg: true, onClick: function () { props.onCancel(); }, style: { minWidth: 120 } }, _mt('mentor.cancel')))),
-    React.createElement('div', Object.assign({}, _mtCard, { marginTop: 12, padding: 16 }),
+      err && React.createElement('div', { style: { marginTop: 10, fontSize: 12, color: 'var(--red-d)', background: 'var(--red-l)', padding: '8px 12px', borderRadius: 10 } }, err)),
+    React.createElement('div', Object.assign({}, _mtCard, { marginTop: 22, padding: 16 }),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 800, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 10 } },
         React.createElement(_Mtl, { n: 'edit', s: 14 }), _mt('mentor.customize')),
       React.createElement('div', { style: { display: 'flex', gap: 8, flexWrap: 'wrap' } },
@@ -4615,7 +4970,10 @@ function QJourneyProposal(props) {
           onKeyDown: function (e) { if (e.key === 'Enter') customize(); },
           style: { flex: 1, minWidth: 'min(220px, 100%)', padding: '10px 12px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-1)', fontSize: 13, fontFamily: 'Plus Jakarta Sans', outline: 'none' },
         }),
-        React.createElement(_QBtn, { kind: 'g', onClick: customize, disabled: busy || !fb.trim() }, busy ? '…' : _mt('mentor.customize')))));
+        React.createElement(_QBtn, { kind: 'g', onClick: customize, disabled: busy || !fb.trim() }, busy ? '…' : _mt('mentor.customize')))),
+    React.createElement('div', { style: { marginTop: 16, display: 'flex', gap: 10, flexWrap: 'wrap' } },
+      React.createElement(_QBtn, { kind: 'p', lg: true, onClick: props.onAccept, style: { flex: 1, minWidth: 180 } }, _mt('mentor.accept')),
+      React.createElement(_QBtn, { kind: 'g', lg: true, onClick: function () { props.onCancel(); }, style: { minWidth: 120 } }, _mt('mentor.cancel'))));
 }
 
 // ── QJourneyDashboard: guided active journey (FASE 10) ─────────────────
@@ -4664,10 +5022,10 @@ function QJourneyDashboard(props) {
   }, [j.id, j.status, (progress.completed || 0)]);
 
   function startCase(c) {
-    // Navigate via hash ONLY — the App's hashchange listener maps
-    // #/cases/<id> → cases screen, and QoraV2Screen reads the full hash
+    // Navigate via clean URL ONLY — the App's popstate listener maps
+    // /cases/<id> → cases screen, and QoraV2Screen reads the full path
     // on mount (calling onNav('cases') would clobber the case id).
-    try { window.location.hash = '#/cases/' + c.case_id; } catch (e) {}
+    try { qoraGo('/cases/' + c.case_id); } catch (e) {}
   }
 
   var missionCase = mission && mission.case_id ? { case_id: mission.case_id } : null;
@@ -4676,7 +5034,7 @@ function QJourneyDashboard(props) {
   var isMobileM = false;
   try { isMobileM = window.matchMedia('(max-width: 768px)').matches; } catch (e) {}
 
-  return React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '24px 16px calc(40px + env(safe-area-inset-bottom, 0px))' } },
+  return React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '24px 16px calc(40px + env(safe-area-inset-bottom, 0px))' } },
     // 1 · Journey Header (GDV §4 lentera band; goal/date line, no target %)
     // Mobile gets the cropped art hero — the aspect-locked band clips text.
     isMobileM
@@ -4684,23 +5042,23 @@ function QJourneyDashboard(props) {
           title: j.package_name || _mt('mentor.title'), sub: goalLine || '' })
       : React.createElement(QAMoodBand, { scene: 'lentera', kicker: 'HARI ' + (j.current_day || 1) + ' DARI ' + (total || 5), title: j.package_name || _mt('mentor.title'),
         sub: goalLine || '' }),
-    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobileM ? 12 : -56 } },
-    React.createElement('div', { style: { background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', boxShadow: 'var(--sh-sm)', padding: 20 } },
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: isMobileM ? 12 : -24 } },
+    React.createElement('div', { style: { background: 'rgba(30,15,50,0.55)', backdropFilter: 'blur(20px) saturate(150%)', WebkitBackdropFilter: 'blur(20px) saturate(150%)', border: '1px solid rgba(255,255,255,0.35)', borderRadius: 'var(--r-lg)', boxShadow: '0 12px 30px rgba(20,10,40,.35), inset 0 1px 0 rgba(255,255,255,.25)', padding: 20, color: '#fff', textShadow: '0 1px 6px rgba(20,10,40,.5)' } },
       // workload completion (planned %, honest progress — NOT readiness)
       React.createElement('div', { style: { marginBottom: 16 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
-          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } },
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, opacity: 0.9 } },
             _mt('mentor.progress').replace('{d}', j.current_day || 1).replace('{n}', total).replace('{p}', progress.percent || 0)),
-          React.createElement('span', { style: { fontSize: 22, fontWeight: 800, color: 'var(--primary)', lineHeight: 1, fontVariantNumeric: 'tabular-nums' } }, (progress.percent || 0) + '%')),
-        _mtBar(progress.percent || 0, 10)),
+          React.createElement('span', { style: { fontSize: 22, fontWeight: 800, lineHeight: 1, fontVariantNumeric: 'tabular-nums' } }, (progress.percent || 0) + '%')),
+        _mtBar(progress.percent || 0, 10, true)),
       // readiness now (evidence-driven; target % intentionally not shown)
       React.createElement('div', { style: { marginBottom: 4 } },
         React.createElement('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 8 } },
-          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, color: 'var(--text-2)' } },
+          React.createElement('span', { style: { fontSize: 12, fontWeight: 600, opacity: 0.9 } },
             _mt('mentor.readiness') + ': ' + currentVal + '%'),
-          React.createElement('span', { style: { fontSize: 11, color: 'var(--text-3)', fontWeight: 600 } },
+          React.createElement('span', { style: { fontSize: 11, opacity: 0.85, fontWeight: 600 } },
             _mt('mentor.readiness_start') + ': ' + (r.start != null ? r.start : '–') + '%')),
-        _mtBar(currentVal, 10)))),
+        _mtBar(currentVal, 10, true)))),
     // 2 · Today's Mission (focus, time, encounters, why, CTA)
     mission && mission.state === 'ready' && React.createElement('div', { className: 'as', style: Object.assign({}, _mtCard, { marginTop: 12, padding: 18, border: '1.5px solid var(--primary)' }) },
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 6, fontSize: 11, fontWeight: 800, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.07em', marginBottom: 6 } },
@@ -4808,7 +5166,7 @@ function QContinuityBanner(props) {
   var p = props.pending;
   if (!p) return null;
   var story = p.story_so_far || {};
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '16px auto 0', padding: '0 16px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 800, margin: '16px auto 0', padding: '0 16px' } },
     React.createElement('div', { style: { padding: 16, borderRadius: 'var(--r-lg)', background: 'var(--violet-l)', border: '1px solid var(--violet)', boxShadow: 'var(--sh-sm)' } },
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 } },
         React.createElement('span', { style: { fontSize: 18 } }, '🔄'),
@@ -4822,7 +5180,7 @@ function QContinuityBanner(props) {
         story.new_symptoms && story.new_symptoms.length > 0 &&
           React.createElement('div', null, '🆕 ' + _mt('mentor.new_complaint') + ': ' + story.new_symptoms.join(', '))),
       React.createElement('button', Object.assign({ onClick: function () {
-        try { window.location.hash = '#/cases/' + p.next_case_id; } catch (e) {}
+        try { qoraGo('/cases/' + p.next_case_id); } catch (e) {}
       } }, _mtBtn('primary')), '▶ ' + _mt('mentor.start_visit').replace('{n}', p.visit_number))));
 }
 
@@ -4847,7 +5205,7 @@ function QReadinessReport(props) {
   var readiness = r.readiness || {};
   var dims = readiness.dimensions || {};
   var interp = readiness.interpretation || {};
-  return React.createElement('div', { className: 'au', style: { maxWidth: 640, margin: '0 auto', padding: '24px 16px' } },
+  return React.createElement('div', { className: 'au', style: { maxWidth: 800, margin: '0 auto', padding: '24px 16px' } },
     React.createElement('div', Object.assign({}, _mtCard, { padding: 20 }),
       React.createElement('div', { style: { fontSize: 18, fontWeight: 800, color: 'var(--text-1)', marginBottom: 14 } }, '📊 ' + _mt('mentor.readiness_report')),
       React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 18, marginBottom: 14 } },
@@ -4940,21 +5298,21 @@ function QMentorScreen(props) {
   if (loading) return React.createElement('div', { style: { padding: 60, textAlign: 'center', color: 'var(--text-3)', fontSize: 13 } }, _mt('common.loading'));
   if (view === 'report' && report) {
     return React.createElement(React.Fragment, null,
-      React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0' } },
+      React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '16px 16px 0' } },
         React.createElement(_QBtn, { kind: 'g', onClick: function () { setView('dashboard'); } }, '← ' + _mt('mentor.back_to_journey'))),
       React.createElement(QReadinessReport, { data: report }));
   }
   if (view === 'proposal' && journey) {
     return React.createElement(React.Fragment, null,
-      err && React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
+      err && React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
       React.createElement(QJourneyProposal, { journey: journey, onAccept: accept, onUpdated: onUpdated, onCancel: cancel }));
   }
   if (view === 'dashboard' && journey) {
     return React.createElement(React.Fragment, null,
-      err && React.createElement('div', { style: { maxWidth: 640, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
+      err && React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
       React.createElement(QContinuityBanner, { pending: pending }),
       React.createElement(QoraErrorBoundary, { key: journey.id + '-' + journey.status, screen: 'mentor-journey',
-        onBack: function () { try { window.location.hash = '#/dashboard'; } catch (e) {} } },
+        onBack: function () { try { qoraGo('/dashboard'); } catch (e) {} } },
         React.createElement(QJourneyDashboard, { journey: journey, onNav: props.onNav, onAbandon: abandon, onReport: openReport })));
   }
   return React.createElement(React.Fragment, null,
@@ -4970,7 +5328,7 @@ function QMentorScreen(props) {
 // ------------------------------------------------------------
 // Single checkout flow across the whole product:
 //   Landing / Billing → pilih paket → #/checkout/<plan> → payment
-// Plan-aware via the hash segment (#/checkout/monthly | annual).
+// Plan-aware via the path segment (/checkout/monthly | annual).
 // The payment step executes the CURRENT gateway (Midtrans Snap
 // for IDR, Xendit hosted invoice fallback) through the existing
 // backend endpoints. The UI is provider-agnostic — swapping in
@@ -4994,7 +5352,7 @@ async function _coPay(planId, setBusy, setErr) {
         await _loadSnap();
         if (window.snap && window.snap.pay) {
           window.snap.pay(r.snap_token, {
-            onSuccess: function () { try { window.location.hash = '#/billing-success'; } catch (e) {} },
+            onSuccess: function () { try { qoraGo('/billing-success'); } catch (e) {} },
             onPending: function () { setErr('Payment pending — complete it to activate your plan.'); setBusy(false); },
             onError: function () { setErr('Payment failed — please try again.'); setBusy(false); },
             onClose: function () { setBusy(false); },
@@ -5019,10 +5377,10 @@ async function _coPay(planId, setBusy, setErr) {
 // ── Checkout screen ──────────────────────────────────────────
 function QoraCheckout(props) {
   var onNav = props.onNav;
-  // Plan id from the hash: #/checkout/<plan>
+  // Plan id from the path: /checkout/<plan>
   var planId = 'monthly';
   try {
-    var seg = (location.hash || '').replace(/^#\/?/, '').split('/');
+    var seg = qoraSegs();
     if (seg[0] === 'checkout' && seg[1]) planId = seg[1];
   } catch (e) {}
   var region = 'row';
@@ -5072,7 +5430,7 @@ function QoraCheckout(props) {
 
   function goBack() {
     if (typeof onNav === 'function') onNav('billing');
-    else try { window.location.hash = '#/billing'; } catch (e) {}
+    else try { qoraGo('/billing'); } catch (e) {}
   }
 
   // Loading / error states
@@ -5173,7 +5531,7 @@ window.QoraCheckout = QoraCheckout;
 
 // Global hook: any screen can jump straight to the checkout page.
 window.__goCheckout = function (planId) {
-  try { window.location.hash = '#/checkout/' + (planId || 'monthly'); } catch (e) {}
+  try { qoraGo('/checkout/' + (planId || 'monthly')); } catch (e) {}
 };
 // ===== END qora-checkout.jsx =====
 
@@ -5197,16 +5555,17 @@ window.__goCheckout = function (planId) {
 
     function App() {
       const [auth, setAuth] = React.useState(loadAuth);
-      // Hash routing (Aug 2026): the screen lives in the URL (#/dashboard,
-      // #/cases, #/cases/<id>, #/session/<sid>...) so refresh & back/forward
+      // Clean-URL routing: the screen lives in the path (/dashboard,
+      // /cases, /cases/<id>, /session/<sid>...) so refresh & back/forward
       // keep your place instead of always resetting to the dashboard.
+      // Legacy '#/...' bookmarks are migrated to clean paths at boot.
       const [screen, setScreen] = React.useState(() => {
-        var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
+        var h = qoraSegs()[0] || '';
         var authed = loadAuth();
         var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
         if (!authed && protectedHash) return 'qora-landing';
         if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') return 'cases';
-        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) return h;
+        if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'privacy', 'terms'].indexOf(h) >= 0) return h;
         return authed ? 'dashboard' : 'qora-landing';
       });
       const [screenKey, setScreenKey] = React.useState(0);
@@ -5215,16 +5574,21 @@ window.__goCheckout = function (planId) {
       // app, so layout adapts via JS matchMedia, not stylesheet media queries.
       const [isMobile, setIsMobile] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches);
       const [isTablet, setIsTablet] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 1024px)').matches);
+      const [isWide, setIsWide] = React.useState(() => typeof window !== 'undefined' && window.matchMedia('(min-width: 1400px)').matches);
       React.useEffect(() => {
         var mqM = window.matchMedia('(max-width: 768px)');
         var mqT = window.matchMedia('(max-width: 1024px)');
+        var mqW = window.matchMedia('(min-width: 1400px)');
         var fm = function (e) { setIsMobile(e.matches); };
         var ft = function (e) { setIsTablet(e.matches); };
+        var fw = function (e) { setIsWide(e.matches); };
         if (mqM.addEventListener) mqM.addEventListener('change', fm); else mqM.addListener(fm);
         if (mqT.addEventListener) mqT.addEventListener('change', ft); else mqT.addListener(ft);
+        if (mqW.addEventListener) mqW.addEventListener('change', fw); else mqW.addListener(fw);
         return function () {
           if (mqM.removeEventListener) mqM.removeEventListener('change', fm); else mqM.removeListener(fm);
           if (mqT.removeEventListener) mqT.removeEventListener('change', ft); else mqT.removeListener(ft);
+          if (mqW.removeEventListener) mqW.removeEventListener('change', fw); else mqW.removeListener(fw);
         };
       }, []);
 
@@ -5232,22 +5596,22 @@ window.__goCheckout = function (planId) {
         setScreen(s);
         setScreenKey(k => k + 1);
         window.scrollTo(0, 0);
-        try { var want = '#/' + s; if (location.hash !== want) location.hash = want; } catch (e) {}
+        try { qoraGo('/' + s); } catch (e) {}
       }, []);
 
       React.useEffect(() => {
         var fn = function () {
-          var h = (location.hash || '').replace(/^#\/?/, '').split('/')[0];
+          var h = qoraSegs()[0] || '';
           var next = null;
           var protectedHash = ['cases', 'session', 'result', 'progress', 'dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'mentor', 'checkout'].indexOf(h) >= 0;
           if (protectedHash && !loadAuth()) next = 'qora-landing';
           else if (h === 'cases' || h === 'session' || h === 'result' || h === 'progress') next = 'cases';
-          else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout'].indexOf(h) >= 0) next = h;
+          else if (['dashboard', 'sessions', 'profile', 'billing', 'settings', 'billing-success', 'billing-failed', 'qora-landing', 'mentor', 'cases', 'checkout', 'privacy', 'terms'].indexOf(h) >= 0) next = h;
           else next = loadAuth() ? 'dashboard' : 'qora-landing';
           setScreen((cur) => cur === next ? cur : next);
         };
-        window.addEventListener('hashchange', fn);
-        return function () { window.removeEventListener('hashchange', fn); };
+        window.addEventListener('popstate', fn);
+        return function () { window.removeEventListener('popstate', fn); };
       }, []);
 
       const handleLogin = React.useCallback((credentials) => {
@@ -5259,7 +5623,7 @@ window.__goCheckout = function (planId) {
         if (pending) {
           try { localStorage.removeItem('qora_pending_checkout'); } catch (e) {}
           setScreen('checkout');
-          try { window.location.hash = '#/checkout/' + pending; } catch (e) {}
+          try { qoraGo('/checkout/' + pending); } catch (e) {}
         } else {
           navigate('dashboard');
         }
@@ -5296,20 +5660,20 @@ window.__goCheckout = function (planId) {
         // Qora header (logged in screens) — GDV: glass floating nav + logo
         isLoggedIn && React.createElement('header', { style: {
           position: 'sticky', top: 14, zIndex: 100,
-          maxWidth: 1080, margin: '0 auto',
+          maxWidth: 1280, margin: '0 auto',
           background: 'rgba(255,255,255,0.72)',
           backdropFilter: 'blur(22px) saturate(170%)',
           WebkitBackdropFilter: 'blur(22px) saturate(170%)',
           border: '1px solid rgba(255,255,255,0.9)',
           boxShadow: '0 8px 26px rgba(34,19,48,0.09)',
           borderRadius: 18,
-          padding: '10px 16px', height: 54,
+          padding: isWide ? '12px 20px' : '10px 16px', height: isWide ? 62 : 54,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8,
         }},
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', flexShrink: 0 }, onClick: () => navigate('dashboard') },
-            React.createElement(QoraLogo, { h: 28 }),
+            React.createElement(QoraLogo, { h: isWide ? 32 : 28 }),
             React.createElement('div', null,
-              React.createElement('div', { style: { fontSize: isMobile ? 13 : 14, fontWeight: 800, color: 'var(--u900)', lineHeight: 1 } }, 'Qora'),
+              React.createElement('div', { style: { fontSize: isWide ? 16 : (isMobile ? 13 : 14), fontWeight: 800, color: 'var(--u900)', lineHeight: 1 } }, 'Qora'),
               !isMobile && React.createElement('div', { style: { fontSize: 9, color: 'var(--n500)', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase' } }, 'Clinical Interview Trainer'))),
           // Nav — desktop/tablet: centered glass tabs; mobile: moved to a bottom tab bar
           !isMobile && React.createElement('nav', { style: {
@@ -5320,10 +5684,10 @@ window.__goCheckout = function (planId) {
             [['dashboard','Dashboard'],['cases','Cases'],['mentor','Mentor'],['sessions','Sessions'],['profile','Profile'],['billing','Billing']].map(function(pair) {
               var s = pair[0], l = pair[1];
               return React.createElement('button', { key: s, onClick: function() { navigate(s); }, style: {
-                padding: '5px 10px', borderRadius: 9, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
+                padding: isWide ? '7px 14px' : '5px 10px', borderRadius: 9, border: 'none', whiteSpace: 'nowrap', flexShrink: 0,
                 background: screen === s ? 'rgba(92,63,150,0.12)' : 'transparent',
                 color: screen === s ? 'var(--u600)' : 'var(--n500)',
-                fontSize: 12.5, fontWeight: screen === s ? 600 : 500,
+                fontSize: isWide ? 14 : 12.5, fontWeight: screen === s ? 600 : 500,
                 cursor: 'pointer', transition: 'all 0.18s var(--ease)',
                 fontFamily: 'Plus Jakarta Sans',
               } }, l);
@@ -5331,14 +5695,14 @@ window.__goCheckout = function (planId) {
           // Right side
           React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: isMobile ? 6 : 10, flexShrink: 0 } },
             React.createElement('button', { onClick: function() { setShowSettings(true); }, style: {
-              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: 10,
+              width: isWide ? 36 : (isMobile ? 30 : 32), height: isWide ? 36 : (isMobile ? 30 : 32), borderRadius: 10,
               background: 'rgba(255,255,255,0.7)', cursor: 'pointer',
               color: 'var(--n700)', border: '1px solid var(--u200)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }, title: 'Settings' },
               React.createElement(QIcon, { n: 'settings', s: 17 })),
             React.createElement('button', { onClick: function() { navigate('profile'); }, style: {
-              width: isMobile ? 30 : 32, height: isMobile ? 30 : 32, borderRadius: '50%',
+              width: isWide ? 36 : (isMobile ? 30 : 32), height: isWide ? 36 : (isMobile ? 30 : 32), borderRadius: '50%',
               background: 'var(--u600)', color: '#fff',
               border: screen === 'profile' ? '2px solid var(--u900)' : 'none', fontSize: 14, fontWeight: 700, cursor: 'pointer',
               fontFamily: 'Plus Jakarta Sans',
@@ -5352,7 +5716,7 @@ window.__goCheckout = function (planId) {
           React.createElement('div', { style: { position: 'absolute', width: 220, height: 220, borderRadius: '50%', top: '38%', right: -70, border: '1.5px solid rgba(92,63,150,0.09)' } })),
 
         // Main content
-        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1 } },
+        React.createElement('main', { key: screenKey, style: { flex: 1, paddingBottom: isMobile ? 70 : 0, position: 'relative', zIndex: 1, minHeight: isMobile ? 'calc(100vh - 320px)' : 'calc(100vh - 280px)' } },
           screen === 'qora-landing' && React.createElement(QoraLanding, { onLogin: handleLogin }),
           screen === 'dashboard' && React.createElement(QoraDashboard, { onNav: navigate }),
           screen === 'cases' && React.createElement(QoraV2Screen, null),
@@ -5362,7 +5726,9 @@ window.__goCheckout = function (planId) {
           screen === 'settings' && React.createElement(QoraSettings, { onNav: navigate }),
           screen === 'billing' && React.createElement(QoraBilling, { onNav: navigate }),
           (screen === 'billing-success' || screen === 'billing-failed') && React.createElement(QoraBillingResult, { ok: screen === 'billing-success', onNav: navigate }),
-          screen === 'checkout' && React.createElement(QoraCheckout, { onNav: navigate })),
+          screen === 'checkout' && React.createElement(QoraCheckout, { onNav: navigate }),
+          screen === 'privacy' && React.createElement(QLPrivacy, null),
+          screen === 'terms' && React.createElement(QLTerms, null)),
 
         // Consistent company footer on all authenticated pages (revision §2.2/§6.2)
         isLoggedIn && React.createElement(QLFooter, null),

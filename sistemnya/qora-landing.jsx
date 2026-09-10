@@ -483,7 +483,77 @@ function QLFooter() {
       React.createElement('div', { style: { textAlign: mobile ? 'center' : 'right', fontSize: 12, color: 'var(--text-3)', lineHeight: 1.7 } },
         React.createElement('div', null, 'PT Qora Cendekia Medika'),
         React.createElement('div', null, 'info@qora.app · +62 821-2493-3053'),
+        React.createElement('div', { style: { marginTop: 6, display: 'flex', gap: 12, justifyContent: mobile ? 'center' : 'flex-end' } },
+          React.createElement('button', { onClick: function () { try { qoraGo('/privacy'); } catch (e) {} }, style: { background: 'none', border: 'none', padding: 0, fontSize: 12, color: 'var(--text-3)', textDecoration: 'underline', cursor: 'pointer', fontFamily: 'inherit' } }, 'Privacy'),
+          React.createElement('button', { onClick: function () { try { qoraGo('/terms'); } catch (e) {} }, style: { background: 'none', border: 'none', padding: 0, fontSize: 12, color: 'var(--text-3)', textDecoration: 'underline', cursor: 'pointer', fontFamily: 'inherit' } }, 'Terms')),
         React.createElement('div', { style: { marginTop: 4, fontSize: 10.5, color: 'var(--text-3)', opacity: 0.7 } }, '© 2026 Qora. All rights reserved. A study aid, not medical advice.'))));
+}
+
+/* ── Public legal docs (privacy / terms). Plain static screens, no auth. ── */
+function QLDocShell(props) {
+  return React.createElement('div', { style: { minHeight: '100vh', background: 'var(--bg, #fff)' } },
+    React.createElement('div', { style: { maxWidth: 720, margin: '0 auto', padding: '40px 20px 64px', lineHeight: 1.7, color: 'var(--text-1)', fontSize: 14.5 } },
+      React.createElement('button', { onClick: function () { try { qoraGo('/'); } catch (e) {} }, style: { background: 'none', border: 'none', padding: '0 0 16px', fontSize: 20, fontWeight: 800, color: 'var(--text-1)', cursor: 'pointer', fontFamily: 'inherit', letterSpacing: '-0.02em' } }, 'Qora'),
+      React.createElement('h1', { style: { fontSize: 26, fontWeight: 800, margin: '0 0 4px', letterSpacing: '-0.02em' } }, props.title),
+      React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-3)', marginBottom: 20 } }, 'Terakhir diperbarui: 10 September 2026'),
+      props.children,
+      React.createElement('div', { style: { marginTop: 36, paddingTop: 16, borderTop: '1px solid var(--border)', fontSize: 12.5, color: 'var(--text-3)' } }, 'Qora · qoramedical.com')));
+}
+
+function QLDocH2(t) { return React.createElement('h2', { style: { fontSize: 17, fontWeight: 800, margin: '26px 0 8px' } }, t); }
+function QLDocP(t) { return React.createElement('p', { style: { margin: '0 0 10px', color: 'var(--text-2)' } }, t); }
+function QLDocUl(items) {
+  return React.createElement('ul', { style: { margin: '0 0 10px', paddingLeft: 20, color: 'var(--text-2)' } },
+    items.map(function (it, i) { return React.createElement('li', { key: i, style: { marginBottom: 4 } }, it); }));
+}
+
+function QLPrivacy() {
+  return React.createElement(QLDocShell, { title: 'Kebijakan Privasi' },
+    QLDocP('Qora (qoramedical.com) adalah simulator pasien virtual untuk pendidikan kedokteran, dikelola PT Qora Cendekia Medika. Kebijakan ini menjelaskan data apa yang kami kumpulkan dan bagaimana kami menggunakannya.'),
+    QLDocH2('1. Data yang kami kumpulkan'),
+    QLDocUl([
+      'Data akun: nama, alamat email, dan foto profil (jika mendaftar lewat Google), atau email dan kata sandi terenkripsi (jika mendaftar manual). Kami tidak pernah menyimpan kata sandi dalam bentuk aslinya.',
+      'Data pembelajaran: riwayat sesi simulasi, jawaban, skor, dan progres belajar (XP, streak) untuk menampilkan perkembangan Anda.',
+      'Input suara (opsional): jika memakai fitur suara, rekaman diproses menjadi teks untuk penilaian dan tidak disimpan sebagai arsip permanen.',
+      'Data pembayaran: diproses langsung oleh penyedia pembayaran (Midtrans/Xendit). Kami tidak menyimpan nomor kartu Anda.',
+      'Data teknis: token sesi di penyimpanan lokal peramban dan log keamanan dasar.']),
+    QLDocH2('2. Cara kami menggunakan data'),
+    QLDocP('Data dipakai semata-mata untuk menjalankan layanan: autentikasi, menilai sesi simulasi (termasuk dengan bantuan penyedia AI untuk penilaian jawaban), menampilkan progres, dan mencegah penyalahgunaan. Kami tidak menjual data Anda kepada siapa pun.'),
+    QLDocH2('3. Pihak ketiga'),
+    QLDocUl([
+      'Google — login akun (nama, email, foto profil).',
+      'Penyedia infrastruktur cloud — penyimpanan basis data.',
+      'Penyedia AI — penilaian jawaban simulasi.',
+      'Midtrans/Xendit — pemrosesan pembayaran.']),
+    QLDocH2('4. Hak Anda'),
+    QLDocP('Anda dapat meminta salinan, perbaikan, atau penghapusan data akun kapan saja melalui info@qora.app. Penghapusan akun akan menghapus seluruh data pembelajaran terkait.'),
+    QLDocH2('5. Keamanan'),
+    QLDocP('Kata sandi dienkripsi satu arah, sesi memakai token kedaluwarsa, dan seluruh komunikasi berjalan di atas HTTPS.'),
+    QLDocH2('6. Perubahan kebijakan'),
+    QLDocP('Perubahan material akan diumumkan melalui aplikasi dengan tanggal pembaruan yang direvisi.'));
+}
+
+function QLTerms() {
+  return React.createElement(QLDocShell, { title: 'Syarat Layanan' },
+    QLDocP('Dengan membuat akun atau menggunakan Qora (qoramedical.com), Anda menyetujui syarat berikut.'),
+    QLDocH2('1. Layanan edukasi, bukan nasihat medis'),
+    QLDocP('Qora adalah alat latihan. Seluruh pasien, diagnosis, dan umpan balik bersifat simulasi untuk tujuan pendidikan. Tidak ada konten di aplikasi ini yang merupakan diagnosis, anjuran terapi, atau pengganti penilaian klinis dan supervisi dokter yang berwenang.'),
+    QLDocH2('2. Akun'),
+    QLDocP('Anda bertanggung jawab menjaga kerahasiaan kredensial akun dan seluruh aktivitas di bawah akun Anda. Satu akun untuk satu pengguna; pendaftaran memerlukan alamat email yang valid.'),
+    QLDocH2('3. Penggunaan yang wajar'),
+    QLDocP('Dilarang: membagikan akses akun, mencoba membobol atau membebani sistem, mengotomasi akses di luar antarmuka resmi, mengunggah konten melanggar hukum, atau memakai layanan untuk menangani pasien sungguhan.'),
+    QLDocH2('4. Langganan dan pembayaran'),
+    QLDocP('Fitur berbayar ditagihkan per periode melalui penyedia pembayaran resmi. Pembatalan menghentikan perpanjangan berikutnya; akses tetap berlaku hingga akhir periode berjalan. Pengembalian dana mengikuti kebijakan penyedia pembayaran dan ketentuan penawaran yang berlaku.'),
+    QLDocH2('5. Kekayaan intelektual'),
+    QLDocP('Seluruh materi, soal, perangkat lunak, dan merek Qora dilindungi hukum. Anda memperoleh lisensi pribadi, non-eksklusif, dan tidak dapat dialihkan untuk memakai layanan selama akun aktif.'),
+    QLDocH2('6. Batasan tanggung jawab'),
+    QLDocP('Layanan disediakan "sebagaimana adanya". Sejauh diizinkan hukum, Qora tidak bertanggung jawab atas kerugian tidak langsung akibat penggunaan layanan, termasuk keputusan klinis yang dibuat berdasarkan konten simulasi.'),
+    QLDocH2('7. Penghentian'),
+    QLDocP('Kami dapat menangguhkan akun yang melanggar syarat ini. Anda dapat berhenti kapan saja dan meminta penghapusan data sesuai Kebijakan Privasi.'),
+    QLDocH2('8. Perubahan syarat'),
+    QLDocP('Perubahan material diumumkan melalui aplikasi. Penggunaan berkelanjutan setelah perubahan berarti Anda menerima syarat yang diperbarui.'),
+    QLDocH2('9. Hukum yang berlaku & kontak'),
+    QLDocP('Syarat ini tunduk pada hukum Republik Indonesia. Pertanyaan: info@qora.app, PT Qora Cendekia Medika, +62 821-2493-3053.'));
 }
 
 // Load Google Identity Services once (external script).
