@@ -121,6 +121,27 @@ async def lifespan(_app: FastAPI):
         _log.info("[llm] async client + admission ready")
     except Exception:
         _log.warning("[llm] async pre-open gagal", exc_info=True)
+    # Speed (Sep 2026): one tiny non-stream warmup per worker so the first
+    # real patient turn never pays cold TLS + gateway queue (~+1.5s measured).
+    # Fire-and-forget, guarded, thinking-off (cheapest). Never blocks boot.
+    try:
+        import asyncio as _asyncio
+
+        async def _llm_warmup():
+            try:
+                from app.rag.llm import get_async_llm_client, is_async_stub
+                if is_async_stub():
+                    return
+                c = get_async_llm_client()
+                await c.agenerate("ok", [{"role": "user", "content": "ok"}],
+                                  max_tokens=5, timeout=25.0, fast=True)
+                _log.info("[llm] gateway warmup OK")
+            except Exception:
+                _log.warning("[llm] gateway warmup gagal", exc_info=True)
+
+        _asyncio.get_running_loop().create_task(_llm_warmup())
+    except Exception:
+        _log.warning("[llm] warmup schedule gagal", exc_info=True)
     yield
     # Shutdown: stop admitting (process going away), close HTTP transport.
     try:

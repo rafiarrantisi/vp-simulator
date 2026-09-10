@@ -32,28 +32,35 @@ def _prepare(case_id: str, history: list[dict], user_message: str,
 
 
 def respond(case_id: str, history: list[dict], user_message: str,
-            language: str = "en") -> str:
+            language: str = "en", session_id: str | None = None) -> str:
     system, messages = _prepare(case_id, history, user_message, language=language)
     return get_llm_client().generate(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+        session_id=session_id,
     ).strip()
 
 
 def stream_respond(case_id: str, history: list[dict], user_message: str,
-                   language: str = "en") -> Iterator[str]:
+                   language: str = "en", session_id: str | None = None) -> Iterator[str]:
     system, messages = _prepare(case_id, history, user_message, language=language)
     yield from get_llm_client().stream(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+        session_id=session_id,
     )
 
 
 async def astream_respond(case_id: str, history: list[dict], user_message: str,
-                          language: str = "en") -> AsyncIterator[str]:
+                          language: str = "en", session_id: str | None = None) -> AsyncIterator[str]:
     """Async twin of `stream_respond`: identical prompt assembly and params,
     nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
     system, messages = _prepare(case_id, history, user_message, language=language)
     child = get_async_llm_client().astream(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens)
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+        session_id=session_id,
+    )
     try:
         async for chunk in child:
             yield chunk
@@ -67,8 +74,11 @@ async def astream_respond(case_id: str, history: list[dict], user_message: str,
 
 
 async def arespond(case_id: str, history: list[dict], user_message: str,
-                   language: str = "en") -> str:
+                   language: str = "en", session_id: str | None = None) -> str:
     """Async twin of `respond`: identical assembly/params, nonblocking wait."""
     system, messages = _prepare(case_id, history, user_message, language=language)
     return (await get_async_llm_client().agenerate(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens)).strip()
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+        session_id=session_id,
+    )).strip()

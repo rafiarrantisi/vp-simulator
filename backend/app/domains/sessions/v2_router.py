@@ -270,7 +270,8 @@ async def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_curr
         return ok({"reply": snap.dup_reply, "audioUrl": None, "_deduped": True})
     n = snap.turn_no
     try:
-        reply = await engine_v2.arespond(snap.case_id, history, req.text, language=snap.language)
+        reply = await engine_v2.arespond(snap.case_id, history, req.text, language=snap.language,
+                                                 session_id=session_id)
     except FileNotFoundError:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{snap.case_id}' not found")
     from app.database import SessionLocal as _SessionLocal
@@ -353,7 +354,8 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
         parts: list[str] = []
         outcome = "complete"
         clock.mark("llm_request_start")
-        stream = engine_v2.astream_respond(case_id, history, req.text, language=language)
+        stream = engine_v2.astream_respond(case_id, history, req.text, language=language,
+                                                session_id=session_id)
         aiter = stream.__aiter__()
         async def _close_upstream():
             try:

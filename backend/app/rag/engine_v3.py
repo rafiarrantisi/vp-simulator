@@ -103,31 +103,40 @@ def _prepare(v: ClinicalVariant, history: list[dict], user_message: str,
 
 
 def respond(v: ClinicalVariant, history: list[dict], user_message: str,
-            language: str = "en", persona: dict | None = None) -> str:
+            language: str = "en", persona: dict | None = None,
+            session_id: str | None = None) -> str:
     system, messages = _prepare(v, history, user_message, language=language,
                                 persona=persona)
     return get_llm_client().generate(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+        session_id=session_id,
     ).strip()
 
 
 def stream_respond(v: ClinicalVariant, history: list[dict], user_message: str,
-                   language: str = "en", persona: dict | None = None) -> Iterator[str]:
+                   language: str = "en", persona: dict | None = None,
+                   session_id: str | None = None) -> Iterator[str]:
     system, messages = _prepare(v, history, user_message, language=language,
                                 persona=persona)
     yield from get_llm_client().stream(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+        session_id=session_id,
     )
 
 async def astream_respond(v, history: list[dict], user_message: str,
                           language: str = "en",
-                          persona: dict | None = None) -> AsyncIterator[str]:
+                          persona: dict | None = None, session_id: str | None = None) -> AsyncIterator[str]:
     """Async twin of `stream_respond`: identical prompt assembly and params,
     nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
     system, messages = _prepare(v, history, user_message,
                                 language=language, persona=persona)
     child = get_async_llm_client().astream(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens)
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+        session_id=session_id,
+    )
     try:
         async for chunk in child:
             yield chunk
@@ -142,9 +151,13 @@ async def astream_respond(v, history: list[dict], user_message: str,
 
 async def arespond(v, history: list[dict], user_message: str,
                    language: str = "en",
-                   persona: dict | None = None) -> str:
+                   persona: dict | None = None,
+                   session_id: str | None = None) -> str:
     """Async twin of `respond`: identical assembly/params, nonblocking wait."""
     system, messages = _prepare(v, history, user_message,
                                 language=language, persona=persona)
     return (await get_async_llm_client().agenerate(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens)).strip()
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+        session_id=session_id,
+    )).strip()

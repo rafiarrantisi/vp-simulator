@@ -294,7 +294,7 @@ async def turn(snap, user_id: str, text: str,
     n = snap.turn_no
     try:
         reply = await v3_arespond(v, history, text, language=snap.language or "en",
-                                  persona=snap.persona)
+                                  persona=snap.persona, session_id=snap.session_id)
     except Exception as e:  # noqa: BLE001
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"patient LLM failed: {e}")
     from app.database import SessionLocal as _SessionLocal
@@ -384,7 +384,8 @@ async def stream_turn(snap, user_id: str, text: str,
         parts: list[str] = []
         outcome = "complete"
         clock.mark("llm_request_start")
-        stream = v3_astream(v, history, text, language=lang, persona=persona)
+        stream = v3_astream(v, history, text, language=lang, persona=persona,
+                            session_id=snap.session_id)
         aiter = stream.__aiter__()
         async def _close_upstream():
             try:
