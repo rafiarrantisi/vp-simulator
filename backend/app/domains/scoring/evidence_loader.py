@@ -16,7 +16,10 @@ from pathlib import Path
 
 from pipeline.clinical_contracts.evidence_clinical import PACK_SCHEMA_VERSION
 
-DEFAULT_DIR = Path(__file__).resolve().parents[3] / "build" / "evidence"
+# Emitted packs live at the repo root `build/evidence/` (where the
+# compiler emits them): parents of this file are scoring/domains/app/
+# backend/repo-root, hence parents[4]. Overridable via QORA_EVIDENCE_DIR.
+DEFAULT_DIR = Path(__file__).resolve().parents[4] / "build" / "evidence"
 
 _cache: dict[str, dict] = {}
 _cache_order: list[str] = []
@@ -93,6 +96,12 @@ def resolve_binding(variant_id: str, canonical_hash: str, *,
     for b in index.get("bindings") or []:
         if not isinstance(b, dict):
             continue
-        if b.get("variant_id") == variant_id and b.get("canonical_hash") == canonical_hash:
+        want = str(canonical_hash or "")
+        have = str(b.get("canonical_hash") or "")
+        # Bindings store the 16-hex sidecar prefix; callers may pass the
+        # full canonical hash or the prefix. Compare on the prefix, but
+        # never match an empty hash (fail closed -> unavailable).
+        if b.get("variant_id") == variant_id and want and have and \
+                want[:16] == have[:16]:
             return b
     return None

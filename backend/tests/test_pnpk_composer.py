@@ -468,3 +468,16 @@ def test_loader_cache_bounded_and_reverse_index(approved_pack):
     rev = reverse_index(pack, [])
     assert rev["pack"] == "SYN-P" and rev["variants"] == []
     loader.clear_cache()
+
+
+def test_resolve_binding_accepts_full_hash_or_prefix_but_never_empty(approved_pack):
+    from app.domains.scoring import evidence_loader as loader
+    d = approved_pack["dir"]
+    idx = json.loads((d / "index.json").read_text())
+    b0 = idx["bindings"][0]
+    full = b0["canonical_hash"] + "f" * (64 - len(b0["canonical_hash"]))
+    assert loader.resolve_binding(b0["variant_id"], full, evidence_dir=d) == b0
+    assert loader.resolve_binding(b0["variant_id"], b0["canonical_hash"], evidence_dir=d) == b0
+    assert loader.resolve_binding(b0["variant_id"], "", evidence_dir=d) is None
+    assert loader.resolve_binding(b0["variant_id"], "0" * 64, evidence_dir=d) is None
+    assert loader.DEFAULT_DIR.name == "evidence" and loader.DEFAULT_DIR.parent.name == "build"

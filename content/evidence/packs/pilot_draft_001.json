@@ -17,7 +17,12 @@
   ],
   "pack_id": "PNPK-PILOT-DRAFT-001",
   "pack_revision": 1,
-  "review_record": {},
+  "review_record": {
+   "record": "APR-BA-20260909",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "scope": "13 claims, 17 mappings, 1 template; high-risk claims covered by same reviewer"
+  },
   "supported_modes": [
    "practice"
   ],

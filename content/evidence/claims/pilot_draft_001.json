@@ -9,7 +9,7 @@
    "pregnancy": "no",
    "sex": "female"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "diagnosis",
   "claim_id": "UTI-DX-001",
   "claim_revision": 1,
@@ -26,9 +26,9 @@
     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Pada wanita tidak hamil, pola disuria disertai frekuensi berkemih yang meningkat merupakan pola gejala sistitis yang paling spesifik.",
   "support_kind": "direct_guideline"
  },
@@ -39,7 +39,7 @@
    ],
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "investigation",
   "claim_id": "UTI-INV-001",
   "claim_revision": 1,
@@ -56,9 +56,9 @@
     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Pemeriksaan mikroskopik urin menunjang urinalisis; piuria (leukosit >5-10/LPB) mengarah pada infeksi.",
   "support_kind": "direct_guideline"
  },
@@ -69,7 +69,7 @@
    ],
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "investigation",
   "claim_id": "UTI-INV-002",
   "claim_revision": 1,
@@ -86,9 +86,9 @@
     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Kultur urin mengonfirmasi diagnosis dan memandu terapi ISK.",
   "support_kind": "direct_guideline"
  },
@@ -99,7 +99,7 @@
    ],
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "investigation",
   "claim_id": "UTI-INV-003",
   "claim_revision": 1,
@@ -116,9 +116,9 @@
     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Bila dipstick tidak menunjukkan LE, nitrit, atau protein dan mikroskopis negatif, tidak diperlukan pemeriksaan lanjutan.",
   "support_kind": "direct_guideline"
  },
@@ -130,7 +130,7 @@
    "pregnancy": "any",
    "severity": "complicated"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "management",
   "claim_id": "UTI-TX-001",
   "claim_revision": 1,
@@ -147,9 +147,9 @@
     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Golongan fluorokuinolon tidak sesuai sebagai terapi empiris ISK komplikata karena resistensi, terutama pasca-siprofloksasin 6 bulan.",
   "support_kind": "direct_guideline"
  },
@@ -160,7 +160,7 @@
    ],
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "management",
   "claim_id": "UTI-TX-002",
   "claim_revision": 1,
@@ -177,9 +177,9 @@
     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Terapi disesuaikan setelah 72 jam berdasarkan kultur dan sensitivitas; ganti bila intermediet/resisten terhadap empiris awal.",
   "support_kind": "direct_guideline"
  },
@@ -191,7 +191,7 @@
    ],
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "red_flag",
   "claim_id": "UTI-RF-001",
   "claim_revision": 1,
@@ -208,9 +208,9 @@
     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Pielonefritis membutuhkan antibiotik empiris berpenetrasi ginjal dan disesuaikan dengan kultur-sensitivitas urin.",
   "support_kind": "direct_guideline"
  },
@@ -221,7 +221,7 @@
    ],
    "pregnancy": "yes"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "management",
   "claim_id": "UTI-PREG-001",
   "claim_revision": 1,
@@ -238,9 +238,9 @@
     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Sistitis pada ibu hamil diterapi antibiotik 5-7 hari.",
   "support_kind": "direct_guideline"
  },
@@ -252,7 +252,7 @@
    "min_age_years": 18,
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "red_flag",
   "claim_id": "DENG-RF-001",
   "claim_revision": 1,
@@ -269,9 +269,9 @@
     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Tanda kedaruratan (syok, kejang, penurunan kesadaran, perdarahan, muntah/asupan oral inadekuat, nyeri perut hebat, letargi, oliguria, komorbid) mewajibkan rujukan/segera ditangani.",
   "support_kind": "direct_guideline"
  },
@@ -283,7 +283,7 @@
    "min_age_years": 18,
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "management",
   "claim_id": "DENG-MG-001",
   "claim_revision": 1,
@@ -300,9 +300,9 @@
     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Pasien rawat jalan perlu istirahat cukup dan cairan oral adekuat berglukosa-elektrolit (bukan air putih biasa): susu, jus buah, larutan isotonik oral, oralit, air tajin.",
   "support_kind": "direct_guideline"
  },
@@ -314,7 +314,7 @@
    "min_age_years": 18,
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "management",
   "claim_id": "DENG-MG-002",
   "claim_revision": 1,
@@ -331,9 +331,9 @@
     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Demam >39 C diberi parasetamol 10 mg/kg/dosis (maks 4 g/hari dewasa), hindari berlebihan serta hindari aspirin dan NSAID.",
   "support_kind": "direct_guideline"
  },
@@ -345,7 +345,7 @@
    "min_age_years": 18,
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "investigation",
   "claim_id": "DENG-INV-001",
   "claim_revision": 1,
@@ -362,9 +362,9 @@
     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Antigen NS1 tinggi sampai hari ke-3 demam dan menurun hari ke-4-7.",
   "support_kind": "direct_guideline"
  },
@@ -376,7 +376,7 @@
    "min_age_years": 18,
    "pregnancy": "any"
   },
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "category": "investigation",
   "claim_id": "DENG-INV-002",
   "claim_revision": 1,
@@ -393,9 +393,9 @@
     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
    }
   ],
-  "review_status": "draft",
-  "reviewed_at": "",
-  "reviewer": "",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statement": "Trombositopenia dan hemokonsentrasi (hematokrit naik) sering pada DBD, umumnya saat demam mulai turun (fase defervesens).",
   "support_kind": "direct_guideline"
  }

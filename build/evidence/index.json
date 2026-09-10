@@ -1,0 +1,147 @@
+{
+ "bindings": [
+  {
+   "allowed_source_version_ids": [
+    "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+    "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+   ],
+   "canonical_hash": "4c4c4df1d0dfb5f1",
+   "content_release_id": "rel-pnpk-pilot-draft-1",
+   "disabled_claims": [],
+   "evidence_pack_id": "PNPK-PILOT-DRAFT-001",
+   "evidence_pack_revision": 1,
+   "evidence_pack_sha256": "b6bbec07b27b936ae559645785bc8810d86a6711e5fea07f5405c13a21187e76",
+   "rubric_hash": "63783bb9349a48620885cf14bdfd2915e4c8355e3240832c4ebeaa9b9888c095",
+   "status": "approved",
+   "supported_modes": [
+    "practice"
+   ],
+   "supported_stages": [
+    "koas"
+   ],
+   "variant_id": "dengue_001_mild"
+  },
+  {
+   "allowed_source_version_ids": [
+    "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+    "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+   ],
+   "canonical_hash": "d8b2c7d4c6025ce5",
+   "content_release_id": "rel-pnpk-pilot-draft-1",
+   "disabled_claims": [],
+   "evidence_pack_id": "PNPK-PILOT-DRAFT-001",
+   "evidence_pack_revision": 1,
+   "evidence_pack_sha256": "b6bbec07b27b936ae559645785bc8810d86a6711e5fea07f5405c13a21187e76",
+   "rubric_hash": "4f431816a20543ead95d7a3fba783511dedf94afcc2aeb836ec812795e604c1e",
+   "status": "approved",
+   "supported_modes": [
+    "practice"
+   ],
+   "supported_stages": [
+    "koas"
+   ],
+   "variant_id": "dengue_002_warning"
+  },
+  {
+   "allowed_source_version_ids": [
+    "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+    "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+   ],
+   "canonical_hash": "5ee9a0015d351640",
+   "content_release_id": "rel-pnpk-pilot-draft-1",
+   "disabled_claims": [],
+   "evidence_pack_id": "PNPK-PILOT-DRAFT-001",
+   "evidence_pack_revision": 1,
+   "evidence_pack_sha256": "b6bbec07b27b936ae559645785bc8810d86a6711e5fea07f5405c13a21187e76",
+   "rubric_hash": "67179ddc7c571445b7e52098483032cf4bca9fb73cc9552b4830b88a56c07d82",
+   "status": "approved",
+   "supported_modes": [
+    "practice"
+   ],
+   "supported_stages": [
+    "koas"
+   ],
+   "variant_id": "dengue_003_severe"
+  },
+  {
+   "allowed_source_version_ids": [
+    "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+    "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+   ],
+   "canonical_hash": "1f15ee0ae4c8415e",
+   "content_release_id": "rel-pnpk-pilot-draft-1",
+   "disabled_claims": [],
+   "evidence_pack_id": "PNPK-PILOT-DRAFT-001",
+   "evidence_pack_revision": 1,
+   "evidence_pack_sha256": "b6bbec07b27b936ae559645785bc8810d86a6711e5fea07f5405c13a21187e76",
+   "rubric_hash": "89d0d5460590579a903659f04f0881149e43879f4b072fcf1f0bbef645936760",
+   "status": "approved",
+   "supported_modes": [
+    "practice"
+   ],
+   "supported_stages": [
+    "koas"
+   ],
+   "variant_id": "uti_adult_002"
+  },
+  {
+   "allowed_source_version_ids": [
+    "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+    "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+   ],
+   "canonical_hash": "fe1ea37a752c78da",
+   "content_release_id": "rel-pnpk-pilot-draft-1",
+   "disabled_claims": [],
+   "evidence_pack_id": "PNPK-PILOT-DRAFT-001",
+   "evidence_pack_revision": 1,
+   "evidence_pack_sha256": "b6bbec07b27b936ae559645785bc8810d86a6711e5fea07f5405c13a21187e76",
+   "rubric_hash": "1f70295c8e03021fe4176a00a3f1b185db01f6712eff5f2bf2905816e5e3f94b",
+   "status": "approved",
+   "supported_modes": [
+    "practice"
+   ],
+   "supported_stages": [
+    "koas"
+   ],
+   "variant_id": "uti_child_001"
+  },
+  {
+   "allowed_source_version_ids": [
+    "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+    "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+   ],
+   "canonical_hash": "a25fa35b17c28ff7",
+   "content_release_id": "rel-pnpk-pilot-draft-1",
+   "disabled_claims": [],
+   "evidence_pack_id": "PNPK-PILOT-DRAFT-001",
+   "evidence_pack_revision": 1,
+   "evidence_pack_sha256": "b6bbec07b27b936ae559645785bc8810d86a6711e5fea07f5405c13a21187e76",
+   "rubric_hash": "fc96bd2593004a49ffbae45b511c550948a1fbf8ed9c8d9a35537708be7b8d84",
+   "status": "approved",
+   "supported_modes": [
+    "practice"
+   ],
+   "supported_stages": [
+    "koas"
+   ],
+   "variant_id": "uti_male_003"
+  }
+ ],
+ "index_schema": 1,
+ "packs": [
+  {
+   "compiler": "qora-evidence-compiler-1.0",
+   "pack_id": "PNPK-PILOT-DRAFT-001",
+   "pack_revision": 1,
+   "sha256": "b6bbec07b27b936ae559645785bc8810d86a6711e5fea07f5405c13a21187e76",
+   "variants": [
+    "dengue_001_mild",
+    "dengue_002_warning",
+    "dengue_003_severe",
+    "uti_adult_002",
+    "uti_child_001",
+    "uti_male_003"
+   ]
+  }
+ ]
+}

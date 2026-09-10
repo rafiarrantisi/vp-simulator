@@ -1,0 +1,601 @@
+{
+ "case_binding_digest": "b9f9ea589b638654a1277fffc94f6c309f37c2bedef362bb6a9b4a7786dbe07f",
+ "claims": [
+  {
+   "applicability": {
+    "condition_codes": [
+     "dengue"
+    ],
+    "min_age_years": 18,
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "investigation",
+   "claim_id": "DENG-INV-001",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "12e1f3c027deff590ae031368590d0b91f7e3483a10c3eebcb448270d0363592",
+     "heading": "Deteksi NS1",
+     "locator": "paragraf kinetika NS1 (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 28,
+     "pdf_page_start": 28,
+     "printed_page_label": "28",
+     "section_path": [],
+     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Antigen NS1 tinggi sampai hari ke-3 demam dan menurun hari ke-4-7.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "dengue"
+    ],
+    "min_age_years": 18,
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "investigation",
+   "claim_id": "DENG-INV-002",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "97c29e4c7298219d9181f2ec6eb5c98f5106db938b708de93a6b4e845604d662",
+     "heading": "Temuan laboratorium",
+     "locator": "paragraf trombosit (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 14,
+     "pdf_page_start": 14,
+     "printed_page_label": "14",
+     "section_path": [],
+     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Trombositopenia dan hemokonsentrasi (hematokrit naik) sering pada DBD, umumnya saat demam mulai turun (fase defervesens).",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "dengue"
+    ],
+    "min_age_years": 18,
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "management",
+   "claim_id": "DENG-MG-001",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "01f1e9f397e6954ce8d9c62bcb9989b433d11f92dafc5bd01c90b1c0099c8a0b",
+     "heading": "Edukasi rawat jalan",
+     "locator": "butir cairan oral (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 39,
+     "pdf_page_start": 39,
+     "printed_page_label": "39",
+     "section_path": [],
+     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Pasien rawat jalan perlu istirahat cukup dan cairan oral adekuat berglukosa-elektrolit (bukan air putih biasa): susu, jus buah, larutan isotonik oral, oralit, air tajin.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "dengue"
+    ],
+    "min_age_years": 18,
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "management",
+   "claim_id": "DENG-MG-002",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "0c4008f0f9d3b0ac4180c95be0b71c1007cafd78515cf38feb53b87a608710fa",
+     "heading": "Penatalaksanaan demam",
+     "locator": "butir parasetamol (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 39,
+     "pdf_page_start": 39,
+     "printed_page_label": "39",
+     "section_path": [],
+     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Demam >39 C diberi parasetamol 10 mg/kg/dosis (maks 4 g/hari dewasa), hindari berlebihan serta hindari aspirin dan NSAID.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "dengue"
+    ],
+    "min_age_years": 18,
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "red_flag",
+   "claim_id": "DENG-RF-001",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "94ccb693a802455c5ae9657adf5babf0efd9f4958faf57cad8c1a687235a76e4",
+     "heading": "Tanda kedaruratan",
+     "locator": "paragraf triase (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 38,
+     "pdf_page_start": 38,
+     "printed_page_label": "38",
+     "section_path": [],
+     "source_version_id": "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Tanda kedaruratan (syok, kejang, penurunan kesadaran, perdarahan, muntah/asupan oral inadekuat, nyeri perut hebat, letargi, oliguria, komorbid) mewajibkan rujukan/segera ditangani.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "uti",
+     "cystitis"
+    ],
+    "min_age_years": 18,
+    "pregnancy": "no",
+    "sex": "female"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "diagnosis",
+   "claim_id": "UTI-DX-001",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "f2a1f833fafca259ee25eff0bc75c1b5721dd29f160b9f771e8f1b26254a3fc6",
+     "heading": "Sistitis",
+     "locator": "paragraf pola gejala spesifik (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 87,
+     "pdf_page_start": 87,
+     "printed_page_label": "87",
+     "section_path": [],
+     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Pada wanita tidak hamil, pola disuria disertai frekuensi berkemih yang meningkat merupakan pola gejala sistitis yang paling spesifik.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "uti"
+    ],
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "investigation",
+   "claim_id": "UTI-INV-001",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "b181f406d5f09971130e5235009986dbb0632814525cee21df9c7254613a4171",
+     "heading": "Pemeriksaan mikroskopik urine",
+     "locator": "paragraf piuria (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 26,
+     "pdf_page_start": 26,
+     "printed_page_label": "26",
+     "section_path": [],
+     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Pemeriksaan mikroskopik urin menunjang urinalisis; piuria (leukosit >5-10/LPB) mengarah pada infeksi.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "uti"
+    ],
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "investigation",
+   "claim_id": "UTI-INV-002",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "84ffc4eeb612168595912c93e765b3410ec85432d193d89a3537eb29b4d93542",
+     "heading": "Biakan Urin",
+     "locator": "paragraf indikasi kultur (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 27,
+     "pdf_page_start": 27,
+     "printed_page_label": "27",
+     "section_path": [],
+     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Kultur urin mengonfirmasi diagnosis dan memandu terapi ISK.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "uti"
+    ],
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "investigation",
+   "claim_id": "UTI-INV-003",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "7d15562ab9e3d1b964aa1b1ba98811146f2eb514fcf8c2f970b7cea0f634c76f",
+     "heading": "Urinalisis dipstick",
+     "locator": "paragraf rule-out (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 107,
+     "pdf_page_start": 107,
+     "printed_page_label": "107",
+     "section_path": [],
+     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Bila dipstick tidak menunjukkan LE, nitrit, atau protein dan mikroskopis negatif, tidak diperlukan pemeriksaan lanjutan.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "uti"
+    ],
+    "pregnancy": "yes"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "management",
+   "claim_id": "UTI-PREG-001",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "64cc92394e8ad939e9c5a26a411bfe480e994cc16bfd23b45f9930b8879e2762",
+     "heading": "Sistitis ibu hamil",
+     "locator": "paragraf durasi hamil (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 88,
+     "pdf_page_start": 88,
+     "printed_page_label": "88",
+     "section_path": [],
+     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Sistitis pada ibu hamil diterapi antibiotik 5-7 hari.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "uti",
+     "pyelonephritis"
+    ],
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "red_flag",
+   "claim_id": "UTI-RF-001",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "2e4378ce849efe5f7e5018448309edde99f21379418b7d71bbb802c8c7136041",
+     "heading": "Penatalaksanaan pielonefritis",
+     "locator": "paragraf penetrasi (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 95,
+     "pdf_page_start": 95,
+     "printed_page_label": "95",
+     "section_path": [],
+     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Pielonefritis membutuhkan antibiotik empiris berpenetrasi ginjal dan disesuaikan dengan kultur-sensitivitas urin.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "uti"
+    ],
+    "pregnancy": "any",
+    "severity": "complicated"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "management",
+   "claim_id": "UTI-TX-001",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "2740f3b840d643c8b28022eeed75853f760daa4e72301b0a0762c149b9a5e46d",
+     "heading": "Terapi empiris",
+     "locator": "paragraf fluorokuinolon (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 69,
+     "pdf_page_start": 69,
+     "printed_page_label": "69",
+     "section_path": [],
+     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Golongan fluorokuinolon tidak sesuai sebagai terapi empiris ISK komplikata karena resistensi, terutama pasca-siprofloksasin 6 bulan.",
+   "support_kind": "direct_guideline"
+  },
+  {
+   "applicability": {
+    "condition_codes": [
+     "uti"
+    ],
+    "pregnancy": "any"
+   },
+   "approval_record_id": "APR-BA-20260909",
+   "category": "management",
+   "claim_id": "UTI-TX-002",
+   "claim_revision": 1,
+   "evidence_spans": [
+    {
+     "excerpt_hash": "f6f29830bfd4c61281f17f33e9a2e94604bf6b8e5b0441ff39ddb279392eefd4",
+     "heading": "Penyesuaian terapi",
+     "locator": "paragraf 72 jam (printed label = PDF page per observed -N- markers; reviewer to confirm)",
+     "pdf_page_end": 74,
+     "pdf_page_start": 74,
+     "printed_page_label": "74",
+     "section_path": [],
+     "source_version_id": "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+    }
+   ],
+   "grade": null,
+   "review_status": "approved",
+   "reviewed_at": "2026-09-09",
+   "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
+   "statement": "Terapi disesuaikan setelah 72 jam berdasarkan kultur dan sensitivitas; ganti bila intermediet/resisten terhadap empiris awal.",
+   "support_kind": "direct_guideline"
+  }
+ ],
+ "clinical_content_version": "v3.0",
+ "compatible_scoring_versions": [
+  "qora-score-1.0"
+ ],
+ "mappings": [
+  {
+   "applicable_variant_ids": [
+    "dengue_001_mild"
+   ],
+   "approval_record_id": "APR-BA-20260909",
+   "canonical_target_id": "hx_1",
+   "claim_ids": [
+    "DENG-INV-001"
+   ],
+   "display_priority": 1,
+   "mapping_id": "M-DENG-HX-001",
+   "review_status": "approved",
+   "rubric_hash": "63783bb9349a48620885cf14bdfd2915e4c8355e3240832c4ebeaa9b9888c095",
+   "rubric_revision": "",
+   "target_kind": "per_item",
+   "template_id": "T--evidence-001",
+   "trigger_statuses": [
+    "hit"
+   ]
+  },
+  {
+   "applicable_variant_ids": [
+    "dengue_001_mild"
+   ],
+   "approval_record_id": "APR-BA-20260909",
+   "canonical_target_id": "hx_8",
+   "claim_ids": [
+    "DENG-RF-001"
+   ],
+   "display_priority": 2,
+   "mapping_id": "M-DENG-HX-008",
+   "review_status": "approved",
+   "rubric_hash": "63783bb9349a48620885cf14bdfd2915e4c8355e3240832c4ebeaa9b9888c095",
+   "rubric_revision": "",
+   "target_kind": "per_item",
+   "template_id": "T--evidence-001",
+   "trigger_statuses": [
+    "hit"
+   ]
+  },
+  {
+   "applicable_variant_ids": [
+    "dengue_001_mild"
+   ],
+   "approval_record_id": "APR-BA-20260909",
+   "canonical_target_id": "hx_9",
+   "claim_ids": [
+    "DENG-RF-001"
+   ],
+   "display_priority": 2,
+   "mapping_id": "M-DENG-HX-009",
+   "review_status": "approved",
+   "rubric_hash": "63783bb9349a48620885cf14bdfd2915e4c8355e3240832c4ebeaa9b9888c095",
+   "rubric_revision": "",
+   "target_kind": "per_item",
+   "template_id": "T--evidence-001",
+   "trigger_statuses": [
+    "hit"
+   ]
+  },
+  {
+   "applicable_variant_ids": [
+    "dengue_001_mild"
+   ],
+   "approval_record_id": "APR-BA-20260909",
+   "canonical_target_id": "hx_10",
+   "claim_ids": [
+    "DENG-RF-001"
+   ],
+   "display_priority": 2,
+   "mapping_id": "M-DENG-HX-010",
+   "review_status": "approved",
+   "rubric_hash": "63783bb9349a48620885cf14bdfd2915e4c8355e3240832c4ebeaa9b9888c095",
+   "rubric_revision": "",
+   "target_kind": "per_item",
+   "template_id": "T--evidence-001",
+   "trigger_statuses": [
+    "hit"
+   ]
+  },
+  {
+   "applicable_variant_ids": [
+    "uti_adult_002"
+   ],
+   "approval_record_id": "APR-BA-20260909",
+   "canonical_target_id": "hx_1",
+   "claim_ids": [
+    "UTI-DX-001"
+   ],
+   "display_priority": 1,
+   "mapping_id": "M-UTI-HX-001",
+   "review_status": "approved",
+   "rubric_hash": "89d0d5460590579a903659f04f0881149e43879f4b072fcf1f0bbef645936760",
+   "rubric_revision": "",
+   "target_kind": "per_item",
+   "template_id": "T--evidence-001",
+   "trigger_statuses": [
+    "hit",
+    "partial"
+   ]
+  },
+  {
+   "applicable_variant_ids": [
+    "uti_adult_002"
+   ],
+   "approval_record_id": "APR-BA-20260909",
+   "canonical_target_id": "hx_2",
+   "claim_ids": [
+    "UTI-DX-001"
+   ],
+   "display_priority": 2,
+   "mapping_id": "M-UTI-HX-002",
+   "review_status": "approved",
+   "rubric_hash": "89d0d5460590579a903659f04f0881149e43879f4b072fcf1f0bbef645936760",
+   "rubric_revision": "",
+   "target_kind": "per_item",
+   "template_id": "T--evidence-001",
+   "trigger_statuses": [
+    "hit",
+    "partial"
+   ]
+  },
+  {
+   "applicable_variant_ids": [
+    "uti_adult_002"
+   ],
+   "approval_record_id": "APR-BA-20260909",
+   "canonical_target_id": "hx_4",
+   "claim_ids": [
+    "UTI-RF-001"
+   ],
+   "display_priority": 2,
+   "mapping_id": "M-UTI-HX-004",
+   "review_status": "approved",
+   "rubric_hash": "89d0d5460590579a903659f04f0881149e43879f4b072fcf1f0bbef645936760",
+   "rubric_revision": "",
+   "target_kind": "per_item",
+   "template_id": "T--evidence-001",
+   "trigger_statuses": [
+    "hit"
+   ]
+  }
+ ],
+ "pack_id": "PNPK-PILOT-DRAFT-001",
+ "pack_revision": 1,
+ "pack_schema_version": "1.0",
+ "scoring_rubric_digest": "ad7cb89be27798d9726ea40814a4521311d292dacf8458f15fea0f0810546730",
+ "source_versions": [
+  "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+  "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba"
+ ],
+ "sources": {
+  "PNPK-DENGUE-ADULT-2020@sha256:6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b": {
+   "decision_number": "HK.01.07/MENKES/9845/2020",
+   "document_sha256": "6ad741ee6a1b9c095bec7271004a8e831033ea3161c3d9c5078343324aef698b",
+   "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan_1610413358_685089.pdf",
+   "publisher": "Kementerian Kesehatan Republik Indonesia",
+   "source_id": "PNPK-DENGUE-ADULT",
+   "title": "PNPK Tata Laksana Infeksi Dengue pada Dewasa",
+   "year": 2020
+  },
+  "PNPK-UTI-2025@sha256:a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba": {
+   "decision_number": "HK.01.07/MENKES/762/2025",
+   "document_sha256": "a7b5bad4c160027425bc22ca02319ff4628e984fc6d471d41af85bb1d040a2ba",
+   "official_url": "https://keslan.kemkes.go.id/unduhan/fileunduhan1767064829_322232.pdf",
+   "publisher": "Kementerian Kesehatan Republik Indonesia",
+   "source_id": "PNPK-UTI",
+   "title": "PNPK Tata Laksana Infeksi Saluran Kemih",
+   "year": 2025
+  }
+ },
+ "templates": [
+  {
+   "approval_record_id": "APR-BA-20260909",
+   "placeholders": [
+    "label",
+    "status_word",
+    "reason",
+    "ref"
+   ],
+   "review_status": "approved",
+   "statuses": [
+    "hit",
+    "partial",
+    "miss"
+   ],
+   "template_id": "T--evidence-001",
+   "template_revision": 1,
+   "text": "Item {label} {status_word} pada penilaian ini. {reason} [{ref}]"
+  }
+ ]
+}

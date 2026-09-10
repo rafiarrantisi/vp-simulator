@@ -1,8 +1,11 @@
-"""Phase PNPK-3 — pilot draft content tests (brief Phase 3 gate, minus clinician).
+"""Phase PNPK-3 — pilot content tests (brief Phase 3 gate, clinician DONE).
 
-Draft pack (UTI adult + dengue adult, real PDF locators) must:
-- FAIL strict compile (unapproved — never publishable without review);
-- PASS draft-check with ONLY approval gaps (zero structural issues);
+Approval: dr. Budi Andana, Sp.PD (Dosen FK UI), 2026-09-09, record
+APR-BA-20260909 — all 13 claims + 7 mappings + 1 template, high-risk
+covered by the same reviewer (documented single-reviewer deviation).
+The approved content must:
+- PASS strict compile with zero gaps (publishable);
+- still REJECT a tampered copy with approvals stripped (safety property);
 - bind expected variants; exclude pregnancy claim from adult mapping;
 - carry verifiable excerpt hashes (recomputed, not placeholders).
 """
@@ -35,19 +38,35 @@ def ctx():
     return pack, kw
 
 
-def test_strict_rejects_unapproved(ctx):
+def test_strict_approves_with_record(ctx):
     pack, kw = ctx
+    pack2, bindings = compile_pack(pack, **kw)  # strict, no allow_draft
+    assert getattr(pack2, "_draft_gaps", []) == []
+    assert (pack.get("review_record") or {}).get("record") == "APR-BA-20260909"
+
+
+def test_strict_still_rejects_when_claim_unapproved(ctx, tmp_path):
+    import copy
+    import shutil
+    pack, kw = ctx
+    # Tamper simulation: one claim loses its approval in an isolated copy.
+    tclaims = tmp_path / "claims"
+    shutil.copytree(kw["claims_dir"], tclaims)
+    f = next(tclaims.glob("*.json"))
+    items = json.loads(f.read_text())
+    items[0].pop("review_status", None)
+    items[0].pop("approval_record_id", None)
+    f.write_text(json.dumps(items, ensure_ascii=False, indent=1))
+    tkw = dict(kw, claims_dir=tclaims)
     with pytest.raises(CompileError):
-        compile_pack(pack, **kw)
+        compile_pack(copy.deepcopy(pack), **tkw)
 
 
-def test_draft_check_structurally_clean(ctx):
+def test_approved_content_structurally_clean(ctx):
     pack, kw = ctx
     pack2, bindings = compile_pack(pack, allow_draft=True, **kw)
     gaps = getattr(pack2, "_draft_gaps", [])
-    assert gaps, "expected approval gaps"
-    assert all("not approved" in g or "without approval_record_id" in g
-               for g in gaps)
+    assert gaps == [], f"approved content must have zero gaps: {gaps}"
     vids = sorted(b.variant_id for b in bindings)
     assert "uti_adult_002" in vids
     assert "dengue_001_mild" in vids

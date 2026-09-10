@@ -1,13 +1,15 @@
 [
  {
-  "approval_record_id": "",
+  "approval_record_id": "APR-BA-20260909",
   "placeholders": [
    "label",
    "status_word",
    "reason",
    "ref"
   ],
-  "review_status": "draft",
+  "review_status": "approved",
+  "reviewed_at": "2026-09-09",
+  "reviewer": "dr. Budi Andana, Sp.PD (Dosen FK UI)",
   "statuses": [
    "hit",
    "partial",
