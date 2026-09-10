@@ -113,6 +113,19 @@ def _openrouter_extra(base_url: str | None) -> dict | None:
     return None
 
 
+def _gateway_headers(base_url: str | None, headers: dict) -> dict:
+    """Provider-specific required headers, shared sync/async."""
+    try:
+        if base_url and "opencode.ai" in str(base_url):
+            # OpenCode Go gateway refuses requests without a stable session
+            # id (400 MissingSessionID). Deployment-stable value keeps
+            # routing working; per-conversation ids would improve caching.
+            headers.setdefault("x-opencode-session", "qora-prod")
+    except Exception:  # noqa: BLE001
+        pass
+    return headers
+
+
 def _chat_kwargs(*, model: str, system: str, messages: list[dict],
                  temperature: float, max_tokens: int | None,
                  timeout: float | None, stream: bool,
@@ -180,6 +193,7 @@ def _openai_compatible(base_url: str | None):
         headers["HTTP-Referer"] = s.llm_site_url
     if s.llm_app_title:
         headers["X-Title"] = s.llm_app_title
+    headers = _gateway_headers(base_url, headers)
     client = OpenAI(
         api_key=s.llm_api_key,
         base_url=base_url or None,
@@ -326,6 +340,7 @@ def _openai_async_compatible(base_url: str | None):
         headers["HTTP-Referer"] = s.llm_site_url
     if s.llm_app_title:
         headers["X-Title"] = s.llm_app_title
+    headers = _gateway_headers(base_url, headers)
     aclient = AsyncOpenAI(
         api_key=s.llm_api_key,
         base_url=base_url or None,
