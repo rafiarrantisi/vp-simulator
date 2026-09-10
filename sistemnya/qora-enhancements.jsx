@@ -201,7 +201,7 @@ function QoraBilling(props) {
               React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: pct >= 80 ? 'var(--red)' : 'var(--primary)', transition: 'width 0.6s ease' } })),
       err && React.createElement('div', { style: { fontSize: 12.5, color: isPaid ? 'rgba(255,255,255,0.9)' : 'var(--red-d)', marginTop: 10 } }, err)),
     // Plan options — same pricing card style as the landing page (§5.2)
-    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 16, alignItems: 'stretch', marginBottom: 8 } },
+    React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 16, alignItems: 'stretch', marginTop: 20, marginBottom: 8 } },
       React.createElement(QLBillingPlanCard, { name: region === 'indo' ? 'Bulanan' : 'Monthly', price: prices.monthly || (region === 'indo' ? 'Rp119.000/bln' : '$14.99/mo'), sessions: region === 'indo' ? 'Tak terbatas sesi' : 'Unlimited sessions', features: QORA_PLAN_FEATURES.monthly, accent: false, onCta: function () { goCheckout('monthly'); }, isID: region === 'indo' }),
       React.createElement(QLBillingPlanCard, { name: region === 'indo' ? 'Tahunan' : 'Annual', price: prices.annual || (region === 'indo' ? 'Rp999.000/thn' : '$119/yr'), sessions: region === 'indo' ? 'Tak terbatas sesi' : 'Unlimited sessions', features: QORA_PLAN_FEATURES.annual, accent: true, onCta: function () { goCheckout('annual'); }, isID: region === 'indo' })),
     // Pattern note: billing keeps the free-session progress + plan cards only.
