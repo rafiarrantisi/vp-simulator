@@ -548,7 +548,8 @@ async def score(db: OrmSession, user: User, session_id: str, *,
     judge = await aevaluate_v3(
         v, transcript, learner_stage=s.learner_level or "koas",
         ddx=ddx, management=management,
-        pf_notes=pf_notes, pf_areas=pf_areas, with_pf=is_osce)
+        pf_notes=pf_notes, pf_areas=pf_areas, with_pf=is_osce,
+        session_id=session_id)
     # deterministic safety-gate complement (rule 3: red-flags/urgency)
     inp = _map_v2_assessment_to_score(v, ddx, management)
     try:

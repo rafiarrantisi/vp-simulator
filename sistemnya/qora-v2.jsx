@@ -294,7 +294,7 @@ function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }
 
 const QV2_MAX_INVESTIGATIONS = 8;
 
-function QV2Assess({ caseSummary, isOsce, busy, err, transcript, onBack, onSubmit }) {
+function QV2Assess({ caseSummary, isOsce, busy, err, scoreSecs, transcript, onBack, onSubmit }) {
   const [tab, setTab] = React.useState('diagnosis');
   const [dx1, setDx1] = React.useState('');
   const [dx2, setDx2] = React.useState('');
@@ -360,9 +360,11 @@ function QV2Assess({ caseSummary, isOsce, busy, err, transcript, onBack, onSubmi
     panel,
     !busy && err && React.createElement('div', { style: { marginTop: 14, padding: '10px 12px', borderRadius: 10, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5 } },
       '⚠️ ' + String(err) + ' — ' + _t('session.score_retry_hint')),
+    busy && React.createElement('div', { style: { marginTop: 14, padding: '10px 12px', borderRadius: 10, background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 12.5, lineHeight: 1.5, fontWeight: 600 } },
+      _t('session.scoring_progress').replace('{n}', String(scoreSecs || 0))),
     localErr && React.createElement('div', { style: { marginTop: 14, padding: '10px 12px', borderRadius: 10, background: 'var(--amber-l, var(--red-l))', border: '1px solid var(--amber)', color: 'var(--amber-d, var(--red-d))', fontSize: 12.5, lineHeight: 1.5 } },
       '⚠️ ' + localErr),
-    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? 'Scoring…' : 'Finish & reveal answer key'));
+    React.createElement('button', { onClick: submit, disabled: busy, style: { width: '100%', marginTop: 20, padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: busy ? 0.7 : 1 } }, busy ? (_t('session.scoring') + ' ' + String(scoreSecs || 0) + 's…') : 'Finish & reveal answer key'));
 }
 
 // ---- Session chat ----
@@ -750,11 +752,13 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang, compact
 }
 
 function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSessionId, onSessionReady }) {
+  var _t = window.__t || function (k) { return k; };
   const [sessionId, setSessionId] = React.useState(initialSessionId || null);
   const [messages, setMessages] = React.useState([]); // {role, text}
   const [input, setInput] = React.useState('');
   const [busy, setBusy] = React.useState(false);
   const [err, setErr] = React.useState('');
+  const [scoreSecs, setScoreSecs] = React.useState(0); // judge progress ticker
   const [stage, setStage] = React.useState((mode === 'osce' && !initialSessionId) ? 'brief' : 'chat'); // brief | chat | pf | assess
   const [pf, setPf] = React.useState({ notes: '', areas: [] });
   const isOsce = mode === 'osce';
@@ -1021,9 +1025,28 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
 
   async function score(ddx, mgmt) {
     if (!sessionId) return;
-    setBusy(true);
-    try { const report = await qv2Fetch('/api/v2/sessions/' + sessionId + '/score', { method: 'POST', timeout: 150000, body: { ddx, management: mgmt, mode: mode, overtime: overtime, pf_notes: pf.notes || null, pf_areas: (pf.areas && pf.areas.length) ? pf.areas : null } }); try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} onScored(report); }
-    catch (e) { setErr(String(e.message || e)); setBusy(false); }
+    setBusy(true); setScoreSecs(0);
+    const tick = setInterval(() => setScoreSecs((s) => s + 1), 1000);
+    const done = () => { try { clearInterval(tick); } catch (e) {} setBusy(false); };
+    try {
+      const report = await qv2Fetch('/api/v2/sessions/' + sessionId + '/score', { method: 'POST', timeout: 150000, body: { ddx, management: mgmt, mode: mode, overtime: overtime, pf_notes: pf.notes || null, pf_areas: (pf.areas && pf.areas.length) ? pf.areas : null } });
+      try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {}
+      if (report && report.scoring_error) {
+        // Judge failed server-side: NEVER show a fake zero as a real score.
+        // Stay on the assess screen with a friendly retry (idempotent: the
+        // stored-report replay + singleflight make re-submit safe).
+        setErr(_t('session.score_failed'));
+        done();
+        return;
+      }
+      done();
+      onScored(report);
+    }
+    catch (e) {
+      const aborted = e && (e.name === 'AbortError' || /abort|timed out/i.test(String(e.message || e)));
+      setErr(aborted ? _t('session.score_timeout') : String(e.message || e));
+      done();
+    }
   }
 
   React.useEffect(() => {
@@ -1044,7 +1067,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
   }
 
   if (stage === 'assess') {
-    return React.createElement(QV2Assess, { caseSummary, isOsce, busy, err, transcript: messages, onBack: () => setStage('chat'), onSubmit: score });
+    return React.createElement(QV2Assess, { caseSummary, isOsce, busy, err, scoreSecs, transcript: messages, onBack: () => setStage('chat'), onSubmit: score });
   }
 
   const mmss = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');

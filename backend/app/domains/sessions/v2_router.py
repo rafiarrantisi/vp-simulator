@@ -610,7 +610,8 @@ async def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_cu
         clock.count("judge_call")
         report = await aevaluate_v2(case, transcript, mode=rubric_mode,
                                     student_ddx=req.ddx, student_management=req.management,
-                                    student_pf={"notes": req.pf_notes or "", "areas": req.pf_areas or []})
+                                    student_pf={"notes": req.pf_notes or "", "areas": req.pf_areas or []},
+                                    session_id=session_id)
         if req.overtime:  # continued past the OSCE time limit (§4.3) -> small penalty
             orig = int(report.get("overall", 0) or 0)
             report["overall"] = max(0, orig - _OVERTIME_PENALTY)
