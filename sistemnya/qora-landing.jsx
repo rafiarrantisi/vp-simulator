@@ -16,6 +16,13 @@ function qoraGo(path) {
   try {
     var want = '/' + String(path || '').replace(/^\/+/, '');
     if (window.location.pathname !== want) window.history.pushState(null, '', want);
+    // Screens sync from the URL on popstate only — pushState doesn't fire it,
+    // so notify the App router or the URL changes while the screen freezes
+    // (e.g. Billing → Checkout upgrade button appeared dead). Idempotent:
+    // the listener keeps the current screen when the path maps to it.
+    try { window.dispatchEvent(new PopStateEvent('popstate')); } catch (e2) {
+      try { window.dispatchEvent(new Event('popstate')); } catch (e3) {}
+    }
   } catch (e) {}
 }
 function qoraSegs() {
