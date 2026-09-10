@@ -72,10 +72,14 @@ def plan_catalog(s: Settings, region: str | None = None) -> list[dict]:
         if r == "indo":
             if plan == "monthly":
                 return f"Rp{int(p):,}/bln".replace(",", ".")
-            return f"Rp{int(p):,}/thn".replace(",", ".")
+            if plan == "annual":
+                return f"Rp{int(p):,}/thn".replace(",", ".")
+            return f"Rp{int(p):,}".replace(",", ".")  # exam_pass: one-time, no /thn
         if plan == "monthly":
             return f"${p:.2f}/mo"
-        return f"${p:.2f}/yr"
+        if plan == "annual":
+            return f"${p:.2f}/yr"
+        return f"${p:.2f}"  # exam_pass: one-time, no /yr
 
     def _sessions(plan: str) -> str:
         return "Unlimited" if plan in PAID_PLANS else str(s.free_session_limit)

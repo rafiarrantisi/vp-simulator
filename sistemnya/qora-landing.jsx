@@ -214,13 +214,19 @@ function _detectRegion() {
   try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
   var indoTZ = /^Asia\/(Jakarta|Pontianak|Makassar|Jayapura)$/;
   var aseanTZ = /^Asia\/(Bangkok|Singapore|Kuala_Lumpur|Ho_Chi_Minh|Manila|Phnom_Penh|Vientiane|Yangon)$/;
-  if (indoTZ.test(tz)) return 'indo';
-  if (aseanTZ.test(tz)) return 'asean';
+  if (indoTZ.test(tz)) return _cacheRegion('indo');
+  if (aseanTZ.test(tz)) return _cacheRegion('asean');
   // Fallback: navigator.language
   var lang = (navigator.language || 'en-US').toLowerCase();
-  if (lang === 'id' || lang === 'id-id') return 'indo';
+  if (lang === 'id' || lang === 'id-id') return _cacheRegion('indo');
   // Default: ROW
-  return 'row';
+  return _cacheRegion('row');
+}
+function _cacheRegion(r) {
+  // Persist so billing/checkout (which read localStorage directly) agree
+  // with the landing pricing instead of falling back to ROW/USD.
+  try { localStorage.setItem('qora_region', r); } catch (e) {}
+  return r;
 }
 
 /* ── Pricing ── */

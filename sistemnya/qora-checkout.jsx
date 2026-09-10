@@ -79,7 +79,7 @@ function QoraCheckout(props) {
   var setMethod = methodState[1];
 
   React.useEffect(function () {
-    qv2Fetch('/api/billing/plans').then(setPlans).catch(function (e) { setErr(String(e.message || e)); });
+    qv2Fetch('/api/billing/plans?region=' + encodeURIComponent(region)).then(setPlans).catch(function (e) { setErr(String(e.message || e)); });
     qv2Fetch('/api/billing/me').then(setMe).catch(function () {});
   }, []);
 
@@ -129,12 +129,11 @@ function QoraCheckout(props) {
   var featureFallback = plan && plan.features ? plan.features : [];
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(900px, calc(100% - 16px))', margin: '0 auto', padding: '28px 16px 80px' } },
-    // Header
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 } },
-      React.createElement('button', { onClick: goBack, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '\u2190 ' + _ct('common.back')),
-      React.createElement('div', null,
-        React.createElement('div', { style: { fontSize: 22, fontWeight: 800, color: 'var(--text-1)', lineHeight: 1.2 } }, isID ? 'Checkout' : 'Checkout'),
-        React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginTop: 2 } }, isID ? 'Langkah terakhir sebelum kamu mulai latihan tanpa batas.' : 'One step away from unlimited practice.'))),
+    // Hero — same mood-band pattern as the Billing page
+    React.createElement(QAMoodBand, { scene: 'pagi', kicker: 'CHECKOUT', title: 'Checkout',
+      children: React.createElement('button', { onClick: goBack, style: { marginTop: 14, padding: '8px 16px', borderRadius: 12, border: '1px solid rgba(255,255,255,0.42)', background: 'rgba(255,255,255,0.16)', color: '#fff', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', backdropFilter: 'blur(10px)', display: 'inline-flex', alignItems: 'center', gap: 6 } }, '\u2190 ' + _ct('common.back')) }),
+    React.createElement('div', { className: 'au', style: { position: 'relative', zIndex: 5, marginTop: -56 } },
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 14, marginTop: 4 } }, isID ? 'Langkah terakhir sebelum kamu mulai latihan tanpa batas.' : 'One step away from unlimited practice.'),
     !paymentsLive && React.createElement('div', { style: { textAlign: 'center', fontSize: 12.5, color: 'var(--text-3)', marginBottom: 18, marginTop: 8 } },
       isID ? 'Semua fitur sedang terbuka selama Qora masih beta.' : 'Everything is currently unlocked while Qora is in beta.'),
 
@@ -199,7 +198,7 @@ function QoraCheckout(props) {
             : (isID ? 'Bayar sekarang' : 'Pay now')),
         err && React.createElement('div', { style: { marginTop: 12, fontSize: 12.5, color: 'var(--red-d)', background: 'var(--red-l)', padding: '9px 12px', borderRadius: 10, lineHeight: 1.5 } }, err),
         React.createElement('div', { style: { marginTop: 14, fontSize: 11, color: 'var(--text-3)', lineHeight: 1.6, textAlign: 'center' } },
-          '\uD83D\uDD12 ' + (isID ? 'Pembayaran aman & terenkripsi. Aktivasi instan setelah pembayaran diverifikasi.' : 'Secure & encrypted checkout. Your plan activates instantly once payment is verified.')))));
+          '\uD83D\uDD12 ' + (isID ? 'Pembayaran aman & terenkripsi. Aktivasi instan setelah pembayaran diverifikasi.' : 'Secure & encrypted checkout. Your plan activates instantly once payment is verified.'))))));
 }
 
 window.QoraCheckout = QoraCheckout;
