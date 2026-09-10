@@ -137,7 +137,7 @@ My name is Aulia Putri. I'm 32 years old, and I work as a primary school teacher
 
 ## Opening line
 
-"Hi, doctor. I've been having these really bad pains in my lower belly every month around my period, and I'm worried because my husband and I have been trying for a baby for two years now, and nothing's happened."
+"Hi, doctor. I've been having really bad pains in my lower belly around my period."
 
 ## How I present
 

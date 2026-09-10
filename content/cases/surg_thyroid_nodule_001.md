@@ -134,7 +134,7 @@ My name is Nurul Maharani. I'm 42 years old, and I work as a high school history
 
 ## Opening line
 
-"I found a lump on the front of my neck a few weeks ago, and it's not going away. I'm worried it might be cancer."
+"I found a lump on the front of my neck that won't go away."
 
 ## How I present
 

@@ -139,7 +139,7 @@ My name is Kartini Anggraini. I'm 62 years old. I used to work as a primary scho
 
 ## Opening line
 
-"Doctor, I just feel so worn out all the time. I get out of breath just walking up the stairs to the bedroom, and I'm only 62. It's not right."
+"Doctor, I just feel so worn out all the time."
 
 ## How I present
 

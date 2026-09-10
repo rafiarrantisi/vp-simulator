@@ -161,7 +161,7 @@ My name is Agus Santoso. I am 42 years old and work as a welder in a small facto
 
 ## Opening line
 
-*“Dok, I have a very bad headache, high fever, and my neck feels so stiff I can’t touch my chin to my chest.”*
+*“Dok, I have a very bad headache and a high fever.”*
 
 ## How I present
 

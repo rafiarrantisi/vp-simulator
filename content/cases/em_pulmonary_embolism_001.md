@@ -149,7 +149,7 @@ My name is Dewi Maharani. I'm a 45-year-old travel agent, married with two teena
 
 ## Opening line
 
-"Doctor, I just got off a long flight from Australia, and now I have this sharp pain in my chest and I can't seem to catch my breath properly."
+"Doctor, I have this sharp pain in my chest and I can't seem to catch my breath properly."
 
 ## How I present
 

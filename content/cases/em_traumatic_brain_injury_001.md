@@ -129,7 +129,7 @@ My name is Budi Santoso. I'm 45 years old. I work as a construction worker on a 
 
 ## Opening line
 
-"Dok, I fell from the scaffolding and hit my head. I was unconscious for a bit."
+"Dok, I fell from the scaffolding and hit my head."
 
 ## How I present
 

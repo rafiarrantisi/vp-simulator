@@ -125,7 +125,7 @@ My name is Endang Susanto. I'm a 58-year-old primary school teacher from a small
 
 ## Opening line
 
-"Doctor, my left leg has been swollen and really sore for the past three days. I'm worried something is seriously wrong."
+"Doctor, my left leg is swollen and really sore. I'm worried something is wrong."
 
 ## How I present
 

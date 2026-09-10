@@ -127,7 +127,7 @@ My name is Anton Purnama. I'm 55 years old. I work as a kepala gudang. I'm marri
 
 ## Opening line
 
-"I've got this pain in my lower left belly and I've been running a fever."
+"I've got this pain in my lower left belly."
 
 ## How I present
 

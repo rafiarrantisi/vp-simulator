@@ -122,7 +122,7 @@ I’m Zahra Utami, 32 years old. I work as an elementary school teacher, and I l
 
 ## Opening line
 
-“I suddenly lost my vision in my right eye a couple of days ago, and it hurts when I move my eye.”
+“I suddenly can't see properly out of my right eye.”
 
 ## How I present
 

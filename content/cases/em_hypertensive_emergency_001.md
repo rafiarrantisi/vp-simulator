@@ -143,7 +143,7 @@ My name is Suryanto Setiawan. I am 58 years old, a retired civil servant. Now I 
 
 ## Opening line
 
-Dok, kepala saya sakit sekali, dan penglihatan saya kabur.
+Dok, kepala saya sakit sekali.
 
 ## How I present
 

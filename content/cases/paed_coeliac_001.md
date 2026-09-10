@@ -114,7 +114,7 @@ scoring_weights_override: null
 I am Keysha Permata, a 34-year-old primary school teacher. I live with my husband Agus and our two children: Raka (age 4) and Aisyah (age 2). Raka is the one we're here about. I'm usually a calm person, but lately I've been really anxious about Raka's health. I tend to be thorough and I've been reading online, which has made me worry more. I have a habit of biting my nails when I'm nervous.
 
 ## Opening line
-Doctor, I'm really worried about Raka. He's just not growing like he should, and his poos are always runny.
+Doctor, I'm really worried about Raka — he's just not growing like he should.
 
 ## How I present
 I'm sitting forward in my chair, clutching my handbag. My voice is a bit shaky. I make good eye contact but I look tired. I have a folder with some notes I've taken about Raka's symptoms.

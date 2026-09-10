@@ -90,7 +90,7 @@ My name is Bayu Rahayu. I'm 34 years old, a software engineer, and I live in the
 
 ## Opening line
 
-"I was running the marathon and then everything went blurry and I just fell. I feel like I'm on fire and my head is all fuzzy."
+"I was running the marathon and everything went blurry. I feel like I'm on fire."
 
 ## How I present
 

@@ -138,7 +138,7 @@ My name is Gita Rahayu. I'm 24 years old and work as a receptionist at a dental 
 
 ## Opening line
 
-"Hi, thanks for seeing me. I've had this pain in my lower belly for a few days now, and there's this discharge that's really bothering me."
+"Hi, thanks for seeing me. I've got this pain in my lower belly."
 
 ## How I present
 

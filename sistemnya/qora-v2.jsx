@@ -1080,7 +1080,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
   // long messages; anchor has scroll-margin for the sticky header offset.
   const isCompleted = sessionStatus === 'completed';
   const chatColumn = React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: isMobile ? 'auto' : 'calc(100dvh - 140px)', minHeight: isMobile ? 'calc(100dvh - 260px)' : undefined } },
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 } },
+    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 10, marginTop: 10, marginBottom: 10 } },
       React.createElement('button', { onClick: () => { _pilotEvent('abandoned', { session_id: sessionId, stage: stage }); onExit(); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Library'),
       React.createElement(QV2Pill, { tone: isOsce ? 'violet' : 'teal' }, isOsce ? 'OSCE' : 'Practice'),
       React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, _qv2Title(caseSummary)),
@@ -1117,7 +1117,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
         React.createElement('button', { onClick: () => setStage(hasPhysicalExam ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, hasPhysicalExam ? 'Exam →' : 'Assess →'))));
 
   return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 8px' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
-    wide && React.createElement('div', { style: { width: 240, flexShrink: 0 } },
+    wide && React.createElement('div', { style: { width: 240, flexShrink: 0, marginTop: 10 } },
       React.createElement(QV2TaskPanel, { mode: mode, secs: secs, timerOn: timerOn, onToggleTimer: () => setTimerOn((v) => !v) })),
     chatColumn,
     timeUp && React.createElement(QV2TimeUpModal, {

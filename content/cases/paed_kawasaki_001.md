@@ -152,7 +152,7 @@ Hi, I'm Naura. I'm a 28-year-old stay-at-home mom. My son, Raka, is 2 years old.
 
 ## Opening line
 
-"Doctor, I'm really worried about my son. He's had this high fever for five days now, and his eyes are all red and bloodshot. Nothing is helping."
+"Doctor, I'm really worried about my son. He's got a high fever and his eyes are all red."
 
 ## How I present
 

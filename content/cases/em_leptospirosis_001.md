@@ -154,7 +154,7 @@ My name is Haryanto. I'm 45 years old, a farmer in a village near a river in Cen
 
 ## Opening line
 
-"Dok, saya demam tinggi sudah tiga hari, badan sakit semua, dan mata saya kuning."
+"Dok, saya demam tinggi, badan sakit semua."
 
 ## How I present
 

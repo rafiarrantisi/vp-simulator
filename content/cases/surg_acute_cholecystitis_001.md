@@ -146,7 +146,7 @@ I'm Rina Nugroho, 45 years old. I work as a high school history teacher, and I l
 
 ## Opening line
 
-"Doctor, I've got this sharp pain under my right ribs that started last night after a big dinner, and it's not going away. It's really bad."
+"Doctor, I've got this sharp pain under my right ribs that's really bad."
 
 ## How I present
 

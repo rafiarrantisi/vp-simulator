@@ -140,7 +140,7 @@ My name is Agus. I'm 58 years old, and I work as a long-haul truck driver. I've 
 
 ## Opening line
 
-"Doc, I've had this horse voice for about a month now, and it's not going away like it usually does. I figured I should get it checked out."
+"Doc, I've got this hoarse voice that won't go away."
 
 ## How I present
 

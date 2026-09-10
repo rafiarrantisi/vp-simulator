@@ -123,7 +123,7 @@ scoring_weights_override: null
 I'm Slamet, 72 years old. I used to be a carpenter for over 30 years until I retired five years ago. My wife, Dewi, and I live in the same house we bought when we got married. We have two grown daughters who live nearby, and they visit often with the grandkids. I like to think of myself as a practical, down-to-earth man, but lately I've been getting frustrated because I can't keep up in conversations. I'm a bit stubborn too—I hate asking people to repeat themselves. My biggest fear is that I'll become completely deaf and not be able to enjoy time with my family. One quirk: I always sit at the end of the table at restaurants so I can see everyone's face.
 
 ## Opening line
-"Well, doctor, my wife says I'm going deaf. I have to admit, I'm having trouble hearing what people say, especially in noisy places or when more than one person is talking."
+"Well, doctor... I'm having trouble hearing what people say."
 
 ## How I present
 I lean forward when you speak, and I often tilt my good ear toward you. I speak clearly and a little loud. My posture is slightly stooped. I make good eye contact, but I sometimes have a puzzled expression if I didn't catch what was said. I seem polite but a little anxious.

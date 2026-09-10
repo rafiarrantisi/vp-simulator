@@ -137,7 +137,7 @@ My name is Mega Pratama. I am 32 years old. I work as an accountant at a mid-siz
 
 ## Opening line
 
-"Doctor, I need your help. My right arm and leg feel weak and numb. It started a few days ago, and I am really scared something is wrong with my brain."
+"Doctor, I need your help — my right arm and leg feel weak and numb."
 
 ## How I present
 

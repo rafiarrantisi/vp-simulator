@@ -107,7 +107,7 @@ My name is Rizky Wijaya, I'm 32 years old and work as a graphic designer from ho
 
 ## Opening line
 
-"Hi, I've got these round, itchy spots on my chest and back that have been bothering me for about a week."
+"Hi, I've got these round, itchy spots on my chest and back."
 
 ## How I present
 

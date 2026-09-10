@@ -143,7 +143,7 @@ My name is Sugeng Wibowo. I'm a 45-year-old construction worker, married with tw
 
 ## Opening line
 
-"Doc, I've got this cough that just won't quit, and I've been feeling really tired lately. My wife said I need to come in."
+"Doc, I've got this cough that just won't quit."
 
 ## How I present
 

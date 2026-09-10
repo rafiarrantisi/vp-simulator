@@ -119,7 +119,7 @@ I’m Iwan Utami, 45 years old. I work as a construction foreman—lots of heavy
 
 ## Opening line
 
-“Hi doc, I’ve got this lump in my groin that keeps coming and going. It’s been bothering me for a few weeks.”
+“Hi doc, I’ve got this lump in my groin.”
 
 ## How I present
 

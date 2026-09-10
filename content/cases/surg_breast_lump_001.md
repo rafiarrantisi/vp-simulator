@@ -134,7 +134,7 @@ Quirks: Always carries a small notebook and writes down questions. Lina arranges
 
 ## Opening line  
 
-“I found a lump in my right breast about two weeks ago. It doesn’t hurt, but it’s been worrying me.”
+“I found a lump in my right breast, and I'm worried.”
 
 ## How I present  
 

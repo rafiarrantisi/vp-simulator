@@ -125,7 +125,7 @@ scoring_weights_override: null
 My name is Nisa Sari. I'm 34 years old. I work as an elementary school teacher, which I usually love, but right now everything feels impossible. I'm married to Budi, he's an accountant. We have two kids: Aisyah who is 6 and Bima who is 4. Normally I'm a pretty cheerful and organized person, maybe even a bit of a perfectionist. Lately I just feel like a shell of myself. I'm scared I'm letting everyone down—my students, my family. I have this habit of humming when I'm nervous, and I've been doing it a lot lately without even realizing it.
 
 ## Opening line
-"Hi, thanks for seeing me. I just... I don't know what's wrong with me. I feel so tired and sad all the time, and it's been going on for weeks. I thought it would pass, but it hasn't."
+"Hi, thanks for seeing me. I feel so tired and sad all the time, and I don't know why."
 
 ## How I present
 I'm slumped in the chair with my shoulders hunched forward. My voice is quiet and flat, and I sometimes trail off mid-sentence. I can't really look you in the eye—I mostly stare at my hands or the floor. My face feels heavy and drawn, and my eyes are puffy from crying. I look exhausted. I'm holding back tears the whole time.

@@ -131,7 +131,7 @@ My name is Haryanto Santoso. I'm 45 years old, and I drive a long-haul truck for
 
 ## Opening line
 
-"Doc, I've got this terrible pain in my stomach that's going right through to my back. It started last night after I had a big dinner and a few beers."
+"Doc, I've got this terrible pain in my stomach that's going right through to my back."
 
 ## How I present
 

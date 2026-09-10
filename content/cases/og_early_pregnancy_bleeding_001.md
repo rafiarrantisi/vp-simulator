@@ -146,7 +146,7 @@ competency:
 My name is Nabila Sari. I'm 32 years old and work as a primary school teacher. I've been married to my husband, Indra, for three years, and we've been trying for a baby for about a year. I'm usually a calm person, but since I found out I was pregnant six weeks ago, I've been a bit anxious. I'm a worrier by nature—I always think the worst might happen. I love reading and gardening, but right now I can't focus on anything. I'm scared I might lose this pregnancy.
 
 ## Opening line
-"Hi, doctor. I'm sorry to bother you, but I started having some light bleeding yesterday, and I'm really worried about the baby."
+"Hi, doctor. I've started having some light bleeding, and I'm really worried about the baby."
 
 ## How I present
 I'm sitting on the edge of the exam table, fidgeting with the hem of my shirt. I make eye contact but my eyes are a bit watery. My voice is shaky but I'm trying to stay composed. I'm pale and my hands are trembling slightly. I keep looking down at my belly.

@@ -117,7 +117,7 @@ I’m Intan, 34 years old, I work as a teacher at a middle school. I live with m
 
 ## Opening line
 
-“My face has been getting really red and kind of flushing on and off for a few months now, and I’ve started getting these little bumps that just won’t go away. I’m worried it’s something serious.”
+“My face keeps getting really red and flushing, and I’m worried it’s something serious.”
 
 ## How I present
 

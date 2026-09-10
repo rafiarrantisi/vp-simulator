@@ -117,7 +117,7 @@ I’m Rahma Hidayat, 32 years old. I’m a stay‑at‑home mom. My son Bima is 
 
 ## Opening line
 
-“My little boy has been tugging at his left ear and crying for the past two days. I’m really worried.”
+“My little boy keeps tugging at his left ear and crying. I’m really worried.”
 
 ## How I present
 

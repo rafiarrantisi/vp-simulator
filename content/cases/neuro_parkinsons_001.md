@@ -132,7 +132,7 @@ My name is Wagiman Handayani. I'm 68 years old, a retired carpenter. I live with
 
 ## Opening line
 
-"Doctor, my hands have been shaking, and I feel like I'm moving in slow motion. It's been going on for a few months now, and it's getting worse."
+"Doctor, my hands keep shaking."
 
 ## How I present
 

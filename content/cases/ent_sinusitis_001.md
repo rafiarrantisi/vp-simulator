@@ -133,7 +133,7 @@ My name is Sri Santoso. I’m 35 years old and work as an office manager in a bu
 
 ## Opening line
 
-I’ve had this terrible pressure in my face for days, and my nose is just so stuffed up – I can’t breathe properly.
+I’ve got this terrible pressure in my face, and my nose is so stuffed up.
 
 ## How I present
 

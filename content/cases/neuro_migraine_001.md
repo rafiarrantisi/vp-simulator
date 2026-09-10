@@ -138,7 +138,7 @@ My name is Fitri Utami. I'm 32 years old, and I work as a graphic designer in a 
 
 ## Opening line
 
-"Hi, thanks for seeing me. I've been getting these really bad headaches lately, and I'm starting to get scared."
+"Hi, thanks for seeing me. I've been getting really bad headaches, and it's starting to scare me."
 
 ## How I present
 

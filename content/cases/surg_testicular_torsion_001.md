@@ -138,7 +138,7 @@ I’m Zaki, 18 years old. I’m a senior in high school and work part-time stock
 
 ## Opening line
 
-“I woke up about three hours ago with this terrible pain in my right ball. It’s the worst pain I’ve ever felt.”
+“I woke up with this terrible pain in my right ball. It’s the worst pain I’ve ever felt.”
 
 ## How I present
 

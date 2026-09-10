@@ -155,7 +155,7 @@ I'm Tiara Kusuma, 34 years old. I'm a primary school teacher, married to Agus, a
 
 ## Opening line
 
-"I can't catch my breath. I've used my blue puffer three times but it's not helping, and I'm really scared."
+"I can't catch my breath... and I'm really scared."
 
 ## How I present
 

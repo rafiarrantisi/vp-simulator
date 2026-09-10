@@ -103,7 +103,7 @@ I’m Maya Anggraini, 35 years old. I’m a primary school teacher and married t
 
 ## Opening line
 
-“Doctor, my son Adi has been coughing and wheezing on and off for the past few months, and it’s getting worse.”
+“Doctor, my son Adi keeps coughing and wheezing.”
 
 ## How I present
 

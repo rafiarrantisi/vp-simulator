@@ -107,7 +107,7 @@ I’m Rini Wibowo, a 45-year-old office manager. I live with my husband and two 
 
 ## Opening line
 
-“Doctor, my right eye has been hurting for the past two days. It feels like there’s a piece of sand or an eyelash stuck in it, and I can’t get it out.”
+“Doctor, my right eye hurts, like there's a piece of sand stuck in it.”
 
 ## How I present
 

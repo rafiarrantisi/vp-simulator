@@ -132,7 +132,7 @@ Hi, I’m Farah Wijaya. I’m 32, a primary school teacher, and I live with my h
 
 ## Opening line
 
-“It’s Dewi – she’s four. She’s had a fever since yesterday and her wee smells really strong and horrible. I’m worried she might have an infection.”
+“It’s Dewi – she’s four. She has a fever and I’m worried.”
 
 ## How I present
 

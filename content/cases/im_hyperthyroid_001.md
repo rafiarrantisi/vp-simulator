@@ -171,7 +171,7 @@ I am Dina Permata, a 32-year-old graphic designer. I’m married to a high schoo
 
 ## Opening line
 
-I can’t stop losing weight, and I’m always shaking… my heart races even when I’m just sitting down.
+I can’t stop losing weight, and it’s scaring me.
 
 ## How I present
 

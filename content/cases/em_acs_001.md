@@ -159,7 +159,7 @@ My name is Bambang Putri "Bob" Prasetyo. I'm 58 years old, and I work as a const
 
 ## Opening line
 
-"Doc, I've got this real heavy, squeezing feeling right here in the middle of my chest, and it's not going away. It started about an hour ago while I was having lunch."
+"Doc, I've got this real heavy, squeezing feeling right here in the middle of my chest."
 
 ## How I present
 

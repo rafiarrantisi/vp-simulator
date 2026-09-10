@@ -119,7 +119,7 @@ I’m Kiran, a 30-year-old stay-at-home mom. My baby, Raka, is 6 months old. He�
 
 ## Opening line
 
-“My baby’s been wheezing and coughing for two days, and I’m really worried – I think he’s having trouble breathing.”
+“My baby’s wheezing and coughing, and I’m really worried.”
 
 ## How I present
 

@@ -132,7 +132,7 @@ My name is Winda Putri. I'm 34 years old, married with two kids — a boy aged 7
 
 ## Opening line
 
-"Sorry... I'm not sure where to start. I just feel... like I can't stop worrying. It's been months now, and it's getting to the point where I can't sleep properly."
+"Sorry... I just feel like I can't stop worrying, and I don't know where to start."
 
 ## How I present
 

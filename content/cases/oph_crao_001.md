@@ -139,7 +139,7 @@ My name is Sastro Sari. I'm a 68-year-old retired truck driver. I live with my w
 
 ## Opening line
 
-"Doc, I need help. About an hour ago, I was watching TV and suddenly I couldn't see anything out of my right eye. It's like a dark curtain just came down, and it hasn't gone away. There's no pain, but I'm really worried."
+"Doc, I need help. I suddenly can't see anything out of my right eye — it's like a dark curtain just came down."
 
 ## How I present
 

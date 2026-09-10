@@ -126,7 +126,7 @@ My name is Hendra. I'm 45 years old, work as a construction foreman. I'm married
 
 ## Opening line
 
-"I've been having this burning in my chest after I eat, and it's really bothering me."
+"I've got this burning pain in my chest that's really bothering me."
 
 ## How I present
 

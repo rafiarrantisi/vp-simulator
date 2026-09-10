@@ -153,7 +153,7 @@ My name is Aisyah Handayani, I'm 32 years old. I work as a primary school teache
 
 ## Opening line
 
-"My son Bima has had a fever for two days, and I'm worried because he's not himself."
+"My son Bima has a fever and he's not himself. I'm worried."
 
 ## How I present
 

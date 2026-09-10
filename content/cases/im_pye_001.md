@@ -142,7 +142,7 @@ My name is Putri Handayani. I'm a 28-year-old office assistant at a small accoun
 
 ## Opening line
 
-"Hi, doctor. I've got this really bad pain in my left side, and it burns when I pee. I think it might be another bladder infection, but it feels different this time."
+"Hi, doctor. I've got this really bad pain in my left side, and it burns when I pee."
 
 ## How I present
 

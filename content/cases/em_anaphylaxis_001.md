@@ -142,7 +142,7 @@ My name is Citra Nugroho. I'm a 32-year-old elementary school teacher. I live wi
 
 ## Opening line
 
-"Please, help me. I can't breathe properly and my skin is all blotchy and itchy."
+"Please, help me. I can't breathe properly!"
 
 ## How I present
 

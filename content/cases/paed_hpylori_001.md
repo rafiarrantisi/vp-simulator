@@ -119,7 +119,7 @@ My name is Rio Nugroho. I’m 15 years old and in the 9th grade. I live with my 
 
 ## Opening line
 
-My stomach keeps hurting, especially after I eat.
+My stomach keeps hurting.
 
 ## How I present
 

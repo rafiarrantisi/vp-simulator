@@ -106,7 +106,7 @@ My name is Dwi Susanto. I'm 34 years old, work as an accountant at a mid-sized f
 
 ## Opening line
 
-"My right eye has been red and hurting for the past two days, and I can't stand being in bright light. It's really bothering me."
+"My right eye is red and really hurting."
 
 ## How I present
 

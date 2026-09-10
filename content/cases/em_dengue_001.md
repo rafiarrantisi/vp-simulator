@@ -156,7 +156,7 @@ My name is Wahyuni Rahmawati. I am 38 years old. I work as a cashier at a minima
 
 ## Opening line
 
-"Dok, I’ve had a high fever for three days, and now my stomach hurts and I feel very weak."
+"Dok, saya demam tinggi, badan rasanya lemas sekali."
 
 ## How I present
 

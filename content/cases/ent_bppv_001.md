@@ -123,7 +123,7 @@ scoring_weights_override: null
 I'm Sumarni Purnama, 62 years old. I'm a retired schoolteacher, and I live with my husband in a small town. I have two grown children who live nearby. I'm usually a very active person—I love gardening and walking my dog, a golden retriever named Bailey. I'm a bit of a worrier, especially about my health, since my mother had a stroke a few years ago. I tend to be very thorough when I talk to doctors, but I get nervous and can ramble a bit. I don't like feeling out of control, and this dizziness really scares me.
 
 ## Opening line
-"Doctor, I'm getting these awful dizzy spells, especially when I roll over in bed. It's like the whole room is spinning, and it only lasts a few seconds, but it's terrifying."
+"Doctor, I'm getting these awful dizzy spells — like the whole room is spinning, and it's terrifying."
 
 ## How I present
 I walk into the exam room slowly, holding onto the doorframe for a moment. I sit down carefully, gripping the armrests. My face looks tense, and I keep glancing around the room as if expecting the room to start spinning again. My voice is a little shaky, but I try to speak clearly. I make eye contact, but I blink a lot. I'm wearing comfortable clothes, and I look a bit tired.

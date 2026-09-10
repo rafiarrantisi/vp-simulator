@@ -120,7 +120,7 @@ My name is Yusuf Hidayat. I'm a 38-year-old construction foreman, married with t
 
 ## Opening line
 
-"Doc, I've got this awful pain in my left side that keeps coming in waves. It's the worst pain I've ever felt."
+"Doc, I've got this awful pain in my left side that keeps coming in waves."
 
 ## How I present
 

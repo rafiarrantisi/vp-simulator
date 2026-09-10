@@ -165,7 +165,7 @@ Hi, I’m Wahyuni Nugroho. I’m 38 years old and I work as a middle school teac
 
 ## Opening line
 
-"Hi, thanks for seeing me. I’ve had this pounding headache for two days now, and my feet are really swollen – I’m worried it might be related to my blood pressure."
+"Hi, thanks for seeing me. I've got this pounding headache that won't quit."
 
 ## How I present
 

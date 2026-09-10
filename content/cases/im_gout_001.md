@@ -112,7 +112,7 @@ I am Joko Utami, a 55-year-old man who works in construction. I have high blood 
 
 ## Opening line
 
-Doctor, my big toe started hurting out of nowhere last night and now it's red and swollen. I can barely walk.
+Doctor, my big toe is red and swollen and I can barely walk.
 
 ## How I present
 

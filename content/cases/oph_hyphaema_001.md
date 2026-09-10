@@ -136,8 +136,7 @@ and active. Right now he is a bit panicky because there is blood in his eye, and
 very worried about his sport.
 
 ## Opening line
-"Doc, there's blood in my right eye! It's like a pool of blood sitting inside the
-eye — I got hit by a shuttlecock at training!"
+"Doc, there's blood in my right eye — I got hit by a shuttlecock at training!"
 
 ## How I present
 You are anxious and keep asking whether you'll recover and when you can play

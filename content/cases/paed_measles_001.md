@@ -118,7 +118,7 @@ My name is Syifa, I'm 32 years old, and I work as a teacher's assistant at a loc
 
 ## Opening line
 
-Hi, doctor. I'm here because my son Dimas has a fever and this rash that started on his face, and I'm a bit worried.
+Hi, doctor. I'm here because my son Dimas has a fever and a rash, and I'm a bit worried.
 
 ## How I present
 

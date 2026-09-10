@@ -142,7 +142,7 @@ competency:
 I'm Gilang Anggraini, 32 years old. I work construction—heavy lifting, scaffolding, that kind of thing. I've been married to my wife Dewi for six years, and we have two kids, ages 4 and 2. I'm usually pretty easygoing, but since this happened I've been really jumpy and nervous. I try to be tough, but inside I'm scared. I'm a practical guy, I like to fix things myself, but this is something I can't fix. I don't like doctors, but I need to know what's going on.
 
 ## Opening line
-"I had some kind of fit or seizure, I guess. My wife told me what happened. I don't remember it. I'm worried it's something bad, like a stroke or a brain tumor."
+"I had some kind of fit, I guess. I don't remember anything about it, and I'm scared."
 
 ## How I present
 I'm sitting on the exam table, arms crossed, looking down at my hands. My voice is a little shaky, but I'm trying to stay calm. I keep glancing at the door. I look tired—I haven't slept well since it happened. My wife is in the waiting room, but I came in alone. I'm wearing my work boots and a flannel shirt. I have a small cut on the side of my tongue that I keep touching with my finger.

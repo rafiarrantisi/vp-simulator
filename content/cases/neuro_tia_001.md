@@ -159,7 +159,7 @@ My name is Suparmi Wijaya. I’m 67 years old, a retired primary school teacher.
 
 ## Opening line
 
-“I’m here because I had a very scary episode yesterday – my right arm suddenly went limp and I couldn’t get my words out properly. It lasted maybe ten minutes, then went away completely. I’m terrified it might happen again.”
+“I had a very scary episode — my right arm suddenly went limp and I couldn’t get my words out properly. I’m terrified it might happen again.”
 
 ## How I present
 

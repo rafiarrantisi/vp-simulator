@@ -120,7 +120,7 @@ My name is Aulia Dewi. I am 26 years old. I work as a cashier at a small minimar
 
 ## Opening line
 
-"Doctor, please help my son. He just had a seizure this morning. He was shaking all over and his eyes rolled back. I'm so scared."
+"Doctor, please help my son — he just had a seizure. I'm so scared."
 
 ## How I present
 

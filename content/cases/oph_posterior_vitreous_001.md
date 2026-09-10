@@ -108,7 +108,7 @@ I’m Tukiyem Hidayat, 62 years old. I’m a retired elementary school teacher. 
 
 ## Opening line
 
-Doctor, I’ve been seeing flashes of light and these weird floaters in my right eye for the past few days.
+Doctor, I’ve been seeing flashes of light and these weird floaters in my right eye.
 
 ## How I present
 

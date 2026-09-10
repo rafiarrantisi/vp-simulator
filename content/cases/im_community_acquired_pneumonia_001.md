@@ -136,7 +136,7 @@ My name is Yanti. I'm 58 years old, and I work as a receptionist at a busy denta
 
 ## Opening line
 
-"Doctor, I've had this terrible cough for about four days now, and I can't seem to catch my breath properly."
+"Doctor, I've got this terrible cough that just won't quit."
 
 ## How I present
 

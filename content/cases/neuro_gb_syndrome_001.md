@@ -160,7 +160,7 @@ My name is Budi Setiawan. I'm 45 years old, work as a construction labourer—I 
 
 ## Opening line
 
-"Doc, I don't know what's happening to me. I had a real bad stomach bug last week—diarrhea, throwing up—but that cleared up. Now my legs are like noodles and my hands feel weak and tingly. I can barely walk from the parking lot."
+"Doc, I don't know what's happening to me. My legs are like noodles and I can barely walk."
 
 ## How I present
 

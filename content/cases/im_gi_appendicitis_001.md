@@ -135,7 +135,7 @@ Yulia Rahayu — 23, a university student. Anxious but cooperative; she gives sh
 answers and is privately frightened that it might be "something serious".
 
 ## Opening line
-"Hi doctor... my tummy's been really hurting since yesterday."
+"Hi doctor... my tummy's been really hurting."
 
 ## How I present
 The pain started up near your belly button and has now moved to the lower right

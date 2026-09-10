@@ -136,7 +136,7 @@ My name is Endang Lestari. I'm 38 years old. I work as a cashier at a small supe
 
 ## Opening line
 
-"Doctor, I've had this fever for five days now and it just won't go away. My stomach also feels uncomfortable and I'm really worried."
+"Doctor, I've got this fever that just won't go away, and I'm really worried."
 
 ## How I present
 

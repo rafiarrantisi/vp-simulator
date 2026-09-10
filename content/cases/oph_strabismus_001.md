@@ -106,7 +106,7 @@ My name is Sekar Sari, I'm 22 years old. I work part-time as a cashier at a groc
 
 ## Opening line
 
-"My right eye has been turning in since I was little, and lately it's been bothering me more. I'm hoping you can tell me if there's something that can be done."
+"My right eye turns in, and I want to know if something can be done about it."
 
 ## How I present
 

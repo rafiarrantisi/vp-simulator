@@ -160,7 +160,7 @@ My name is Hartono. I am 68 years old, a retired civil servant. I live in a smal
 
 ## Opening line
 
-Doctor, suddenly my right arm and leg cannot move. It happened this morning while I was having coffee.
+Doctor, suddenly my right arm and leg cannot move.
 
 ## How I present
 

@@ -108,7 +108,7 @@ scoring_weights_override: null
 My name is Ayu Utami. I’m 32 years old, and I work as an elementary school teacher. I’m married to Agus, and we have two kids—a boy and a girl. I’m usually a pretty calm person, but when it comes to my health, I can get a bit nervous. I tend to overthink things, and I’m scared that even a small symptom might be something serious. I’m a bit of a worrier, and I always carry tissues in my purse because I hate messes.
 
 ## Opening line
-I woke up this morning with a nosebleed that just won’t stop, and I’m really worried.
+I've got a nosebleed that just won't stop, and I'm really worried.
 
 ## How I present
 I’m sitting upright on the exam chair, pressing a tissue against my left nostril. My voice sounds a bit nasally because I’m trying to keep my head tilted forward. I’m making eye contact, but my eyes are wide and I look tense. I’m fidgeting with the tissue in my hand. I speak quickly, clearly anxious.

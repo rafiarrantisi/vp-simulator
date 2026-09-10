@@ -150,7 +150,7 @@ I’m Sumarno Maharani, 62 years old. I used to teach high school history, but I
 
 ## Opening line
 
-“Doctor, I’ve noticed my ankles are swollen and my urine has been looking like beer foam—kind of frothy, you know? It’s been going on for a few months and it’s getting worse.”
+“Doctor, I’ve noticed my ankles are swollen.”
 
 ## How I present
 

@@ -131,7 +131,7 @@ I am Ibu Ratna, a 29-year-old mother. My husband is **Bambang**, and we live in 
 
 ## Opening line
 
-"Doctor, my son Dimas has been having watery diarrhoea and vomiting for two days now, and he seems so weak. I'm really worried."
+"Doctor, my son Dimas has watery diarrhoea and vomiting, and he seems so weak. I'm really worried."
 
 ## How I present
 

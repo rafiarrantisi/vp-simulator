@@ -133,7 +133,7 @@ My name is Sinta Saputra. I'm 34 years old, and I work as a primary school teach
 
 ## Opening line
 
-"I took too many painkillers for my headache, and now I feel really sick to my stomach."
+"I took too many painkillers for my headache, and now I feel really sick."
 
 ## How I present
 

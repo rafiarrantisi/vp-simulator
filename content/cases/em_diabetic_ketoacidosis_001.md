@@ -169,7 +169,7 @@ My name is Fajar Lestari. I'm 28 years old. I drive a long‑haul truck for a fr
 
 ## Opening line
 
-* (slurred, slightly panicked) * "I feel really weird, my head is all foggy and I can't catch my breath. Everything smells like nail polish remover."
+* (slurred, slightly panicked) * "I feel really weird... I can't catch my breath."
 
 ## How I present
 
