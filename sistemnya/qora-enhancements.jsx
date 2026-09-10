@@ -197,10 +197,8 @@ function QoraBilling(props) {
             data.current_period_end ? ('Renews: ' + String(data.current_period_end).slice(0, 10)) : 'Unlimited sessions active')
         : React.createElement('div', null,
             React.createElement('div', { style: { fontSize: 13, color: 'var(--text-2)', marginBottom: 8 } }, usedSessions + ' of ' + limit + ' free sessions used this period'),
-            React.createElement('div', { style: { height: 8, borderRadius: 999, background: 'var(--surface-3)', marginBottom: 16 } },
+            React.createElement('div', { style: { height: 8, borderRadius: 999, background: 'var(--surface-3)', marginBottom: 4 } },
               React.createElement('div', { style: { width: pct + '%', height: '100%', borderRadius: 999, background: pct >= 80 ? 'var(--red)' : 'var(--primary)', transition: 'width 0.6s ease' } })),
-            React.createElement('button', { onClick: function () { goCheckout('monthly'); }, style: { width: '100%', padding: 13, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 14, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } },
-              'Upgrade to ' + (prices.monthly || '$14.99/mo')),
       err && React.createElement('div', { style: { fontSize: 12.5, color: isPaid ? 'rgba(255,255,255,0.9)' : 'var(--red-d)', marginTop: 10 } }, err)),
     // Plan options — same pricing card style as the landing page (§5.2)
     React.createElement('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))', gap: 16, alignItems: 'stretch', marginBottom: 8 } },
