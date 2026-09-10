@@ -582,6 +582,7 @@ function _loadGis() {
 function QLGoogleButton({ onCredential }) {
   const ref = React.useRef(null);
   const clientId = (typeof window !== 'undefined' && window.QORA_GOOGLE_CLIENT_ID) || '';
+  const [gisErr, setGisErr] = React.useState('');
   React.useEffect(function () {
     if (!clientId) return undefined;
     let alive = true;
@@ -594,13 +595,14 @@ function QLGoogleButton({ onCredential }) {
       if (ref.current) {
         window.google.accounts.id.renderButton(ref.current, { theme: 'outline', size: 'large', width: 320, text: 'continue_with', shape: 'pill' });
       }
-    }).catch(function () {});
+    }).catch(function () { if (alive) setGisErr('Google sign-in could not load — check connection or adblock.'); });
     return function () { alive = false; };
   }, [clientId]);
   if (!clientId) {
     return React.createElement('button', { disabled: true, title: 'Set VITE_GOOGLE_CLIENT_ID to enable', style: { width: '100%', marginTop: 10, padding: '11px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-3)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'not-allowed' } }, 'Continue with Google · coming soon');
   }
-  return React.createElement('div', { style: { marginTop: 12, display: 'flex', justifyContent: 'center' } }, React.createElement('div', { ref: ref }));
+  return React.createElement('div', { style: { marginTop: 12, display: 'flex', justifyContent: 'center' } }, React.createElement('div', { ref: ref }),
+    gisErr && React.createElement('div', { style: { fontSize: 12, color: 'var(--red-d)', marginTop: 8, textAlign: 'center' } }, gisErr));
 }
 
 function QLAuth({ mode, setMode, onLogin }) {
