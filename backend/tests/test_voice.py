@@ -40,16 +40,15 @@ def test_dedup_guard_logic():
     assert _DEDUP_WINDOW == 5.0
 
 
-def test_tts_not_configured_raises(monkeypatch):
-    # Deterministik & env-independent: key kosong → TtsNotConfigured.
+def test_tts_not_configured_bad_provider(monkeypatch):
+    # Deterministik & env-independent: provider tak dikenal → TtsNotConfigured.
     import app.voice.tts as tts_mod
 
     class _S:
         tts_provider = "elevenlabs"
-        tts_api_key = ""
-        tts_base_url = "https://api.elevenlabs.io"
-        tts_voice_id = "x"
-        tts_model = "eleven_multilingual_v2"
+        tts_gemini_model = "gemini-3.1-flash-tts-preview"
+        tts_gemini_voice = "Gacrux"
+        tts_gemini_language = "id-ID"
 
     monkeypatch.setattr(tts_mod, "get_settings", lambda: _S())
     import pytest
@@ -57,16 +56,26 @@ def test_tts_not_configured_raises(monkeypatch):
         tts_mod.synthesize("Halo")
 
 
-def test_tts_endpoint_configured_degrades_cleanly():
-    # .env punya TTS_API_KEY → BUKAN 501. Quota habis → 502 + error jelas;
-    # quota ada → 200 audio/mpeg. Apa pun: tidak crash, envelope rapi.
+def test_tts_empty_text_fails():
+    # Teks kosong ditolak sebelum request (tidak bakar credit).
+    import app.voice.tts as tts_mod
+    import pytest
+    with pytest.raises(tts_mod.TtsFailed):
+        tts_mod.synthesize("   ")
+
+
+def test_tts_endpoint_degrades_cleanly():
+    # Tanpa ADC → 501 + envelope rapi. Dengan ADC/live → 200 audio/mpeg,
+    # atau 502 + error jelas. Apa pun: tidak crash, envelope rapi.
     h = {"Authorization": f"Bearer {_token()}"}
     r = client.post("/api/ai/tts", headers=h, json={"text": "Halo"})
-    assert r.status_code != 501
-    assert r.status_code == 200 or (
-        r.headers.get("content-type", "").startswith("application/json")
-        and r.json().get("error")
-    )
+    if r.status_code == 501:
+        assert r.json().get("error")
+    else:
+        assert r.status_code == 200 or (
+            r.headers.get("content-type", "").startswith("application/json")
+            and r.json().get("error")
+        )
 
 
 def test_tts_requires_auth():

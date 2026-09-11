@@ -27,6 +27,9 @@ pyyaml>=6.0
 openai>=1.40
 # anthropic>=0.34   # uncomment jika LLM_PROVIDER=anthropic
 
+# ── TTS: Google Cloud Gemini TTS (official SDK; >=2.29 untuk Gemini voices) ──
+google-cloud-texttospeech>=2.29
+
 # ── Embedding dense / vektor (Fase 3 lanjut — berat, install saat infra) ──
 # qdrant-client>=1.11
 # sentence-transformers>=3.0

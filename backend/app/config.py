@@ -69,12 +69,12 @@ class Settings(BaseSettings):
     stt_api_key: str = ""    # kosong → pakai llm_api_key
     stt_model: str = "openai/whisper-large-v3-turbo"
     stt_language: str = "id"
-    # TTS: ElevenLabs (env-driven; nonaktif sampai TTS_API_KEY diisi)
-    tts_provider: str = "elevenlabs"
-    tts_api_key: str = ""
-    tts_base_url: str = "https://api.elevenlabs.io"
-    tts_voice_id: str = "EXAVITQu4vr4xnSDxMaL"  # ElevenLabs "Sarah" (multibahasa)
-    tts_model: str = "eleven_multilingual_v2"
+    # TTS: Google Cloud Gemini TTS (env-driven; auth via ADC
+    # GOOGLE_APPLICATION_CREDENTIALS, bukan API key di .env)
+    tts_provider: str = "gemini"
+    tts_gemini_model: str = "gemini-3.1-flash-tts-preview"
+    tts_gemini_voice: str = "Gacrux"
+    tts_gemini_language: str = "id-ID"
 
     # ── Rate limiting (in-memory; Redis-backed = scale, ditunda) ──
     rate_limit_enabled: bool = True

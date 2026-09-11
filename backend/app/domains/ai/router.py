@@ -2,7 +2,7 @@
 
 /api/ai/transcribe : Whisper (OpenAI-compatible) + MD5 dedup guard, butuh
                      auth. Balas {transcript, is_duplicate}.
-/api/ai/tts        : ElevenLabs → audio/mpeg; 501 jelas bila belum
+/api/ai/tts        : Gemini TTS → audio/mpeg; 501 jelas bila belum
                      dikonfigurasi (TTS_API_KEY kosong).
 """
 import hashlib
@@ -49,7 +49,7 @@ def voice_status(user: User = Depends(get_current_user)):
     s = get_settings()
     return ok({
         "stt": stt_configured(),
-        "tts": bool(s.tts_api_key),
+        "tts": s.tts_provider == "gemini",
         "language": s.stt_language,
     })
 
