@@ -121,7 +121,7 @@ def post_turn(
     n = _next_turn_no(db, session_id)
     db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=req.text))
     try:
-        reply = rag_respond(s.case_id, history, req.text)
+        reply = rag_respond(s.case_id, history, req.text, session_id=s.id)
     except FileNotFoundError:
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -168,7 +168,7 @@ async def session_ws(websocket: WebSocket, session_id: str):
             db.add(SessionTurn(session_id=s.id, turn_number=n, role="user", content=data["text"]))
             try:
                 reply = ""
-                for chunk in rag_stream(s.case_id, history, data["text"]):
+                for chunk in rag_stream(s.case_id, history, data["text"], session_id=s.id):
                     reply += chunk
                     await websocket.send_json({"type": "chunk", "text": chunk})
             except FileNotFoundError:

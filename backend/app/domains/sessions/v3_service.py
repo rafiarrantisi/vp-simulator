@@ -281,7 +281,7 @@ def turn_v3_session(db: OrmSession, user: User, session_id: str, text: str):
             persona = None
     try:
         reply = v3_patient_respond(v, history, text, language=s.language or "en",
-                                   persona=persona)
+                                   persona=persona, session_id=s.id)
     except Exception as e:  # noqa: BLE001
         db.rollback()
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"patient LLM failed: {e}")

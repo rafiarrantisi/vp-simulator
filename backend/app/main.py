@@ -134,7 +134,8 @@ async def lifespan(_app: FastAPI):
                     return
                 c = get_async_llm_client()
                 await c.agenerate("ok", [{"role": "user", "content": "ok"}],
-                                  max_tokens=5, timeout=25.0, fast=True)
+                                  max_tokens=5, timeout=25.0, fast=True,
+                                  session_id="warmup")
                 _log.info("[llm] gateway warmup OK")
             except Exception:
                 _log.warning("[llm] gateway warmup gagal", exc_info=True)

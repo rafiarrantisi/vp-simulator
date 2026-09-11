@@ -28,17 +28,21 @@ def _prepare(case_id: str, history: list[dict], user_message: str):
     return system, messages, chunks
 
 
-def respond(case_id: str, history: list[dict], user_message: str) -> str:
+def respond(case_id: str, history: list[dict], user_message: str,
+            session_id: str | None = None) -> str:
     system, messages, _ = _prepare(case_id, history, user_message)
     return get_llm_client().generate(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        session_id=session_id,
     ).strip()
 
 
 def stream_respond(
-    case_id: str, history: list[dict], user_message: str
+    case_id: str, history: list[dict], user_message: str,
+    session_id: str | None = None,
 ) -> Iterator[str]:
     system, messages, _ = _prepare(case_id, history, user_message)
     yield from get_llm_client().stream(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens
+        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
+        session_id=session_id,
     )
