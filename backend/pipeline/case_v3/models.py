@@ -432,6 +432,7 @@ class ClinicalVariant:
     chief_complaint: str = ""
     opening_context: str = ""
     patient_opening: str = ""  # hand-written one-info patient voice for the chat bubble; falls back to revoiced opening_context
+    voice_profile: dict = field(default_factory=dict)  # voice_name, language_code, style_instruction, traits (presentation only)
     duration: str = ""
     severity: str = ""
     key_chronology: str = ""

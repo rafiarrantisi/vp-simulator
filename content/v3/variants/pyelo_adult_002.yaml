@@ -17,6 +17,11 @@ identity:
 
 chief_complaint: "Fever with pain in the lower back/flank for 2 days"
 patient_opening: "Doctor, I've got a bad pain in my left side."
+voice_profile:
+  voice_name: Erinome
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: strained, pace: natural}
 opening_context: "42yo non-pregnant woman with high fever, rigors, left flank pain, dysuria; unwell-appearing"
 duration: "2 days"
 severity: moderate

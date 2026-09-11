@@ -26,6 +26,11 @@ identity:
   - household contact
 chief_complaint: Cough with night sweats and weight loss
 opening_context: 'Patient presents: cough with night sweats and weight loss (1 day)'
+voice_profile:
+  voice_name: Leda
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a tired 28-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: low, affect: tired, pace: natural}
 duration: 1 day
 severity: mild
 key_chronology: Onset 1 day ago; course consistent with tb laten (latent tuberculosis

@@ -17,6 +17,11 @@ identity:
 
 chief_complaint: "Child has had fever for 3 days, now fussy and passing cloudy urine"
 patient_opening: "Doctor, my little girl has a fever and won't drink."
+voice_profile:
+  voice_name: Sulafat
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tendency to add extra detail. Genuinely worried about the child, earnest. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: warm, affect: worried, pace: natural}
 opening_context: "Mother brings child who is intermittently febrile, refuses to drink"
 duration: "3 days"
 severity: moderate

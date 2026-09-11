@@ -185,3 +185,11 @@ asks sensible questions; uses everyday language.
 - **Limbs**: No joint swelling or tenderness.
 - **Neurological**: Cranial nerves intact, normal reflexes.
 
+
+## Voice profile
+
+Voice: Erinome (id-ID).
+
+Style: Speak naturally in Indonesian as a 32-year-old woman. Clear, direct, matter-of-fact delivery at a normal pace. Composed and precise, quiet worry underneath if ill. Cooperative. A patient, not a narrator. Do not sound theatrical.
+
+Traits: age-band adult; energy medium; affect composed; pace natural.

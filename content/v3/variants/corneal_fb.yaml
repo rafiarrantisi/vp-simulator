@@ -26,6 +26,11 @@ identity:
 chief_complaint: Eye pain after grinding work without goggles
 opening_context: 'Patient presents: eye pain after grinding work without goggles (5
   days)'
+voice_profile:
+  voice_name: Orus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: strained, pace: natural}
 duration: 5 days
 severity: moderate-severe
 key_chronology: Onset 5 days ago; course consistent with benda asing di kornea evolution

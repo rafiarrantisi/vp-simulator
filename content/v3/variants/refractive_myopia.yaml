@@ -26,6 +26,11 @@ identity:
   - school-age
 chief_complaint: Cannot see the board clearly
 opening_context: 'Patient presents: cannot see the board clearly (3 days)'
+voice_profile:
+  voice_name: Leda
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a tired 12-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: low, affect: tired, pace: natural}
 duration: 3 days
 severity: moderate
 key_chronology: Onset 3 days ago; course consistent with miopia ringan evolution

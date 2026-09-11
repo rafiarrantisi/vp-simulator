@@ -17,6 +17,11 @@ identity:
 
 chief_complaint: "Met for a routine check-up; BP found raised on several readings"
 patient_opening: "Doctor, I'm here for my annual health check."
+voice_profile:
+  voice_name: Schedar
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: neutral, pace: natural}
 opening_context: "48yo man, no specific complaint, annual health check; BP 152/96 on repeat (seated, both arms)"
 duration: "asymptomatic, recent finding"
 severity: moderate

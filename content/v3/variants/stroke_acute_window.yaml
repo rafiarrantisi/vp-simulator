@@ -24,6 +24,11 @@ identity:
   - older adult
 chief_complaint: Sudden one-sided weakness
 opening_context: 'Patient presents: sudden one-sided weakness (1 day)'
+voice_profile:
+  voice_name: Enceladus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a 66-year-old man with low energy. Quiet, a little breathy and tired, steady rhythm. Weak but composed. Brief answers. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
 duration: 1 day
 severity: severe
 key_chronology: Onset 1 day ago; course consistent with infark serebral evolution

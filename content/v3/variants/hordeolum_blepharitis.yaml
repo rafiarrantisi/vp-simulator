@@ -26,6 +26,11 @@ identity:
   - adult
 chief_complaint: Painful bump on eyelid
 opening_context: 'Patient presents: painful bump on eyelid (3 months)'
+voice_profile:
+  voice_name: Orus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: strained, pace: natural}
 duration: 3 months
 severity: mild
 key_chronology: Onset 3 months ago; course consistent with blefaritis evolution

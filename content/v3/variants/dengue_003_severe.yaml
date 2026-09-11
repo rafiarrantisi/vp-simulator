@@ -17,6 +17,11 @@ identity:
 
 chief_complaint: "Child felt dizzy and collapsed at home after 5 days of fever"
 patient_opening: "Doctor, my son is barely responding."
+voice_profile:
+  voice_name: Enceladus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an unwell man with low energy. Quiet, a little breathy, steady rhythm. Weak but alert. Brief answers. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: low, affect: weak, pace: steady}
 opening_context: "Teenager brought to ED unconscious-ish (lethargic), cold and clammy, after fever for 5 days and a day of abdominal pain"
 duration: "5 days"
 severity: critical

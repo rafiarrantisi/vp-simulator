@@ -25,6 +25,11 @@ identity:
 chief_complaint: Sudden whole-body itching with lip swelling
 opening_context: 'Patient presents: sudden whole-body itching with lip swelling (5
   days)'
+voice_profile:
+  voice_name: Erinome
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: neutral, pace: natural}
 duration: 5 days
 severity: moderate-severe
 key_chronology: Onset 5 days ago; course consistent with angioedema evolution

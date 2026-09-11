@@ -24,6 +24,11 @@ identity:
   - older adult
 chief_complaint: Sudden very painful red eye with blurred vision
 patient_opening: "Doctor, my right eye suddenly hurts a lot and looks red."
+voice_profile:
+  voice_name: Kore
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a woman in an urgent situation. Firm, fast, blunt voice. Worried and urgent. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: high, affect: urgent, pace: fast-blunt}
 opening_context: 'Patient presents: sudden very painful red eye with blurred vision
   (1 day)'
 duration: 1 day

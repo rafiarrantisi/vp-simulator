@@ -25,6 +25,11 @@ identity:
   - older adult
 chief_complaint: Increasingly drowsy since morning
 patient_opening: "Doctor, they are increasingly drowsy."
+voice_profile:
+  voice_name: Enceladus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an unwell man with low energy. Quiet, a little breathy, steady rhythm. Weak but alert. Brief answers. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: low, affect: weak, pace: steady}
 opening_context: 'Patient presents: increasingly drowsy since morning (1 day)'
 duration: 1 day
 severity: severe

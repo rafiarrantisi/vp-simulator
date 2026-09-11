@@ -25,6 +25,11 @@ identity:
   - farmer
 chief_complaint: Vomiting after pesticide exposure
 opening_context: 'Patient presents: vomiting after pesticide exposure (1 day)'
+voice_profile:
+  voice_name: Schedar
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: neutral, pace: natural}
 duration: 1 day
 severity: severe
 key_chronology: Onset 1 day ago; course consistent with keracunan insektisida evolution

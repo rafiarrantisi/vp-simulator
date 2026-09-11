@@ -25,6 +25,11 @@ identity:
   - older adult
 chief_complaint: Black tarry stools with dizziness
 opening_context: 'Patient presents: black tarry stools with dizziness (1 day)'
+voice_profile:
+  voice_name: Schedar
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a 66-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
 duration: 1 day
 severity: severe
 key_chronology: Onset 1 day ago; course consistent with perdarahan gastrointestinal

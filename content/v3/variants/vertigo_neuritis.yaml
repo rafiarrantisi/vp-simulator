@@ -26,6 +26,11 @@ identity:
   - older adult
 chief_complaint: Spinning dizziness when turning in bed
 patient_opening: "Doctor, I get this spinning dizziness."
+voice_profile:
+  voice_name: Schedar
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: neutral, pace: natural}
 opening_context: 'Patient presents: spinning dizziness when turning in bed (5 days)'
 duration: 5 days
 severity: moderate-severe

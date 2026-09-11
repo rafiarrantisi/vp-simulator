@@ -26,6 +26,11 @@ identity:
   - child
 chief_complaint: Red eyes since yesterday
 patient_opening: "Doctor, my eyes are red."
+voice_profile:
+  voice_name: Leda
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a tired 19-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: low, affect: tired, pace: natural}
 opening_context: 'Patient presents: red eyes since yesterday (3 days)'
 duration: 3 days
 severity: moderate

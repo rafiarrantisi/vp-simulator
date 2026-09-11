@@ -25,6 +25,11 @@ identity:
   - pregnant woman
 chief_complaint: Pregnant with mild complaints
 opening_context: 'Patient presents: pregnant with mild complaints (2 days)'
+voice_profile:
+  voice_name: Leda
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a tired 26-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: low, affect: tired, pace: natural}
 duration: 2 days
 severity: moderate
 key_chronology: Onset 2 days ago; course consistent with antenatal care terpadu berdasarkan

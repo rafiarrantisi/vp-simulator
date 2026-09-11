@@ -24,6 +24,11 @@ identity:
   - adult
 chief_complaint: Worried about serious disease despite reassurance
 patient_opening: "Doctor, I'm worried I might have something serious."
+voice_profile:
+  voice_name: Schedar
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: neutral, pace: natural}
 opening_context: 'Patient presents: worried about serious disease despite reassurance
   (3 days)'
 duration: 3 days

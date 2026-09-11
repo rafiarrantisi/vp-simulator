@@ -17,6 +17,11 @@ identity:
 
 chief_complaint: "Morning headaches, especially occipital, for the past 3 months"
 patient_opening: "Doctor, I keep waking up with headaches."
+voice_profile:
+  voice_name: Erinome
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: strained, pace: natural}
 opening_context: "56yo woman complains of dull morning occipital headaches, tiredness; BP 158/100; not previously known hypertensive"
 duration: "3 months"
 severity: moderate

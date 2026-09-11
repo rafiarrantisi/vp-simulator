@@ -25,6 +25,11 @@ identity:
   - older adult
 chief_complaint: Blocked ear with wax
 opening_context: 'Patient presents: blocked ear with wax (3 days)'
+voice_profile:
+  voice_name: Schedar
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: neutral, pace: natural}
 duration: 3 days
 severity: moderate
 key_chronology: Onset 3 days ago; course consistent with serumen prop evolution

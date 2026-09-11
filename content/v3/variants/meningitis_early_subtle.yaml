@@ -25,6 +25,11 @@ identity:
   - adult
 chief_complaint: High fever with severe headache and stiff neck
 patient_opening: "Doctor, I have a terrible headache and a high fever."
+voice_profile:
+  voice_name: Leda
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a tired 29-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: low, affect: tired, pace: natural}
 opening_context: 'Patient presents: high fever with severe headache and stiff neck
   (5 days)'
 duration: 5 days

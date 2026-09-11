@@ -26,6 +26,11 @@ identity:
   - middle-aged
 chief_complaint: Sudden very painful swollen big toe
 opening_context: 'Patient presents: sudden very painful swollen big toe (3 months)'
+voice_profile:
+  voice_name: Algenib
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: plain, pace: natural-terse}
 duration: 3 months
 severity: mild
 key_chronology: Onset 3 months ago; course consistent with hiperurisemia evolution

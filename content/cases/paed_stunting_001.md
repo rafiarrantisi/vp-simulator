@@ -204,3 +204,11 @@ The nurse measured Adi just now. She said his temperature is 36.5 degrees Celsiu
 - **Abdomen:** His belly is a little round and sticks out. It is not hard or painful when I touch it.
 - **Limbs:** His arms and legs are very thin. The skin hangs loose on his upper arms. His fingers are thin.
 - **Neuro:** He is alert but quiet. He can stand and walk a few steps, but he is unsteady. He can say a few words. He does not play much.
+
+## Voice profile
+
+Voice: Sulafat (id-ID).
+
+Style: Speak naturally in Indonesian as a 28-year-old woman. Warm, caring voice, slightly fast from anxiety, with a tendency to add extra detail. Genuinely worried about her sick child, earnest. Cooperative. A patient, not a narrator. Do not sound theatrical.
+
+Traits: age-band adult; energy warm; affect worried; pace natural.

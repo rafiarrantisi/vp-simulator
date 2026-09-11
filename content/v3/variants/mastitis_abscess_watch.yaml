@@ -26,6 +26,11 @@ identity:
   - postpartum woman
 chief_complaint: Painful red breast while breastfeeding
 opening_context: 'Patient presents: painful red breast while breastfeeding (5 days)'
+voice_profile:
+  voice_name: Erinome
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: strained, pace: natural}
 duration: 5 days
 severity: moderate-severe
 key_chronology: Onset 5 days ago; course consistent with mastitis evolution

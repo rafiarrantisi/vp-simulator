@@ -25,6 +25,11 @@ identity:
   - woman of reproductive age
 chief_complaint: Bleeding between periods
 opening_context: 'Patient presents: bleeding between periods (1 day)'
+voice_profile:
+  voice_name: Kore
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a woman in an urgent situation. Firm, fast, blunt voice. Worried and urgent. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: high, affect: urgent, pace: fast-blunt}
 duration: 1 day
 severity: severe
 key_chronology: Onset 1 day ago; course consistent with perdarahan uterus abnormal

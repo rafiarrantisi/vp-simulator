@@ -25,6 +25,11 @@ identity:
   - young adult
 chief_complaint: Rapid breathing with fruity-smelling breath
 patient_opening: "Doctor, I feel very short of breath."
+voice_profile:
+  voice_name: Schedar
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a 69-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
 opening_context: 'Patient presents: rapid breathing with fruity-smelling breath (5
   days)'
 duration: 5 days

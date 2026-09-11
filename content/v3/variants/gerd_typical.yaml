@@ -25,6 +25,11 @@ identity:
   - adult
 chief_complaint: Burning chest sensation after meals
 patient_opening: "Doctor, I've got this burning sensation in my chest."
+voice_profile:
+  voice_name: Erinome
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: neutral, pace: natural}
 opening_context: 'Patient presents: burning chest sensation after meals (3 days)'
 duration: 3 days
 severity: moderate

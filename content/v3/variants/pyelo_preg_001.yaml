@@ -17,6 +17,11 @@ identity:
 
 chief_complaint: "Fever, chills and right-sided flank pain for a day"
 patient_opening: "Doctor, I'm pregnant and I've got this pain in my right side."
+voice_profile:
+  voice_name: Leda
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a tired 27-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: low, affect: tired, pace: natural}
 opening_context: "27yo G2P1 at ~22 weeks pregnancy with fever, chills, right flank pain, nausea; LMP confirms pregnancy; UTI in pregnancy = complicated"
 duration: "1 day"
 severity: severe

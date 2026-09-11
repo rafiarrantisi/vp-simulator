@@ -24,6 +24,11 @@ identity:
   - adult
 chief_complaint: Neck swelling routine control
 opening_context: 'Patient presents: neck swelling routine control (3 days)'
+voice_profile:
+  voice_name: Erinome
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: neutral, pace: natural}
 duration: 3 days
 severity: moderate
 key_chronology: Onset 3 days ago; course consistent with rujuk balik goiter evolution

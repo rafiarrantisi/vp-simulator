@@ -194,3 +194,11 @@ Cooperative but easily overwhelmed by the pain. Uses lay words only.
 - Limbs: Normal.
 - Neurological: No focal weakness or numbness. Patient is alert but distressed.
 
+
+## Voice profile
+
+Voice: Kore (id-ID).
+
+Style: Speak naturally in Indonesian as a 55-year-old woman. Firm, urgent voice, speaking fast and bluntly. In severe pain and wants relief; plain words, little patience. Cooperative. A patient, not a narrator. Do not sound theatrical.
+
+Traits: age-band adult; energy high; affect strained-urgent; pace fast-blunt.

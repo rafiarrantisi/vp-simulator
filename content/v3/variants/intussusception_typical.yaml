@@ -25,6 +25,11 @@ identity:
   - neonate
 chief_complaint: Baby screaming in bouts with vomiting
 patient_opening: "Doctor, my baby keeps screaming in bouts."
+voice_profile:
+  voice_name: Sulafat
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tendency to add extra detail. Genuinely worried about the child, earnest. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: warm, affect: worried, pace: natural}
 opening_context: 'Mother brings her baby: baby screaming in bouts with vomiting (1
   day)'
 duration: 1 day

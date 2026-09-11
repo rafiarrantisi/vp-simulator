@@ -25,6 +25,11 @@ identity:
   - diabetic
 chief_complaint: Deep bone pain with fever
 opening_context: 'Patient presents: deep bone pain with fever (1 day)'
+voice_profile:
+  voice_name: Orus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: strained, pace: natural}
 duration: 1 day
 severity: severe
 key_chronology: Onset 1 day ago; course consistent with osteomielitis evolution

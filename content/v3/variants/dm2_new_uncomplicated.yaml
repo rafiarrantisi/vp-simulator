@@ -26,6 +26,11 @@ identity:
   - middle-aged
 chief_complaint: Routine diabetes control
 opening_context: 'Patient presents: routine diabetes control (3 days)'
+voice_profile:
+  voice_name: Algenib
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: plain, pace: natural-terse}
 duration: 3 days
 severity: moderate
 key_chronology: Onset 3 days ago; course consistent with diabetes mellitus tipe 2

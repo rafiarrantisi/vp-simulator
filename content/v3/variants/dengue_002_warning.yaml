@@ -17,6 +17,11 @@ identity:
 
 chief_complaint: "Fever 5 days, now with abdominal pain and vomiting"
 patient_opening: "Doctor, I still have this fever."
+voice_profile:
+  voice_name: Enceladus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an unwell man with low energy. Quiet, a little breathy, steady rhythm. Weak but alert. Brief answers. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: low, affect: weak, pace: steady}
 opening_context: "Adult presents on day 5 of fever: now has mild abdominal pain, one episode of vomiting, and is anxious"
 duration: "5 days"
 severity: severe

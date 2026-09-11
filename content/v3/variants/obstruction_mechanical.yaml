@@ -26,6 +26,11 @@ identity:
   - postoperative
 chief_complaint: Crampy belly pain with vomiting, no wind
 opening_context: 'Patient presents: crampy belly pain with vomiting, no wind (1 day)'
+voice_profile:
+  voice_name: Algenib
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: plain, pace: natural-terse}
 duration: 1 day
 severity: severe
 key_chronology: Onset 1 day ago; course consistent with ileus obstruksi evolution

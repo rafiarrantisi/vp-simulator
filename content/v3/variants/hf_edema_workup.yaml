@@ -24,6 +24,11 @@ identity:
   - older adult
 chief_complaint: Leg swelling with easy fatigue
 opening_context: 'Patient presents: leg swelling with easy fatigue (1 day)'
+voice_profile:
+  voice_name: Algenib
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: plain, pace: natural-terse}
 duration: 1 day
 severity: mild
 key_chronology: Onset 1 day ago; course consistent with gagal jantung evolution

@@ -17,6 +17,11 @@ identity:
 
 chief_complaint: "Collapsed at home with high fever, rigors and severe right flank pain"
 patient_opening: "Doctor, my father is confused and has a fever."
+voice_profile:
+  voice_name: Enceladus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a 70-year-old man with low energy. Quiet, a little breathy and tired, steady rhythm. Weak but composed. Brief answers. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
 opening_context: "70yo male with poorly-controlled diabetes, acute confusion, fever, right flank pain; tachycardic, hypotensive — septic shock with suspected obstructed/emphysematous pyelonephritis"
 duration: "acute, under 24h"
 severity: critical

@@ -26,6 +26,11 @@ identity:
   - adult
 chief_complaint: Night-time cough and chest tightness
 opening_context: 'Patient presents: night-time cough and chest tightness (5 days)'
+voice_profile:
+  voice_name: Leda
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a tired 27-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: low, affect: tired, pace: natural}
 duration: 5 days
 severity: moderate-severe
 key_chronology: Onset 5 days ago; course consistent with asma bronkial evolution

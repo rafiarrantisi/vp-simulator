@@ -26,6 +26,11 @@ identity:
   - adult
 chief_complaint: Crusty eyelids in the morning
 patient_opening: "Doctor, my eyelids are crusty."
+voice_profile:
+  voice_name: Leda
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a tired 22-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: low, affect: tired, pace: natural}
 opening_context: 'Patient presents: crusty eyelids in the morning (3 days)'
 duration: 3 days
 severity: moderate

@@ -25,6 +25,11 @@ identity:
   - child
 chief_complaint: Sudden blocked ear after playing
 opening_context: 'Patient presents: sudden blocked ear after playing (2 days)'
+voice_profile:
+  voice_name: Sulafat
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tendency to add extra detail. Genuinely worried about the child, earnest. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: warm, affect: worried, pace: natural}
 duration: 2 days
 severity: moderate
 key_chronology: Onset 2 days ago; course consistent with benda asing telinga evolution

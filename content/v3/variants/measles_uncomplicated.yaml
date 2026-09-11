@@ -26,6 +26,11 @@ identity:
   - unvaccinated
 chief_complaint: Fever with red rash spreading down
 patient_opening: "Doctor, my baby has a fever and a rash."
+voice_profile:
+  voice_name: Sulafat
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tendency to add extra detail. Genuinely worried about the child, earnest. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: warm, affect: worried, pace: natural}
 opening_context: 'Mother brings her baby: fever with red rash spreading down (2 days)'
 duration: 2 days
 severity: moderate

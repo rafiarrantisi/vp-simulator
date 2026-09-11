@@ -26,6 +26,11 @@ identity:
   - neonate
 chief_complaint: Child with fits of coughing and vomiting
 patient_opening: "Doctor, my baby has these coughing fits where she stops breathing."
+voice_profile:
+  voice_name: Sulafat
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tendency to add extra detail. Genuinely worried about the child, earnest. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: warm, affect: worried, pace: natural}
 opening_context: 'Mother brings her baby: child with fits of coughing and vomiting
   (1 day)'
 duration: 1 day

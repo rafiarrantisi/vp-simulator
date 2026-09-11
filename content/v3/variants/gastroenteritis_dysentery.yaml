@@ -25,6 +25,11 @@ identity:
   - adult
 chief_complaint: Watery diarrhea and vomiting
 opening_context: 'Patient presents: watery diarrhea and vomiting (5 days)'
+voice_profile:
+  voice_name: Puck
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: young-adult, energy: medium, affect: neutral, pace: natural}
 duration: 5 days
 severity: moderate-severe
 key_chronology: Onset 5 days ago; course consistent with disentri basiler, amuba evolution

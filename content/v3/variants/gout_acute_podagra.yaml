@@ -26,6 +26,11 @@ identity:
   - middle-aged
 chief_complaint: Recurrent painful joint attacks
 opening_context: 'Patient presents: recurrent painful joint attacks (3 days)'
+voice_profile:
+  voice_name: Orus
+  language_code: id-ID
+  style_instruction: "Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: adult, energy: medium, affect: strained, pace: natural}
 duration: 3 days
 severity: moderate
 key_chronology: Onset 3 days ago; course consistent with artritis gout evolution
