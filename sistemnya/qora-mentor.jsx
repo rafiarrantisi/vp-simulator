@@ -614,6 +614,7 @@ function QMentorScreen(props) {
   var [report, setReport] = React.useState(null);
   var [err, setErr] = React.useState('');
 
+  // Continuity banner hidden until V3 series land (no user-facing continuity for now).
   function load() {
     setLoading(true);
     qv2Fetch('/api/v2/mentor/journeys')
@@ -627,9 +628,7 @@ function QMentorScreen(props) {
       })
       .catch(function () { setView('chat'); })
       .finally(function () { setLoading(false); });
-    qv2Fetch('/api/v2/mentor/continuity/pending')
-      .then(function (d) { setPending(d && d.pending ? d.pending : null); })
-      .catch(function () {});
+    // NOTE: continuity/pending fetch removed — feature hidden until V3 series land.
   }
   React.useEffect(function () { load(); }, []);
 
@@ -669,12 +668,10 @@ function QMentorScreen(props) {
   if (view === 'dashboard' && journey) {
     return React.createElement(React.Fragment, null,
       err && React.createElement('div', { style: { maxWidth: 800, margin: '0 auto', padding: '16px 16px 0', fontSize: 12, color: 'var(--red-d)' } }, err),
-      React.createElement(QContinuityBanner, { pending: pending }),
       React.createElement(QoraErrorBoundary, { key: journey.id + '-' + journey.status, screen: 'mentor-journey',
         onBack: function () { try { qoraGo('/dashboard'); } catch (e) {} } },
         React.createElement(QJourneyDashboard, { journey: journey, onNav: props.onNav, onAbandon: abandon, onReport: openReport })));
   }
   return React.createElement(React.Fragment, null,
-    React.createElement(QContinuityBanner, { pending: pending }),
     React.createElement(QMentorChat, { onJourney: onJourney }));
 }
