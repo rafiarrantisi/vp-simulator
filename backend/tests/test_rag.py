@@ -4,7 +4,6 @@ from pathlib import Path
 from app.config import get_settings
 from app.rag import prompt as P
 from app.rag.engine import respond as rag_respond
-from app.rag.evaluator import evaluate as judge_evaluate
 from app.rag.retriever import retrieve
 from pipeline.parser import parse_file
 
@@ -74,23 +73,8 @@ def test_roles_mapped_patient_to_assistant():
     assert msgs[1]["role"] == "assistant"
 
 
-# ── Engine (StubLLM) + Evaluator shape ──
+# ── Engine (StubLLM) ──
 def test_engine_responds_nonempty():
     # Berlaku utk StubLlmClient maupun provider nyata (kontrak §3).
     reply = rag_respond("kasus-02", [], "Selamat pagi")
     assert isinstance(reply, str) and reply.strip()
-
-
-def test_evaluator_report_shape_contract_3A():
-    r = judge_evaluate("kasus-02", [
-        {"role": "user", "content": "Sudah berapa lama matanya merah?"},
-        {"role": "patient", "content": "4 hari Dok."},
-    ])
-    assert r["breakdown"]["coverage"]["max"] == 40
-    assert r["breakdown"]["fife"]["max"] == 20
-    assert r["breakdown"]["redFlags"]["max"] == 20
-    assert r["breakdown"]["communication"]["max"] == 20
-    assert isinstance(r["missedItems"], list)
-    assert isinstance(r["positiveNotes"], list)
-    # Bentuk kontrak §3A; nilai 0 (stub) atau 0..100 (judge nyata).
-    assert isinstance(r["totalScore"], int) and 0 <= r["totalScore"] <= 100

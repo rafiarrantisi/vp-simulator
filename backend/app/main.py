@@ -20,7 +20,6 @@ from app.domains.cases.router import router as cases_router
 from app.domains.exam.router import router as exam_router
 from app.domains.mentor.router import router as mentor_router
 from app.domains.ops.router import router as ops_router
-from app.domains.scoring.router import router as scoring_router
 from app.domains.sessions.router import router as sessions_router
 from app.domains.sessions.v2_router import router as v2_router
 from app.domains.sessions.v3_router import router as v3_router
@@ -166,7 +165,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_router, v2_router, v3_router, exam_router, scoring_router, ai_router, admin_router, billing_router, mentor_router, analytics_router, ops_router):
+for r in (auth_router, users_router, cases_router, cases_admin_router, sessions_router, v2_router, v3_router, exam_router, ai_router, admin_router, billing_router, mentor_router, analytics_router, ops_router):
     app.include_router(r)
 
 
