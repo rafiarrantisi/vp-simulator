@@ -19,7 +19,7 @@ from __future__ import annotations
 from collections.abc import AsyncIterator, Iterator
 
 from app.config import get_settings
-from app.rag.llm import get_async_llm_client, get_llm_client
+from app.rag.llm import astream_patient, get_async_llm_client, get_llm_client
 from app.rag.prompt import build_messages, is_first_turn
 from pipeline.case_v3.models import ClinicalVariant
 from pipeline.case_v3.runtime import candidate_safe_view
@@ -132,9 +132,10 @@ async def astream_respond(v, history: list[dict], user_message: str,
     nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
     system, messages = _prepare(v, history, user_message,
                                 language=language, persona=persona)
-    child = get_async_llm_client().astream(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
-        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+    # Guarded patient path: TTFT + total caps, one retry on a fresh lane.
+    child = astream_patient(
+        get_async_llm_client(), system, messages,
+        max_tokens=get_settings().llm_persona_max_tokens,
         session_id=session_id,
     )
     try:
@@ -156,8 +157,11 @@ async def arespond(v, history: list[dict], user_message: str,
     """Async twin of `respond`: identical assembly/params, nonblocking wait."""
     system, messages = _prepare(v, history, user_message,
                                 language=language, persona=persona)
-    return (await get_async_llm_client().agenerate(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
-        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
-        session_id=session_id,
-    )).strip()
+    # Same guarded path as streaming (joined); identical output contract.
+    parts = []
+    async for chunk in astream_patient(
+            get_async_llm_client(), system, messages,
+            max_tokens=get_settings().llm_persona_max_tokens,
+            session_id=session_id):
+        parts.append(chunk)
+    return "".join(parts).strip()

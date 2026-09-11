@@ -55,6 +55,74 @@ async def _with_retry_async(fn, retries: int | None = None):
     raise last  # pragma: no cover
 
 
+_PATIENT_FIRST_TOKEN_S = 7.0  # stall yang terobservasi = tak ada token sama sekali
+_PATIENT_TOTAL_S = 20.0  # pengaman hang mid-stream (tak pernah terobservasi)
+
+
+def _stream_transient_types():
+    try:
+        from openai import (APIConnectionError, APIStatusError,
+                            APITimeoutError, RateLimitError)
+        return (APIConnectionError, APITimeoutError, RateLimitError,
+                APIStatusError, TimeoutError)
+    except ImportError:  # pragma: no cover
+        return (TimeoutError,)
+
+
+async def _iter_guarded(agen, first_timeout: float, total_timeout: float):
+    """Yield child tokens with TTFT + total caps; always release upstream."""
+    start = time.monotonic()
+    it = agen.__aiter__()
+    first = True
+    try:
+        while True:
+            budget = total_timeout - (time.monotonic() - start)
+            if budget <= 0:
+                raise TimeoutError(
+                    f"patient turn exceeded {total_timeout}s total")
+            try:
+                tok = await asyncio.wait_for(
+                    it.__anext__(), min(first_timeout if first else budget, budget))
+            except StopAsyncIteration:
+                return
+            first = False
+            yield tok
+    finally:
+        aclose = getattr(agen, "aclose", None)
+        if aclose is not None:
+            try:
+                await aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
+
+
+async def astream_patient(client, system, messages, *, max_tokens,
+                          session_id: str | None = None,
+                          first_token_timeout: float = _PATIENT_FIRST_TOKEN_S,
+                          total_timeout: float = _PATIENT_TOTAL_S):
+    """Patient turn with TTFT + total guardrails; ONE retry on a fresh gateway
+    lane (stall terobservasi = lane-specific). Yields tokens progressively.
+    Patient-only: thinking off. Raises TimeoutError/RuntimeError bila 2
+    attempt gagal (router mengubahnya jadi pesan retry yang ramah)."""
+    transient = _stream_transient_types()
+    lane = session_id
+    last_exc: Exception | None = None
+    for attempt in (0, 1):
+        try:
+            async for tok in _iter_guarded(
+                    client.astream(system, messages, max_tokens=max_tokens,
+                                   fast=True, session_id=lane),
+                    first_token_timeout, total_timeout):
+                yield tok
+            return
+        except transient as e:
+            last_exc = e
+            lane = (f"{session_id}-r{attempt}" if session_id
+                    else f"qora-retry-{attempt}")
+    assert last_exc is not None  # noqa: S101 - loop selalu set atau return
+    raise last_exc
+
+
 class LlmClient(Protocol):
     def stream(self, system: str, messages: list[dict],
                model: str | None = None,

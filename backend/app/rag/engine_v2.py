@@ -14,7 +14,7 @@ from collections.abc import AsyncIterator, Iterator
 
 from app.config import get_settings
 from app.domains.cases.v2_catalog import load_v2_case
-from app.rag.llm import get_async_llm_client, get_llm_client
+from app.rag.llm import astream_patient, get_async_llm_client, get_llm_client
 from app.rag.prompt import build_messages, is_first_turn
 from app.rag.prompt_v2 import build_patient_prompt
 
@@ -56,9 +56,11 @@ async def astream_respond(case_id: str, history: list[dict], user_message: str,
     """Async twin of `stream_respond`: identical prompt assembly and params,
     nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
     system, messages = _prepare(case_id, history, user_message, language=language)
-    child = get_async_llm_client().astream(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
-        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
+    # Guarded patient path: TTFT + total caps, one retry on a fresh lane.
+    # Same model/prompt/params — only delivery is hardened.
+    child = astream_patient(
+        get_async_llm_client(), system, messages,
+        max_tokens=get_settings().llm_persona_max_tokens,
         session_id=session_id,
     )
     try:
@@ -77,8 +79,11 @@ async def arespond(case_id: str, history: list[dict], user_message: str,
                    language: str = "en", session_id: str | None = None) -> str:
     """Async twin of `respond`: identical assembly/params, nonblocking wait."""
     system, messages = _prepare(case_id, history, user_message, language=language)
-    return (await get_async_llm_client().agenerate(
-        system, messages, max_tokens=get_settings().llm_persona_max_tokens,
-        fast=True,  # patient persona: thinking off (TTFT), judge unaffected
-        session_id=session_id,
-    )).strip()
+    # Same guarded path as streaming (joined); identical output contract.
+    parts = []
+    async for chunk in astream_patient(
+            get_async_llm_client(), system, messages,
+            max_tokens=get_settings().llm_persona_max_tokens,
+            session_id=session_id):
+        parts.append(chunk)
+    return "".join(parts).strip()
