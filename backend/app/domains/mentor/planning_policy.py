@@ -127,31 +127,6 @@ def build_candidate_from_family(registry, fam, learner_stage: str = "koas") -> d
     }
 
 
-def build_candidate_from_v2(case) -> dict | None:
-    """Map a V2 catalog case onto the planner candidate schema."""
-    try:
-        fm = case.frontmatter or {}
-    except Exception:  # noqa: BLE001
-        return None
-    if not getattr(case, "id", None):
-        return None
-    try:
-        diff = int(fm.get("difficulty", 2))
-    except (TypeError, ValueError):
-        diff = 2
-    return {
-        "kind": "v2",
-        "ref": case.id,
-        "specialty": fm.get("specialty") or "unknown",
-        "difficulty": diff,
-        "mode": fm.get("mode_default", "anamnesis"),
-        "review_rank": 0,
-        "title": fm.get("presentation") or case.id,
-        "presentation": fm.get("presentation") or "",
-        "estimated_minutes": fm.get("estimated_minutes") or 15,
-    }
-
-
 def _is_excluded(cand: dict, registry=None) -> str | None:
     """Return an exclusion reason, or None when the candidate is eligible."""
     if not isinstance(cand, dict):

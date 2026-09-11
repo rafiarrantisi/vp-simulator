@@ -19,9 +19,8 @@ from fastapi import HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.domains.cases.v2_catalog import list_v2_cases
 from app.domains.mentor import journey_builder
-from app.domains.mentor.case_selector import select_cases, select_journey_cases
+from app.domains.mentor.case_selector import select_journey_cases
 from app.domains.mentor.models import JourneyCase, LearningJourney, ReasoningAutopsy
 
 _log = logging.getLogger("mentor.service")
@@ -40,13 +39,12 @@ def _now() -> datetime:
 def create_journey(db: Session, user_id: str, institution_id: str, story: str) -> dict:
     """Phase 1: submit story → context → case selection → proposal.
 
-    FASE 10: unified deterministic planner (V3 eligible families + V2
-    cases, one engine). Clarification questions (0–2) ride along when
-    critical goal data is missing — intake stays free text.
+    Planner works over V3 families only (V2 retired from planning; V2
+    content remains for history). Clarification questions (0–2) ride along
+    when critical goal data is missing — intake stays free text.
     """
     context = journey_builder.extract_context(story)
-    cases = list_v2_cases()
-    selected = select_journey_cases(context, list(cases))
+    selected = select_journey_cases(context)
     if not selected:
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_ENTITY,
@@ -114,8 +112,7 @@ def customize_journey(db: Session, user_id: str, journey_id: str, feedback: str)
     if extra_ctx.get("level") and extra_ctx["level"] != "general":
         ctx["level"] = extra_ctx["level"]
 
-    cases = list_v2_cases()
-    selected = select_cases(ctx, cases)
+    selected = select_journey_cases(ctx)
     if not selected:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
                             "Feedback tidak menghasilkan kasus yang cocok.")
@@ -553,6 +550,40 @@ def _unlock_next(db: Session, journey: LearningJourney) -> JourneyCase | None:
 # Reasoning autopsy (PRD §4.2)
 # ---------------------------------------------------------------------------
 
+class _V3AutopsyCase:
+    """Minimal CaseV2-shaped view over a frozen V3 variant for the autopsy
+    core (red_flag_items + frontmatter checklist). Anything unmatched simply
+    yields no finding — never a fabricated miss."""
+
+    def __init__(self, variant) -> None:
+        self._v = variant
+        groups: dict[str, list] = {}
+        for it in (getattr(variant, "assessment_items", None) or []):
+            g = (getattr(it, "group", "") or "history").lower()
+            key = {"history": "hpi_socrates", "red_flags": "red_flags"}.get(g, g)
+            groups.setdefault(key, []).append({"item": getattr(it, "text", "")})
+        self.frontmatter = {"anamnesis_checklist": groups}
+
+    def red_flag_items(self) -> list[dict]:
+        out = []
+        for rf in (getattr(self._v, "red_flags", None) or []):
+            fact = (getattr(rf, "fact", "") or "") if not isinstance(rf, dict) else (rf.get("fact") or "")
+            fact = str(fact).strip()
+            if fact:
+                out.append({"item": fact, "id": fact})
+        return out
+
+
+def _v3_autopsy_case(db: Session, s):
+    """Frozen variant for a V3-backed session, or None (genuinely unknown)."""
+    try:
+        from app.domains.sessions.v3_compat_service import _frozen_variant
+        _, v = _frozen_variant(db, s)
+    except Exception:  # noqa: BLE001 — unknown case stays 422
+        return None
+    return _V3AutopsyCase(v) if v is not None else None
+
+
 def generate_autopsy_for_session(db: Session, user_id: str, session_id: str) -> dict:
     """Post-score: generate + store the autopsy, then check continuity trigger."""
     from app.domains.cases.v2_catalog import load_v2_case
@@ -568,7 +599,12 @@ def generate_autopsy_for_session(db: Session, user_id: str, session_id: str) -> 
     try:
         case = load_v2_case(s.case_id)
     except FileNotFoundError:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Case tidak ditemukan.")
+        # V3-backed session (history-only V2 path missed): adapt the frozen
+        # variant to the checklist shape the autopsy core reads. Red-flag
+        # matching is best-effort (exact-text); never fabricates misses.
+        case = _v3_autopsy_case(db, s)
+        if case is None:
+            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "Case tidak ditemukan.")
 
     rows = db.scalars(select(SessionTurn).where(SessionTurn.session_id == session_id)
                       .order_by(SessionTurn.turn_number)).all()

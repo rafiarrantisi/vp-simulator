@@ -37,38 +37,34 @@ def _auth() -> dict:
 
 
 # ---------------------------------------------------------------------------
-# Case selection (unit, PRD §8.1)
+# Case selection (unit, PRD §8.1) — V3 families only (V2 retired from planning)
 # ---------------------------------------------------------------------------
 
-def _catalog():
-    from app.domains.cases.v2_catalog import list_v2_cases
-    return list_v2_cases()
-
-
 def test_case_selection_7_day_paeds():
-    from app.domains.mentor.case_selector import select_cases
+    from app.domains.mentor.case_selector import select_journey_cases
     context = {"timeline_days": 7, "level": "koas", "weaknesses": ["paediatrics"]}
-    selected = select_cases(context, _catalog())
+    selected = select_journey_cases(context)
     assert len(selected) == 7
     assert selected[0]["specialty"] == "paediatrics"  # weakness prioritized
     assert any(c["specialty"] == "paediatrics" for c in selected)
     assert selected[-1]["day"] == 7  # mock exam on final day
+    assert all(c["case_id"].startswith("fam_") for c in selected)
     # Foundational → advanced ordering
     assert selected[0]["difficulty"] <= selected[-1]["difficulty"]
 
 
 def test_case_selection_includes_osce_full_for_long_timeline():
-    from app.domains.mentor.case_selector import select_cases
+    from app.domains.mentor.case_selector import select_journey_cases
     context = {"timeline_days": 7, "level": "koas", "weaknesses": []}
-    selected = select_cases(context, _catalog())
+    selected = select_journey_cases(context)
     assert any(c["mode"] == "osce_full" for c in selected)
     assert selected[-1]["day"] == 7
 
 
 def test_case_selection_level_mapping():
-    from app.domains.mentor.case_selector import select_cases
-    pre = select_cases({"timeline_days": 5, "level": "preklinik", "weaknesses": []}, _catalog())
-    ppds = select_cases({"timeline_days": 5, "level": "ppds", "weaknesses": []}, _catalog())
+    from app.domains.mentor.case_selector import select_journey_cases
+    pre = select_journey_cases({"timeline_days": 5, "level": "preklinik", "weaknesses": []})
+    ppds = select_journey_cases({"timeline_days": 5, "level": "ppds", "weaknesses": []})
     assert pre and ppds
     assert all(c["difficulty"] <= 2 for c in pre[:3])
     assert all(c["difficulty"] >= 2 for c in ppds[:3])
@@ -81,9 +77,9 @@ def test_weakness_alias_mapping():
 
 
 def test_case_selection_timeline_clamped():
-    from app.domains.mentor.case_selector import select_cases
+    from app.domains.mentor.case_selector import select_journey_cases
     ctx = {"timeline_days": 999, "level": "koas", "weaknesses": []}
-    selected = select_cases(ctx, _catalog())
+    selected = select_journey_cases(ctx)
     assert selected[-1]["day"] <= 90
 
 
