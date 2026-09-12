@@ -175,6 +175,80 @@ var QV2_VOICE_IDLE_MS = 20000;
 var QV2_VOICE_OVERALL_MS = 90000;
 // Consecutive recognition auto-restart cap (onend loop guard).
 var QV2_REC_MAX_RESTARTS = 3;
+// Mic-start warmup guard (live regression 12 Sep 2026): Chrome mobile can
+// take ~1s+ from rec.start() to actual mic open (service connect). Arming
+// the 1.2s auto-submit at rec.start() time lets it fire before ANY audio is
+// captured → empty auto-submit that previously died silent. Fix: arm the
+// 1.2s submit ONLY after onstart or first result/speech; a separate 4s
+// start timeout surfaces 'Mic tidak mulai' instead of silent death.
+// 1.2s submit values below are UNCHANGED.
+var QV2_REC_START_TIMEOUT_MS = 4000;
+var QV2_VOICE_DEBUG_MAX = 30;
+
+// Privacy-safe mic lifecycle ring buffer: {t, ev} with ev NAMES only —
+// NEVER transcripts, audio, or text content. Mirrored to
+// window.__QORA_VOICE_DEBUG (last ~30) + per-session counters for actionable
+// bug reports. See qvVoiceDebugLog / qvVoiceDebugDump.
+var qvVoiceDebugEvents = [];
+var qvVoiceDebugCounts = { start: 0, onstart: 0, result: 0, final: 0, submit: 0, empty_submit: 0, end: 0, restart: 0, timeout: 0, error: 0 };
+function qvVoiceDebugLog(ev) {
+  var name = String(ev || '').slice(0, 48);
+  // Redaction guard: ev must be a bare lifecycle token (no spaces, no
+  // transcript payload). Anything with whitespace is collapsed to its
+  // head token so transcript strings can NEVER leak into the buffer.
+  // Allowed: start, onstart, result, final, submit, empty_submit,
+  // error:<code>, end, restart, timeout (+ speech mapped to result).
+  try {
+    if (/[\s]/.test(name)) name = name.split(/\s+/)[0];
+    if (!name) return;
+  } catch (e) { return; }
+  var entry = { t: Date.now(), ev: name };
+  try {
+    qvVoiceDebugEvents.push(entry);
+    if (qvVoiceDebugEvents.length > QV2_VOICE_DEBUG_MAX)
+      qvVoiceDebugEvents.splice(0, qvVoiceDebugEvents.length - QV2_VOICE_DEBUG_MAX);
+    var key = name.split(':')[0];
+    if (qvVoiceDebugCounts[key] !== undefined) qvVoiceDebugCounts[key]++;
+    else if (key === 'speech') qvVoiceDebugCounts.result++;
+    try {
+      if (typeof window !== 'undefined' && window) {
+        window.__QORA_VOICE_DEBUG = qvVoiceDebugEvents;
+        window.__QORA_VOICE_DEBUG_COUNTS = qvVoiceDebugCounts;
+      }
+    } catch (eW) {}
+  } catch (e2) {}
+}
+function qvVoiceDebugDump() {
+  try {
+    return JSON.stringify({ events: qvVoiceDebugEvents.slice(), counts: qvVoiceDebugCounts });
+  } catch (e) { return '{"events":[],"counts":{}}'; }
+}
+function qvVoiceDebugReset() {
+  try {
+    qvVoiceDebugEvents = [];
+    qvVoiceDebugCounts = { start: 0, onstart: 0, result: 0, final: 0, submit: 0, empty_submit: 0, end: 0, restart: 0, timeout: 0, error: 0 };
+    try {
+      if (typeof window !== 'undefined' && window) {
+        window.__QORA_VOICE_DEBUG = qvVoiceDebugEvents;
+        window.__QORA_VOICE_DEBUG_COUNTS = qvVoiceDebugCounts;
+      }
+    } catch (eW) {}
+  } catch (e) {}
+}
+// One-line empty-submit summary (counts + timings, NEVER text content).
+function qvFormatEmptySubmitDebug(o) {
+  o = o || {};
+  try {
+    var parts = ['empty_submit',
+      'results=' + (o.results | 0),
+      'finals=' + (o.finals | 0),
+      'restarts=' + (o.restarts | 0),
+      'elapsed_ms=' + (o.elapsedMs | 0),
+      'warmed=' + (o.warmed ? 1 : 0),
+      'heard=' + (o.heard ? 1 : 0)];
+    return '[qv-voice] ' + parts.join(' ');
+  } catch (e) { return '[qv-voice] empty_submit'; }
+}
 
 // Word-level overlap-join for accumulated FINAL transcripts. Chrome with
 // continuous=true re-emits prior finals re-segmented (e.g. 'sudah' then
@@ -243,6 +317,38 @@ function qvRecErrorAction(code, hasFinal) {
 function qvVoiceRestartAllowed(failures, maxFailures) {
   var m = (typeof maxFailures === 'number' && maxFailures >= 0) ? maxFailures : QV2_REC_MAX_RESTARTS;
   return failures < m;
+}
+// Empty-submit decision (never fail silent): no final → visible hint state,
+// NOT bare idle. hasHeard = any interim/final/audio ever observed this
+// session; fromSilence kept for caller compat but NEVER yields ''.
+function qvDecideEmptySubmit(o) {
+  o = o || {};
+  var hasFinal = !!String(o.finalText || '').trim();
+  if (hasFinal) return { action: 'submit' };
+  return { action: 'hint', phase: 'idle', hint: 'Tidak terdengar — tap lagi dan bicara' };
+}
+function qvEmptySubmitHint(hasHeard, fromSilence) {
+  var d = qvDecideEmptySubmit({ finalText: '', hasHeard: !!hasHeard, fromSilence: !!fromSilence });
+  return d.hint || 'Tidak terdengar — tap lagi dan bicara';
+}
+// Warmup-guard arming rule: arm the 1.2s submit ONLY after onstart or first
+// result/speech. Pure so node tests can assert the race is closed.
+function qvShouldArmSubmitTimer(o) {
+  o = o || {};
+  return !!(o.started || o.hasResult || o.heard);
+}
+function qvWarmupTimedOut(o) {
+  o = o || {};
+  return !o.started && !o.hasResult && !o.heard;
+}
+// Restart accounting (flaky-net safe): ONLY rec.start() THROWS count toward
+// the cap; ANY result/speech resets to 0; clean onend loops leave the count
+// unchanged so they keep working. Cap (3) still guards genuine throw-loops.
+function qvNextRestartCount(failures, event) {
+  var f = (typeof failures === 'number' && failures >= 0) ? failures : 0;
+  if (event === 'throw') return f + 1;
+  if (event === 'result' || event === 'speech') return 0;
+  return f;
 }
 
 // ── Adaptive endpointing flag (ADR §3.2) ─────────────────────────────────
@@ -687,12 +793,22 @@ function QV2VoiceRoom(props) {
   var epReasonRef = React.useRef(''); // endpoint reason → server telemetry
   var voiceCtlRef = React.useRef(null); // AbortController for in-flight voice turn
   var turnGenRef = React.useRef(0); // voice-turn generation: tap-cancel bumps, late results ignored
-  var restartRef = React.useRef(0); // consecutive onend auto-restarts with no transcript
+  var restartRef = React.useRef(0); // rec.start() THROW count only (clean onend loops don't count)
+  var startTimerRef = React.useRef(null); // 4s mic-start timeout (warmup guard)
+  var warmedRef = React.useRef(false); // onstart fired (mic actually open)
+  var heardRef = React.useRef(false); // any interim/final/audio observed this session
+  var sessStartRef = React.useRef(0); // session start ts for empty-submit diagnostics
+  var resultCountRef = React.useRef(0); // per-session result events (debug summary)
+  var finalCountRef = React.useRef(0); // per-session non-empty finals (debug summary)
   phaseRef.current = phase;
 
   function clearTimer() {
     try { if (timerRef.current) clearTimeout(timerRef.current); } catch (e) {}
     timerRef.current = null;
+  }
+  function clearStartTimer() {
+    try { if (startTimerRef.current) clearTimeout(startTimerRef.current); } catch (e) {}
+    startTimerRef.current = null;
   }
   // Plain baseline: any pause ≥1.2s auto-submits (interim and final alike).
   // Manual tap anytime.
@@ -708,6 +824,7 @@ function QV2VoiceRoom(props) {
   function stopRec() {
     wantRef.current = false;
     clearTimer();
+    clearStartTimer();
     try { if (epRef.current && epRef.current.timer) clearTimeout(epRef.current.timer); } catch (e) {}
     var r = recRef.current;
     recRef.current = null;
@@ -803,6 +920,18 @@ function QV2VoiceRoom(props) {
     finalRef.current = ''; submittedRef.current = false;
     epReasonRef.current = '';
     try { restartRef.current = 0; } catch (eR0) {}
+    // Warmup-guard reset + stale-timer clear (fixes silent-timer race: a
+    // pending 1.2s baseline timer from a prior session must NEVER fire into
+    // the new one).
+    clearTimer();
+    clearStartTimer();
+    try { if (epRef.current && epRef.current.timer) clearTimeout(epRef.current.timer); } catch (eEp0) {}
+    try { warmedRef.current = false; } catch (eW0) {}
+    try { heardRef.current = false; } catch (eH0) {}
+    try { sessStartRef.current = Date.now(); } catch (eS0) {}
+    try { resultCountRef.current = 0; } catch (eC0) {}
+    try { finalCountRef.current = 0; } catch (eC1) {}
+    try { qvVoiceDebugLog('start'); } catch (eDbg0) {}
     // Adaptive tracker lives only when the flag is on; null otherwise so the
     // baseline path below runs byte-identical to the shipped behavior.
     epRef.current = qvVoiceAdaptive()
@@ -812,6 +941,7 @@ function QV2VoiceRoom(props) {
       : null;
     var rec;
     try { rec = new SR(); } catch (e) {
+      try { qvVoiceDebugLog('error:start-throw'); } catch (eDbgT) {}
       setPhase('error'); setVErr('Could not start microphone.');
       return;
     }
@@ -821,8 +951,42 @@ function QV2VoiceRoom(props) {
     rec.continuous = true;
     rec.interimResults = true;
     rec.maxAlternatives = 1;
+    // Warmup guard: mic is NOT open until onstart fires. The 1.2s submit
+    // timer arms HERE (or on first result/speech), never at rec.start().
+    rec.onstart = function () {
+      if (submittedRef.current) return;
+      try { warmedRef.current = true; } catch (eW) {}
+      try { qvVoiceDebugLog('onstart'); } catch (eDbg) {}
+      clearStartTimer();
+      if (!wantRef.current) return;
+      if (phaseRef.current !== 'listening') return;
+      // Arm only via the pure guard (started||heard) so node tests pin it.
+      var canArm = false;
+      try { canArm = qvShouldArmSubmitTimer({ started: true, hasResult: false, heard: !!heardRef.current }); } catch (eG) { canArm = true; }
+      if (!canArm) return;
+      try {
+        if (epRef.current) {
+          var ep0 = epRef.current;
+          if (!((ep0.finalText + ' ' + ep0.interimText).trim()) && !ep0.timer) {
+            (function (ep) {
+              ep.timer = setTimeout(function () {
+                if (!submittedRef.current && !((ep.finalText + ' ' + ep.interimText).trim())) finishSubmit(true);
+              }, QV2_SILENCE_INTERIM_MS);
+            })(ep0);
+          }
+        } else {
+          armSilence();
+        }
+      } catch (eArm) {}
+    };
     rec.onresult = function (e) {
       if (submittedRef.current) return;
+      // Flaky-net safe: ANY result resets the throw-loop counter (pure helper).
+      try { restartRef.current = qvNextRestartCount(restartRef.current, 'result'); } catch (eR) { try { restartRef.current = 0; } catch (eR2) {} }
+      try { resultCountRef.current = (resultCountRef.current | 0) + 1; } catch (eC) {}
+      // First observed result clears the 4s start timeout (mic is alive).
+      clearStartTimer();
+      try { qvVoiceDebugLog('result'); } catch (eDbgR) {}
       // REBUILD finals from the full results array every event (never append
       // deltas): Chrome re-delivers prior finals re-segmented across events
       // with continuous=true. Blind concatenation caused BOTH the old
@@ -839,8 +1003,11 @@ function QV2VoiceRoom(props) {
       } catch (err2) {}
       fin = fin.trim(); inter = inter;
       finalRef.current = fin;
-      // Any real transcript content resets the onend restart guard.
-      if ((fin + ' ' + inter).trim()) { try { restartRef.current = 0; } catch (eR) {} }
+      if ((fin + ' ' + inter).trim()) {
+        try { heardRef.current = true; } catch (eH) {}
+        try { qvVoiceDebugLog('final'); } catch (eDbgF) {}
+        try { finalCountRef.current = (finalCountRef.current | 0) + 1; } catch (eC2) {}
+      }
       if (epRef.current) { epObserveResult(fin, inter); return; }
       setInterim(((finalRef.current + ' ' + inter).trim()));
       // Any utterance content resets the clock: interim (user still shaping
@@ -849,9 +1016,20 @@ function QV2VoiceRoom(props) {
       if (fin.trim()) armSilence(QV2_SILENCE_FINAL_MS);
       else if (inter.trim()) armSilence(QV2_SILENCE_INTERIM_MS);
     };
+    // Speech edge resets the throw-loop counter + warmup flags on BOTH paths
+    // (baseline previously had none — flaky-net + warmup need it). Mapped to
+    // the 'result' debug token (allowed names only, no transcript).
+    function qvOnSpeechStart() {
+      if (submittedRef.current) return;
+      try { restartRef.current = qvNextRestartCount(restartRef.current, 'speech'); } catch (eRs) {}
+      try { heardRef.current = true; } catch (eHs) {}
+      clearStartTimer();
+      try { qvVoiceDebugLog('result'); } catch (eDbgS) {}
+    }
     if (epRef.current) {
-      // Adaptive-only recognition events (baseline has none of these).
+      // Adaptive recognition events (baseline speech handler below is separate).
       rec.onspeechstart = function () {
+        qvOnSpeechStart();
         var ep = epRef.current;
         if (!ep || submittedRef.current) return;
         ep.lastAudioTs = Date.now();
@@ -865,9 +1043,12 @@ function QV2VoiceRoom(props) {
         ep.lastAudioTs = Date.now(); // detection edge; quiet accrues from here
         epDecide(false);
       };
+    } else {
+      rec.onspeechstart = function () { qvOnSpeechStart(); };
     }
     rec.onerror = function (e) {
       var code = (e && e.error) || '';
+      try { qvVoiceDebugLog('error:' + String(code || 'unknown').slice(0, 24)); } catch (eDbgE) {}
       if (code === 'not-allowed' || code === 'service-not-allowed') {
         stopRec();
         setPhase('error');
@@ -880,8 +1061,11 @@ function QV2VoiceRoom(props) {
         if ((finalRef.current || '').trim()) { finishSubmit(true); return; }
         stopRec();
         if (phaseRef.current === 'listening') {
+          // Never fail silent (live dead-mic): always a visible hint, even
+          // for auto sessions (previously '' when auto=true).
           setPhase('idle');
-          setHint(auto ? '' : 'No speech detected — tap the mic and try again.');
+          setHint('Tidak terdengar — tap lagi dan bicara');
+          try { qvVoiceDebugLog('empty_submit'); } catch (eDbgEs) {}
         }
         return;
       }
@@ -897,7 +1081,9 @@ function QV2VoiceRoom(props) {
     };
     rec.onend = function () {
       // Chrome ends recognition on pauses by itself: if we still want to
-      // listen and nothing was submitted, restart (capped); else finalize.
+      // listen and nothing was submitted, restart; clean ends do NOT count
+      // toward the cap (flaky-net safe) — only rec.start() THROWS do.
+      try { qvVoiceDebugLog('end'); } catch (eDbgEnd) {}
       if (unmountedRef.current || submittedRef.current || !wantRef.current) return;
       if ((finalRef.current || '').trim()) { finishSubmit(true); return; }
       if (!qvVoiceRestartAllowed(restartRef.current, QV2_REC_MAX_RESTARTS)) {
@@ -910,8 +1096,8 @@ function QV2VoiceRoom(props) {
       }
       try {
         if (recRef.current === rec) {
-          restartRef.current++;
           rec.start();
+          try { qvVoiceDebugLog('restart'); } catch (eDbgRs) {}
           if (epRef.current) {
             epRef.current.lastAudioTs = Date.now();
             epDecide(false);
@@ -919,33 +1105,52 @@ function QV2VoiceRoom(props) {
           return;
         }
       } catch (e2) {
-        // rec.start() threw (mic dead): count it toward the cap, then idle
-        // (+ hint once capped) instead of a silent restart loop.
+        // rec.start() threw (mic dead / InvalidStateError on rapid
+        // stop->start): ONLY throws count toward the cap (pure helper).
+        try { restartRef.current = qvNextRestartCount(restartRef.current, 'throw'); } catch (eRc) {}
+        try { qvVoiceDebugLog('error:start-throw'); } catch (eDbgT2) {}
         try { stopRec(); } catch (e3) {}
         if (phaseRef.current === 'listening') {
+          // Never fail silent: visible hint even before the cap trips.
           setPhase('idle');
-          if (!qvVoiceRestartAllowed(restartRef.current, QV2_REC_MAX_RESTARTS))
-            setHint('Mic berhenti — tap lagi untuk bicara.');
+          setHint('Mic berhenti — tap lagi untuk bicara.');
         }
         return;
       }
       if (phaseRef.current === 'listening') setPhase('idle');
     };
+    function armStartTimeout() {
+      clearStartTimer();
+      startTimerRef.current = setTimeout(function () {
+        if (submittedRef.current || !wantRef.current) return;
+        var started = false, heard = false;
+        try { started = !!warmedRef.current; } catch (e1) {}
+        try { heard = !!heardRef.current; } catch (e2) {}
+        var timedOut = false;
+        try { timedOut = qvWarmupTimedOut({ started: started, hasResult: (resultCountRef.current | 0) > 0, heard: heard }); } catch (eG) { timedOut = !started && !heard; }
+        if (!timedOut) return;
+        // No onstart AND no result in ~4s → mic never opened. No silent death.
+        try { qvVoiceDebugLog('timeout'); } catch (eDbgT) {}
+        try { qvVoiceDebugLog('error:mic-not-started'); } catch (eDbgE) {}
+        try { stopRec(); } catch (eS) {}
+        clearStartTimer();
+        if (phaseRef.current === 'listening') {
+          setPhase('error');
+          setVErr('Mic tidak mulai — tap lagi');
+        }
+      }, QV2_REC_START_TIMEOUT_MS);
+    }
     try {
       rec.start();
       ensureAudio(); // unlock audio inside the tap gesture
       setPhase('listening');
-      if (epRef.current) {
-        // No-speech guard mirrors the baseline 3s auto-submit path: an empty
-        // room still resolves instead of listening forever. First result
-        // observation replaces this with the adaptive machine.
-        (function (ep) {
-          ep.timer = setTimeout(function () {
-            if (!submittedRef.current && !((ep.finalText + ' ' + ep.interimText).trim())) finishSubmit(true);
-          }, QV2_SILENCE_INTERIM_MS);
-        })(epRef.current);
-      } else armSilence();
+      // Warmup guard: do NOT arm the 1.2s submit here (mic may take ~1s+ to
+      // open on mobile Chrome). onstart / first result arms it; 4s start
+      // timeout guards a mic that never opens.
+      armStartTimeout();
     } catch (e) {
+      try { qvVoiceDebugLog('error:start-throw'); } catch (eDbgTC) {}
+      clearStartTimer();
       setPhase('error'); setVErr('Could not start microphone.');
     }
   }
@@ -953,13 +1158,37 @@ function QV2VoiceRoom(props) {
     if (submittedRef.current) return;
     submittedRef.current = true;
     var text = (finalRef.current || '').trim();
+    var heard = false;
+    try { heard = !!heardRef.current || !!text; } catch (eH) {}
     stopRec();
     setInterim('');
     if (!text) {
+      // Never fail silent: empty submit (no final AND no interim ever
+      // observed) lands on a VISIBLE hint state, not bare idle.
+      // idle-with-hint tap still restarts via onMicTap.
+      var dec = null;
+      try { dec = qvDecideEmptySubmit({ finalText: '', hasHeard: heard, fromSilence: !!fromSilence }); } catch (eD) {}
+      var hintText = (dec && dec.hint) || 'Tidak terdengar — tap lagi dan bicara';
+      try { qvVoiceDebugLog('empty_submit'); } catch (eDbgE2) {}
+      try {
+        if (typeof console !== 'undefined' && console.debug) {
+          var elapsed = 0;
+          try { elapsed = Date.now() - (sessStartRef.current || Date.now()); } catch (eEl) {}
+          console.debug(qvFormatEmptySubmitDebug({
+            results: (resultCountRef.current | 0),
+            finals: (finalCountRef.current | 0),
+            restarts: (restartRef.current | 0),
+            elapsedMs: elapsed,
+            warmed: !!warmedRef.current,
+            heard: heard,
+          }));
+        }
+      } catch (eDbg) {}
       setPhase('idle');
-      setHint(fromSilence ? '' : 'Nothing heard — tap the mic and try again.');
+      setHint(hintText);
       return;
     }
+    try { qvVoiceDebugLog('submit'); } catch (eDbgS2) {}
     submitUtterance(text);
   }
   async function submitUtterance(text) {
