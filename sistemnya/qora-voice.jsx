@@ -164,17 +164,19 @@ var QV2_VOICE_MAX_FRAME = 1048576; // 1 MiB (backend parity)
 var QV2_VOICE_MAX_JSON = 65536; // 64 KiB control-frame cap (backend parity)
 
 // ── Adaptive endpointing flag (ADR §3.2) ─────────────────────────────────
-// DEFAULT OFF: baseline timers (interim 3000ms / final 1200ms) run
-// byte-identical to the shipped behavior. Opt-in via
-//   localStorage['qora.voice.adaptive'] = '1'
-// or window.__QORA_VOICE_ADAPTIVE = true.
-// ROLLBACK = flag off (delete the localStorage key / set the override false).
+// DEFAULT ON (owner decision 12 Sep 2026): adaptive timers run for everyone.
+// Opt-out via
+//   localStorage['qora.voice.adaptive'] = '0'
+// or window.__QORA_VOICE_ADAPTIVE = false.
+// ROLLBACK = set the opt-out above.
 function qvVoiceAdaptive() {
   try {
+    if (typeof window !== 'undefined' && window.__QORA_VOICE_ADAPTIVE === false) return false;
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('qora.voice.adaptive') === '0') return false;
     if (typeof window !== 'undefined' && window.__QORA_VOICE_ADAPTIVE === true) return true;
     if (typeof localStorage !== 'undefined' && localStorage.getItem('qora.voice.adaptive') === '1') return true;
   } catch (e) {}
-  return false;
+  return true;
 }
 
 // Conservative endpoint thresholds (ADR §3.2, Table T). The python mirror in
