@@ -102,7 +102,10 @@ async def lifespan(_app: FastAPI):
         _log.warning("[catalog] pre-warm gagal", exc_info=True)
     # Phase 1: pre-warm shared V3 registry (386 YAML reads, ~8s) so the first
     # turn/catalogue view never pays a cold build holding request resources.
-    # Non-fatal: first request lazily builds under lock instead.
+    # Runs in lifespan BEFORE readiness: uvicorn only serves traffic after
+    # lifespan completes, so every worker has a warm registry before its
+    # first readiness probe can succeed. Non-fatal: first request lazily
+    # builds under lock instead.
     try:
         from app.domains.sessions.progress_adapter import cached_registry
         cached_registry()
@@ -120,6 +123,20 @@ async def lifespan(_app: FastAPI):
         _log.info("[llm] async client + admission ready")
     except Exception:
         _log.warning("[llm] async pre-open gagal", exc_info=True)
+    # Phase-1 voice foundation: open the persistent patient provider in the
+    # worker loop (same lifespan; never per-request). With PATIENT_LLM_*
+    # unset it reuses the frozen OpenCode topology with identical params;
+    # the judge keeps its own shared client untouched (no duplication: one
+    # patient provider + one shared client per worker, both singletons).
+    try:
+        from app.rag.patient_provider import (
+            open_patient_provider, patient_config_fingerprint,
+        )
+        await open_patient_provider()
+        _log.info("[patient] provider ready fp=%s",
+                  patient_config_fingerprint())
+    except Exception:
+        _log.warning("[patient] provider pre-open gagal", exc_info=True)
     # Speed (Sep 2026): one tiny non-stream warmup per worker so the first
     # real patient turn never pays cold TLS + gateway queue (~+1.5s measured).
     # Fire-and-forget, guarded, thinking-off (cheapest). Never blocks boot.
@@ -147,6 +164,11 @@ async def lifespan(_app: FastAPI):
     try:
         from app.rag.llm import close_async_llm
         await close_async_llm()
+    except Exception:
+        pass
+    try:
+        from app.rag.patient_provider import close_patient_provider
+        await close_patient_provider()
     except Exception:
         pass
 

@@ -271,7 +271,9 @@ async def v2_turn(session_id: str, req: V2TurnReq, user: User = Depends(get_curr
     n = snap.turn_no
     try:
         reply = await engine_v2.arespond(snap.case_id, history, req.text, language=snap.language,
-                                                 session_id=session_id)
+                                                  session_id=session_id,
+                                                  route="v2_turn",
+                                                  logical_turn_id=f"{session_id}:t{n + 1}")
     except FileNotFoundError:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{snap.case_id}' not found")
     from app.database import SessionLocal as _SessionLocal
@@ -303,7 +305,7 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
     import anyio
 
     from app.domains.sessions.turn_acceptance import accept_turn
-    from app.shared.admission import admission_wait_s, conversation_limiter, idle_timeout_s
+    from app.shared.admission import admission_wait_s, idle_timeout_s, patient_limiter
     from app.shared.perf_marks import TurnClock
     clock = TurnClock(route="v2_turn_stream", schema="legacy")
     clock.mark("request_received")
@@ -337,7 +339,7 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
     clock.mark("db_preflight_done")
     db.close()  # release pool connection before inference (H1 fix, Phase 2)
 
-    limiter = conversation_limiter()
+    limiter = patient_limiter()
     try:
         with anyio.fail_after(admission_wait_s()):
             await limiter.acquire()
@@ -355,7 +357,9 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
         outcome = "complete"
         clock.mark("llm_request_start")
         stream = engine_v2.astream_respond(case_id, history, req.text, language=language,
-                                                session_id=session_id)
+                                                 session_id=session_id,
+                                                 route="v2_turn_stream",
+                                                 logical_turn_id=f"{session_id}:t{n + 1}")
         aiter = stream.__aiter__()
         async def _close_upstream():
             try:

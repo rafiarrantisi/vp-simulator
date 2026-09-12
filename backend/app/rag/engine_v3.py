@@ -19,7 +19,8 @@ from __future__ import annotations
 from collections.abc import AsyncIterator, Iterator
 
 from app.config import get_settings
-from app.rag.llm import astream_patient, get_async_llm_client, get_llm_client
+from app.rag.llm import astream_patient, get_llm_client
+from app.rag.patient_provider import get_patient_provider
 from app.rag.prompt import build_messages, is_first_turn
 from pipeline.case_v3.models import ClinicalVariant
 from pipeline.case_v3.runtime import candidate_safe_view
@@ -131,16 +132,22 @@ def stream_respond(v: ClinicalVariant, history: list[dict], user_message: str,
 
 async def astream_respond(v, history: list[dict], user_message: str,
                           language: str = "en",
-                          persona: dict | None = None, session_id: str | None = None) -> AsyncIterator[str]:
+                          persona: dict | None = None, session_id: str | None = None,
+                          route: str = "v3_patient",
+                          logical_turn_id: str | None = None) -> AsyncIterator[str]:
     """Async twin of `stream_respond`: identical prompt assembly and params,
-    nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact."""
+    nonblocking upstream wait (§7.1b). Sync version kept as fallback artifact.
+
+    Phase-1: streams through the patient provider seam (OpenCode
+    chat-completions behavior unchanged); route/logical_turn_id feed the
+    attempt timeline only."""
     system, messages = _prepare(v, history, user_message,
                                 language=language, persona=persona)
     # Guarded patient path: TTFT + total caps, one retry on a fresh lane.
     child = astream_patient(
-        get_async_llm_client(), system, messages,
+        get_patient_provider(), system, messages,
         max_tokens=get_settings().llm_persona_max_tokens,
-        session_id=session_id,
+        session_id=session_id, route=route, logical_turn_id=logical_turn_id,
     )
     try:
         async for chunk in child:
@@ -157,15 +164,18 @@ async def astream_respond(v, history: list[dict], user_message: str,
 async def arespond(v, history: list[dict], user_message: str,
                    language: str = "en",
                    persona: dict | None = None,
-                   session_id: str | None = None) -> str:
+                   session_id: str | None = None,
+                   route: str = "v3_patient",
+                   logical_turn_id: str | None = None) -> str:
     """Async twin of `respond`: identical assembly/params, nonblocking wait."""
     system, messages = _prepare(v, history, user_message,
                                 language=language, persona=persona)
     # Same guarded path as streaming (joined); identical output contract.
     parts = []
     async for chunk in astream_patient(
-            get_async_llm_client(), system, messages,
+            get_patient_provider(), system, messages,
             max_tokens=get_settings().llm_persona_max_tokens,
-            session_id=session_id):
+            session_id=session_id, route=route,
+            logical_turn_id=logical_turn_id):
         parts.append(chunk)
     return "".join(parts).strip()

@@ -207,13 +207,12 @@ def test_mixed_judge_load_keeps_chat_flowing(monkeypatch):
 
 
 
-def test_upstream_closed_on_cancel():
+def test_upstream_closed_on_cancel(monkeypatch):
     """Cancellation propagates down the bridge chain to the provider
     stream (no dangling upstream connection)."""
     import asyncio
-    from types import SimpleNamespace
 
-    import app.rag.llm as llm_mod
+    import app.rag.patient_provider as pp_mod
     from app.rag import engine_v3
 
     closed = []
@@ -240,18 +239,18 @@ def test_upstream_closed_on_cancel():
 
             return gen()
 
-    llm_mod._async_client = C()
-    try:
-        from pipeline.case_v3.loader import default_registry
+    # Phase-1: engines stream through the patient provider seam, not the
+    # legacy shared singleton — inject the recording transport there.
+    monkeypatch.setattr(engine_v3, "get_patient_provider", lambda: C())
+    monkeypatch.setattr(pp_mod, "_provider", None, raising=False)
+    from pipeline.case_v3.loader import default_registry
 
-        v = default_registry().variants["dengue_001_mild"]
+    v = default_registry().variants["dengue_001_mild"]
 
-        async def go():
-            it = engine_v3.astream_respond(v, [], "hi?")
-            assert (await it.__anext__()) == "a "
-            await it.aclose()
+    async def go():
+        it = engine_v3.astream_respond(v, [], "hi?")
+        assert (await it.__anext__()) == "a "
+        await it.aclose()
 
-        asyncio.run(go())
-    finally:
-        llm_mod._async_client = None
+    asyncio.run(go())
     assert closed == [True]

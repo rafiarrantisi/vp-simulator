@@ -59,14 +59,19 @@ def _clean_llm_singletons():
     """LLM settings/client singletons leak across tests (lru_cache + module
     globals). Reset before/after so stub isolation from conftest holds."""
     import app.rag.llm as llm_mod
+    import app.rag.patient_provider as pp_mod
     from app.config import get_settings
 
     llm_mod._client = None
     llm_mod._async_client = None
+    pp_mod._provider = None
+    pp_mod._provider_key = None
     get_settings.cache_clear()
     yield
     llm_mod._client = None
     llm_mod._async_client = None
+    pp_mod._provider = None
+    pp_mod._provider_key = None
     get_settings.cache_clear()
 
 

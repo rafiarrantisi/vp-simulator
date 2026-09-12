@@ -110,4 +110,12 @@ class TurnClock:
             )
         except Exception:
             pass
+        # Phase-1: same record ALSO goes to the queryable JSONL sink
+        # (backend/data/perf/turn_perf-*.jsonl) for p50/p90/p95 per route.
+        # Logger output is unchanged; sink write is total (never raises).
+        try:
+            from app.shared.perf_sink import append_record
+            append_record(summary)
+        except Exception:
+            pass
         return summary

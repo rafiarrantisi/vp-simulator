@@ -4,7 +4,11 @@ Per-worker-local semaphores (NOT a global correctness mechanism — cross-worker
 hard requirements stay on authoritative DB state). Starting points from the
 brief, tunable via env; production values must come from benchmark:
 
-- conversation: 64 concurrent streams per worker (QORA_CONV_LIMIT);
+- patient: 64 concurrent streams per worker (QORA_PATIENT_LIMIT) — the
+  latency-critical conversational path (Phase-1: explicitly named, separate
+  object from judge);
+- conversation: legacy alias of the patient limiter (kept for backward
+  compat; same object);
 - judge: 1 active generation per worker (QORA_JUDGE_LIMIT);
 - DB bridge: bounded thread units for sync finalization (QORA_DB_THREADS).
 
@@ -21,6 +25,7 @@ import anyio
 _log = logging.getLogger("qora.perf")
 
 _CONV_DEFAULT = 64
+_PATIENT_DEFAULT = 64  # same bound, SEPARATE semaphore from judge by design
 _JUDGE_DEFAULT = 1
 _DB_THREADS_DEFAULT = 8
 
@@ -34,14 +39,18 @@ def _int_env(name: str, default: int) -> int:
 
 
 _conv: anyio.Semaphore | None = None
+_patient: anyio.Semaphore | None = None
 _judge: anyio.Semaphore | None = None
 _db_limiter: anyio.CapacityLimiter | None = None
 
 
 def init_admission() -> None:
     """Build limiters in the worker loop (lifespan startup). Total, never raises."""
-    global _conv, _judge, _db_limiter
+    global _conv, _patient, _judge, _db_limiter
     try:
+        if _patient is None:
+            _patient = anyio.Semaphore(
+                _int_env("QORA_PATIENT_LIMIT", _PATIENT_DEFAULT))
         if _conv is None:
             _conv = anyio.Semaphore(_int_env("QORA_CONV_LIMIT", _CONV_DEFAULT))
         if _judge is None:
@@ -53,7 +62,22 @@ def init_admission() -> None:
         _log.warning("admission init failed", exc_info=True)
 
 
+def patient_limiter() -> anyio.Semaphore:
+    """Phase-1 named patient semaphore (conversational path ONLY).
+
+    Separate object from judge_limiter() by construction: patient tail-control
+    never contends with scoring. Same default bound (64) as the legacy
+    conversation limiter — effective capacity unchanged.
+    """
+    global _patient
+    if _patient is None:
+        _patient = anyio.Semaphore(
+            _int_env("QORA_PATIENT_LIMIT", _PATIENT_DEFAULT))
+    return _patient
+
+
 def conversation_limiter() -> anyio.Semaphore:
+    """Legacy alias kept for backward compat (existing callers/tests)."""
     global _conv
     if _conv is None:
         _conv = anyio.Semaphore(_int_env("QORA_CONV_LIMIT", _CONV_DEFAULT))
@@ -78,6 +102,7 @@ def db_limiter() -> anyio.CapacityLimiter:
 def limits_snapshot() -> dict:
     """Current configured bounds (for evidence/debugging, no live counts)."""
     return {
+        "patient": _int_env("QORA_PATIENT_LIMIT", _PATIENT_DEFAULT),
         "conversation": _int_env("QORA_CONV_LIMIT", _CONV_DEFAULT),
         "judge": _int_env("QORA_JUDGE_LIMIT", _JUDGE_DEFAULT),
         "db_threads": _int_env("QORA_DB_THREADS", _DB_THREADS_DEFAULT),

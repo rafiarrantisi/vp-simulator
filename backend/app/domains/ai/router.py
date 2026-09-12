@@ -114,6 +114,42 @@ _EOF = struct.pack(">I", 0)
 _TTS_STREAM_MAX_CHARS = 2000  # credit guard per request
 
 
+def _tts_frames(text: str, voice: str | None, style: str | None,
+                lang: str | None, session_ref: str):
+    """Framed PCM generator for tts/stream (extracted for auditability).
+
+    Phase-1 event-loop audit (Run 1, measured — see
+    tests/test_voice_phase1_foundation.py::test_tts_stream_off_event_loop):
+    `stream_pcm` is a BLOCKING gRPC generator, but this code never runs on
+    the event loop. The route is a sync `def` (Starlette runs it in a worker
+    thread) and the response body is a sync iterable (Starlette consumes it
+    via iterate_in_threadpool). No bounded-thread offload was added: the
+    framework already provides it. Do NOT convert this route to
+    `async def` without re-auditing — an async route consuming a blocking
+    generator inline WOULD stall the loop.
+    """
+    from app.voice.tts import _drop_client
+
+    from app.voice.tts import stream_pcm as _stream_pcm
+    for attempt in (0, 1):
+        try:
+            for chunk in _stream_pcm(text, voice=voice, style=style or None,
+                                     language=lang):
+                yield struct.pack(">I", len(chunk)) + chunk
+            yield _EOF
+            return
+        except TtsFailed as e:
+            import logging as _logging
+            _logging.getLogger("qora.tts").warning(
+                "tts stream attempt %d failed for session %s: %s",
+                attempt, (session_ref or "")[:8], str(e)[:150])
+            _drop_client()  # broken channel must not poison the next turn
+        except Exception:  # noqa: BLE001
+            _drop_client()
+            return
+    # both attempts failed: no terminator -> client falls back to text
+
+
 @router.post("/tts/stream")
 def tts_stream(req: TtsStreamRequest, user: User = Depends(get_current_user),
                db: OrmSession = Depends(get_db)):
@@ -139,24 +175,7 @@ def tts_stream(req: TtsStreamRequest, user: User = Depends(get_current_user),
     voice, style, lang = resolve_voice(s, db)
 
     def _frames():
-        from app.voice.tts import _drop_client
-        for attempt in (0, 1):
-            try:
-                for chunk in stream_pcm(text, voice=voice, style=style or None,
-                                        language=lang):
-                    yield struct.pack(">I", len(chunk)) + chunk
-                yield _EOF
-                return
-            except TtsFailed as e:
-                import logging as _logging
-                _logging.getLogger("qora.tts").warning(
-                    "tts stream attempt %d failed for session %s: %s",
-                    attempt, req.session_id[:8], str(e)[:150])
-                _drop_client()  # broken channel must not poison the next turn
-            except Exception:  # noqa: BLE001
-                _drop_client()
-                return
-        # both attempts failed: no terminator -> client falls back to text
+        yield from _tts_frames(text, voice, style, lang, req.session_id)
 
     def _gen():
         yield from _frames()

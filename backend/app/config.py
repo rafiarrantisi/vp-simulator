@@ -56,6 +56,20 @@ class Settings(BaseSettings):
     # truncates patient replies (reasoning eats the budget -> empty/"...."
     # responses). 1024 keeps reasoning + full content safe.
     llm_persona_max_tokens: int = 350  # patient replies are 1-2 sentences; cap bounds runaway generation tail (latency + cost), never truncates restrained replies
+    # ── Patient runtime scope (Phase-1 voice foundation; HARD constraint:
+    # NO provider/model migration). Empty (= default) means "inherit the
+    # shared LLM_* values", so patient AND judge stay on OpenCode zen
+    # (LLM_BASE_URL=https://opencode.ai/zen/go/v1) + deepseek-v4-flash with
+    # identical params. Setting PATIENT_LLM_* only takes effect through the
+    # patient provider factory (app/rag/patient_provider.py); the judge
+    # ALWAYS reads LLM_* directly and is unaffected by these overrides.
+    # Persona sampling knobs (temperature 0.5, max_tokens above) are shared
+    # on purpose: a future provider swap must stay config-only without
+    # changing sampling behavior.
+    patient_llm_provider: str = ""  # empty → llm_provider
+    patient_llm_api_key: str = ""   # empty → llm_api_key (server-side only)
+    patient_llm_base_url: str = ""  # empty → llm_base_url
+    patient_llm_model: str = ""     # empty → llm_model
     # Judge JSON is large (per_item × all dimensions + feedback). Reasoning is
     # DISABLED for OpenRouter (llm.py) so this budget is pure content — 8000
     # covers the biggest OSCE cases without truncation.
@@ -171,6 +185,34 @@ class Settings(BaseSettings):
 
     def stt_key(self) -> str:
         return self.stt_api_key or self.llm_api_key
+
+    # ── Patient runtime resolvers (Phase-1; judge never calls these) ──
+    def patient_provider(self) -> str:
+        return self.patient_llm_provider or self.llm_provider
+
+    def patient_api_key(self) -> str:
+        return self.patient_llm_api_key or self.llm_api_key
+
+    def patient_base_url(self) -> str:
+        return self.patient_llm_base_url or self.llm_base_url
+
+    def patient_model(self) -> str:
+        return self.patient_llm_model or self.llm_model
+
+    def patient_overrides(self) -> dict:
+        """Which PATIENT_LLM_* knobs are explicitly set (non-secret names
+        only — never values). Empty dict = full LLM_* inheritance, i.e. the
+        frozen Phase-1 topology (patient == judge endpoint, identical params)."""
+        out = {}
+        if self.patient_llm_provider:
+            out["provider"] = True
+        if self.patient_llm_api_key:
+            out["api_key"] = True
+        if self.patient_llm_base_url:
+            out["base_url"] = True
+        if self.patient_llm_model:
+            out["model"] = True
+        return out
 
     def is_prod(self) -> bool:
         return self.env.lower() in ("prod", "production", "staging")

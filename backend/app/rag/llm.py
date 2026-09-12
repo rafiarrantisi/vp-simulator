@@ -99,27 +99,118 @@ async def _iter_guarded(agen, first_timeout: float, total_timeout: float):
 async def astream_patient(client, system, messages, *, max_tokens,
                           session_id: str | None = None,
                           first_token_timeout: float = _PATIENT_FIRST_TOKEN_S,
-                          total_timeout: float = _PATIENT_TOTAL_S):
+                          total_timeout: float = _PATIENT_TOTAL_S,
+                          route: str = "patient_turn",
+                          logical_turn_id: str | None = None):
     """Patient turn with TTFT + total guardrails; ONE retry on a fresh gateway
     lane (stall terobservasi = lane-specific). Yields tokens progressively.
     Patient-only: thinking off. Raises TimeoutError/RuntimeError bila 2
-    attempt gagal (router mengubahnya jadi pesan retry yang ramah)."""
+    attempt gagal (router mengubahnya jadi pesan retry yang ramah).
+
+    Phase-1 retry map (patient streaming path — the stacking audit):
+      L0 SDK automatic retries ... DISABLED on the patient client
+         (max_retries=0 via the patient provider; ADR §4.3). The shared
+         judge/sync client keeps the SDK default (2) — judge untouched.
+         Previously L0 stacked invisibly under L2/L4 on setup failures.
+      L1 _with_retry/_with_retry_async (module, up to 3 tries, 1.5/3/4.5s
+         sleeps) ... generate/agenerate ONLY (sync respond + judge paths).
+         NOT on this streaming path. Unchanged.
+      L2 THIS loop ................ max 2 attempts (0,1); 7.0s TTFT guard +
+         20.0s total guard unchanged. Attempt 1 uses a fresh lane
+         ("{session}-r0"); zero-content clean streams retry like stalls.
+      L3 router stream (v2_turn_stream / v3c.stream_turn) ... NO retry:
+         raises (v2) or yields one in-stream error string (v3). Unchanged.
+      L4 frontend send() (sistemnya/qora-v2.jsx) ... stream failure → ONE
+         non-stream POST /turns fallback (server dedupes via dup_reply).
+         NOT edited in Run 1 (frontend out of scope) — documented here.
+    Worst case per user send: 2 (L2 stream) + 2 (L2 via L4 fallback) = 4 LLM
+    attempts. `client` may be a legacy async client or a PatientLLMProvider
+    (duck-typed: a `describe()` hook supplies model/endpoint labels for the
+    attempt timeline; transport signature is identical).
+
+    Emits attempt_started / retry_started / first_content / full_completion
+    timeline events (timing/IDs/lengths only) via observability.
+    """
+    from app.shared.observability import log_patient_attempt
     transient = _stream_transient_types()
     lane = session_id
+    try:
+        _describe = client.describe()  # type: ignore[attr-defined]
+    except Exception:
+        _describe = {}
+    try:
+        _model = _describe.get("model", "")
+        _endpoint = _describe.get("endpoint_kind", "chat_completions")
+    except Exception:
+        _model, _endpoint = "", "chat_completions"
+    try:
+        from app.shared.perf_sink import lane_hash as _lane_hash
+    except Exception:
+        def _lane_hash(v):
+            return ""
     last_exc: Exception | None = None
     for attempt in (0, 1):
+        if attempt == 1:
+            try:
+                log_patient_attempt(
+                    "retry_started", route=route,
+                    logical_turn_id=logical_turn_id, session_id=session_id,
+                    attempt=attempt, lane_hash=_lane_hash(lane),
+                    model=_model, endpoint_kind=_endpoint,
+                    error=type(last_exc).__name__ if last_exc else "")
+            except Exception:
+                pass
+        try:
+            log_patient_attempt(
+                "attempt_started", route=route,
+                logical_turn_id=logical_turn_id, session_id=session_id,
+                attempt=attempt, lane_hash=_lane_hash(lane),
+                model=_model, endpoint_kind=_endpoint)
+        except Exception:
+            pass
+        attempt_t0 = time.monotonic()
         try:
             got_any = False
+            first_at: float | None = None
+            out_chars = 0
             async for tok in _iter_guarded(
                     client.astream(system, messages, max_tokens=max_tokens,
                                    fast=True, session_id=lane),
                     first_token_timeout, total_timeout):
-                got_any = True
+                if not got_any:
+                    got_any = True
+                    first_at = time.monotonic()
+                    try:
+                        log_patient_attempt(
+                            "first_content", route=route,
+                            logical_turn_id=logical_turn_id,
+                            session_id=session_id, attempt=attempt,
+                            lane_hash=_lane_hash(lane), model=_model,
+                            endpoint_kind=_endpoint,
+                            ttft_ms=(first_at - attempt_t0) * 1000.0)
+                    except Exception:
+                        pass
+                try:
+                    out_chars += len(str(tok))
+                except Exception:
+                    pass
                 yield tok
             if not got_any:
                 # Clean stream with zero content tokens (transient upstream
                 # truncation observed Sep 2026) — retry once like a stall.
                 raise TimeoutError("patient turn returned no content")
+            try:
+                log_patient_attempt(
+                    "full_completion", route=route,
+                    logical_turn_id=logical_turn_id, session_id=session_id,
+                    attempt=attempt, lane_hash=_lane_hash(lane), model=_model,
+                    endpoint_kind=_endpoint,
+                    ttft_ms=((first_at - attempt_t0) * 1000.0
+                             if first_at else 0.0),
+                    total_ms=(time.monotonic() - attempt_t0) * 1000.0,
+                    output_chars=out_chars)
+            except Exception:
+                pass
             return
         except transient as e:
             last_exc = e
@@ -275,8 +366,16 @@ class StubLlmClient:
             yield tok + " "
 
 
-def _openai_compatible(base_url: str | None):
-    """OpenRouter & OpenAI sama-sama pakai SDK `openai`."""
+def _openai_compatible(base_url: str | None, sdk_retries: int | None = None,
+                       api_key: str | None = None):
+    """OpenRouter & OpenAI sama-sama pakai SDK `openai`.
+
+    Phase-1: `sdk_retries` disables the SDK's invisible automatic retries on
+    patient clients (ADR §4.3 — SDK retries used to stack under the
+    astream_patient fresh-lane policy and _with_retry). None (default) =
+    historical behavior: the kwarg is not passed at all, so the SDK default
+    applies. The judge/shared path NEVER passes it (judge untouched).
+    """
     s = get_settings()
     try:
         from openai import OpenAI
@@ -288,12 +387,15 @@ def _openai_compatible(base_url: str | None):
     if s.llm_app_title:
         headers["X-Title"] = s.llm_app_title
     headers = _gateway_headers(base_url, headers)
-    client = OpenAI(
-        api_key=s.llm_api_key,
-        base_url=base_url or None,
-        default_headers=headers or None,
-        timeout=120.0,  # judge/patient calls must not hang the UI forever
-    )
+    _cli_kwargs: dict = {
+        "api_key": api_key if api_key is not None else s.llm_api_key,
+        "base_url": base_url or None,
+        "default_headers": headers or None,
+        "timeout": 120.0,  # judge/patient calls must not hang the UI forever
+    }
+    if sdk_retries is not None:
+        _cli_kwargs["max_retries"] = sdk_retries
+    client = OpenAI(**_cli_kwargs)
 
     def _err(r):
         e = getattr(r, "error", None)
@@ -439,9 +541,16 @@ def is_stub() -> bool:
     return isinstance(get_llm_client(), StubLlmClient)
 
 
-def _openai_async_compatible(base_url: str | None):
+def _openai_async_compatible(base_url: str | None, sdk_retries: int | None = None,
+                               api_key: str | None = None,
+                               default_model: str | None = None):
     """OpenRouter & OpenAI via async SDK. One persistent client per worker,
-    opened at lifespan startup and closed at shutdown (§7.1a)."""
+    opened at lifespan startup and closed at shutdown (§7.1a).
+
+    Phase-1: `sdk_retries` — see `_openai_compatible`. The patient provider
+    passes 0 (ADR §4.3 destack); every other caller leaves None (SDK
+    default, historical behavior, judge untouched).
+    """
     s = get_settings()
     try:
         from openai import AsyncOpenAI
@@ -453,12 +562,15 @@ def _openai_async_compatible(base_url: str | None):
     if s.llm_app_title:
         headers["X-Title"] = s.llm_app_title
     headers = _gateway_headers(base_url, headers)
-    aclient = AsyncOpenAI(
-        api_key=s.llm_api_key,
-        base_url=base_url or None,
-        default_headers=headers or None,
-        timeout=120.0,
-    )
+    _cli_kwargs: dict = {
+        "api_key": api_key if api_key is not None else s.llm_api_key,
+        "base_url": base_url or None,
+        "default_headers": headers or None,
+        "timeout": 120.0,
+    }
+    if sdk_retries is not None:
+        _cli_kwargs["max_retries"] = sdk_retries
+    aclient = AsyncOpenAI(**_cli_kwargs)
 
     def _content_guard(content) -> str:
         content = content or ""
@@ -468,6 +580,9 @@ def _openai_async_compatible(base_url: str | None):
 
     class _OAI_ASYNC:
         _sdk = aclient
+        # Phase-1: patient provider may override the default model (None =
+        # historical s.llm_model). Explicit per-call `model=` still wins.
+        _default_model = default_model
 
         @staticmethod
         def _extra():
@@ -487,7 +602,8 @@ def _openai_async_compatible(base_url: str | None):
                     bu = str(getattr(aclient, "base_url", "") or "")
                     extra.update(_thinking_off_extra(bu) or {})
                 kwargs = _chat_kwargs(
-                    model=model or s.llm_model, system=system, messages=messages,
+                    model=model or self._default_model or s.llm_model,
+                    system=system, messages=messages,
                     temperature=0.5 if temperature is None else temperature,
                     max_tokens=max_tokens, timeout=timeout, stream=False,
                     extra_body=extra or None)
@@ -511,7 +627,8 @@ def _openai_async_compatible(base_url: str | None):
                 bu = str(getattr(aclient, "base_url", "") or "")
                 extra.update(_thinking_off_extra(bu) or {})
             kwargs = _chat_kwargs(
-                model=model or s.llm_model, system=system, messages=messages,
+                model=model or self._default_model or s.llm_model,
+                system=system, messages=messages,
                 temperature=0.5, max_tokens=max_tokens, timeout=None,
                 stream=True, extra_body=extra or None)
             if session_id:

@@ -32,6 +32,12 @@ if not _LIVE_LLM:
     # Force deterministic stub LLM (no paid calls, no network).
     os.environ["LLM_API_KEY"] = ""
 
+# Phase-1 voice foundation: keep the queryable perf sink out of the repo
+# during tests (same isolation principle as the test DB). Explicit opt-in
+# via QORA_PERF_DIR preserves a custom location when set.
+if not os.environ.get("QORA_PERF_DIR"):
+    os.environ["QORA_PERF_DIR"] = "/tmp/qora_test_perf"
+
 # Clear any cached Settings so the overrides above take effect even if
 # something imported app.config before conftest finished loading.
 try:

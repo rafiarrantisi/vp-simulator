@@ -294,7 +294,9 @@ async def turn(snap, user_id: str, text: str,
     n = snap.turn_no
     try:
         reply = await v3_arespond(v, history, text, language=snap.language or "en",
-                                  persona=snap.persona, session_id=snap.session_id)
+                                  persona=snap.persona, session_id=snap.session_id,
+                                  route="v3_turn",
+                                  logical_turn_id=f"{snap.session_id}:t{n + 1}")
     except Exception as e:  # noqa: BLE001
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, f"patient LLM failed: {e}")
     from app.database import SessionLocal as _SessionLocal
@@ -343,7 +345,7 @@ async def stream_turn(snap, user_id: str, text: str,
     from app.rag.engine_v3 import astream_respond as v3_astream
     from app.domains.billing import service as billing
     from app.shared.admission import (
-        admission_wait_s, conversation_limiter, idle_timeout_s,
+        admission_wait_s, idle_timeout_s, patient_limiter,
     )
     from app.shared.perf_marks import TurnClock
     clock = TurnClock(route="v3_stream_turn", schema="new")
@@ -362,7 +364,7 @@ async def stream_turn(snap, user_id: str, text: str,
     persona = snap.persona
     clock.mark("db_preflight_done")
 
-    limiter = conversation_limiter()
+    limiter = patient_limiter()
     try:
         with anyio.fail_after(admission_wait_s()):
             await limiter.acquire()
@@ -385,7 +387,8 @@ async def stream_turn(snap, user_id: str, text: str,
         outcome = "complete"
         clock.mark("llm_request_start")
         stream = v3_astream(v, history, text, language=lang, persona=persona,
-                            session_id=snap.session_id)
+                            session_id=snap.session_id, route="v3_stream_turn",
+                            logical_turn_id=f"{sid}:t{n + 1}")
         aiter = stream.__aiter__()
         async def _close_upstream():
             try:
