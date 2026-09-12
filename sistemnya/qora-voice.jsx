@@ -253,6 +253,12 @@ function QV2VoiceRoom(props) {
     if (unmountedRef.current) return;
     if (phaseRef.current === 'listening') return;
     if (phaseRef.current === 'processing' || phaseRef.current === 'speaking') return;
+    if (!sessionId) {
+      // Session (and its opening line) isn't ready yet — mic now would
+      // record into the void. Stay idle until the room is actually live.
+      setHint('Menyiapkan sesi…');
+      return;
+    }
     var SR = _qvSR();
     if (!SR) {
       setVErr('Voice input is not supported in this browser — switching to text keeps this session.');
@@ -274,15 +280,18 @@ function QV2VoiceRoom(props) {
     rec.maxAlternatives = 1;
     rec.onresult = function (e) {
       if (submittedRef.current) return;
+      // REBUILD finals from the full results array every event (never append
+      // deltas): Chrome re-delivers prior finals across events with
+      // continuous=true, and appending caused the "halo Halo Halo…" echo.
       var fin = '', inter = '';
       try {
-        for (var i = e.resultIndex; i < e.results.length; i++) {
+        for (var i = 0; i < e.results.length; i++) {
           var t = ((e.results[i][0] || {}).transcript || '');
           if (e.results[i].isFinal) fin += t + ' ';
           else inter += t;
         }
       } catch (err2) {}
-      if (fin) finalRef.current = (finalRef.current + ' ' + fin).trim();
+      finalRef.current = fin.trim();
       setInterim(((finalRef.current + ' ' + inter).trim()));
       // Any utterance content (interim or final) resets the 3s clock.
       if ((fin + inter).trim()) armSilence();
@@ -425,32 +434,42 @@ function QV2VoiceRoom(props) {
     : phase === 'error' ? 'Something needs attention'
     : 'Tap the mic and speak';
   var msgs = props.messages || [];
+  // Pinned patient condition (the opening line) — shown as a header card,
+  // NOT as chat text. Mic stays disabled until the session + opening exist.
+  var opening = '';
+  for (var oi = 0; oi < msgs.length; oi++) {
+    if (msgs[oi] && msgs[oi].role === 'patient' && (msgs[oi].text || '').trim()) { opening = msgs[oi].text.trim(); break; }
+  }
+  var roomReady = !!sessionId && !!opening;
   return React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '26px 16px 20px', minHeight: 'calc(100dvh - 220px)' } },
     // Switch + exit row
     React.createElement('div', { style: { width: '100%', maxWidth: 560, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 } },
       React.createElement('button', { onClick: props.onExit, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Library'),
       React.createElement('button', { onClick: props.onSwitchToText, style: { padding: '6px 12px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface-2)', fontSize: 12, fontWeight: 700, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '💬 Text mode')),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-2)', marginBottom: 2 } }, props.caseTitle || ''),
+    opening
+      ? React.createElement('div', { style: { maxWidth: 560, marginTop: 8, marginBottom: 4, padding: '10px 16px', borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)', fontSize: 13, lineHeight: 1.55, color: 'var(--text-1)', textAlign: 'center', fontStyle: 'italic' } }, '“' + opening + '”')
+      : React.createElement('div', { style: { marginTop: 8, marginBottom: 4, fontSize: 12.5, color: 'var(--text-3)' } }, 'Menyiapkan pasien…'),
     React.createElement(QV2VoiceOrb, { phase: phase, analyserRef: analyserRef }),
     React.createElement('div', { style: { marginTop: 14, fontSize: 14, fontWeight: 700, color: 'var(--text-1)', minHeight: 20, textAlign: 'center' } }, phaseLabel),
     React.createElement('div', { style: { marginTop: 6, fontSize: 13, color: 'var(--text-2)', fontStyle: 'italic', minHeight: 20, maxWidth: 560, textAlign: 'center', lineHeight: 1.5 } },
       phase === 'listening' ? ('“' + (interim || '…') + '”') : ''),
     ver && React.createElement('div', { style: { marginTop: 10, maxWidth: 560, padding: '10px 14px', borderRadius: 12, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5, textAlign: 'center' } }, '⚠️ ' + ver),
     hintMsg && !ver && React.createElement('div', { style: { marginTop: 10, fontSize: 12.5, color: 'var(--text-3)' } }, hintMsg),
-    // Mic primary action
+    // Mic primary action (disabled until the room is live)
     React.createElement('button', {
       onClick: onMicTap,
-      disabled: phase === 'processing' || phase === 'speaking' || props.busy,
+      disabled: !roomReady || phase === 'processing' || phase === 'speaking' || props.busy,
       'aria-label': phase === 'listening' ? 'Send now' : 'Speak',
       style: {
-        marginTop: 18, width: 84, height: 84, borderRadius: '50%', border: 'none', cursor: (phase === 'processing' || phase === 'speaking') ? 'default' : 'pointer',
+        marginTop: 18, width: 84, height: 84, borderRadius: '50%', border: 'none', cursor: (!roomReady || phase === 'processing' || phase === 'speaking') ? 'default' : 'pointer',
         background: phase === 'listening' ? 'var(--red, #e5484d)' : 'var(--primary)', color: '#fff', fontSize: 32,
         boxShadow: phase === 'listening' ? '0 0 0 8px rgba(229,72,77,0.18), var(--sh-md)' : 'var(--sh-md)',
-        opacity: (phase === 'processing' || phase === 'speaking') ? 0.55 : 1,
+        opacity: (!roomReady || phase === 'processing' || phase === 'speaking') ? 0.55 : 1,
       },
     }, phase === 'listening' ? '■' : (phase === 'processing' ? '…' : '🎙')),
     React.createElement('div', { style: { marginTop: 8, fontSize: 11.5, color: 'var(--text-3)' } },
-      phase === 'listening' ? 'Auto-sends after 3s of silence' : (phase === 'idle' ? 'Hands-free: mic restarts after each reply' : '')),
+      !roomReady ? 'Menyiapkan sesi…' : (phase === 'listening' ? 'Auto-sends after 3s of silence' : (phase === 'idle' ? 'Hands-free: mic restarts after each reply' : ''))),
     // Secondary actions
     React.createElement('div', { style: { marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' } },
       React.createElement('button', { onClick: function () { setDrawer(true); }, style: { padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12.5, fontWeight: 600, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '📝 Transcript (' + msgs.length + ')'),
