@@ -80,3 +80,31 @@ def test_tts_endpoint_degrades_cleanly():
 
 def test_tts_requires_auth():
     assert client.post("/api/ai/tts", json={"text": "Halo"}).status_code == 401
+
+
+def test_tts_stream_validates_input():
+    h = {"Authorization": f"Bearer {_token()}"}
+    r = client.post("/api/ai/tts/stream", headers=h,
+                    json={"text": "", "session_id": "nope"})
+    assert r.status_code == 400
+    r = client.post("/api/ai/tts/stream", headers=h,
+                    json={"text": "Halo", "session_id": "no-such-session"})
+    assert r.status_code == 404
+    r = client.post("/api/ai/tts/stream", headers=h,
+                    json={"text": "x" * 2001, "session_id": "nope"})
+    assert r.status_code == 413
+
+
+def test_tts_stream_no_auth():
+    assert client.post("/api/ai/tts/stream",
+                       json={"text": "Halo", "session_id": "x"}).status_code == 401
+
+
+def test_tts_client_cache_name_separation():
+    # Regression: module-global cache var must never be rebound by the
+    # factory def (that made _client() return itself -> every TTS call 502).
+    import inspect
+
+    import app.voice.tts as tts_mod
+    assert inspect.isfunction(tts_mod._get_client)
+    assert not callable(tts_mod._cached_client)

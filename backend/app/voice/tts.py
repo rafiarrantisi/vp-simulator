@@ -25,7 +25,7 @@ class TtsFailed(RuntimeError):
     pass
 
 
-_client = None
+_cached_client = None
 _client_lock = None
 
 
@@ -38,17 +38,17 @@ def _lock():
 
 
 def _drop_client():
-    global _client
+    global _cached_client
     with _lock():
-        _client = None
+        _cached_client = None
 
 
-def _client():
+def _get_client():
     """Process-wide cached client (grpc channel + auth reused across turns;
     clients are thread-safe). Falls back to fresh build if ever broken."""
-    global _client
-    if _client is not None:
-        return _client
+    global _cached_client
+    if _cached_client is not None:
+        return _cached_client
     try:
         from google.cloud import texttospeech
     except ImportError as e:
@@ -57,12 +57,12 @@ def _client():
             "(pip install google-cloud-texttospeech>=2.29)"
         ) from e
     with _lock():
-        if _client is None:
+        if _cached_client is None:
             try:
-                _client = texttospeech.TextToSpeechClient()
+                _cached_client = texttospeech.TextToSpeechClient()
             except Exception as e:  # noqa: BLE001 — mis. ADC file hilang
                 raise TtsNotConfigured(f"Google TTS auth gagal: {e}") from e
-    return _client
+    return _cached_client
 
 
 def synthesize(text: str, style: str | None = None) -> bytes:
@@ -73,7 +73,7 @@ def synthesize(text: str, style: str | None = None) -> bytes:
         raise TtsFailed("Teks kosong")
     from google.cloud import texttospeech
 
-    client = _client()
+    client = _get_client()
     try:
         resp = client.synthesize_speech(
             input=texttospeech.SynthesisInput(
@@ -104,7 +104,7 @@ def stream_pcm(text: str, *, voice: str | None = None, style: str | None = None,
         raise TtsFailed("Teks kosong")
     from google.cloud import texttospeech
 
-    client = _client()
+    client = _get_client()
     config_req = texttospeech.StreamingSynthesizeRequest(
         streaming_config=texttospeech.StreamingSynthesizeConfig(
             voice=texttospeech.VoiceSelectionParams(
