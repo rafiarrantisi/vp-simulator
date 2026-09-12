@@ -139,11 +139,16 @@ function qvPlayTtsStream(opts) {
   };
 }
 
-// ---- Voice orb (analyser-driven when speaking, CSS pulse when listening) --
+// ---- Voice orb: the SINGLE interaction object (no mic-icon literal) -----
+// idle: breathe + "tap to speak" · listening: stop square + ping ring (tap
+// submits) · processing: soft dots · speaking: analyser scale + eq bars ·
+// error: "!". Tapping is inert while processing/speaking (no barge-in v1).
 function QV2VoiceOrb(props) {
   var phase = props.phase; // idle|listening|processing|speaking|error
   var analyserRef = props.analyserRef;
-  var levelRef = React.useRef(0);
+  var onTap = props.onTap;
+  var disabled = !!props.disabled;
+  var dimmed = !!props.dimmed;
   var dotRef = React.useRef(null);
   var ringRef = React.useRef(null);
   React.useEffect(function () {
@@ -161,13 +166,11 @@ function QV2VoiceOrb(props) {
           lvl = Math.min(1, Math.sqrt(sum / buf.length) * 3.2);
         }
       } catch (e) {}
-      levelRef.current = levelRef.current + (lvl - levelRef.current) * 0.35;
-      var s = 1 + levelRef.current * 0.28;
       try {
-        if (dotRef.current) dotRef.current.style.transform = 'scale(' + s.toFixed(3) + ')';
+        if (dotRef.current) dotRef.current.style.transform = 'scale(' + (1 + lvl * 0.28).toFixed(3) + ')';
         if (ringRef.current) {
-          ringRef.current.style.opacity = String(0.25 + levelRef.current * 0.6);
-          ringRef.current.style.transform = 'scale(' + (1 + levelRef.current * 0.55).toFixed(3) + ')';
+          ringRef.current.style.opacity = String(0.25 + lvl * 0.6);
+          ringRef.current.style.transform = 'scale(' + (1 + lvl * 0.55).toFixed(3) + ')';
         }
       } catch (e) {}
       raf = requestAnimationFrame(tick);
@@ -175,16 +178,35 @@ function QV2VoiceOrb(props) {
     raf = requestAnimationFrame(tick);
     return function () { alive = false; try { cancelAnimationFrame(raf); } catch (e) {} };
   }, [phase]);
-  var glow = phase === 'listening' ? '0 0 0 10px rgba(92,63,150,0.14), 0 0 44px rgba(92,63,150,0.35)'
-    : phase === 'speaking' ? '0 0 0 8px rgba(46,160,140,0.12), 0 0 40px rgba(46,160,140,0.30)'
-    : phase === 'processing' ? '0 0 0 6px rgba(120,120,150,0.10)'
-    : '0 8px 28px rgba(30,20,60,0.16)';
   var bg = phase === 'speaking' ? 'radial-gradient(circle at 35% 30%, #3ddbb9, #1f8f7a 70%)'
+    : phase === 'error' ? 'radial-gradient(circle at 35% 30%, #e88, #b44 70%)'
     : 'radial-gradient(circle at 35% 30%, #9a76db, #5c3f96 70%)';
+  var inner = null;
+  if (phase === 'listening') {
+    inner = React.createElement('div', { style: { width: 30, height: 30, borderRadius: 9, background: '#fff' } });
+  } else if (phase === 'processing') {
+    inner = React.createElement('div', { className: 'qv2-orb-dots', style: { display: 'flex', gap: 6 } },
+      React.createElement('span', null, '•'), React.createElement('span', null, '•'), React.createElement('span', null, '•'));
+  } else if (phase === 'speaking') {
+    inner = React.createElement('div', { className: 'qv2-eq' },
+      [0, 1, 2, 3, 4].map(function (i) { return React.createElement('span', { key: i }); }));
+  } else if (phase === 'error') {
+    inner = React.createElement('div', { style: { color: '#fff', fontSize: 44, fontWeight: 800 } }, '!');
+  } else {
+    inner = React.createElement('div', { style: { color: 'rgba(255,255,255,0.92)', fontSize: 11, fontWeight: 800, letterSpacing: '0.22em', textAlign: 'center', lineHeight: 1.9 } }, 'TAP', React.createElement('br', null), 'TO SPEAK');
+  }
   return React.createElement('div', { style: { position: 'relative', width: 196, height: 196, margin: '0 auto' } },
-    React.createElement('div', { ref: ringRef, style: { position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid var(--primary)', opacity: 0.25, pointerEvents: 'none' } }),
-    React.createElement('div', { ref: dotRef, className: phase === 'listening' ? 'qv2-orb-pulse' : '', style: { position: 'absolute', inset: 18, borderRadius: '50%', background: bg, boxShadow: glow, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: 54 } },
-      phase === 'speaking' ? '◉' : (phase === 'listening' ? '●' : (phase === 'processing' ? '…' : '🎙'))));
+    React.createElement('div', { ref: ringRef, className: phase === 'listening' ? 'qv2-orb-ring-ping' : '', style: { position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid ' + (phase === 'speaking' ? '#2ea08c' : 'var(--primary)'), opacity: 0.25, pointerEvents: 'none' } }),
+    React.createElement('button', {
+      ref: dotRef, onClick: disabled ? undefined : onTap, disabled: disabled,
+      'aria-label': phase === 'listening' ? 'Send now' : 'Speak',
+      className: phase === 'idle' && !disabled ? 'qv2-orb-idle' : (disabled ? 'qv2-orb-off' : ''),
+      style: {
+        position: 'absolute', inset: 18, borderRadius: '50%', border: 'none',
+        background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        cursor: disabled ? 'default' : 'pointer', opacity: dimmed ? 0.55 : 1, padding: 0,
+      },
+    }, inner));
 }
 
 // ---- Voice room -----------------------------------------------------------
@@ -428,11 +450,11 @@ function QV2VoiceRoom(props) {
     };
   }, [sessionId]);
 
-  var phaseLabel = phase === 'listening' ? 'Listening… tap mic to send now'
+  var phaseLabel = phase === 'listening' ? 'Listening… tap the orb to send now'
     : phase === 'processing' ? 'Patient is thinking…'
     : phase === 'speaking' ? 'Patient is speaking…'
     : phase === 'error' ? 'Something needs attention'
-    : 'Tap the mic and speak';
+    : (!roomReady ? 'Menyiapkan sesi…' : 'Ready when you are');
   var msgs = props.messages || [];
   // Pinned patient condition (the opening line) — shown as a header card,
   // NOT as chat text. Mic stays disabled until the session + opening exist.
@@ -450,26 +472,14 @@ function QV2VoiceRoom(props) {
     opening
       ? React.createElement('div', { style: { maxWidth: 560, marginTop: 8, marginBottom: 4, padding: '10px 16px', borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)', fontSize: 13, lineHeight: 1.55, color: 'var(--text-1)', textAlign: 'center', fontStyle: 'italic' } }, '“' + opening + '”')
       : React.createElement('div', { style: { marginTop: 8, marginBottom: 4, fontSize: 12.5, color: 'var(--text-3)' } }, 'Menyiapkan pasien…'),
-    React.createElement(QV2VoiceOrb, { phase: phase, analyserRef: analyserRef }),
+    React.createElement(QV2VoiceOrb, { phase: phase, analyserRef: analyserRef, onTap: onMicTap, dimmed: !roomReady, disabled: !roomReady || phase === 'processing' || phase === 'speaking' || props.busy }),
     React.createElement('div', { style: { marginTop: 14, fontSize: 14, fontWeight: 700, color: 'var(--text-1)', minHeight: 20, textAlign: 'center' } }, phaseLabel),
     React.createElement('div', { style: { marginTop: 6, fontSize: 13, color: 'var(--text-2)', fontStyle: 'italic', minHeight: 20, maxWidth: 560, textAlign: 'center', lineHeight: 1.5 } },
       phase === 'listening' ? ('“' + (interim || '…') + '”') : ''),
     ver && React.createElement('div', { style: { marginTop: 10, maxWidth: 560, padding: '10px 14px', borderRadius: 12, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5, textAlign: 'center' } }, '⚠️ ' + ver),
     hintMsg && !ver && React.createElement('div', { style: { marginTop: 10, fontSize: 12.5, color: 'var(--text-3)' } }, hintMsg),
-    // Mic primary action (disabled until the room is live)
-    React.createElement('button', {
-      onClick: onMicTap,
-      disabled: !roomReady || phase === 'processing' || phase === 'speaking' || props.busy,
-      'aria-label': phase === 'listening' ? 'Send now' : 'Speak',
-      style: {
-        marginTop: 18, width: 84, height: 84, borderRadius: '50%', border: 'none', cursor: (!roomReady || phase === 'processing' || phase === 'speaking') ? 'default' : 'pointer',
-        background: phase === 'listening' ? 'var(--red, #e5484d)' : 'var(--primary)', color: '#fff', fontSize: 32,
-        boxShadow: phase === 'listening' ? '0 0 0 8px rgba(229,72,77,0.18), var(--sh-md)' : 'var(--sh-md)',
-        opacity: (!roomReady || phase === 'processing' || phase === 'speaking') ? 0.55 : 1,
-      },
-    }, phase === 'listening' ? '■' : (phase === 'processing' ? '…' : '🎙')),
     React.createElement('div', { style: { marginTop: 8, fontSize: 11.5, color: 'var(--text-3)' } },
-      !roomReady ? 'Menyiapkan sesi…' : (phase === 'listening' ? 'Auto-sends after 3s of silence' : (phase === 'idle' ? 'Hands-free: mic restarts after each reply' : ''))),
+      !roomReady ? '' : (phase === 'listening' ? 'Auto-sends after 3s of silence' : '')),
     // Secondary actions
     React.createElement('div', { style: { marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' } },
       React.createElement('button', { onClick: function () { setDrawer(true); }, style: { padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12.5, fontWeight: 600, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '📝 Transcript (' + msgs.length + ')'),
