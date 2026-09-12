@@ -492,11 +492,11 @@ function QV2VoiceRoom(props) {
     hintMsg && !ver && React.createElement('div', { style: { marginTop: 10, fontSize: 12.5, color: 'var(--text-3)' } }, hintMsg),
     React.createElement('div', { style: { marginTop: 8, fontSize: 11.5, color: 'var(--text-3)' } },
       !roomReady ? '' : (phase === 'listening' ? 'Pauses auto-send — tap orb to send now' : '')),
-    // Secondary actions
+    // Secondary actions — one tap straight to assessment (physical exam
+    // lives as a tab inside, skippable by leaving it empty).
     React.createElement('div', { style: { marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' } },
       React.createElement('button', { onClick: function () { setDrawer(true); }, style: { padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12.5, fontWeight: 600, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '📝 Transcript (' + msgs.length + ')'),
-      props.onExam && React.createElement('button', { onClick: props.onExam, disabled: phase !== 'idle', style: { padding: '8px 14px', borderRadius: 999, border: '1px solid var(--primary)', background: 'var(--primary-l)', fontSize: 12.5, fontWeight: 700, color: 'var(--primary)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: phase !== 'idle' ? 0.55 : 1 } }, 'Exam →'),
-      React.createElement('button', { onClick: props.onAssess, disabled: phase !== 'idle', style: { padding: '8px 14px', borderRadius: 999, border: '1px solid var(--primary)', background: 'var(--surface)', fontSize: 12.5, fontWeight: 700, color: 'var(--primary)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: phase !== 'idle' ? 0.55 : 1 } }, 'Assess →')),
+      React.createElement('button', { onClick: props.onAssess, disabled: phase !== 'idle', style: { padding: '8px 18px', borderRadius: 999, border: 'none', background: 'var(--primary)', fontSize: 12.5, fontWeight: 700, color: '#fff', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', opacity: phase !== 'idle' ? 0.55 : 1 } }, 'Selesai →')),
     props.err && React.createElement('div', { style: { marginTop: 12, fontSize: 12, color: 'var(--red-d)' } }, String(props.err)),
     // Transcript drawer (default closed)
     drawerOpen && React.createElement('div', { style: { position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(15,12,30,0.5)', display: 'flex', alignItems: 'flex-end', justifyContent: 'center' }, onClick: function () { setDrawer(false); } },

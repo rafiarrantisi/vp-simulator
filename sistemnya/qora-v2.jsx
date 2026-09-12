@@ -294,7 +294,7 @@ function QV2Picker({ catalog, selected, onToggle, max, search, setSearch, unit }
 
 const QV2_MAX_INVESTIGATIONS = 8;
 
-function QV2Assess({ caseSummary, isOsce, busy, err, scoreSecs, transcript, onBack, onSubmit }) {
+function QV2Assess({ caseSummary, isOsce, busy, err, scoreSecs, transcript, pf, onPf, hasExam, sessionId, language, onBack, onSubmit }) {
   const [tab, setTab] = React.useState('diagnosis');
   const [dx1, setDx1] = React.useState('');
   const [dx2, setDx2] = React.useState('');
@@ -321,7 +321,10 @@ function QV2Assess({ caseSummary, isOsce, busy, err, scoreSecs, transcript, onBa
     onSubmit({ dx1, dx2, dx3, reasoning }, { penunjang: inv.join(', '), terapi: tx.join(', '), edukasi });
   };
 
-  const tabs = [['conversation', _t('session.assess_tab_conversation')], ['investigations', _t('session.assess_tab_investigations')], ['diagnosis', _t('session.assess_tab_diagnosis')], ['therapy', _t('session.assess_tab_therapy')]];
+  const tabs = [['conversation', _t('session.assess_tab_conversation')]]
+    .concat(hasExam ? [['examination', _t('session.assess_tab_examination')]] : [])
+    .concat([['investigations', _t('session.assess_tab_investigations')], ['diagnosis', _t('session.assess_tab_diagnosis')], ['therapy', _t('session.assess_tab_therapy')]]);
+  const pfDone = !!(pf && ((pf.areas && pf.areas.length) || (pf.notes && String(pf.notes).trim())));
 
   const conversationTab = React.createElement('div', { style: { maxHeight: 380, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 8 } },
     (transcript || []).filter((m) => m.role === 'user' || m.role === 'patient').map((m, i) => React.createElement('div', { key: i, style: {
@@ -337,8 +340,12 @@ function QV2Assess({ caseSummary, isOsce, busy, err, scoreSecs, transcript, onBa
     React.createElement(QV2AssessField, { label: _t('session.differential_3'), value: dx3, set: setDx3, ph: _t('session.differential_3') }),
     React.createElement(QV2AssessField, { label: _t('session.clinical_reasoning'), value: reasoning, set: setReasoning, ph: _t('session.clinical_reasoning'), area: true }));
 
-  const investigationsTab = React.createElement('div', null,
-    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Optional — select the investigations you would order (up to ' + QV2_MAX_INVESTIGATIONS + '), or type your own. Over-ordering is not rewarded. Leave empty if unsure.'),
+  const examinationTab = React.createElement('div', null,
+    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12, lineHeight: 1.6 } }, 'Catat yang kamu periksa lalu lihat hasilnya — kosongkan bila tidak melakukan pemeriksaan.'),
+    React.createElement(QV2PhysicalExam, { caseSummary: caseSummary, sessionId: sessionId, language: language,
+      onBack: function () { setTab('diagnosis'); },
+      onContinue: function (d) { if (typeof onPf === 'function') onPf(d || { notes: '', areas: [] }); setTab('diagnosis'); } }));
+  const investigationsTab = React.createElement('div', null,    React.createElement('div', { style: { fontSize: 12.5, color: 'var(--text-2)', marginBottom: 12 } }, 'Optional — select the investigations you would order (up to ' + QV2_MAX_INVESTIGATIONS + '), or type your own. Over-ordering is not rewarded. Leave empty if unsure.'),
     React.createElement(QV2Picker, { catalog: window.QORA_INVESTIGATIONS || {}, selected: inv, onToggle: toggle(setInv, QV2_MAX_INVESTIGATIONS), max: QV2_MAX_INVESTIGATIONS, search: invSearch, setSearch: setInvSearch, unit: 'investigations' }));
 
   const therapyTab = React.createElement('div', null,
@@ -346,7 +353,7 @@ function QV2Assess({ caseSummary, isOsce, busy, err, scoreSecs, transcript, onBa
     React.createElement(QV2Picker, { catalog: window.QORA_THERAPIES || {}, selected: tx, onToggle: toggle(setTx, 0), search: txSearch, setSearch: setTxSearch, unit: 'treatments' }),
       React.createElement(QV2AssessField, { label: _t('session.patient_education'), value: edukasi, set: setEdukasi, ph: 'What you would tell the patient...', area: true }));
 
-  const panel = tab === 'conversation' ? conversationTab : tab === 'investigations' ? investigationsTab : tab === 'therapy' ? therapyTab : diagnosisTab;
+  const panel = tab === 'conversation' ? conversationTab : tab === 'examination' ? examinationTab : tab === 'investigations' ? investigationsTab : tab === 'therapy' ? therapyTab : diagnosisTab;
 
   return React.createElement('div', { className: 'au', style: { maxWidth: 'min(720px, calc(100% - 16px))', margin: '0 auto', padding: 16 } },
     React.createElement('button', { onClick: onBack, style: { marginBottom: 14, padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Back to interview'),
@@ -356,7 +363,7 @@ function QV2Assess({ caseSummary, isOsce, busy, err, scoreSecs, transcript, onBa
       tabs.map(([val, lab]) => React.createElement('button', { key: val, onClick: () => setTab(val), style: {
         padding: '9px 14px', border: 'none', borderBottom: '2px solid ' + (tab === val ? 'var(--primary)' : 'transparent'),
         background: 'none', color: tab === val ? 'var(--primary)' : 'var(--text-2)', fontSize: 13, fontWeight: tab === val ? 700 : 500, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer',
-      } }, lab + (val === 'investigations' && inv.length ? ' (' + inv.length + ')' : '') + (val === 'therapy' && tx.length ? ' (' + tx.length + ')' : '')))),
+      } }, lab + (val === 'investigations' && inv.length ? ' (' + inv.length + ')' : '') + (val === 'therapy' && tx.length ? ' (' + tx.length + ')' : '') + (val === 'examination' && pfDone ? ' ✓' : '')))),
     panel,
     !busy && err && React.createElement('div', { style: { marginTop: 14, padding: '10px 12px', borderRadius: 10, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5 } },
       '⚠️ ' + String(err) + ' — ' + _t('session.score_retry_hint')),
@@ -527,6 +534,15 @@ function QV2PrepRow({ icon, title, body, status, tone }) {
 
 function QV2SessionSetup({ caseSummary, onStart, onBack }) {
   const [mode, setMode] = React.useState(caseSummary.mode === 'osce_full' ? 'osce' : 'practice');
+  // Interaction mode: text (chat-first) vs voice (talk-first). Presentation
+  // layer only — same session, engine, transcript, scoring either way.
+  const [interaction, setInteraction] = React.useState('text');
+  const [voiceCap, setVoiceCap] = React.useState(null); // null=checking | {enabled:bool}
+  React.useEffect(function () {
+    qv2Fetch('/api/ai/voice-status').then(function (d) {
+      setVoiceCap({ enabled: !!(d && (d.voice_enabled !== false)) });
+    }).catch(function () { setVoiceCap({ enabled: true }); });
+  }, []);
   // Default the session language from the detected region (indo -> id) so the
   // mic uses id-ID out of the box; the profile's preferred_language overrides
   // async below. (Aug 2026 fix: defaulting to 'en' made Indonesian voice input
@@ -575,6 +591,10 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
     React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
       React.createElement(QV2ModeCard, { active: mode === 'practice', onClick: () => setMode('practice'), tone: 'teal', badge: 'Practice', title: 'Anamnesis practice', body: 'Relaxed learning — history only, no physical exam step. A task guide and history hints help you along. The timer is optional.' }),
       React.createElement(QV2ModeCard, { active: mode === 'osce', onClick: () => setMode('osce'), tone: 'violet', badge: 'OSCE', title: 'OSCE exam', body: 'Exam conditions — no hints. Includes the physical examination step. A countdown runs; when it ends you finish or continue for a penalty.' })),
+    React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'How do you want to practice?'),
+    React.createElement('div', { style: { display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' } },
+      React.createElement(QV2ModeCard, { active: interaction === 'text', onClick: () => setInteraction('text'), tone: 'teal', badge: 'Text', title: 'Text Practice', body: 'Chat-first, like now. Type (or dictate) your questions; the patient answers in text.' }),
+      React.createElement(QV2ModeCard, { active: interaction === 'voice', onClick: function () { if (voiceCap && !voiceCap.enabled) return; setInteraction('voice'); }, tone: 'violet', badge: 'Voice', title: 'Voice Practice', body: voiceCap && !voiceCap.enabled ? '🔒 Voice practice is not available on your plan yet.' : 'Talk-first. Speak to the patient and hear the reply. Same case, same scoring.' })),
     React.createElement('div', { style: { fontSize: 13, fontWeight: 700, color: 'var(--text-1)', marginBottom: 10 } }, 'Choose session language'),
     React.createElement('div', { className: 'as d2', style: { display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 24 } },
       [['en','English'],['id','Bahasa Indonesia'],['ms','Bahasa Melayu'],['tl','Tagalog'],['vi','Tiếng Việt'],['th','ภาษาไทย']].map(function(p) {
@@ -607,7 +627,7 @@ function QV2SessionSetup({ caseSummary, onStart, onBack }) {
           React.createElement('div', { style: { display: 'flex', gap: 8 } },
             React.createElement('button', { onClick: function () { if (window.__goBilling) window.__goBilling(); }, style: { padding: '10px 18px', borderRadius: 10, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Upgrade plan'),
             React.createElement('button', { onClick: onBack, style: { padding: '10px 14px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 13, fontWeight: 600, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, 'Back to library')))
-      : React.createElement('button', { onClick: () => onStart({ mode: mode, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
+      : React.createElement('button', { onClick: () => onStart({ mode: mode, interaction: interaction, micReady: micState === 'granted', sttReady: !!stt, language: lang }), style: { width: '100%', padding: 14, borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 15, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', boxShadow: 'var(--sh-md)' } }, 'Start session →'));
 }
 
 // ---- In-session task panel (instruksi §4.6) ----
@@ -751,9 +771,19 @@ function QV2MicButton({ onTranscript, onAutoSend, disabled, sessionLang, compact
   );
 }
 
-function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSessionId, onSessionReady }) {
+function QV2Session({ caseSummary, mode, language, interaction, onScored, onExit, initialSessionId, onSessionReady }) {
   var _t = window.__t || function (k) { return k; };
   const [sessionId, setSessionId] = React.useState(initialSessionId || null);
+  // interaction_mode lives on the presentation layer: 'text' | 'voice'.
+  // Same session/engine/transcript/scoring; switchable mid-session.
+  const [interactionMode, setInteractionMode] = React.useState(interaction || 'text');
+  React.useEffect(function () { setInteractionMode(interaction || 'text'); }, [initialSessionId]);
+  const [voiceCap, setVoiceCap] = React.useState(null); // null=checking | {enabled:bool}
+  React.useEffect(function () {
+    qv2Fetch('/api/ai/voice-status').then(function (d) {
+      setVoiceCap({ enabled: !!(d && (d.voice_enabled !== false)) });
+    }).catch(function () { setVoiceCap({ enabled: true }); });
+  }, []);
   const [messages, setMessages] = React.useState([]); // {role, text}
   const [input, setInput] = React.useState('');
   const [busy, setBusy] = React.useState(false);
@@ -958,10 +988,11 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
       const text = (typeof textArg === 'string' ? textArg : input).trim();
       // FASE 6: harden duplicate-send (double-Enter / double-tap / mic auto-send
       // race) + completed-session reopen. V3 engine still gets plain text only.
-      if (!text || busy || sendInflightRef.current || !sessionId) return;
-      if (sessionStatus === 'completed') { setErr('This session is already completed — open the report instead.'); return; }
+      if (!text || busy || sendInflightRef.current || !sessionId) return null;
+      if (sessionStatus === 'completed') { setErr('This session is already completed — open the report instead.'); return null; }
       const inputType = source === 'voice' ? 'voice' : 'text';
       sendInflightRef.current = true;
+      var replyText = null; // returned to voice-mode callers; chat UI unchanged
       setErr('');
       setInput(''); setBusy(true);
       setMessages(m => m.concat([{ role: 'user', text }, { role: 'patient', text: '', streaming: true }]));
@@ -999,6 +1030,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
         patchPatient(acc, true);
       }
       patchPatient(acc.trim() || '…', false);
+      replyText = acc.trim() || '…';
     } catch (e) {
       // FASE 6: stream interrupted (timeout/abort/offline) → non-stream retry.
       // Backend dedupes the already-persisted user turn, so no duplicate pair.
@@ -1006,6 +1038,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
       try {
         const d = await qv2Fetch('/api/v2/sessions/' + sessionId + '/turns', { method: 'POST', body: { text, input_type: inputType } });
         patchPatient((d && d.reply) || '…', false);
+        replyText = (d && d.reply) || '…';
       } catch (e2) {
         patchPatient('(error: ' + (e2.message || e2) + ') — your message is kept above; tap Assess later or retry.', false);
         setInput(text);
@@ -1014,6 +1047,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
     }
     sendInflightRef.current = false;
     setBusy(false);
+    return replyText;
   }
 
   // Fase 5 §35.1 — mark the pilot session as started once it exists.
@@ -1062,12 +1096,8 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
     return React.createElement(QV2StationBrief, { caseSummary, mode, language, onExit, onBegin: () => { setStage('chat'); } });
   }
 
-  if (stage === 'pf') {
-    return React.createElement(QV2PhysicalExam, { caseSummary, sessionId, language: language, onBack: () => setStage('chat'), onContinue: (pfData) => { setPf(pfData); setStage('assess'); } });
-  }
-
   if (stage === 'assess') {
-    return React.createElement(QV2Assess, { caseSummary, isOsce, busy, err, scoreSecs, transcript: messages, onBack: () => setStage('chat'), onSubmit: score });
+    return React.createElement(QV2Assess, { caseSummary, isOsce, busy, err, scoreSecs, transcript: messages, pf: pf, onPf: setPf, hasExam: hasPhysicalExam, sessionId: sessionId, language: language, onBack: () => setStage('chat'), onSubmit: score });
   }
 
   const mmss = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0');
@@ -1084,6 +1114,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
       React.createElement('button', { onClick: () => { _pilotEvent('abandoned', { session_id: sessionId, stage: stage }); onExit(); }, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Library'),
       React.createElement(QV2Pill, { tone: isOsce ? 'violet' : 'teal' }, isOsce ? 'OSCE' : 'Practice'),
       React.createElement('div', { style: { fontSize: 14, fontWeight: 700, color: 'var(--text-1)', flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, _qv2Title(caseSummary)),
+      voiceCap && voiceCap.enabled && React.createElement('button', { onClick: () => setInteractionMode('voice'), title: 'Switch to voice practice (same session)', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface-2)', color: 'var(--text-2)', fontSize: 12, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, '🎙 Voice'),
       !wide && React.createElement('button', { onClick: () => setTimerOn((v) => !v), title: 'Session timer', style: { padding: '4px 10px', borderRadius: 999, border: '1px solid var(--border)', background: timerOn ? (secs < 60 ? 'var(--red-l)' : 'var(--surface-2)') : 'var(--surface)', color: timerOn ? (secs < 60 ? 'var(--red-d)' : 'var(--text-1)') : 'var(--text-3)', fontSize: 12, fontWeight: 700, fontVariantNumeric: 'tabular-nums', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, timerOn ? ('⏱ ' + mmss) : '⏱ Timer')),
     React.createElement(QV2MediaBar, { caseId: caseSummary.id }),
     isCompleted && React.createElement('div', { role: 'status', style: { fontSize: 12.5, color: 'var(--text-2)', background: 'var(--surface-2)', border: '1px solid var(--border)', borderRadius: 12, padding: '10px 14px', marginBottom: 8 } }, 'This session is completed — the conversation is read-only. Open the report via Assess.'),
@@ -1102,7 +1133,7 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
         : (m.streaming ? m.text + ' ▋' : m.text))),
       React.createElement('div', { ref: endRef, style: { scrollMarginTop: 72 } })),
     React.createElement('div', { style: { padding: '12px 0 calc(16px + env(safe-area-inset-bottom, 0px))', display: 'flex', flexDirection: 'column', gap: 10, position: isMobile ? 'sticky' : 'static', bottom: 0, background: isMobile ? 'var(--bg, transparent)' : 'transparent', zIndex: 2 } },
-      hasPhysicalExam && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', textAlign: 'center' } }, '🩺 Done with your questions? Tap ' + (isMobile ? 'Exam' : 'Exam →') + ' to perform the physical examination before assessing.'),
+      hasPhysicalExam && React.createElement('div', { style: { fontSize: 11.5, color: 'var(--text-3)', textAlign: 'center' } }, '🩺 Done with your questions? Tap Assess to review, examine & score.'),
       React.createElement('div', { style: { display: 'flex', justifyContent: 'center' } },
         React.createElement(QV2MicButton, { onTranscript: (t) => setInput(t), onAutoSend: (t) => send(t, 'voice'), disabled: busy || isCompleted, sessionLang: language, compact: isMobile })),
       React.createElement('div', { style: { display: 'flex', gap: 8 } },
@@ -1114,12 +1145,21 @@ function QV2Session({ caseSummary, mode, language, onScored, onExit, initialSess
           style: { flex: 1, minWidth: 0, padding: '11px 14px', borderRadius: 12, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 13.5, fontFamily: 'Plus Jakarta Sans', color: 'var(--text-1)' },
         }),
         React.createElement('button', { onClick: () => send(), disabled: busy || isCompleted || !input.trim(), title: 'Send question', style: { padding: isMobile ? '0 14px' : '0 16px', borderRadius: 12, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 16, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: (busy || isCompleted || !input.trim()) ? 'not-allowed' : 'pointer', opacity: (busy || isCompleted || !input.trim()) ? 0.55 : 1, whiteSpace: 'nowrap' } }, '↑'),
-        React.createElement('button', { onClick: () => setStage(hasPhysicalExam ? 'pf' : 'assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, hasPhysicalExam ? 'Exam →' : 'Assess →'))));
+        React.createElement('button', { onClick: () => setStage('assess'), disabled: busy, style: { padding: isMobile ? '0 12px' : '0 16px', borderRadius: 12, border: '1px solid var(--primary)', background: 'var(--primary-l)', color: 'var(--primary)', fontSize: 13, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer', whiteSpace: 'nowrap' } }, 'Assess →'))));
 
   return React.createElement('div', { style: { maxWidth: 'min(' + (wide ? 1200 : 760) + 'px, calc(100% - 16px))', margin: '0 auto', padding: isMobile ? '12px 10px 8px' : '16px 16px 0', display: 'flex', gap: 20, alignItems: 'flex-start' } },
-    wide && React.createElement('div', { style: { width: 240, flexShrink: 0, marginTop: 10 } },
+    wide && interactionMode !== 'voice' && React.createElement('div', { style: { width: 240, flexShrink: 0, marginTop: 10 } },
       React.createElement(QV2TaskPanel, { mode: mode, secs: secs, timerOn: timerOn, onToggleTimer: () => setTimerOn((v) => !v) })),
-    chatColumn,
+    interactionMode === 'voice'
+      ? React.createElement(QV2VoiceRoom, {
+          sessionId: sessionId, language: language, messages: messages, busy: busy, err: err,
+          voiceCap: voiceCap, caseTitle: _qv2Title(caseSummary),
+          onSendText: function (t) { return send(t, 'voice'); },
+          onSwitchToText: function () { setInteractionMode('text'); },
+          onAssess: function () { setStage('assess'); },
+          onExit: onExit,
+        })
+      : chatColumn,
     timeUp && React.createElement(QV2TimeUpModal, {
       onFinish: () => { setTimeUp(false); setStage('assess'); },
       onContinue: () => { setTimeUp(false); setOvertime(true); },
@@ -1953,6 +1993,7 @@ function QoraV2Screen() {
   const [picked, setPicked] = React.useState(null);
   const [sessionMode, setSessionMode] = React.useState('practice');
   const [sessionLanguage, setSessionLanguage] = React.useState('en');
+  const [sessionInteraction, setSessionInteraction] = React.useState('text'); // text | voice (presentation layer only)
   const [report, setReport] = React.useState(null);
   const [initialSessionId, setInitialSessionId] = React.useState(null);
   const [sessionId, setSessionId] = React.useState(null); // current session (for autopsy link)
@@ -2014,9 +2055,9 @@ function QoraV2Screen() {
 
   let body;
   if (view === 'setup' && picked) {
-    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setReport(null); setInitialSessionId(null); setView('session'); }, onBack: () => { setView('catalogue'); setHash('cases'); } });
+    body = React.createElement(QV2SessionSetup, { caseSummary: picked, onStart: (opts) => { setSessionMode(opts.mode); setSessionLanguage(opts.language || 'en'); setSessionInteraction(opts.interaction || 'text'); setReport(null); setInitialSessionId(null); setView('session'); }, onBack: () => { setView('catalogue'); setHash('cases'); } });
   } else if (view === 'session' && picked) {
-    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, initialSessionId: initialSessionId, onSessionReady: (sid) => { setSessionId(sid); setHash('session/' + sid); }, onScored: (r) => { setReport(r); try { sessionStorage.setItem('qora_last_report', JSON.stringify({ report: r, caseId: picked.id, sessionId: sessionId })); } catch (e) {} setView('result'); setHash('result'); }, onExit: () => { try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
+    body = React.createElement(QV2Session, { caseSummary: picked, mode: sessionMode, language: sessionLanguage, interaction: sessionInteraction, initialSessionId: initialSessionId, onSessionReady: (sid) => { setSessionId(sid); setHash('session/' + sid); }, onScored: (r) => { setReport(r); try { sessionStorage.setItem('qora_last_report', JSON.stringify({ report: r, caseId: picked.id, sessionId: sessionId })); } catch (e) {} setView('result'); setHash('result'); }, onExit: () => { try { sessionStorage.removeItem('qora_session_meta'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
   } else if (view === 'result' && report && picked) {
     body = React.createElement(QV2Result, { report, caseSummary: picked, sessionId: sessionId, onAgain: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); }, onLibrary: () => { try { sessionStorage.removeItem('qora_last_report'); } catch (e) {} setView('catalogue'); setHash('cases'); } });
   } else if (view === 'progress') {

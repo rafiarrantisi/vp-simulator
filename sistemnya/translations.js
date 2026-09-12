@@ -75,6 +75,7 @@ window.QORA_TRANSLATIONS = {
   'session.send': { en: 'Send', id: 'Kirim' },
   'session.assess': { en: 'Assess →', id: 'Nilai →' },
   'session.assess_tab_conversation': { en: 'Conversation', id: 'Percakapan' },
+  'session.assess_tab_examination': { en: 'Physical exam', id: 'Fisik' },
   'session.assess_tab_investigations': { en: 'Investigations', id: 'Pemeriksaan' },
   'session.assess_tab_diagnosis': { en: 'Diagnosis', id: 'Diagnosis' },
   'session.assess_tab_therapy': { en: 'Therapy', id: 'Terapi' },
