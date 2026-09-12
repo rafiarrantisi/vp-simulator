@@ -76,7 +76,7 @@ window.QORA_TRANSLATIONS = {
   'session.assess': { en: 'Assess →', id: 'Nilai →' },
   'session.assess_tab_conversation': { en: 'Conversation', id: 'Percakapan' },
   'session.assess_tab_examination': { en: 'Physical exam', id: 'Fisik' },
-  'session.assess_tab_investigations': { en: 'Investigations', id: 'Pemeriksaan' },
+  'session.assess_tab_investigations': { en: 'Investigations', id: 'Penunjang' },
   'session.assess_tab_diagnosis': { en: 'Diagnosis', id: 'Diagnosis' },
   'session.assess_tab_therapy': { en: 'Therapy', id: 'Terapi' },
   'session.select_investigations': { en: 'Select the investigations you would order (up to {max}). Choose deliberately — over-ordering is not rewarded.', id: 'Pilih pemeriksaan penunjang (maks. {max}). Pilih secara selektif.' },
