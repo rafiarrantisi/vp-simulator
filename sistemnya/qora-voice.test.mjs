@@ -47,9 +47,9 @@ const {
   qvVoiceIdleExpired, qvVoiceOverallExpired,
   qvVoiceTapAction, qvRecErrorAction, qvVoiceRestartAllowed,
   QV2_VOICE_IDLE_MS, QV2_VOICE_OVERALL_MS, QV2_REC_MAX_RESTARTS,
-  QV2_REC_START_TIMEOUT_MS, QV2_VOICE_DEBUG_MAX,
+  QV2_VOICE_DEBUG_MAX,
   qvDecideEmptySubmit, qvEmptySubmitHint,
-  qvShouldArmSubmitTimer, qvWarmupTimedOut, qvNextRestartCount,
+  qvNextRestartCount,
   qvVoiceDebugLog, qvVoiceDebugDump, qvVoiceDebugReset, qvFormatEmptySubmitDebug,
 } = sandbox;
 
@@ -192,7 +192,7 @@ ok('tap action: listening submit, idle/error start, processing/speaking cancel',
   assert.equal(qvVoiceTapAction('speaking'), 'cancel');
 });
 
-ok('rec error mapping never leaves phase stuck listening', () => {
+ok('rec error mapping: denials error, aborted ignore, baseline tolerance keeps listening', () => {
   assert.equal(qvRecErrorAction('not-allowed', false), 'mic_blocked');
   assert.equal(qvRecErrorAction('service-not-allowed', false), 'mic_blocked');
   assert.equal(qvRecErrorAction('aborted', false), 'ignore');
@@ -200,17 +200,23 @@ ok('rec error mapping never leaves phase stuck listening', () => {
   assert.equal(qvRecErrorAction('no-speech', false), 'idle_hint');
   assert.equal(qvRecErrorAction('audio-capture', true), 'submit');
   assert.equal(qvRecErrorAction('audio-capture', false), 'idle_hint');
-  // e.g. network with/without partial final
-  assert.equal(qvRecErrorAction('network', true), 'submit');
-  assert.equal(qvRecErrorAction('network', false), 'idle_hint');
+  // Baseline tolerance (pre-Astra revert): unknown/transient codes must NOT
+  // kill the session — keep listening (ignore), debug-ring log only.
+  assert.equal(qvRecErrorAction('network', true), 'ignore');
+  assert.equal(qvRecErrorAction('network', false), 'ignore');
+  assert.equal(qvRecErrorAction('unknown', false), 'ignore');
+  assert.equal(qvRecErrorAction('', false), 'ignore');
+  // Source contract: transient-kill path is gone (no stopRec+hint on network).
+  assert.doesNotMatch(code, /Mic terganggu — tap lagi untuk bicara/);
+  assert.match(code, /Baseline tolerance.*keep listening/s);
 });
 
-ok('onend restart capped (default 3)', () => {
-  assert.equal(QV2_REC_MAX_RESTARTS, 3);
+ok('onend restart cap is generous throw-only (default 10)', () => {
+  assert.equal(QV2_REC_MAX_RESTARTS, 10);
   assert.equal(qvVoiceRestartAllowed(0), true);
-  assert.equal(qvVoiceRestartAllowed(2), true);
-  assert.equal(qvVoiceRestartAllowed(3), false);
-  assert.equal(qvVoiceRestartAllowed(4), false);
+  assert.equal(qvVoiceRestartAllowed(9), true);
+  assert.equal(qvVoiceRestartAllowed(10), false);
+  assert.equal(qvVoiceRestartAllowed(11), false);
 });
 
 ok('voice sender has idle+overall abort and cancel/timeout codes', () => {
@@ -259,58 +265,70 @@ ok('empty-submit decision always lands on visible hint (never bare idle)', () =>
   assert.equal(qvVoiceTapAction('error'), 'start');
 });
 
-// ── FIX 2: warmup guard (no 1.2s arm before mic actually opens) ─────
-ok('warmup-guard arming rules: only after onstart or first result/speech', () => {
-  assert.equal(typeof qvShouldArmSubmitTimer, 'function');
-  assert.equal(typeof qvWarmupTimedOut, 'function');
-  assert.equal(QV2_REC_START_TIMEOUT_MS, 4000);
-  // No signal yet → do NOT arm.
-  assert.equal(qvShouldArmSubmitTimer({ started: false, hasResult: false, heard: false }), false);
-  assert.equal(qvShouldArmSubmitTimer({}), false);
-  // Any single signal → arm.
-  assert.equal(qvShouldArmSubmitTimer({ started: true, hasResult: false, heard: false }), true);
-  assert.equal(qvShouldArmSubmitTimer({ started: false, hasResult: true, heard: false }), true);
-  assert.equal(qvShouldArmSubmitTimer({ started: false, hasResult: false, heard: true }), true);
-  // Start-timeout fires only when NEITHER onstart NOR result observed.
-  assert.equal(qvWarmupTimedOut({ started: false, hasResult: false, heard: false }), true);
-  assert.equal(qvWarmupTimedOut({ started: true, hasResult: false, heard: false }), false);
-  assert.equal(qvWarmupTimedOut({ started: false, hasResult: true, heard: false }), false);
-  assert.equal(qvWarmupTimedOut({ started: false, hasResult: false, heard: true }), false);
-  // Source contract: onstart handler exists, 4s start timeout armed at
-  // rec.start() time (not the 1.2s submit), stale baseline timer cleared.
-  assert.match(code, /rec\.onstart\s*=/);
-  assert.match(code, /QV2_REC_START_TIMEOUT_MS/);
-  assert.match(code, /armStartTimeout/);
-  assert.match(code, /clearStartTimer/);
-  assert.match(code, /Mic tidak mulai — tap lagi/);
-  // startListening clears stale baseline timers (old bug: no clearTimer()).
-  assert.match(code, /clearTimer\(\);\s*\n\s*clearStartTimer\(\)/);
-  // 1.2s uniform baseline values UNCHANGED.
-  assert.match(code, /QV2_SILENCE_INTERIM_MS\s*=\s*1200/);
+// ── BASELINE REVERT: mic-capture lifecycle back to pre-Astra ─────────
+// Tap → instant listening, 3000ms interim / 1200ms final patience, silence
+// timer armed at rec.start() (no onstart gating, no start-timeout error).
+// rec.onstart stays ONLY as a debug-ring event.
+ok('baseline timers restored: interim 3000 / final 1200, no warmup gate', () => {
+  // Warmup-gate helpers are gone (revert, not guard).
+  assert.equal(typeof sandbox.qvShouldArmSubmitTimer, 'undefined');
+  assert.equal(typeof sandbox.qvWarmupTimedOut, 'undefined');
+  assert.equal(typeof sandbox.QV2_REC_START_TIMEOUT_MS, 'undefined');
+  // Baseline two-tier values restored (were uniform 1200/1200).
+  assert.match(code, /QV2_SILENCE_INTERIM_MS\s*=\s*3000/);
   assert.match(code, /QV2_SILENCE_FINAL_MS\s*=\s*1200/);
+  assert.doesNotMatch(code, /QV2_SILENCE_INTERIM_MS\s*=\s*1200/);
+  // Source contract: no warmup machinery, silence armed at rec.start().
+  assert.match(code, /rec\.onstart\s*=/);
+  assert.match(code, /qvVoiceDebugLog\('onstart'\)/);
+  assert.match(code, /arm the silence timer at rec\.start\(\)/);
+  assert.doesNotMatch(code, /QV2_REC_START_TIMEOUT_MS/);
+  assert.doesNotMatch(code, /armStartTimeout/);
+  assert.doesNotMatch(code, /clearStartTimer/);
+  assert.doesNotMatch(code, /qvShouldArmSubmitTimer/);
+  assert.doesNotMatch(code, /qvWarmupTimedOut/);
+  assert.doesNotMatch(code, /Mic tidak mulai/);
+  // startListening clears stale baseline timers and arms immediately.
+  assert.match(code, /clearTimer\(\);\s*\n/);
+  // rec.start() tail arms silence (baseline) — adaptive falls back to the
+  // same interim window when no transcript yet.
+  assert.match(code, /rec\.start\(\);\s*\n\s*ensureAudio\(\)/);
+  assert.match(code, /else\s*\{\s*\n\s*armSilence\(\);\s*\n\s*\}/);
+  // onstart is debug-only: body is just the debug log (no armSilence inside).
+  const m = code.match(/rec\.onstart\s*=\s*function\s*\(\)\s*\{([\s\S]{0,400}?)\};/);
+  assert.ok(m, 'rec.onstart handler exists');
+  assert.doesNotMatch(m[1], /armSilence/);
+  assert.doesNotMatch(m[1], /epDecide/);
 });
 
-// ── FIX 3: restart accounting (only throws count; result/speech resets) ──
-ok('restart counter: throw increments, result/speech resets, clean unchanged', () => {
+// ── BASELINE REVERT: throw-only restart accounting (cap 10, clean never consumes) ──
+ok('restart counter: throw increments, result/speech resets, clean unchanged (cap 10)', () => {
   assert.equal(typeof qvNextRestartCount, 'function');
   assert.equal(qvNextRestartCount(0, 'throw'), 1);
-  assert.equal(qvNextRestartCount(2, 'throw'), 3);
+  assert.equal(qvNextRestartCount(9, 'throw'), 10);
   assert.equal(qvNextRestartCount(2, 'result'), 0);
   assert.equal(qvNextRestartCount(2, 'speech'), 0);
   assert.equal(qvNextRestartCount(0, 'result'), 0);
   assert.equal(qvNextRestartCount(1, 'clean'), 1);
   assert.equal(qvNextRestartCount(0, 'clean'), 0);
+  assert.equal(qvNextRestartCount(9, 'clean'), 9);
   assert.equal(qvNextRestartCount(1, undefined), 1);
-  // Cap still 3 for genuine throw-loops.
-  assert.equal(QV2_REC_MAX_RESTARTS, 3);
-  assert.equal(qvVoiceRestartAllowed(2), true);
-  assert.equal(qvVoiceRestartAllowed(3), false);
+  // Clean onend loops NEVER consume the cap: 10 straight cleans stay at 0.
+  let c = 0;
+  for (let i = 0; i < 10; i++) c = qvNextRestartCount(c, 'clean');
+  assert.equal(c, 0);
+  assert.equal(qvVoiceRestartAllowed(c, QV2_REC_MAX_RESTARTS), true);
+  // Generous cap 10 for genuine throw-loops.
+  assert.equal(QV2_REC_MAX_RESTARTS, 10);
+  assert.equal(qvVoiceRestartAllowed(9), true);
+  assert.equal(qvVoiceRestartAllowed(10), false);
   // Source contract: throw-only counting via the pure helper; old blind
   // pre-increment (clean ends counting toward the cap) is gone.
   assert.match(code, /qvNextRestartCount\(restartRef\.current,\s*'throw'\)/);
   assert.match(code, /qvNextRestartCount\(restartRef\.current,\s*'result'\)/);
   assert.match(code, /qvNextRestartCount\(restartRef\.current,\s*'speech'\)/);
   assert.doesNotMatch(code, /restartRef\.current\+\+/);
+  assert.match(code, /Clean ends NEVER consume/);
   assert.match(code, /Mic berhenti — tap lagi untuk bicara/);
 });
 
