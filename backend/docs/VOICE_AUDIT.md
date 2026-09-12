@@ -1,6 +1,6 @@
 # Voice Profile Audit — scale assignment (356 personas)
 
-_Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not runtime doc._
+_Generated from persona data by rules in /tmp/voice_assign.py (de-overacted pass included). Review aid, not runtime doc._
 
 ## Distribution
 
@@ -48,10 +48,10 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 - ... +3 more
 
 ### Autonoe
-- `em_anaphylaxis_001` [panic] age=None sex=female: Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy and occasional hesitation...
-- `em_pulmonary_embolism_001` [panic] age=None sex=female: Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy and occasional hesitation...
-- `em_status_asthmaticus_001` [panic] age=34 sex=female: Speak naturally in Indonesian as a 34-year-old woman. Slightly fast with nervous energy and occasional hesitat...
-- `neuro_tia_001` [panic] age=None sex=female: Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy and occasional hesitation...
+- `em_anaphylaxis_001` [panic] age=None sex=female: Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy, speaking in complete sen...
+- `em_pulmonary_embolism_001` [panic] age=None sex=female: Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy, speaking in complete sen...
+- `em_status_asthmaticus_001` [panic] age=34 sex=female: Speak naturally in Indonesian as a 34-year-old woman. Slightly fast with nervous energy, speaking in complete ...
+- `neuro_tia_001` [panic] age=None sex=female: Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy, speaking in complete sen...
 - ... +1 more
 
 ### Callirrhoe
@@ -81,7 +81,7 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 - ... +64 more
 
 ### Fenrir
-- `oph_hyphaema_001` [panic] age=25 sex=male: Speak naturally in Indonesian as a 25-year-old man. Fast, breathless, high-energy delivery with nervous urgenc...
+- `oph_hyphaema_001` [panic] age=25 sex=male: Speak naturally in Indonesian as a 25-year-old man. Quick, urgent delivery with nervous energy, breathing norm...
 
 ### Gacrux
 - `acs_atypical_elderly` [v3-elderly-f] age=71 sex=female: Speak naturally in Indonesian as a 71-year-old woman. Mature, soft voice at a natural pace. Calm with mild wor...
@@ -109,10 +109,10 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 - ... +44 more
 
 ### Orus
-- `appendicitis_mass_abscess` [v3-pain-m] age=30 sex=male: Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting...
-- `backpain_radicular` [v3-pain-m] age=44 sex=male: Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting...
-- `corneal_fb` [v3-pain-m] age=36 sex=male: Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting...
-- `gastritis_recurrent` [v3-pain-m] age=38 sex=male: Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting...
+- `appendicitis_mass_abscess` [v3-pain-m] age=30 sex=male: Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension ...
+- `backpain_radicular` [v3-pain-m] age=44 sex=male: Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension ...
+- `corneal_fb` [v3-pain-m] age=36 sex=male: Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension ...
+- `gastritis_recurrent` [v3-pain-m] age=38 sex=male: Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension ...
 - ... +8 more
 
 ### Puck
@@ -124,9 +124,9 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 
 ### Schedar
 - `em_hypertensive_emergency_001` [default-adult-m] age=58 sex=male: Speak naturally in Indonesian as a 58-year-old man. Steady, even voice at a natural conversational pace. Calm ...
-- `ent_hearing_loss_001` [elderly] age=72 sex=male: Speak naturally in Indonesian as a 72-year-old man. Mature, calm, polite, unhurried but not dragging. Mildly w...
-- `neuro_acute_stroke_001` [elderly] age=68 sex=male: Speak naturally in Indonesian as a 68-year-old man. Mature, calm, polite, unhurried but not dragging. Mildly w...
-- `neuro_parkinsons_001` [elderly] age=68 sex=male: Speak naturally in Indonesian as a 68-year-old man. Mature, calm, polite, unhurried but not dragging. Mildly w...
+- `ent_hearing_loss_001` [elderly] age=72 sex=male: Speak naturally in Indonesian as a 72-year-old man. Mature, calm, polite, at a natural conversational pace. Mi...
+- `neuro_acute_stroke_001` [elderly] age=68 sex=male: Speak naturally in Indonesian as a 68-year-old man. Mature, calm, polite, at a natural conversational pace. Mi...
+- `neuro_parkinsons_001` [elderly] age=68 sex=male: Speak naturally in Indonesian as a 68-year-old man. Mature, calm, polite, at a natural conversational pace. Mi...
 - ... +33 more
 
 ### Sulafat
@@ -142,9 +142,9 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 - `surg_inguinal_hernia_001` [easygoing] age=45 sex=male: Speak naturally in Indonesian as a 45-year-old man. Relaxed, friendly voice at an easy natural pace. Good-humo...
 
 ### Vindemiatrix
-- `bells_stroke_mimic` [v3-elderly-f] age=65 sex=female: Speak naturally in Indonesian as a calm 65-year-old woman. Gentle, soft voice, unhurried but not dragging. Com...
-- `hearing_presbycusis` [v3-elderly-f] age=70 sex=female: Speak naturally in Indonesian as a calm 70-year-old woman. Gentle, soft voice, unhurried but not dragging. Com...
-- `stroke_delayed` [v3-elderly-f] age=74 sex=female: Speak naturally in Indonesian as a calm 74-year-old woman. Gentle, soft voice, unhurried but not dragging. Com...
+- `bells_stroke_mimic` [v3-elderly-f] age=65 sex=female: Speak naturally in Indonesian as a calm 65-year-old woman. Gentle, soft voice, at a natural conversational pac...
+- `hearing_presbycusis` [v3-elderly-f] age=70 sex=female: Speak naturally in Indonesian as a calm 70-year-old woman. Gentle, soft voice, at a natural conversational pac...
+- `stroke_delayed` [v3-elderly-f] age=74 sex=female: Speak naturally in Indonesian as a calm 74-year-old woman. Gentle, soft voice, at a natural conversational pac...
 
 ## Full table
 
@@ -178,7 +178,7 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | anxiety_gad_mild | v3 | Leda | 26 | female | v3-young-f | Speak naturally in Indonesian as a tired 26-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | anxiety_panic_attacks | v3 | Schedar | 31 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
 | appendicitis_atypical_woman | v3 | Leda | 24 | female | v3-young-f | Speak naturally in Indonesian as a tired 24-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
-| appendicitis_mass_abscess | v3 | Orus | 30 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
+| appendicitis_mass_abscess | v3 | Orus | 30 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
 | appendicitis_typical | v3 | Puck | 21 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | asthma_exacerbation | v3 | Leda | 27 | female | v3-young-f | Speak naturally in Indonesian as a tired 27-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | asthma_intermittent | v3 | Leda | 22 | female | v3-young-f | Speak naturally in Indonesian as a tired 22-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
@@ -187,19 +187,19 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | atopic_child_flexural | v3 | Sulafat | 8 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | aub_heavy_stable | v3 | Erinome | 38 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | aub_severe_anemic | v3 | Kore | 44 | female | v3-severe-f | Speak naturally in Indonesian as a woman in an urgent situation. Firm, fast, blunt voice. Worried and urgent. Cooperative. A patient, not a  |
-| backpain_radicular | v3 | Orus | 44 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
-| backpain_redflag | v3 | Erinome | 52 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
-| bells_stroke_mimic | v3 | Vindemiatrix | 65 | female | v3-elderly-f | Speak naturally in Indonesian as a calm 65-year-old woman. Gentle, soft voice, unhurried but not dragging. Composed. Polite. A patient, not  |
+| backpain_radicular | v3 | Orus | 44 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
+| backpain_redflag | v3 | Erinome | 52 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
+| bells_stroke_mimic | v3 | Vindemiatrix | 65 | female | v3-elderly-f | Speak naturally in Indonesian as a calm 65-year-old woman. Gentle, soft voice, at a natural conversational pace. Composed. Polite. A patient |
 | bells_typical | v3 | Schedar | 38 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
 | burns_first_degree | v3 | Erinome | 30 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | burns_full_thickness | v3 | Alnilam | 40 | male | v3-severe-m | Speak naturally in Indonesian as a man in an urgent situation. Firm, fast, blunt voice. Worried and urgent. Cooperative. A patient, not a na |
 | burns_partial_major | v3 | Alnilam | 25 | male | v3-severe-m | Speak naturally in Indonesian as a man in an urgent situation. Firm, fast, blunt voice. Worried and urgent. Cooperative. A patient, not a na |
 | cap_moderate_admit | v3 | Algenib | 64 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | cap_severe | v3 | Gacrux | 70 | female | v3-elderly-f | Speak naturally in Indonesian as a 70-year-old woman. Mature, soft voice at a natural pace. Calm with mild worry. Cooperative. A patient, no |
-| cap_vs_bronchitis | v3 | Erinome | 40 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| cap_vs_bronchitis | v3 | Erinome | 40 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | carpal_mild | v3 | Achernar | 42 | female | v3-weak-f | Speak naturally in Indonesian as a tired, unwell woman. Soft, quiet voice with low energy but steady rhythm. Weak but alert. Cooperative. A  |
 | carpal_severe_motor | v3 | Achernar | 55 | female | v3-weak-f | Speak naturally in Indonesian as a tired, unwell woman. Soft, quiet voice with low energy but steady rhythm. Weak but alert. Cooperative. A  |
-| cellulitis_erysipelas | v3 | Erinome | 48 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| cellulitis_erysipelas | v3 | Erinome | 48 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | cellulitis_limb_typical | v3 | Algenib | 57 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | cellulitis_toxic | v3 | Gacrux | 66 | female | v3-elderly-f | Speak naturally in Indonesian as a 66-year-old woman. Mature, soft voice at a natural pace. Calm with mild worry. Cooperative. A patient, no |
 | chickenpox_superinfected | v3 | Sulafat | 5 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
@@ -210,8 +210,8 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | child_pneumonia_bronchiolitis | v3 | Sulafat | 1 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | child_pneumonia_nonsevere | v3 | Sulafat | 4 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | child_pneumonia_severe | v3 | Sulafat | 2 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
-| cholecystitis_acute | v3 | Erinome | 46 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
-| cholecystitis_biliary_colic | v3 | Erinome | 39 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| cholecystitis_acute | v3 | Erinome | 46 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
+| cholecystitis_biliary_colic | v3 | Erinome | 39 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | coma_deep_coma | v3 | Achernar | 55 | female | v3-weak-f | Speak naturally in Indonesian as a tired, unwell woman. Soft, quiet voice with low energy but steady rhythm. Weak but alert. Cooperative. A  |
 | coma_metabolic | v3 | Enceladus | 62 | male | v3-weak-m | Speak naturally in Indonesian as an unwell man with low energy. Quiet, a little breathy, steady rhythm. Weak but alert. Brief answers. A pat |
 | conjunctivitis_allergic | v3 | Leda | 19 | female | v3-young-f | Speak naturally in Indonesian as a tired 19-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
@@ -219,11 +219,11 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | conjunctivitis_viral | v3 | Leda | 26 | female | v3-young-f | Speak naturally in Indonesian as a tired 26-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | contact_derm_allergic | v3 | Puck | 28 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | contact_derm_irritant | v3 | Erinome | 36 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
-| copd_exacerbation | v3 | Schedar | 67 | male | v3-elderly-m | Speak naturally in Indonesian as a 67-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient |
+| copd_exacerbation | v3 | Schedar | 67 | male | v3-elderly-m | Speak naturally in Indonesian as a 67-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A p |
 | copd_severe_hypox | v3 | Gacrux | 71 | female | v3-elderly-f | Speak naturally in Indonesian as a 71-year-old woman. Mature, soft voice at a natural pace. Calm with mild worry. Cooperative. A patient, no |
 | copd_stable | v3 | Algenib | 63 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | corneal_abrasion | v3 | Puck | 29 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
-| corneal_fb | v3 | Orus | 36 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
+| corneal_fb | v3 | Orus | 36 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
 | croup_mild | v3 | Sulafat | 3 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | croup_moderate | v3 | Sulafat | 2 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | dengue_001_mild | v3 | Leda | 24 | female | v3-young-f | Speak naturally in Indonesian as a tired 24-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
@@ -244,7 +244,7 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | discharge_bv | v3 | Leda | 28 | female | v3-young-f | Speak naturally in Indonesian as a tired 28-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | discharge_candida | v3 | Leda | 24 | female | v3-young-f | Speak naturally in Indonesian as a tired 24-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | discharge_cervicitis | v3 | Leda | 22 | female | v3-young-f | Speak naturally in Indonesian as a tired 22-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
-| dka_hhs_elderly | v3 | Schedar | 69 | male | v3-elderly-m | Speak naturally in Indonesian as a 69-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient |
+| dka_hhs_elderly | v3 | Schedar | 69 | male | v3-elderly-m | Speak naturally in Indonesian as a 69-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A p |
 | dka_severe | v3 | Puck | 24 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | dka_typical | v3 | Erinome | 31 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | dm2_hypo_on_therapy | v3 | Algenib | 58 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
@@ -255,7 +255,7 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | ectopic_ruptured | v3 | Erinome | 31 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | ectopic_stable_workup | v3 | Leda | 28 | female | v3-young-f | Speak naturally in Indonesian as a tired 28-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | em_acs_001 | v2 | Algenib | 58 | male | tough-terse | Speak naturally in Indonesian as a 58-year-old man. Gravelly, direct, terse voice with slight strain, natural pace with only brief pauses. T |
-| em_anaphylaxis_001 | v2 | Autonoe | None | female | panic | Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy and occasional hesitation, voice trembling a little at  |
+| em_anaphylaxis_001 | v2 | Autonoe | None | female | panic | Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy, speaking in complete sentences without filler sounds.  |
 | em_bacterial_meningitis_001 | v2 | Enceladus | 42 | male | low-energy | Speak naturally in Indonesian as a 42-year-old man. Quiet, a little breathy and tired voice, steady natural rhythm, brief answers. Low energ |
 | em_dengue_001 | v2 | Erinome | 38 | female | professional | Speak naturally in Indonesian as a 38-year-old woman. Clear, direct, matter-of-fact delivery at a normal pace. Composed and precise, quiet w |
 | em_diabetic_ketoacidosis_001 | v2 | Algenib | 28 | male | tough-terse,manual-sex | Speak naturally in Indonesian as a 28-year-old man. Gravelly, direct, terse voice with slight strain, natural pace with only brief pauses. T |
@@ -263,12 +263,12 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | em_hypertensive_emergency_001 | v2 | Schedar | 58 | male | default-adult-m | Speak naturally in Indonesian as a 58-year-old man. Steady, even voice at a natural conversational pace. Calm and straightforward. Cooperati |
 | em_leptospirosis_001 | v2 | Algenib | 45 | male | tough-terse | Speak naturally in Indonesian as a 45-year-old man. Gravelly, direct, terse voice with slight strain, natural pace with only brief pauses. T |
 | em_paracetamol_overdose_001 | v2 | Callirrhoe | 34 | female | easygoing,manual-sex | Speak naturally in Indonesian as a 34-year-old woman. Warm, easy-going voice at a relaxed natural pace. Good-humored and cooperative. Chatty |
-| em_pulmonary_embolism_001 | v2 | Autonoe | None | female | panic,manual-sex | Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy and occasional hesitation, voice trembling a little at  |
-| em_status_asthmaticus_001 | v2 | Autonoe | 34 | female | panic,manual-sex | Speak naturally in Indonesian as a 34-year-old woman. Slightly fast with nervous energy and occasional hesitation, voice trembling a little  |
+| em_pulmonary_embolism_001 | v2 | Autonoe | None | female | panic,manual-sex | Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy, speaking in complete sentences without filler sounds.  |
+| em_status_asthmaticus_001 | v2 | Autonoe | 34 | female | panic,manual-sex | Speak naturally in Indonesian as a 34-year-old woman. Slightly fast with nervous energy, speaking in complete sentences without filler sound |
 | em_traumatic_brain_injury_001 | v2 | Iapetus | 45 | male | reserved | Speak naturally in Indonesian as a 45-year-old man. Clear but quiet voice, brief answers, low conversational initiative. Reserved, not enthu |
 | ent_bppv_001 | v2 | Erinome | 62 | female | professional | Speak naturally in Indonesian as a 62-year-old woman. Clear, direct, matter-of-fact delivery at a normal pace. Composed and precise, quiet w |
 | ent_epistaxis_001 | v2 | Achernar | None | female | reserved | Speak naturally in Indonesian as an adult patient. Soft, quiet voice, brief answers, low conversational initiative. Reserved and a little ne |
-| ent_hearing_loss_001 | v2 | Schedar | 72 | male | elderly | Speak naturally in Indonesian as a 72-year-old man. Mature, calm, polite, unhurried but not dragging. Mildly worried but composed. Cooperati |
+| ent_hearing_loss_001 | v2 | Schedar | 72 | male | elderly | Speak naturally in Indonesian as a 72-year-old man. Mature, calm, polite, at a natural conversational pace. Mildly worried but composed. Coo |
 | ent_hoarseness_001 | v2 | Algenib | 58 | male | tough-terse | Speak naturally in Indonesian as a 58-year-old man. Gravelly, direct, terse voice with slight strain, natural pace with only brief pauses. T |
 | ent_otitis_media_001 | v2 | Charon | 32 | male | professional | Speak naturally in Indonesian as a 32-year-old man. Clear, steady, informative voice at a normal pace. Composed and precise. Cooperative. A  |
 | ent_sinusitis_001 | v2 | Callirrhoe | None | female | easygoing | Speak naturally in Indonesian as an adult patient. Warm, easy-going voice at a relaxed natural pace. Good-humored and cooperative. Chatty bu |
@@ -279,28 +279,28 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | fb_ent_nasal | v3 | Sulafat | 4 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | febrile_seizure_complex | v3 | Sulafat | 3 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | febrile_seizure_simple | v3 | Sulafat | 2 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
-| gastritis_acute_nsaid | v3 | Erinome | 45 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| gastritis_acute_nsaid | v3 | Erinome | 45 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | gastritis_alarm_refer | v3 | Algenib | 62 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
-| gastritis_recurrent | v3 | Orus | 38 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
+| gastritis_recurrent | v3 | Orus | 38 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
 | gastroenteritis_dysentery | v3 | Puck | 26 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | gastroenteritis_moderate_dehyd | v3 | Schedar | 35 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
 | gastroenteritis_watery_mild | v3 | Leda | 29 | female | v3-young-f | Speak naturally in Indonesian as a tired 29-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | gerd_chestpain_ruleout | v3 | Algenib | 58 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | gerd_chronic_relapse | v3 | Algenib | 55 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | gerd_typical | v3 | Erinome | 42 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
-| gi_bleed_unstable | v3 | Schedar | 66 | male | v3-elderly-m | Speak naturally in Indonesian as a 66-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient |
+| gi_bleed_unstable | v3 | Schedar | 66 | male | v3-elderly-m | Speak naturally in Indonesian as a 66-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A p |
 | gi_bleed_upper_stable | v3 | Algenib | 54 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | glaucoma_acute_attack | v3 | Kore | 62 | female | v3-severe-f | Speak naturally in Indonesian as a woman in an urgent situation. Firm, fast, blunt voice. Worried and urgent. Cooperative. A patient, not a  |
 | glaucoma_subacute | v3 | Algenib | 58 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
-| gout_acute_podagra | v3 | Orus | 47 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
+| gout_acute_podagra | v3 | Orus | 47 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
 | gout_ckd_comorb | v3 | Algenib | 64 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | gout_recurrent_hyperu | v3 | Algenib | 55 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | hdp_gest_htn | v3 | Erinome | 30 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
-| hdp_hellp | v3 | Erinome | 34 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| hdp_hellp | v3 | Erinome | 34 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | hdp_severe_features | v3 | Erinome | 32 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
-| headache_redflag_cluster | v3 | Orus | 35 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
-| headache_redflag_sah | v3 | Erinome | 48 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
-| hearing_presbycusis | v3 | Vindemiatrix | 70 | female | v3-elderly-f | Speak naturally in Indonesian as a calm 70-year-old woman. Gentle, soft voice, unhurried but not dragging. Composed. Polite. A patient, not  |
+| headache_redflag_cluster | v3 | Orus | 35 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
+| headache_redflag_sah | v3 | Erinome | 48 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
+| hearing_presbycusis | v3 | Vindemiatrix | 70 | female | v3-elderly-f | Speak naturally in Indonesian as a calm 70-year-old woman. Gentle, soft voice, at a natural conversational pace. Composed. Polite. A patient |
 | hearing_wax | v3 | Schedar | 48 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
 | hemorrhoid_high_grade | v3 | Erinome | 55 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | hemorrhoid_low_grade | v3 | Schedar | 40 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
@@ -308,16 +308,16 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | hepatitis_typical | v3 | Puck | 21 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | hernia_reducible | v3 | Algenib | 52 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | hernia_strangulated | v3 | Algenib | 61 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
-| hf_acute_decomp | v3 | Schedar | 72 | male | v3-elderly-m | Speak naturally in Indonesian as a 72-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient |
+| hf_acute_decomp | v3 | Schedar | 72 | male | v3-elderly-m | Speak naturally in Indonesian as a 72-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A p |
 | hf_chronic_recog | v3 | Gacrux | 68 | female | v3-elderly-f | Speak naturally in Indonesian as a 68-year-old woman. Mature, soft voice at a natural pace. Calm with mild worry. Cooperative. A patient, no |
 | hf_edema_workup | v3 | Algenib | 60 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
-| hordeolum_blepharitis | v3 | Orus | 47 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
+| hordeolum_blepharitis | v3 | Orus | 47 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
 | hordeolum_stye | v3 | Leda | 22 | female | v3-young-f | Speak naturally in Indonesian as a tired 22-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | htn_001_typical | v3 | Schedar | 48 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
-| htn_002_salt_sensitive | v3 | Erinome | 56 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| htn_002_salt_sensitive | v3 | Erinome | 56 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | htn_003_urgency_diabetes | v3 | Algenib | 61 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | htn_crisis_emergency_neuro | v3 | Algenib | 64 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
-| htn_crisis_urgency | v3 | Erinome | 59 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| htn_crisis_urgency | v3 | Erinome | 59 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | hyperemesis_mild | v3 | Leda | 25 | female | v3-young-f | Speak naturally in Indonesian as a tired 25-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | hyperemesis_severe | v3 | Leda | 27 | female | v3-young-f | Speak naturally in Indonesian as a tired 27-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | hypoglycemia_sulfonylurea | v3 | Achernar | 62 | female | v3-weak-f | Speak naturally in Indonesian as a tired, unwell woman. Soft, quiet voice with low energy but steady rhythm. Weak but alert. Cooperative. A  |
@@ -344,32 +344,32 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | kb_postpartum_choice | v3 | Leda | 28 | female | v3-young-f | Speak naturally in Indonesian as a tired 28-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | kb_side_effects | v3 | Erinome | 32 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | keratitis_lens_related | v3 | Leda | 24 | female | v3-young-f | Speak naturally in Indonesian as a tired 24-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
-| keratitis_ulcer_watch | v3 | Orus | 41 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
+| keratitis_ulcer_watch | v3 | Orus | 41 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
 | labor_arrest | v3 | Leda | 29 | female | v3-young-f | Speak naturally in Indonesian as a tired 29-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | labor_prolonged | v3 | Leda | 26 | female | v3-young-f | Speak naturally in Indonesian as a tired 26-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | malaria_traveler | v3 | Erinome | 33 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | malaria_uncomplicated | v3 | Puck | 29 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | malnutrition_moderate | v3 | Sulafat | 3 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | malnutrition_severe_edema | v3 | Sulafat | 2 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
-| mastitis_abscess_watch | v3 | Erinome | 30 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| mastitis_abscess_watch | v3 | Erinome | 30 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | mastitis_early | v3 | Leda | 27 | female | v3-young-f | Speak naturally in Indonesian as a tired 27-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | measles_complicated | v3 | Sulafat | 4 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | measles_uncomplicated | v3 | Sulafat | 5 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | meningitis_bacterial | v3 | Puck | 22 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | meningitis_early_subtle | v3 | Leda | 29 | female | v3-young-f | Speak naturally in Indonesian as a tired 29-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
-| migraine_frequent | v3 | Erinome | 33 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| migraine_frequent | v3 | Erinome | 33 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | migraine_without_aura | v3 | Leda | 27 | female | v3-young-f | Speak naturally in Indonesian as a tired 27-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | neonatal_seizure_like | v3 | Sulafat | 0 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | neonatal_sepsis_like | v3 | Sulafat | 0 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
-| neuro_acute_stroke_001 | v2 | Schedar | 68 | male | elderly | Speak naturally in Indonesian as a 68-year-old man. Mature, calm, polite, unhurried but not dragging. Mildly worried but composed. Cooperati |
+| neuro_acute_stroke_001 | v2 | Schedar | 68 | male | elderly | Speak naturally in Indonesian as a 68-year-old man. Mature, calm, polite, at a natural conversational pace. Mildly worried but composed. Coo |
 | neuro_first_seizure_001 | v2 | Algenib | 32 | male | tough-terse | Speak naturally in Indonesian as a 32-year-old man. Gravelly, direct, terse voice with slight strain, natural pace with only brief pauses. T |
 | neuro_gb_syndrome_001 | v2 | Algenib | 45 | male | tough-terse | Speak naturally in Indonesian as a 45-year-old man. Gravelly, direct, terse voice with slight strain, natural pace with only brief pauses. T |
 | neuro_migraine_001 | v2 | Callirrhoe | 32 | female | easygoing | Speak naturally in Indonesian as a 32-year-old woman. Warm, easy-going voice at a relaxed natural pace. Good-humored and cooperative. Chatty |
 | neuro_multiple_sclerosis_001 | v2 | Erinome | 32 | female | professional | Speak naturally in Indonesian as a 32-year-old woman. Clear, direct, matter-of-fact delivery at a normal pace. Composed and precise, quiet w |
-| neuro_parkinsons_001 | v2 | Schedar | 68 | male | elderly | Speak naturally in Indonesian as a 68-year-old man. Mature, calm, polite, unhurried but not dragging. Mildly worried but composed. Cooperati |
-| neuro_tia_001 | v2 | Autonoe | None | female | panic | Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy and occasional hesitation, voice trembling a little at  |
-| oa_advanced | v3 | Schedar | 69 | male | v3-elderly-m | Speak naturally in Indonesian as a 69-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient |
-| oa_early | v3 | Erinome | 58 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| neuro_parkinsons_001 | v2 | Schedar | 68 | male | elderly | Speak naturally in Indonesian as a 68-year-old man. Mature, calm, polite, at a natural conversational pace. Mildly worried but composed. Coo |
+| neuro_tia_001 | v2 | Autonoe | None | female | panic | Speak naturally in Indonesian as an adult patient. Slightly fast with nervous energy, speaking in complete sentences without filler sounds.  |
+| oa_advanced | v3 | Schedar | 69 | male | v3-elderly-m | Speak naturally in Indonesian as a 69-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A p |
+| oa_early | v3 | Erinome | 58 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | obstruction_adhesive | v3 | Erinome | 48 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | obstruction_mechanical | v3 | Algenib | 60 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | ocd_mild_washing | v3 | Leda | 24 | female | v3-young-f | Speak naturally in Indonesian as a tired 24-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
@@ -383,20 +383,20 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | oph_anterior_uveitis_001 | v2 | Charon | 34 | male | professional,manual-sex | Speak naturally in Indonesian as a 34-year-old man. Clear, steady, informative voice at a normal pace. Composed and precise. Cooperative. A  |
 | oph_bacterial_conjunctivitis_001 | v2 | Callirrhoe | 35 | female | easygoing | Speak naturally in Indonesian as a 35-year-old woman. Warm, easy-going voice at a relaxed natural pace. Good-humored and cooperative. Chatty |
 | oph_blepharitis_001 | v2 | Umbriel | 30 | male | easygoing | Speak naturally in Indonesian as a 30-year-old man. Relaxed, friendly voice at an easy natural pace. Good-humored and cooperative. Chatty bu |
-| oph_cataract_001 | v2 | Schedar | 65 | male | elderly | Speak naturally in Indonesian as a 65-year-old man. Mature, calm, polite, unhurried but not dragging. Mildly worried but composed. Cooperati |
+| oph_cataract_001 | v2 | Schedar | 65 | male | elderly | Speak naturally in Indonesian as a 65-year-old man. Mature, calm, polite, at a natural conversational pace. Mildly worried but composed. Coo |
 | oph_crao_001 | v2 | Algenib | None | male | tough-terse | Speak naturally in Indonesian as an adult patient. Gravelly, direct, terse voice with slight strain, natural pace with only brief pauses. Tr |
 | oph_dry_eye_001 | v2 | Leda | 28 | female | young | Speak naturally in Indonesian as a 28-year-old woman. Youthful voice at a natural pace. Alert and cooperative. Uses plain everyday words. A  |
 | oph_episcleritis_001 | v2 | Erinome | 32 | female | professional | Speak naturally in Indonesian as a 32-year-old woman. Clear, direct, matter-of-fact delivery at a normal pace. Composed and precise, quiet w |
 | oph_hordeolum_001 | v2 | Puck | 22 | male | young | Speak naturally in Indonesian as a 22-year-old man. Young, natural voice at a normal conversational pace. Alert and cooperative. Uses plain  |
-| oph_hyphaema_001 | v2 | Fenrir | 25 | male | panic | Speak naturally in Indonesian as a 25-year-old man. Fast, breathless, high-energy delivery with nervous urgency, but every word stays clear. |
+| oph_hyphaema_001 | v2 | Fenrir | 25 | male | panic | Speak naturally in Indonesian as a 25-year-old man. Quick, urgent delivery with nervous energy, breathing normally between sentences; every  |
 | oph_night_blindness_001 | v2 | Iapetus | 45 | male | reserved | Speak naturally in Indonesian as a 45-year-old man. Clear but quiet voice, brief answers, low conversational initiative. Reserved, not enthu |
 | oph_optic_neuritis_001 | v2 | Erinome | 32 | female | default-adult-f,manual-sex | Speak naturally in Indonesian as a 32-year-old woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not |
 | oph_posterior_vitreous_001 | v2 | Erinome | 62 | female | professional | Speak naturally in Indonesian as a 62-year-old woman. Clear, direct, matter-of-fact delivery at a normal pace. Composed and precise, quiet w |
 | oph_strabismus_001 | v2 | Achernar | 22 | female | reserved | Speak naturally in Indonesian as a 22-year-old woman. Soft, quiet voice, brief answers, low conversational initiative. Reserved and a little |
 | oph_trichiasis_001 | v2 | Achernar | None | female | reserved | Speak naturally in Indonesian as an adult patient. Soft, quiet voice, brief answers, low conversational initiative. Reserved and a little ne |
 | osteomyelitis_diabetic_foot | v3 | Algenib | 61 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
-| osteomyelitis_hematogenous | v3 | Orus | 35 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
-| otitis_ext_diabetic_watch | v3 | Erinome | 58 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| osteomyelitis_hematogenous | v3 | Orus | 35 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
+| otitis_ext_diabetic_watch | v3 | Erinome | 58 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | otitis_ext_swimmer | v3 | Puck | 21 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | otitis_media_acute | v3 | Sulafat | 5 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
 | otitis_media_recurrent | v3 | Sulafat | 8 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
@@ -432,13 +432,13 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | psych_depression_001 | v2 | Achernar | 34 | female | depressive,manual-sex | Speak naturally in Indonesian as a 34-year-old woman. Soft, quiet voice with flat energy and slightly long pauses, but keeps a natural sente |
 | psych_generalised_anxiety_001 | v2 | Erinome | 34 | female | default-adult-f | Speak naturally in Indonesian as a 34-year-old woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not |
 | psych_ocd_001 | v2 | Leda | 28 | female | young | Speak naturally in Indonesian as a 28-year-old woman. Youthful voice at a natural pace. Alert and cooperative. Uses plain everyday words. A  |
-| psych_panic_001 | v2 | Autonoe | 32 | female | panic,manual-sex | Speak naturally in Indonesian as a 32-year-old woman. Slightly fast with nervous energy and occasional hesitation, voice trembling a little  |
+| psych_panic_001 | v2 | Autonoe | 32 | female | panic,manual-sex | Speak naturally in Indonesian as a 32-year-old woman. Slightly fast with nervous energy, speaking in complete sentences without filler sound |
 | psychosis_first_episode | v3 | Puck | 23 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | psychosis_schizophrenia | v3 | Erinome | 31 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | ptsd_acute_stress | v3 | Puck | 26 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | ptsd_adjustment | v3 | Erinome | 34 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | ptsd_ptsd | v3 | Erinome | 30 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
-| pyelo_adult_002 | v3 | Erinome | 42 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| pyelo_adult_002 | v3 | Erinome | 42 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | pyelo_preg_001 | v3 | Leda | 27 | female | v3-young-f | Speak naturally in Indonesian as a tired 27-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | pyelo_septic_003 | v3 | Enceladus | 70 | male | v3-elderly-m | Speak naturally in Indonesian as a 70-year-old man with low energy. Quiet, a little breathy and tired, steady rhythm. Weak but composed. Bri |
 | refractive_dryeye | v3 | Schedar | 33 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
@@ -450,12 +450,12 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | seizure_emg_first_fit | v3 | Puck | 26 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | seizure_emg_status | v3 | Erinome | 33 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | septic_joint_febrile_child | v3 | Sulafat | 7 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
-| septic_joint_knee | v3 | Orus | 49 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
+| septic_joint_knee | v3 | Orus | 49 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
 | shock_cardiogenic | v3 | Enceladus | 68 | male | v3-elderly-m | Speak naturally in Indonesian as a 68-year-old man with low energy. Quiet, a little breathy and tired, steady rhythm. Weak but composed. Bri |
 | shock_hypovolemic | v3 | Erinome | 34 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | shock_septic | v3 | Alnilam | 59 | male | v3-severe-m | Speak naturally in Indonesian as a man in an urgent situation. Firm, fast, blunt voice. Worried and urgent. Cooperative. A patient, not a na |
-| sinusitis_bacterial | v3 | Orus | 38 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
-| sinusitis_viral_like | v3 | Erinome | 30 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| sinusitis_bacterial | v3 | Orus | 38 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
+| sinusitis_viral_like | v3 | Erinome | 30 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | somatic_health_worry | v3 | Schedar | 33 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
 | somatic_somatization | v3 | Erinome | 45 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | sprain_ankle_mild | v3 | Puck | 23 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
@@ -463,7 +463,7 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | status_asthma_nearfatal | v3 | Schedar | 38 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
 | status_asthma_severe | v3 | Leda | 24 | female | v3-young-f | Speak naturally in Indonesian as a tired 24-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | stroke_acute_window | v3 | Enceladus | 66 | male | v3-elderly-m | Speak naturally in Indonesian as a 66-year-old man with low energy. Quiet, a little breathy and tired, steady rhythm. Weak but composed. Bri |
-| stroke_delayed | v3 | Vindemiatrix | 74 | female | v3-elderly-f | Speak naturally in Indonesian as a calm 74-year-old woman. Gentle, soft voice, unhurried but not dragging. Composed. Polite. A patient, not  |
+| stroke_delayed | v3 | Vindemiatrix | 74 | female | v3-elderly-f | Speak naturally in Indonesian as a calm 74-year-old woman. Gentle, soft voice, at a natural conversational pace. Composed. Polite. A patient |
 | stroke_tia_warning | v3 | Algenib | 61 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
 | suicide_ideation | v3 | Leda | 21 | female | v3-young-f | Speak naturally in Indonesian as a tired 21-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | suicide_selfharm | v3 | Leda | 19 | female | v3-young-f | Speak naturally in Indonesian as a tired 19-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
@@ -478,8 +478,8 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | tb_dm_comorb | v3 | Erinome | 52 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | tb_latent_contact | v3 | Leda | 28 | female | v3-young-f | Speak naturally in Indonesian as a tired 28-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | tb_new_typical | v3 | Schedar | 34 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
-| tension_headache_chronic_stress | v3 | Orus | 41 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, a little strained but no overacting. Uncomfortable. Cooperative.  |
-| tension_headache_episodic | v3 | Erinome | 34 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| tension_headache_chronic_stress | v3 | Orus | 41 | male | v3-pain-m | Speak naturally in Indonesian as an adult man in pain. Firm, direct voice, matter-of-fact with slight tension at most, breathing normally. U |
+| tension_headache_episodic | v3 | Erinome | 34 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | tension_headache_vs_migraine | v3 | Leda | 28 | female | v3-young-f | Speak naturally in Indonesian as a tired 28-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | thyroid_goiter_euthy | v3 | Erinome | 45 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | thyroid_hyper_shared | v3 | Erinome | 39 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
@@ -495,9 +495,9 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | typhoid_uncomplicated | v3 | Puck | 24 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | urticaria_acute | v3 | Leda | 27 | female | v3-young-f | Speak naturally in Indonesian as a tired 27-year-old woman. Youthful voice with low energy from illness, but alert. Unwell. Cooperative. A p |
 | urticaria_chronic | v3 | Schedar | 39 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
-| uti_adult_002 | v3 | Erinome | 34 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| uti_adult_002 | v3 | Erinome | 34 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
 | uti_child_001 | v3 | Sulafat | 3 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
-| uti_male_003 | v3 | Schedar | 68 | male | v3-elderly-m | Speak naturally in Indonesian as a 68-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient |
+| uti_male_003 | v3 | Schedar | 68 | male | v3-elderly-m | Speak naturally in Indonesian as a 68-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A p |
 | vertigo_bppv | v3 | Erinome | 52 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | vertigo_neuritis | v3 | Schedar | 45 | male | v3-default-m | Speak naturally in Indonesian as an adult man. Steady, even voice at a natural pace. Calm. Cooperative. A patient, not a narrator. Do not so |
 | worms_ascariasis | v3 | Sulafat | 8 | female-adult | v3-mother | Speak naturally in Indonesian as a worried parent talking about her sick child. Warm, caring voice, slightly fast from anxiety, with a tende |
@@ -505,4 +505,4 @@ _Generated from persona data by rules in /tmp/voice_assign.py. Review aid, not r
 | wound_clean_lac | v3 | Puck | 28 | male | v3-young-m | Speak naturally in Indonesian as a young man. Young, natural voice at a normal pace. Alert. Cooperative. A patient, not a narrator. Do not s |
 | wound_infected | v3 | Erinome | 45 | female | v3-default-f | Speak naturally in Indonesian as an adult woman. Clear, direct voice at a normal pace. Composed. Cooperative and polite. A patient, not a na |
 | zoster_ophthalmic_watch | v3 | Algenib | 63 | male | v3-mature-labor-m | Speak naturally in Indonesian as a working man. Gravelly, direct, terse voice at a natural pace. Plain-spoken. Answers what is asked. A pati |
-| zoster_uncomplicated | v3 | Erinome | 55 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperativ |
+| zoster_uncomplicated | v3 | Erinome | 55 | female | v3-pain-f | Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally |
