@@ -28,7 +28,7 @@ opening_context: 'Patient presents: colicky upper pain with fever (5 days)'
 voice_profile:
   voice_name: Erinome
   language_code: id-ID
-  style_instruction: "Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, a little strained but no overacting. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  style_instruction: "Speak naturally in Indonesian as an adult woman in pain. Clear, direct voice, matter-of-fact with slight tension at most, breathing normally. Uncomfortable. Cooperative. A patient, not a narrator. Do not sound theatrical."
   traits: {age_band: adult, energy: medium, affect: strained, pace: natural}
 duration: 5 days
 severity: moderate-severe

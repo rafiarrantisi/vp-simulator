@@ -28,8 +28,8 @@ opening_context: 'Patient presents: chronic breathlessness on exertion (5 days)'
 voice_profile:
   voice_name: Schedar
   language_code: id-ID
-  style_instruction: "Speak naturally in Indonesian as a 67-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient, not a narrator. Do not sound theatrical."
-  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
+  style_instruction: "Speak naturally in Indonesian as a 67-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: natural}
 duration: 5 days
 severity: moderate-severe
 key_chronology: Onset 5 days ago; course consistent with ppok eksaserbasi evolution

@@ -31,7 +31,7 @@ voice_profile:
   voice_name: Gacrux
   language_code: id-ID
   style_instruction: "Speak naturally in Indonesian as a 67-year-old woman. Mature, soft voice at a natural pace. Calm with mild worry. Cooperative. A patient, not a narrator. Do not sound theatrical."
-  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: natural}
 duration: 5 days
 severity: moderate-severe
 key_chronology: Onset 5 days ago; course consistent with epistaksis sedang berat evolution

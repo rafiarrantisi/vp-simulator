@@ -20,8 +20,8 @@ patient_opening: "Doctor, I'm having trouble passing urine."
 voice_profile:
   voice_name: Schedar
   language_code: id-ID
-  style_instruction: "Speak naturally in Indonesian as a 68-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient, not a narrator. Do not sound theatrical."
-  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
+  style_instruction: "Speak naturally in Indonesian as a 68-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: natural}
 opening_context: "68yo man with dysuria, hesitancy, weak stream and incomplete emptying; on top of low-grade fever; GU symptoms in a man = COMPLICATED UTI by definition"
 duration: "1 week, worsening"
 severity: moderate

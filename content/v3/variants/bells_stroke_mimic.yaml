@@ -28,8 +28,8 @@ opening_context: 'Patient presents: cannot close one eye, mouth pulled aside (1 
 voice_profile:
   voice_name: Vindemiatrix
   language_code: id-ID
-  style_instruction: "Speak naturally in Indonesian as a calm 65-year-old woman. Gentle, soft voice, unhurried but not dragging. Composed. Polite. A patient, not a narrator. Do not sound theatrical."
-  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
+  style_instruction: "Speak naturally in Indonesian as a calm 65-year-old woman. Gentle, soft voice, at a natural conversational pace. Composed. Polite. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: natural}
 duration: 1 day
 severity: severe
 key_chronology: Onset 1 day ago; course consistent with infark serebral evolution

@@ -27,8 +27,8 @@ opening_context: 'Patient presents: sudden one-sided weakness (5 days)'
 voice_profile:
   voice_name: Vindemiatrix
   language_code: id-ID
-  style_instruction: "Speak naturally in Indonesian as a calm 74-year-old woman. Gentle, soft voice, unhurried but not dragging. Composed. Polite. A patient, not a narrator. Do not sound theatrical."
-  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
+  style_instruction: "Speak naturally in Indonesian as a calm 74-year-old woman. Gentle, soft voice, at a natural conversational pace. Composed. Polite. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: natural}
 duration: 5 days
 severity: moderate-severe
 key_chronology: Onset 5 days ago; course consistent with infark serebral evolution

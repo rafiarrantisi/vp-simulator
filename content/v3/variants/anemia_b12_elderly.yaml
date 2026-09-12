@@ -30,7 +30,7 @@ voice_profile:
   voice_name: Enceladus
   language_code: id-ID
   style_instruction: "Speak naturally in Indonesian as a 66-year-old man with low energy. Quiet, a little breathy and tired, steady rhythm. Weak but composed. Brief answers. A patient, not a narrator. Do not sound theatrical."
-  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: natural}
 duration: 1 week
 severity: moderate
 key_chronology: Onset 1 week ago; course consistent with anemia defisiensi vitamin/mineral

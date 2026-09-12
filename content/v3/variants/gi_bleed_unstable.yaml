@@ -28,8 +28,8 @@ opening_context: 'Patient presents: black tarry stools with dizziness (1 day)'
 voice_profile:
   voice_name: Schedar
   language_code: id-ID
-  style_instruction: "Speak naturally in Indonesian as a 66-year-old man. Mature, calm, steady voice, unhurried but not dragging. Composed. Cooperative. A patient, not a narrator. Do not sound theatrical."
-  traits: {age_band: elderly, energy: medium, affect: calm, pace: unhurried}
+  style_instruction: "Speak naturally in Indonesian as a 66-year-old man. Mature, calm, steady voice, at a natural conversational pace. Composed. Cooperative. A patient, not a narrator. Do not sound theatrical."
+  traits: {age_band: elderly, energy: medium, affect: calm, pace: natural}
 duration: 1 day
 severity: severe
 key_chronology: Onset 1 day ago; course consistent with perdarahan gastrointestinal
