@@ -7,9 +7,11 @@
 // retry on the SAME client_turn_id (server replays, no new inference).
 //
 // State machine: idle | listening | processing | speaking | error.
-// No barge-in v1: mic is inert while processing/speaking. After speaking
-// ends the mic auto-starts (hands-free turns); first turn needs one tap
-// (creates/resumes AudioContext inside the user gesture).
+// No barge-in v1: tap during processing/speaking CANCELS the turn (abort
+// fetch, stop audio, idle + 'dibatalkan' hint, NO auto relisten). After a
+// CLEAN speaking turn the mic auto-starts (hands-free); after a cancel it
+// stays idle until the next tap. First turn needs one tap (creates/resumes
+// AudioContext inside the user gesture).
 // All lifecycles (recognition, timers, streams, audio) die on unmount.
 
 var QV2_VOICE_SILENCE_MS = 3000; // inactivity fallback auto-submit
@@ -163,6 +165,84 @@ var QV2_VF_META = 1, QV2_VF_TEXT = 2, QV2_VF_PCM = 3, QV2_VF_ERR = 4, QV2_VF_DON
 var QV2_VOICE_MAX_FRAME = 1048576; // 1 MiB (backend parity)
 var QV2_VOICE_MAX_JSON = 65536; // 64 KiB control-frame cap (backend parity)
 
+// ── Voice-turn timeouts (fit CURRENT provider, not ADR future numbers) ───
+// LLM total guard is 20s + TTS streaming on top. IDLE fires only when NO
+// frame/byte arrives for 20s (resets on every chunk, so healthy slow
+// streams NEVER trip). OVERALL caps the whole turn at 90s (fetch + stream
+// + DONE audio-schedule wait). Both reject with {voiceError} so the caller
+// shows error-with-retry UI (no auto re-inference, same client_turn_id).
+var QV2_VOICE_IDLE_MS = 20000;
+var QV2_VOICE_OVERALL_MS = 90000;
+// Consecutive recognition auto-restart cap (onend loop guard).
+var QV2_REC_MAX_RESTARTS = 3;
+
+// Word-level overlap-join for accumulated FINAL transcripts. Chrome with
+// continuous=true re-emits prior finals re-segmented (e.g. 'sudah' then
+// 'sudah dari' then 'sudah dari kapan...'); blind concatenation yields the
+// staircase 'sudah sudah dari sudah dari kapan...'. Join with largest
+// case-insensitive word overlap; a newer revision that covers the whole
+// accumulator REPLACEs it; a deliberate single-word repeat is preserved.
+function qvSplitWords(s) {
+  return String(s || '').trim().split(/\s+/).filter(Boolean);
+}
+function qvJoinFinal(acc, seg) {
+  var a = String(acc || '').trim();
+  var s = String(seg || '').trim();
+  if (!s) return a;
+  if (!a) return s;
+  var aw = qvSplitWords(a);
+  var sw = qvSplitWords(s);
+  if (!aw.length) return s;
+  if (!sw.length) return a;
+  var al = aw.map(function (w) { return w.toLowerCase(); });
+  var sl = sw.map(function (w) { return w.toLowerCase(); });
+  var maxK = Math.min(aw.length, sw.length);
+  var k = 0;
+  for (var kk = maxK; kk >= 1; kk--) {
+    var ok = true;
+    for (var j = 0; j < kk; j++) {
+      if (al[aw.length - kk + j] !== sl[j]) { ok = false; break; }
+    }
+    if (ok) { k = kk; break; }
+  }
+  if (k === 0) return (a + ' ' + s).replace(/\s+/g, ' ').trim();
+  // Deliberate single-word repeat (e.g. user says 'sudah ... sudah'):
+  // seg is exactly one word overlapping the tail — keep both.
+  if (k === 1 && sw.length === 1) return (a + ' ' + s).replace(/\s+/g, ' ').trim();
+  // Newer revision covers the whole accumulator — it wins.
+  if (k >= aw.length) return s;
+  return (aw.join(' ') + ' ' + sw.slice(k).join(' ')).replace(/\s+/g, ' ').trim();
+}
+
+// Pure timeout/tap/recognition helpers (unit-tested via plain node; the
+// component below is the only caller).
+function qvVoiceIdleExpired(lastTs, nowTs, idleMs) {
+  var im = (typeof idleMs === 'number' && idleMs > 0) ? idleMs : QV2_VOICE_IDLE_MS;
+  return (nowTs - lastTs) >= im;
+}
+function qvVoiceOverallExpired(startTs, nowTs, overallMs) {
+  var om = (typeof overallMs === 'number' && overallMs > 0) ? overallMs : QV2_VOICE_OVERALL_MS;
+  return (nowTs - startTs) >= om;
+}
+function qvVoiceTapAction(phase) {
+  if (phase === 'listening') return 'submit';
+  if (phase === 'idle' || phase === 'error') return 'start';
+  if (phase === 'processing' || phase === 'speaking') return 'cancel';
+  return 'none';
+}
+function qvRecErrorAction(code, hasFinal) {
+  if (code === 'not-allowed' || code === 'service-not-allowed') return 'mic_blocked';
+  if (code === 'aborted') return 'ignore';
+  if (code === 'no-speech' || code === 'audio-capture') return hasFinal ? 'submit' : 'idle_hint';
+  // Any other code (e.g. network): recognizer is dead — never leave phase
+  // stuck listening. Submit what we have, else reset to idle + short hint.
+  return hasFinal ? 'submit' : 'idle_hint';
+}
+function qvVoiceRestartAllowed(failures, maxFailures) {
+  var m = (typeof maxFailures === 'number' && maxFailures >= 0) ? maxFailures : QV2_REC_MAX_RESTARTS;
+  return failures < m;
+}
+
 // ── Adaptive endpointing flag (ADR §3.2) ─────────────────────────────────
 // DEFAULT ON (owner decision 12 Sep 2026): adaptive timers run for everyone.
 // Opt-out via
@@ -281,30 +361,50 @@ function _qvSendVoiceTurnOnce(opts) {
   // Resolves {ok:true, text, meta} after clean done (audio fully scheduled);
   // resolves {ok:false, text, truncated:true} when the winner text arrived
   // but audio did not (text fallback, NO re-inference); rejects {http} or
-  // {voiceError} otherwise.
+  // {voiceError} otherwise. Timeouts: IDLE (no frame/byte for
+  // QV2_VOICE_IDLE_MS, resets on every chunk) + OVERALL
+  // (QV2_VOICE_OVERALL_MS total cap). Both abort the fetch/reader, stop
+  // partial audio, and reject with {voiceError:'idle_timeout'|'turn_timeout'}
+  // so the caller shows error-with-retry on the SAME client_turn_id.
+  // External abort (opts.signal, e.g. orb tap-cancel) rejects with
+  // {voiceError:'cancelled', cancelled:true} so the caller can stay idle
+  // with a 'dibatalkan' hint instead of error UI.
   return (async function () {
     var tok = (typeof _qv2Token === 'function') ? _qv2Token() : '';
     var headers = { 'Content-Type': 'application/json' };
     if (tok) headers['Authorization'] = 'Bearer ' + tok;
     var base = (typeof _qv2Base === 'function') ? _qv2Base() : '';
-    var res = await fetch(base + '/api/v2/sessions/' + encodeURIComponent(opts.sessionId) + '/turns/voice-stream', {
-      method: 'POST', headers: headers,
-      body: JSON.stringify({ client_turn_id: opts.clientTurnId, transcript: opts.transcript,
-        client_telemetry: opts.telemetry || undefined }),
-      signal: opts.signal,
-    });
-    if (!res.ok || !res.body) {
-      var errText = '';
-      try { errText = await res.text(); } catch (e) {}
-      throw { http: res.status, body: (errText || '').slice(0, 200) };
+    var extSignal = opts.signal;
+    function isCancelled() {
+      try { return !!(extSignal && extSignal.aborted); } catch (e) { return false; }
     }
-    var reader = res.body.getReader();
+    // Internal controller merges external cancel + timeout aborts so a
+    // hanging fetch (no headers) also unblocks. External abort forwards in.
+    var intCtl = null;
+    try { intCtl = new AbortController(); } catch (e) { intCtl = null; }
+    var intSignal = intCtl ? intCtl.signal : extSignal;
+    var extHandler = null;
+    if (extSignal && intCtl && !isCancelled()) {
+      extHandler = function () { try { intCtl.abort(); } catch (e) {} };
+      try { extSignal.addEventListener('abort', extHandler); } catch (e2) {}
+    }
+    if (isCancelled() && intCtl) { try { intCtl.abort(); } catch (e3) {} }
+    var startTs = Date.now();
+    var lastTs = startTs;
+    var reader = null;
     var st = { pending: new Uint8Array(0) };
     var meta = null, text = '', pcmBytes = 0, pcmChunks = 0;
     var ctx = opts.ctx, analyser = opts.analyser;
     var sources = [];
     var playAt = ctx.currentTime + 0.05;
     var firstFired = false;
+    function stopSources() {
+      for (var si = 0; si < sources.length; si++) {
+        try { sources[si].stop(); } catch (e) {}
+        try { sources[si].disconnect(); } catch (e2) {}
+      }
+      sources = [];
+    }
     function schedulePcm(bytes) {
       var buf = qvPcmToBuffer(ctx, bytes);
       var src = ctx.createBufferSource();
@@ -321,10 +421,66 @@ function _qvSendVoiceTurnOnce(opts) {
         try { if (opts.onFirstAudio) opts.onFirstAudio(); } catch (e2) {}
       }
     }
+    // Stop scheduled audio as soon as any abort fires (tap-cancel or
+    // timeout) so a cancelled turn goes silent immediately.
+    if (intSignal) {
+      try {
+        intSignal.addEventListener('abort', function () { try { stopSources(); } catch (e) {} });
+      } catch (e4) {}
+    }
+    var idleFired = false, overallFired = false;
+    var idleTimer = null, overallTimer = null;
+    function clearVoiceTimers() {
+      try { if (idleTimer) clearTimeout(idleTimer); } catch (e) {}
+      try { if (overallTimer) clearTimeout(overallTimer); } catch (e2) {}
+      idleTimer = null; overallTimer = null;
+    }
+    function armIdle() {
+      try { if (idleTimer) clearTimeout(idleTimer); } catch (e) {}
+      idleTimer = setTimeout(function () {
+        idleFired = true;
+        try { if (reader) reader.cancel(); } catch (e2) {}
+        try { if (intCtl) intCtl.abort(); } catch (e3) {}
+      }, QV2_VOICE_IDLE_MS);
+    }
+    overallTimer = setTimeout(function () {
+      overallFired = true;
+      try { if (reader) reader.cancel(); } catch (e) {}
+      try { if (intCtl) intCtl.abort(); } catch (e2) {}
+    }, QV2_VOICE_OVERALL_MS);
+    armIdle();
     try {
+      var res = await fetch(base + '/api/v2/sessions/' + encodeURIComponent(opts.sessionId) + '/turns/voice-stream', {
+        method: 'POST', headers: headers,
+        body: JSON.stringify({ client_turn_id: opts.clientTurnId, transcript: opts.transcript,
+          client_telemetry: opts.telemetry || undefined }),
+        signal: intSignal,
+      });
+      if (isCancelled()) throw { voiceError: 'cancelled', cancelled: true, text: text };
+      if (overallFired || qvVoiceOverallExpired(startTs, Date.now(), QV2_VOICE_OVERALL_MS))
+        throw { voiceError: 'turn_timeout', text: text };
+      if (idleFired) throw { voiceError: 'idle_timeout', text: text };
+      lastTs = Date.now();
+      armIdle(); // headers arrived = progress
+      if (!res.ok || !res.body) {
+        var errText = '';
+        try { errText = await res.text(); } catch (e) {}
+        throw { http: res.status, body: (errText || '').slice(0, 200) };
+      }
+      reader = res.body.getReader();
       for (;;) {
         var rd = await reader.read();
+        if (isCancelled()) throw { voiceError: 'cancelled', cancelled: true, text: text };
+        if (overallFired) throw { voiceError: 'turn_timeout', text: text };
+        if (idleFired) throw { voiceError: 'idle_timeout', text: text };
+        var now = Date.now();
+        if (qvVoiceOverallExpired(startTs, now, QV2_VOICE_OVERALL_MS))
+          throw { voiceError: 'turn_timeout', text: text };
         if (rd.done) break;
+        // Any byte chunk = progress: reset the IDLE watchdog so healthy
+        // slow streams (LLM 20s guard + TTS) NEVER trip it.
+        lastTs = now;
+        armIdle();
         var frames;
         try { frames = qvFeedVoiceFrames(st, rd.value); }
         catch (fe) { throw { voiceError: (fe && fe.voiceFrameError) || 'frame_error', text: text }; }
@@ -337,16 +493,86 @@ function _qvSendVoiceTurnOnce(opts) {
             var ej = qvVoiceJson(f.payload);
             throw { voiceError: String(ej.code || 'server_error'), text: text };
           } else if (f.type === QV2_VF_DONE) {
+            // DONE wait is bounded audio-schedule time, not frame silence:
+            // idle watchdog stops here, overall cap still applies.
+            try { if (idleTimer) clearTimeout(idleTimer); } catch (eIdle) {}
+            idleTimer = null;
             var waitMs = Math.max(0, (playAt - ctx.currentTime) * 1000) + 150;
-            await new Promise(function (r2) { setTimeout(r2, waitMs); });
+            var remain = QV2_VOICE_OVERALL_MS - (Date.now() - startTs);
+            if (remain <= 0) throw { voiceError: 'turn_timeout', text: text };
+            if (waitMs > remain) {
+              // Audio would outlive the overall cap: wait only until the
+              // cap, then surface timeout-with-retry (winner text kept).
+              await new Promise(function (_, rej) {
+                var t = setTimeout(function () { rej({ voiceError: 'turn_timeout', text: text }); }, Math.max(0, remain));
+                if (intSignal) {
+                  var onAb = function () {
+                    try { clearTimeout(t); } catch (e2) {}
+                    if (isCancelled()) rej({ voiceError: 'cancelled', cancelled: true, text: text });
+                    else rej({ voiceError: 'turn_timeout', text: text });
+                  };
+                  try {
+                    if (intSignal.aborted) onAb();
+                    else intSignal.addEventListener('abort', onAb, { once: true });
+                  } catch (e3) {}
+                }
+              });
+            } else {
+              await new Promise(function (res2, rej2) {
+                var done2 = false;
+                var t2 = setTimeout(function () { if (!done2) { done2 = true; res2(); } }, waitMs);
+                if (intSignal) {
+                  var onAb2 = function () {
+                    if (done2) return; done2 = true;
+                    try { clearTimeout(t2); } catch (e2) {}
+                    if (isCancelled()) rej2({ voiceError: 'cancelled', cancelled: true, text: text });
+                    else if (overallFired) rej2({ voiceError: 'turn_timeout', text: text });
+                    else rej2({ voiceError: 'cancelled', cancelled: true, text: text });
+                  };
+                  try {
+                    if (intSignal.aborted) onAb2();
+                    else intSignal.addEventListener('abort', onAb2, { once: true });
+                  } catch (e3) {}
+                }
+              });
+              if (isCancelled()) throw { voiceError: 'cancelled', cancelled: true, text: text };
+              if (overallFired) throw { voiceError: 'turn_timeout', text: text };
+            }
+            clearVoiceTimers();
+            try { if (extSignal && intCtl && extHandler) extSignal.removeEventListener('abort', extHandler); } catch (e5) {}
             return { ok: true, text: text, meta: meta, pcmBytes: pcmBytes, pcmChunks: pcmChunks };
           }
         }
       }
     } catch (e) {
-      if (e && (e.http || e.voiceError)) throw e;
+      clearVoiceTimers();
+      try { if (extSignal && intCtl && extHandler) extSignal.removeEventListener('abort', extHandler); } catch (eRem) {}
+      if (e && e.cancelled) { try { stopSources(); } catch (eS) {} throw e; }
+      if (isCancelled()) { try { stopSources(); } catch (eS2) {} throw { voiceError: 'cancelled', cancelled: true, text: text }; }
+      if (e && (e.http || e.voiceError)) {
+        if (e.voiceError === 'cancelled' || e.voiceError === 'idle_timeout' || e.voiceError === 'turn_timeout') {
+          try { stopSources(); } catch (eS3) {}
+        }
+        throw e;
+      }
+      if (overallFired) { try { stopSources(); } catch (eS4) {} throw { voiceError: 'turn_timeout', text: text }; }
+      if (idleFired) { try { stopSources(); } catch (eS5) {} throw { voiceError: 'idle_timeout', text: text }; }
+      // Fetch/reader AbortError without flags (timeout abort racing) maps
+      // to the matching timeout when elapsed time says so.
+      try {
+        var nm = String((e && (e.name || e.message)) || e || '');
+        if (/abort/i.test(nm)) {
+          var el = Date.now() - startTs;
+          if (el >= QV2_VOICE_OVERALL_MS) throw { voiceError: 'turn_timeout', text: text };
+          if ((Date.now() - lastTs) >= QV2_VOICE_IDLE_MS) throw { voiceError: 'idle_timeout', text: text };
+        }
+      } catch (eMap) {
+        if (eMap && (eMap.voiceError === 'turn_timeout' || eMap.voiceError === 'idle_timeout')) throw eMap;
+      }
       throw { voiceError: String((e && e.message) || e || 'stream_failed'), text: text };
     }
+    clearVoiceTimers();
+    try { if (extSignal && intCtl && extHandler) extSignal.removeEventListener('abort', extHandler); } catch (eFin) {}
     // Stream ended without done: truncated. Winner text (if any) still usable.
     if (text) return { ok: false, text: text, truncated: true, pcmBytes: pcmBytes };
     throw { voiceError: 'truncated', text: '' };
@@ -355,8 +581,10 @@ function _qvSendVoiceTurnOnce(opts) {
 
 // ---- Voice orb: the SINGLE interaction object (no mic-icon literal) -----
 // idle: breathe + "tap to speak" · listening: stop square + ping ring (tap
-// submits) · processing: soft dots · speaking: analyser scale + eq bars ·
-// error: "!". Tapping is inert while processing/speaking (no barge-in v1).
+// submits) · processing: soft dots (tap CANCELS) · speaking: analyser scale
+// + eq bars (tap CANCELS) · error: "!". Tap during processing/speaking
+// CANCELS the turn (abort fetch, stop audio, idle + 'dibatalkan' hint, NO
+// auto relisten) — no barge-in v1, but never inert.
 function QV2VoiceOrb(props) {
   var phase = props.phase; // idle|listening|processing|speaking|error
   var analyserRef = props.analyserRef;
@@ -413,7 +641,8 @@ function QV2VoiceOrb(props) {
     React.createElement('div', { ref: ringRef, className: phase === 'listening' ? 'qv2-orb-ring-ping' : '', style: { position: 'absolute', inset: 0, borderRadius: '50%', border: '2px solid ' + (phase === 'speaking' ? '#2ea08c' : 'var(--primary)'), opacity: 0.25, pointerEvents: 'none' } }),
     React.createElement('button', {
       ref: dotRef, onClick: disabled ? undefined : onTap, disabled: disabled,
-      'aria-label': phase === 'listening' ? 'Send now' : 'Speak',
+      'aria-label': phase === 'listening' ? 'Send now'
+        : (phase === 'processing' || phase === 'speaking') ? 'Cancel voice turn' : 'Speak',
       className: phase === 'idle' && !disabled ? 'qv2-orb-idle' : (disabled ? 'qv2-orb-off' : ''),
       style: {
         position: 'absolute', inset: 18, borderRadius: '50%', border: 'none',
@@ -458,6 +687,8 @@ function QV2VoiceRoom(props) {
   var epRef = React.useRef(null); // adaptive endpoint tracker (null when flag off)
   var epReasonRef = React.useRef(''); // endpoint reason → server telemetry
   var voiceCtlRef = React.useRef(null); // AbortController for in-flight voice turn
+  var turnGenRef = React.useRef(0); // voice-turn generation: tap-cancel bumps, late results ignored
+  var restartRef = React.useRef(0); // consecutive onend auto-restarts with no transcript
   phaseRef.current = phase;
 
   function clearTimer() {
@@ -573,6 +804,7 @@ function QV2VoiceRoom(props) {
     setVErr(''); setHint(''); setInterim('');
     finalRef.current = ''; submittedRef.current = false;
     epReasonRef.current = '';
+    try { restartRef.current = 0; } catch (eR0) {}
     // Adaptive tracker lives only when the flag is on; null otherwise so the
     // baseline path below runs byte-identical to the shipped behavior.
     epRef.current = qvVoiceAdaptive()
@@ -594,18 +826,23 @@ function QV2VoiceRoom(props) {
     rec.onresult = function (e) {
       if (submittedRef.current) return;
       // REBUILD finals from the full results array every event (never append
-      // deltas): Chrome re-delivers prior finals across events with
-      // continuous=true, and appending caused the "halo Halo Halo…" echo.
+      // deltas): Chrome re-delivers prior finals re-segmented across events
+      // with continuous=true. Blind concatenation caused BOTH the old
+      // "halo Halo Halo…" echo AND the staircase duplication ('sudah' then
+      // 'sudah dari' then 'sudah dari kapan...' → 'sudah sudah dari ...').
+      // Fix: word-level overlap-join (qvJoinFinal); interim is untouched.
       var fin = '', inter = '';
       try {
         for (var i = 0; i < e.results.length; i++) {
           var t = ((e.results[i][0] || {}).transcript || '');
-          if (e.results[i].isFinal) fin += t + ' ';
+          if (e.results[i].isFinal) fin = qvJoinFinal(fin, t);
           else inter += t;
         }
       } catch (err2) {}
       fin = fin.trim(); inter = inter;
       finalRef.current = fin;
+      // Any real transcript content resets the onend restart guard.
+      if ((fin + ' ' + inter).trim()) { try { restartRef.current = 0; } catch (eR) {} }
       if (epRef.current) { epObserveResult(fin, inter); return; }
       setInterim(((finalRef.current + ' ' + inter).trim()));
       // Any utterance content resets the clock: interim (user still shaping
@@ -650,14 +887,32 @@ function QV2VoiceRoom(props) {
         }
         return;
       }
+      // Any other code (e.g. network): the recognizer is dead — never leave
+      // phase stuck listening. Submit what we have, else idle + short hint.
+      var act = qvRecErrorAction(code, !!((finalRef.current || '').trim()));
+      if (act === 'submit') { finishSubmit(true); return; }
+      stopRec();
+      if (phaseRef.current === 'listening') {
+        setPhase('idle');
+        setHint('Mic terganggu — tap lagi untuk bicara.');
+      }
     };
     rec.onend = function () {
       // Chrome ends recognition on pauses by itself: if we still want to
-      // listen and nothing was submitted, restart; else finalize.
+      // listen and nothing was submitted, restart (capped); else finalize.
       if (unmountedRef.current || submittedRef.current || !wantRef.current) return;
       if ((finalRef.current || '').trim()) { finishSubmit(true); return; }
+      if (!qvVoiceRestartAllowed(restartRef.current, QV2_REC_MAX_RESTARTS)) {
+        stopRec();
+        if (phaseRef.current === 'listening') {
+          setPhase('idle');
+          setHint('Mic berhenti — tap lagi untuk bicara.');
+        }
+        return;
+      }
       try {
         if (recRef.current === rec) {
+          restartRef.current++;
           rec.start();
           if (epRef.current) {
             epRef.current.lastAudioTs = Date.now();
@@ -665,7 +920,17 @@ function QV2VoiceRoom(props) {
           } else armSilence();
           return;
         }
-      } catch (e) {}
+      } catch (e2) {
+        // rec.start() threw (mic dead): count it toward the cap, then idle
+        // (+ hint once capped) instead of a silent restart loop.
+        try { stopRec(); } catch (e3) {}
+        if (phaseRef.current === 'listening') {
+          setPhase('idle');
+          if (!qvVoiceRestartAllowed(restartRef.current, QV2_REC_MAX_RESTARTS))
+            setHint('Mic berhenti — tap lagi untuk bicara.');
+        }
+        return;
+      }
       if (phaseRef.current === 'listening') setPhase('idle');
     };
     try {
@@ -701,9 +966,11 @@ function QV2VoiceRoom(props) {
   }
   async function submitUtterance(text) {
     if (unmountedRef.current) return;
-    setPhase('processing'); setVErr('');
+    setPhase('processing'); setVErr(''); setHint('');
     var cid = qvNewClientTurnId();
     lastVoiceRef.current = { id: cid, text: text };
+    var myGen = 0;
+    try { turnGenRef.current++; myGen = turnGenRef.current; } catch (eG) {}
     // Patient audio needs the output context; unlock resumes it.
     var ctx = ensureAudio();
     if (!ctx) {
@@ -731,6 +998,10 @@ function QV2VoiceRoom(props) {
     }
     voiceCtlRef.current = null;
     if (unmountedRef.current) return;
+    // Tap-cancel wins over late results: stay idle with the cancel hint,
+    // NO error UI and NO auto relisten.
+    try { if (turnGenRef.current !== myGen) return; } catch (eGen) {}
+    if (failed && (failed.cancelled || failed.voiceError === 'cancelled')) return;
     if (res && res.ok) {
       // Winner text is already audible; commit bubbles + hands-free next turn.
       // Each voice id commits bubbles at most once (retries replay audio).
@@ -738,7 +1009,10 @@ function QV2VoiceRoom(props) {
       try { lastVoiceRef.current.committed = true; } catch (e4) {}
       setPhase('idle');
       setTimeout(function () {
-        if (!unmountedRef.current) startListening(true);
+        if (!unmountedRef.current) {
+          try { if (turnGenRef.current !== myGen) return; } catch (eG2) {}
+          startListening(true);
+        }
       }, 80);
       return;
     }
@@ -747,6 +1021,7 @@ function QV2VoiceRoom(props) {
     // same utterance). When the server persisted a winner, its text still
     // arrives — show it; otherwise keep the user's words for manual retry
     // on the SAME client_turn_id (server replays, no new inference).
+    // Timeout codes (idle_timeout/turn_timeout) land here as error-with-retry.
     var winnerText = (res && res.text) || (failed && failed.text) || '';
     if (winnerText) {
       try { if (props.onVoiceCommit) props.onVoiceCommit(text, winnerText); } catch (e3) {}
@@ -764,7 +1039,9 @@ function QV2VoiceRoom(props) {
     var last = lastVoiceRef.current;
     if (!last || !last.text || phaseRef.current === 'processing' || phaseRef.current === 'speaking') return;
     if (unmountedRef.current) return;
-    setPhase('processing'); setVErr('');
+    setPhase('processing'); setVErr(''); setHint('');
+    var myGen = 0;
+    try { turnGenRef.current++; myGen = turnGenRef.current; } catch (eG) {}
     var ctx = ensureAudio();
     if (!ctx) {
       setPhase('error');
@@ -784,6 +1061,7 @@ function QV2VoiceRoom(props) {
     }).then(function (res) {
       voiceCtlRef.current = null;
       if (unmountedRef.current) return;
+      try { if (turnGenRef.current !== myGen) return; } catch (eG2) {}
       // Same-winner replay: commit bubbles only if this voice id never did
       // (first attempt may already have shown the winner text).
       if (res && res.text && !(last.committed)) {
@@ -792,11 +1070,16 @@ function QV2VoiceRoom(props) {
       }
       setPhase('idle');
       setTimeout(function () {
-        if (!unmountedRef.current) startListening(true);
+        if (!unmountedRef.current) {
+          try { if (turnGenRef.current !== myGen) return; } catch (eG3) {}
+          startListening(true);
+        }
       }, 80);
     }, function (e) {
       voiceCtlRef.current = null;
       if (unmountedRef.current) return;
+      try { if (turnGenRef.current !== myGen) return; } catch (eG4) {}
+      if (e && (e.cancelled || e.voiceError === 'cancelled')) return;
       var w = (e && e.text) || '';
       if (w && !(last.committed)) {
         try { if (props.onVoiceCommit) props.onVoiceCommit(last.text, w); } catch (e2) {}
@@ -815,8 +1098,18 @@ function QV2VoiceRoom(props) {
       finishSubmit(false);
       return;
     }
-    if (phase === 'idle' || phase === 'error') { setVErr(''); startListening(false); return; }
-    // processing/speaking: inert (no barge-in v1)
+    if (phase === 'idle' || phase === 'error') { setVErr(''); setHint(''); startListening(false); return; }
+    // processing/speaking: TAP CANCELS the turn (new UX — previously inert).
+    // Abort the fetch via the existing voiceCtl, stop recognition + player
+    // via stopAll, go idle with a cancel hint, NO auto relisten.
+    if (phase === 'processing' || phase === 'speaking') {
+      try { turnGenRef.current++; } catch (eG) {}
+      try { stopAll(); } catch (eS) {}
+      setVErr('');
+      setPhase('idle');
+      setHint('dibatalkan — tap lagi untuk bicara');
+      return;
+    }
   }
   function stopAll() {
     stopRec();
@@ -843,8 +1136,8 @@ function QV2VoiceRoom(props) {
   }, [sessionId]);
 
   var phaseLabel = phase === 'listening' ? 'Listening… tap the orb to send now'
-    : phase === 'processing' ? 'Patient is thinking…'
-    : phase === 'speaking' ? 'Patient is speaking…'
+    : phase === 'processing' ? 'Patient is thinking… tap orb to cancel'
+    : phase === 'speaking' ? 'Patient is speaking… tap orb to cancel'
     : phase === 'error' ? 'Something needs attention'
     : (!roomReady ? 'Menyiapkan sesi…' : 'Ready when you are');
   var msgs = props.messages || [];
@@ -867,8 +1160,9 @@ function QV2VoiceRoom(props) {
       ? React.createElement('div', { style: { maxWidth: 560, marginTop: 8, marginBottom: 4, padding: '10px 16px', borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)', fontSize: 13, lineHeight: 1.55, color: 'var(--text-1)', textAlign: 'center', fontStyle: 'italic' } }, '“' + opening + '”')
       : React.createElement('div', { style: { marginTop: 8, marginBottom: 4, fontSize: 12.5, color: 'var(--text-3)' } }, 'Menyiapkan pasien…'),
     // Breathing room: orb floats centered with 60px clearance for its pulse.
+    // Orb stays tappable in processing/speaking so tap can CANCEL the turn.
     React.createElement('div', { style: { flex: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 0', minHeight: 300 } },
-      React.createElement(QV2VoiceOrb, { phase: phase, analyserRef: analyserRef, onTap: onMicTap, dimmed: !roomReady, disabled: !roomReady || phase === 'processing' || phase === 'speaking' || props.busy })),
+      React.createElement(QV2VoiceOrb, { phase: phase, analyserRef: analyserRef, onTap: onMicTap, dimmed: !roomReady, disabled: !roomReady || props.busy })),
     React.createElement('div', { style: { marginTop: 14, fontSize: 14, fontWeight: 700, color: 'var(--text-1)', minHeight: 20, textAlign: 'center' } }, phaseLabel),
     React.createElement('div', { style: { marginTop: 6, fontSize: 13, color: 'var(--text-2)', fontStyle: 'italic', minHeight: 20, maxWidth: 560, textAlign: 'center', lineHeight: 1.5 } },
       phase === 'listening' ? ('“' + (interim || '…') + '”') : ''),
@@ -881,7 +1175,8 @@ function QV2VoiceRoom(props) {
         React.createElement('button', { onClick: function () { setDrawer(true); }, style: { padding: '6px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 12, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '📝 Transcript'))),
     hintMsg && !ver && React.createElement('div', { style: { marginTop: 10, fontSize: 12.5, color: 'var(--text-3)' } }, hintMsg),
     React.createElement('div', { style: { marginTop: 8, fontSize: 11.5, color: 'var(--text-3)' } },
-      !roomReady ? '' : (phase === 'listening' ? 'Pauses auto-send — tap orb to send now' : '')),
+      !roomReady ? '' : (phase === 'listening' ? 'Pauses auto-send — tap orb to send now'
+        : (phase === 'processing' || phase === 'speaking') ? 'Tap orb to cancel' : '')),
     // Secondary actions — one tap straight to assessment (physical exam
     // lives as a tab inside, skippable by leaving it empty).
     React.createElement('div', { style: { marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' } },
