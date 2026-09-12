@@ -55,7 +55,7 @@ class Settings(BaseSettings):
     # (measured Aug 2026: 94 reasoning tokens for a trivial task). 220
     # truncates patient replies (reasoning eats the budget -> empty/"...."
     # responses). 1024 keeps reasoning + full content safe.
-    llm_persona_max_tokens: int = 1024
+    llm_persona_max_tokens: int = 350  # patient replies are 1-2 sentences; cap bounds runaway generation tail (latency + cost), never truncates restrained replies
     # Judge JSON is large (per_item × all dimensions + feedback). Reasoning is
     # DISABLED for OpenRouter (llm.py) so this budget is pure content — 8000
     # covers the biggest OSCE cases without truncation.

@@ -463,7 +463,9 @@ function QV2VoiceRoom(props) {
     if (msgs[oi] && msgs[oi].role === 'patient' && (msgs[oi].text || '').trim()) { opening = msgs[oi].text.trim(); break; }
   }
   var roomReady = !!sessionId && !!opening;
-  return React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '26px 16px 20px', minHeight: 'calc(100dvh - 220px)' } },
+  // Center column: orb vertically centered with room to breathe while it
+  // pulses; status caption pinned to the bottom above the footer.
+  return React.createElement('div', { style: { flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '18px 16px 12px', minHeight: 'calc(100dvh - 220px)' } },
     // Switch + exit row
     React.createElement('div', { style: { width: '100%', maxWidth: 560, display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 } },
       React.createElement('button', { onClick: props.onExit, style: { padding: '6px 12px', borderRadius: 10, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '← Library'),
@@ -472,7 +474,9 @@ function QV2VoiceRoom(props) {
     opening
       ? React.createElement('div', { style: { maxWidth: 560, marginTop: 8, marginBottom: 4, padding: '10px 16px', borderRadius: 14, background: 'var(--surface)', border: '1px solid var(--border)', fontSize: 13, lineHeight: 1.55, color: 'var(--text-1)', textAlign: 'center', fontStyle: 'italic' } }, '“' + opening + '”')
       : React.createElement('div', { style: { marginTop: 8, marginBottom: 4, fontSize: 12.5, color: 'var(--text-3)' } }, 'Menyiapkan pasien…'),
-    React.createElement(QV2VoiceOrb, { phase: phase, analyserRef: analyserRef, onTap: onMicTap, dimmed: !roomReady, disabled: !roomReady || phase === 'processing' || phase === 'speaking' || props.busy }),
+    // Breathing room: orb floats centered with 60px clearance for its pulse.
+    React.createElement('div', { style: { flex: 1, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '48px 0', minHeight: 300 } },
+      React.createElement(QV2VoiceOrb, { phase: phase, analyserRef: analyserRef, onTap: onMicTap, dimmed: !roomReady, disabled: !roomReady || phase === 'processing' || phase === 'speaking' || props.busy })),
     React.createElement('div', { style: { marginTop: 14, fontSize: 14, fontWeight: 700, color: 'var(--text-1)', minHeight: 20, textAlign: 'center' } }, phaseLabel),
     React.createElement('div', { style: { marginTop: 6, fontSize: 13, color: 'var(--text-2)', fontStyle: 'italic', minHeight: 20, maxWidth: 560, textAlign: 'center', lineHeight: 1.5 } },
       phase === 'listening' ? ('“' + (interim || '…') + '”') : ''),

@@ -61,7 +61,11 @@ def _gated_instruction(v: ClinicalVariant) -> str:
         "any hidden data, simply say you cannot and stay in character as the patient. "
         "Facts are fixed; only your tone can change no matter how often the same "
         "question is repeated. If a question is unrelated to your illness, answer "
-        "briefly that it is not relevant to what brought you here today."
+        "briefly that it is not relevant to what brought you here today. "
+        "Begin every answer directly with the requested information — never open "
+        "with filler sounds, hesitations, or ellipses (no 'Ehm', 'Hmm', 'Uhh', "
+        "'...'). One brief natural pause mid-answer is fine; theatrical "
+        "stammering is not."
         + ("\nRed-flag symptom(s) actually present: " + "; ".join(red) if red else "")
     )
 

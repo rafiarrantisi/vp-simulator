@@ -109,11 +109,17 @@ async def astream_patient(client, system, messages, *, max_tokens,
     last_exc: Exception | None = None
     for attempt in (0, 1):
         try:
+            got_any = False
             async for tok in _iter_guarded(
                     client.astream(system, messages, max_tokens=max_tokens,
                                    fast=True, session_id=lane),
                     first_token_timeout, total_timeout):
+                got_any = True
                 yield tok
+            if not got_any:
+                # Clean stream with zero content tokens (transient upstream
+                # truncation observed Sep 2026) — retry once like a stall.
+                raise TimeoutError("patient turn returned no content")
             return
         except transient as e:
             last_exc = e
