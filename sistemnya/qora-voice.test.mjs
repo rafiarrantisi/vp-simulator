@@ -89,8 +89,28 @@ ok('staircase does NOT blind-concatenate', () => {
   assert.equal(good, 'sudah dari kapan');
 });
 
-ok('deliberate single-word repeat preserved (sudah|sudah)', () => {
-  assert.equal(qvJoinFinal('sudah', 'sudah'), 'sudah sudah');
+ok('consecutive identical single-word finals collapse (live artifact)', () => {
+  assert.equal(qvJoinFinal('sudah', 'sudah'), 'sudah');
+  assert.equal(
+    qvJoinFinal(qvJoinFinal(qvJoinFinal('', 'bisa'), 'bisa'), 'bisa ceritain nggak'),
+    'bisa ceritain nggak'
+  );
+  assert.equal(
+    qvJoinFinal('tiba-tiba', 'tiba-tiba atau bagaimana'),
+    'tiba-tiba atau bagaimana'
+  );
+  // Within ONE final we never split: genuine stutter stays as-is.
+  assert.equal(
+    qvJoinFinal('', 'tiba-tiba tiba-tiba atau bagaimana'),
+    'tiba-tiba tiba-tiba atau bagaimana'
+  );
+});
+
+ok('genuine within-final repeat untouched', () => {
+  assert.equal(
+    qvJoinFinal('', 'sudah sudah saya mengerti'),
+    'sudah sudah saya mengerti'
+  );
 });
 
 ok('distinct finals appended', () => {

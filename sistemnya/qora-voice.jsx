@@ -206,9 +206,11 @@ function qvJoinFinal(acc, seg) {
     if (ok) { k = kk; break; }
   }
   if (k === 0) return (a + ' ' + s).replace(/\s+/g, ' ').trim();
-  // Deliberate single-word repeat (e.g. user says 'sudah ... sudah'):
-  // seg is exactly one word overlapping the tail — keep both.
-  if (k === 1 && sw.length === 1) return (a + ' ' + s).replace(/\s+/g, ' ').trim();
+  // NOTE (12 Sep 2026, live data): consecutive identical single-word finals
+  // inside ONE utterance ('bisa'|'bisa'|'bisa ceritain') are Chrome
+  // re-segmentation artifacts, NOT deliberate emphasis — always join them.
+  // Genuine repeats survive because they arrive inside a single final
+  // transcript ('sudah sudah'), which this cross-final join never splits.
   // Newer revision covers the whole accumulator — it wins.
   if (k >= aw.length) return s;
   return (aw.join(' ') + ' ' + sw.slice(k).join(' ')).replace(/\s+/g, ' ').trim();
