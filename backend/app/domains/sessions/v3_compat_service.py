@@ -544,9 +544,15 @@ async def score(db: OrmSession, user: User, session_id: str, *,
         return s.report
     _, v = _frozen_variant(db, s)
     transcript = _history(db, session_id)
+    # Snapshot row scalars BEFORE releasing the connection (detached access
+    # after close would raise). H1 pattern: judge holds 10-70s pool-free.
+    user_id, sid = user.id, s.id
+    learner_level = s.learner_level or "koas"
     is_osce = (mode or "").lower() == "osce"
+    db.close()
+    from app.rag.judge_v3 import aevaluate_v3
     judge = await aevaluate_v3(
-        v, transcript, learner_stage=s.learner_level or "koas",
+        v, transcript, learner_stage=learner_level,
         ddx=ddx, management=management,
         pf_notes=pf_notes, pf_areas=pf_areas, with_pf=is_osce,
         session_id=session_id)
@@ -604,34 +610,46 @@ async def score(db: OrmSession, user: User, session_id: str, *,
     maybe_enrich_report(report, variant_id=v.id,
                         canonical_hash=v.canonical_hash(),
                         rubric_items=_rubric, mode=(mode or "practice"),
-                        learner_stage=s.learner_level or "koas")
-    s.total_score = report["overall"]
-    s.report = report
-    s.status = "completed"
-    if s.ended_at is None:
-        s.ended_at = datetime.now(timezone.utc)
-    # FASE 8: V3-backed sessions award progress identically to V2 (parity fix —
-    # previously V3 earned 0 XP/streak/badges and was invisible on dashboards).
+                        learner_stage=learner_level)
+    from app.database import SessionLocal as _SessionLocal3
+    db3 = _SessionLocal3()
     try:
-        from app.domains.sessions.progress_adapter import (
-            record_progress_for_report,
-            specialty_for_session,
-        )
-        record_progress_for_report(
-            user, case_id=s.case_id,
-            specialty=specialty_for_session(s),
-            report=report, content_schema="new")
-    except Exception:  # noqa: BLE001 — progress must never fail scoring
-        pass
-    try:  # Phase 12: judge outcome correlation (metadata only, never content)
-        from app.shared.observability import log_judge_event
-        from pipeline.clinical_contracts.versions import SCORING_VERSION
-        log_judge_event(engine="v3_compat", outcome="ok",
-                        session_id=s.id, content_schema="new",
-                        scoring_version=SCORING_VERSION)
-    except Exception:  # noqa: BLE001
-        pass
-    db.commit()
+        row = db3.get(SessionRow, sid)
+        if row is None:
+            raise HTTPException(status.HTTP_404_NOT_FOUND, "Session not found")
+        if row.status == "completed" and row.report:
+            return row.report  # cross-worker race: first persist wins
+        row.total_score = report["overall"]
+        row.report = report
+        row.status = "completed"
+        if row.ended_at is None:
+            row.ended_at = datetime.now(timezone.utc)
+        # FASE 8: V3-backed sessions award progress identically to V2 (parity fix —
+        # previously V3 earned 0 XP/streak/badges and was invisible on dashboards).
+        try:
+            from app.domains.auth.models import User as _User3
+            from app.domains.sessions.progress_adapter import (
+                record_progress_for_report,
+                specialty_for_session,
+            )
+            u3 = db3.get(_User3, user_id)
+            record_progress_for_report(
+                u3, case_id=row.case_id,
+                specialty=specialty_for_session(row),
+                report=report, content_schema="new")
+        except Exception:  # noqa: BLE001 — progress must never fail scoring
+            pass
+        try:  # Phase 12: judge outcome correlation (metadata only, never content)
+            from app.shared.observability import log_judge_event
+            from pipeline.clinical_contracts.versions import SCORING_VERSION
+            log_judge_event(engine="v3_compat", outcome="ok",
+                            session_id=row.id, content_schema="new",
+                            scoring_version=SCORING_VERSION)
+        except Exception:
+            pass
+        db3.commit()
+    finally:
+        db3.close()
     return report
 
 

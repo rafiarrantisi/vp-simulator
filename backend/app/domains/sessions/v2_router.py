@@ -605,14 +605,22 @@ async def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_cu
         except FileNotFoundError:
             raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"v2 case '{s.case_id}' not found")
         transcript = _history(db, session_id)
+        user_id = user.id
         rubric_mode = _UI_MODE_TO_RUBRIC.get((req.mode or "").lower())
+        req_mode, req_overtime = (req.mode or "practice"), bool(req.overtime)
+        req_ddx, req_mgmt = req.ddx, req.management
+        req_pf_notes, req_pf_areas = req.pf_notes, req.pf_areas
+        # H1 (pool exhaustion): the judge holds 10-70s. Snapshot everything,
+        # release the pool connection, judge, then persist on a fresh session
+        # — same pattern as turns (v2_turn_stream db.close()).
+        db.close()
         from app.rag.judge_v2 import aevaluate_v2
         clock.count("judge_call")
         report = await aevaluate_v2(case, transcript, mode=rubric_mode,
-                                    student_ddx=req.ddx, student_management=req.management,
-                                    student_pf={"notes": req.pf_notes or "", "areas": req.pf_areas or []},
+                                    student_ddx=req_ddx, student_management=req_mgmt,
+                                    student_pf={"notes": req_pf_notes or "", "areas": req_pf_areas or []},
                                     session_id=session_id)
-        if req.overtime:  # continued past the OSCE time limit (§4.3) -> small penalty
+        if req_overtime:  # continued past the OSCE time limit (§4.3) -> small penalty
             orig = int(report.get("overall", 0) or 0)
             report["overall"] = max(0, orig - _OVERTIME_PENALTY)
             report["overtime_penalty"] = _OVERTIME_PENALTY
@@ -620,24 +628,35 @@ async def v2_score(session_id: str, req: V2ScoreReq, user: User = Depends(get_cu
                 f" (−{_OVERTIME_PENALTY} for continuing past the OSCE time limit.)"
         from app.domains.scoring.evidence_integration import maybe_enrich_report
         maybe_enrich_report(report, variant_id="", canonical_hash="",
-                            rubric_items=[], mode=(req.mode or "practice"),
+                            rubric_items=[], mode=req_mode,
                             learner_stage="koas", clock=clock)
-        s.total_score = report.get("overall", 0)
-        s.report = report
-        s.status = "completed"
-        if s.ended_at is None:
-            s.ended_at = datetime.now(timezone.utc)
-        _record_progress(user, case, report)
-        try:  # Phase 12: judge outcome correlation (metadata only, never content)
-            from app.shared.observability import log_judge_event
-            from pipeline.clinical_contracts.versions import SCORING_VERSION
-            from app.rag.judge_v2 import is_stub as _judge_stub
-            log_judge_event(engine="v2", outcome="stub" if _judge_stub() else "ok",
-                            session_id=s.id, content_schema="legacy",
-                            scoring_version=SCORING_VERSION)
-        except Exception:
-            pass
-        db.commit()
+        from app.database import SessionLocal as _SessionLocal2
+        db2 = _SessionLocal2()
+        try:
+            row = db2.get(SessionRow, session_id)
+            if row is None:
+                raise HTTPException(status.HTTP_404_NOT_FOUND, "Session not found")
+            if row.status == "completed" and row.report:
+                return row.report  # cross-worker race: first persist wins
+            row.total_score = report.get("overall", 0)
+            row.report = report
+            row.status = "completed"
+            if row.ended_at is None:
+                row.ended_at = datetime.now(timezone.utc)
+            u2 = db2.get(User, user_id)
+            _record_progress(u2, case, report)
+            try:  # Phase 12: judge outcome correlation (metadata only, never content)
+                from app.shared.observability import log_judge_event
+                from pipeline.clinical_contracts.versions import SCORING_VERSION
+                from app.rag.judge_v2 import is_stub as _judge_stub
+                log_judge_event(engine="v2", outcome="stub" if _judge_stub() else "ok",
+                                session_id=row.id, content_schema="legacy",
+                                scoring_version=SCORING_VERSION)
+            except Exception:
+                pass
+            db2.commit()
+        finally:
+            db2.close()
         clock.mark("db_persist_complete")
         return report  # includes answer_key for the post-session reveal
 

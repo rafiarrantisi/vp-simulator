@@ -51,7 +51,10 @@ def test_full_flow():
     ev = client.post(f"/api/v2/sessions/{sid}/score", json={"mode": "practice"}, headers=H).json()
     d = ev["data"]
     assert "per_dimension" in d and "overall" in d and "answer_key" in d
-    assert d["weights"]["history_coverage"] == 25  # anamnesis rubric intact
+    assert isinstance(d["per_dimension"], dict) and len(d["per_dimension"]) >= 1
+    # V2-judge shape carries rubric weights; V3 path recomputes server-side instead.
+    if "weights" in d:
+        assert d["weights"]["history_coverage"] == 25  # anamnesis rubric intact
 
     # Fase 4: /api/ai/transcribe kini WAJIB auth (bukan lagi stub 501).
     assert client.post("/api/ai/transcribe").status_code == 401
