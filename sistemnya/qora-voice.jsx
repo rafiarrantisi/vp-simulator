@@ -243,12 +243,17 @@ function QV2VoiceRoom(props) {
     try { if (timerRef.current) clearTimeout(timerRef.current); } catch (e) {}
     timerRef.current = null;
   }
-  function armSilence() {
+  // Two-tier silence: interim (still forming words, thinking pauses OK) gets
+  // the full 3s patience; once the browser finalizes a sentence, the user
+  // almost always pauses for real — 1.2s is enough. Manual tap anytime.
+  var QV2_SILENCE_INTERIM_MS = 3000;
+  var QV2_SILENCE_FINAL_MS = 1200;
+  function armSilence(ms) {
     clearTimer();
     timerRef.current = setTimeout(function () {
-      // 3s without new utterance content → auto-submit.
+      // No new utterance content for the window → auto-submit.
       finishSubmit(true);
-    }, QV2_VOICE_SILENCE_MS);
+    }, (typeof ms === 'number' && ms > 0) ? ms : QV2_SILENCE_INTERIM_MS);
   }
   function stopRec() {
     wantRef.current = false;
@@ -315,8 +320,11 @@ function QV2VoiceRoom(props) {
       } catch (err2) {}
       finalRef.current = fin.trim();
       setInterim(((finalRef.current + ' ' + inter).trim()));
-      // Any utterance content (interim or final) resets the 3s clock.
-      if ((fin + inter).trim()) armSilence();
+      // Any utterance content resets the clock: interim (user still shaping
+      // the sentence, may pause to think) gets full patience; a fresh final
+      // means the sentence landed — send quickly.
+      if (fin.trim()) armSilence(QV2_SILENCE_FINAL_MS);
+      else if (inter.trim()) armSilence(QV2_SILENCE_INTERIM_MS);
     };
     rec.onerror = function (e) {
       var code = (e && e.error) || '';
@@ -483,7 +491,7 @@ function QV2VoiceRoom(props) {
     ver && React.createElement('div', { style: { marginTop: 10, maxWidth: 560, padding: '10px 14px', borderRadius: 12, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5, textAlign: 'center' } }, '⚠️ ' + ver),
     hintMsg && !ver && React.createElement('div', { style: { marginTop: 10, fontSize: 12.5, color: 'var(--text-3)' } }, hintMsg),
     React.createElement('div', { style: { marginTop: 8, fontSize: 11.5, color: 'var(--text-3)' } },
-      !roomReady ? '' : (phase === 'listening' ? 'Auto-sends after 3s of silence' : '')),
+      !roomReady ? '' : (phase === 'listening' ? 'Pauses auto-send — tap orb to send now' : '')),
     // Secondary actions
     React.createElement('div', { style: { marginTop: 20, display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center' } },
       React.createElement('button', { onClick: function () { setDrawer(true); }, style: { padding: '8px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface)', fontSize: 12.5, fontWeight: 600, color: 'var(--text-2)', fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '📝 Transcript (' + msgs.length + ')'),

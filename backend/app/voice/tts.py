@@ -37,6 +37,12 @@ def _lock():
     return _client_lock
 
 
+def _drop_client():
+    global _client
+    with _lock():
+        _client = None
+
+
 def _client():
     """Process-wide cached client (grpc channel + auth reused across turns;
     clients are thread-safe). Falls back to fresh build if ever broken."""

@@ -3,13 +3,18 @@
 /api/ai/transcribe : Whisper (OpenAI-compatible) + MD5 dedup guard, butuh
                      auth. Balas {transcript, is_duplicate}.
 /api/ai/tts        : Gemini TTS → audio/mpeg; 501 jelas bila belum
-                     dikonfigurasi (TTS_API_KEY kosong).
+                     dikonfigurasi.
+/api/ai/tts/stream : Gemini TTS streaming → framed PCM chunks
+                     (4-byte big-endian length + int16 mono 24kHz), zero-length
+                     frame = clean end. Voice/style resolved SERVER-SIDE from
+                     the session's patient card — the client never chooses them.
 """
 import hashlib
+import struct
 import time
 
 from fastapi import APIRouter, Depends, File, Form, UploadFile, status
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse, Response, StreamingResponse
 from pydantic import BaseModel
 
 from app.config import get_settings
@@ -20,7 +25,9 @@ from app.shared.ratelimit import rate_limit
 from app.voice.stt import SttUnavailable
 from app.voice.stt import is_configured as stt_configured
 from app.voice.stt import transcribe
-from app.voice.tts import TtsFailed, TtsNotConfigured, synthesize
+from app.voice.tts import TtsFailed, TtsNotConfigured, stream_pcm, synthesize
+from app.database import get_db
+from sqlalchemy.orm import Session as OrmSession
 
 router = APIRouter(
     prefix="/api/ai",
@@ -50,6 +57,9 @@ def voice_status(user: User = Depends(get_current_user)):
     return ok({
         "stt": stt_configured(),
         "tts": s.tts_provider == "gemini",
+        # Entitlement placeholder (billing tahap berikutnya): server yang
+        # memutuskan; room hanya membaca boolean ini. Dev: selalu True.
+        "voice_enabled": s.tts_provider == "gemini",
         "language": s.stt_language,
     })
 
@@ -93,3 +103,64 @@ def tts(req: TtsRequest, user: User = Depends(get_current_user)):
             status_code=status.HTTP_502_BAD_GATEWAY, content=err(str(e))
         )
     return Response(content=audio, media_type="audio/mpeg")
+
+
+class TtsStreamRequest(BaseModel):
+    text: str
+    session_id: str
+
+
+_EOF = struct.pack(">I", 0)
+_TTS_STREAM_MAX_CHARS = 2000  # credit guard per request
+
+
+@router.post("/tts/stream")
+def tts_stream(req: TtsStreamRequest, user: User = Depends(get_current_user),
+               db: OrmSession = Depends(get_db)):
+    """Voice-mode audio: framed PCM straight from Gemini streaming.
+
+    Voice/style come from the session's patient card on the server. Truncated
+    stream (no zero-length terminator) = failure: client falls back to text.
+    """
+    from app.domains.sessions.models import SessionRow
+    from app.voice.persona_voice import resolve_voice
+
+    text = (req.text or "").strip()
+    if not text:
+        return JSONResponse(status_code=status.HTTP_400_BAD_REQUEST,
+                            content=err("Teks kosong"))
+    if len(text) > _TTS_STREAM_MAX_CHARS:
+        return JSONResponse(status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+                            content=err("Teks terlalu panjang untuk satu turn suara"))
+    s = db.get(SessionRow, req.session_id)
+    if s is None or s.user_id != user.id:
+        return JSONResponse(status_code=status.HTTP_404_NOT_FOUND,
+                            content=err("Session not found"))
+    voice, style, lang = resolve_voice(s, db)
+
+    def _frames():
+        from app.voice.tts import _drop_client
+        for attempt in (0, 1):
+            try:
+                for chunk in stream_pcm(text, voice=voice, style=style or None,
+                                        language=lang):
+                    yield struct.pack(">I", len(chunk)) + chunk
+                yield _EOF
+                return
+            except TtsFailed as e:
+                import logging as _logging
+                _logging.getLogger("qora.tts").warning(
+                    "tts stream attempt %d failed for session %s: %s",
+                    attempt, req.session_id[:8], str(e)[:150])
+                _drop_client()  # broken channel must not poison the next turn
+            except Exception:  # noqa: BLE001
+                _drop_client()
+                return
+        # both attempts failed: no terminator -> client falls back to text
+
+    def _gen():
+        yield from _frames()
+
+    return StreamingResponse(
+        _gen(), media_type="application/octet-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
