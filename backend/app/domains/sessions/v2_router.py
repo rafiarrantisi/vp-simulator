@@ -12,7 +12,7 @@ from datetime import datetime, timedelta, timezone
 import json
 import re
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 from sqlalchemy import select
@@ -233,6 +233,19 @@ def v2_start_session(req: V2StartReq, user: User = Depends(get_current_user),
 class V2TurnReq(BaseModel):
     text: str = Field(min_length=1, max_length=4000)
     input_type: str = "text"  # 'text' | 'voice' (Fase 5 §35.7)
+
+
+class V2VoiceStreamReq(BaseModel):
+    """Phase-2 server-orchestrated voice turn (ADR §4.2/§4.3).
+
+    client_turn_id + transcript body-hash is the idempotency key: same key +
+    same body replays the durable winner with NO new inference; same key +
+    different body is rejected (409). client_telemetry is untrusted
+    timing-only input (sanitized, never content).
+    """
+    client_turn_id: str = Field(min_length=1, max_length=128)
+    transcript: str = Field(min_length=1, max_length=4000)
+    client_telemetry: dict | None = None
 
 
 @router.get("/sessions/{session_id}/turns")
@@ -466,6 +479,351 @@ async def v2_turn_stream(session_id: str, req: V2TurnReq, user: User = Depends(g
         _gen_wrapped(),
         media_type="text/plain; charset=utf-8",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
+@router.post("/sessions/{session_id}/turns/voice-stream", dependencies=[_ai_rl])
+async def v2_turn_voice_stream(session_id: str, req: V2VoiceStreamReq,
+                               request: Request,
+                               user: User = Depends(get_current_user),
+                               db: Session = Depends(get_db)):
+    """Phase-2 server-orchestrated voice turn (ADR §4.2/§4.3).
+
+    Single POST replaces the frontend-coordinated text-turn + TTS round
+    trips for voice: atomic idempotent accept → ONE full patient reply via
+    the frozen Phase-1 adapter (server-side buffering, no sentence
+    pipelining) → fenced durable winner commit → ONE server-side TTS
+    synthesis → ONE typed framed stream (see app.voice.frames).
+
+    Contract notes:
+    - Pre-accept failures are HTTP (401/404/400/409/503). Post-accept
+      failures arrive as typed `error` frames on a 200 stream — the client
+      falls back to text WITHOUT re-inference in both cases.
+    - PCM is never released before the winner commit succeeds (commit runs
+      first; TTS-after-commit trivially satisfies the gate — overlapping
+      synthesis start is a future latency optimization, not v1 behavior).
+    - Disconnect before commit cancels work (no patient row); the same
+      client_turn_id then adopts and re-runs. After commit, recovery
+      replays the stored winner with no new inference.
+    - Text-chat send()/score() contracts are untouched (separate routes).
+    """
+    import time
+
+    import anyio
+
+    from app.domains.sessions import voice_stream as vs
+    from app.domains.sessions.turn_acceptance import (
+        accept_voice_turn, commit_voice_winner, read_voice_winner,
+    )
+    from app.shared.admission import admission_wait_s, db_limiter, patient_limiter
+    from app.shared.perf_marks import TurnClock
+    from app.voice import frames as vf
+
+    clock = TurnClock(route="voice_stream", schema="legacy")
+    clock.mark("request_received")
+    clock.mark("auth_done")
+    user_id = user.id
+    cid = (req.client_turn_id or "").strip()
+    transcript = (req.transcript or "").strip()
+    telemetry = vs.sanitize_client_telemetry(req.client_telemetry)
+    if telemetry:
+        vs.voice_event(
+            "client_endpoint", session_id=session_id, client_turn_id=cid,
+            transcript_len=len(transcript),
+            counts={k: v for k, v in telemetry.items()
+                    if isinstance(v, (int, float))},
+            outcome=str(telemetry.get("endpoint_reason", "")),
+            mode="manual" if telemetry.get("manual") else "")
+    vs.voice_event("received", session_id=session_id, client_turn_id=cid,
+                   transcript_len=len(transcript))
+    try:
+        snap = accept_voice_turn(db, session_id=session_id, user_id=user_id,
+                                 client_turn_id=cid, transcript=transcript)
+    except HTTPException as e:
+        clock.mark("request_complete")
+        code = int(getattr(e, "status_code", 0) or 0)
+        clock.finish("rejected_accept" if code == 409 else "rejected")
+        clock.log_summary()
+        vs.voice_event("rejected", session_id=session_id, client_turn_id=cid,
+                       transcript_len=len(transcript),
+                       error=f"http_{code}" if code else "accept_failed")
+        raise
+    if snap.replay_reply is not None:
+        vs.voice_event("replayed", session_id=session_id, client_turn_id=cid,
+                       transcript_len=len(transcript),
+                       reply_len=len(snap.replay_reply))
+    elif snap.adopted:
+        vs.voice_event("adopted", session_id=session_id, client_turn_id=cid,
+                       transcript_len=len(transcript))
+    else:
+        vs.voice_event("accepted", session_id=session_id, client_turn_id=cid,
+                       transcript_len=len(transcript))
+    history_len = sum(len(h.get("content") or "") for h in (snap.history or ()))
+    case_id = snap.case_id
+    language = snap.language
+    turn_no = snap.turn_no
+    clock.mark("context_ready")
+    clock.mark("db_preflight_done")
+    db.close()  # release pool connection before inference (same as text stream)
+
+    limiter = patient_limiter()
+    try:
+        with anyio.fail_after(admission_wait_s()):
+            await limiter.acquire()
+    except TimeoutError:
+        clock.mark("request_complete")
+        clock.finish("rejected_admission")
+        clock.log_summary()
+        vs.voice_event("admission_rejected", session_id=session_id,
+                       client_turn_id=cid, transcript_len=len(transcript),
+                       error="admission_timeout")
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
+                            "server busy — please retry in a moment")
+    slot_held = True
+    vs.voice_event("admission_ok", session_id=session_id, client_turn_id=cid,
+                   transcript_len=len(transcript))
+
+    async def gen():
+        nonlocal slot_held
+        outcome = "complete"
+        # TurnClock milestones are text-path names; mapping for voice:
+        # llm_request_start = inference begin, stream_complete = full reply
+        # buffered, first_content_sent ≈ final-text frame, first_chunk_yielded
+        # ≈ first PCM frame, db_persist_complete = winner commit. Missing
+        # stages on failed/cancelled turns stay missing (never backfilled).
+        reply = snap.replay_reply
+        commit_status = "replayed" if reply is not None else ""
+        try:
+            if reply is None:
+                # A racing worker may have committed between accept and here
+                # — reread and skip new inference when the winner is durable.
+                from app.database import SessionLocal as _SLRead
+                stored = await anyio.to_thread.run_sync(
+                    lambda: read_voice_winner(
+                        _SLRead, session_id=session_id, client_turn_id=cid))
+                if stored:
+                    reply, commit_status = stored, "replayed"
+                    vs.voice_event("replayed", session_id=session_id,
+                                   client_turn_id=cid,
+                                   transcript_len=len(transcript),
+                                   reply_len=len(stored))
+                else:
+                    clock.mark("llm_request_start")
+                    llm_t0 = time.monotonic()
+                    reply = await vs.run_voice_llm(
+                        snap, transcript, session_id=session_id,
+                        client_turn_id=cid)
+                    vs.voice_event("llm_full", session_id=session_id,
+                                   client_turn_id=cid,
+                                   transcript_len=len(transcript),
+                                   reply_len=len(reply),
+                                   total_ms=(time.monotonic() - llm_t0) * 1000.0)
+                    clock.mark("stream_complete")
+            try:
+                gone = await request.is_disconnected()
+            except Exception:  # noqa: BLE001
+                gone = False
+            if gone:
+                # Disconnect BEFORE commit: cancel work, persist nothing.
+                outcome = "cancelled"
+                vs.voice_event("cancelled", session_id=session_id,
+                               client_turn_id=cid,
+                               transcript_len=len(transcript),
+                               error="disconnect_before_commit")
+                return
+            if commit_status != "replayed":
+                def _record(db2):
+                    tokens_in = (history_len + len(transcript)) // 4
+                    billing.record_session_cost(db2, session_id, user_id,
+                                                tokens_in, len(reply) // 4)
+
+                def _commit():
+                    from app.database import SessionLocal as _SL
+                    return commit_voice_winner(
+                        _SL, session_id=session_id, client_turn_id=cid,
+                        turn_no=turn_no, reply=reply, record_cost=_record)
+
+                commit_status, reply = await anyio.to_thread.run_sync(
+                    _commit, limiter=db_limiter())
+                vs.voice_event("commit_ok", session_id=session_id,
+                               client_turn_id=cid,
+                               transcript_len=len(transcript),
+                               reply_len=len(reply), outcome=commit_status)
+            clock.mark("db_persist_complete")
+            # ——— winner is durable from here: PCM may be released. ———
+            from app.shared.perf_sink import session_ref as _sref
+            yield vf.encode_metadata({
+                "route": "voice_stream",
+                "turn_no": turn_no + 1,
+                "session_ref": _sref(session_id),
+                "reply_chars": len(reply),
+                "adopted": bool(snap.adopted),
+                "commit": commit_status or "persisted",
+            })
+            yield vf.encode_final_text(reply)
+            clock.mark("first_content_sent")
+            if len(reply) > vs.TTS_STREAM_MAX_CHARS:
+                outcome = "failed_tts_too_long"
+                vs.voice_event("error", session_id=session_id,
+                               client_turn_id=cid,
+                               transcript_len=len(transcript),
+                               reply_len=len(reply), error="tts_too_long")
+                yield vf.encode_error("tts_too_long",
+                                      "reply too long for one voice turn")
+                return
+            voice, style, lang = await anyio.to_thread.run_sync(
+                lambda: vs.resolve_turn_voice(session_id))
+            vs.voice_event("tts_start", session_id=session_id,
+                           client_turn_id=cid, transcript_len=len(transcript),
+                           reply_len=len(reply))
+            tts_t0 = time.monotonic()
+            from app.shared.admission import idle_timeout_s
+            from app.voice.tts import TtsFailed, TtsNotConfigured
+            pump = vs._PcmPump(reply, voice=voice, style=style, lang=lang,
+                               session_ref=session_id)
+            pump.start()
+            pcm_bytes, pcm_chunks, attempts = 0, 0, 0
+            first_pcm = False
+            while True:
+                try:
+                    gone = await request.is_disconnected()
+                except Exception:  # noqa: BLE001
+                    gone = False
+                if gone:
+                    # Winner already durable — just stop streaming audio.
+                    outcome = "cancelled"
+                    vs.voice_event("cancelled", session_id=session_id,
+                                   client_turn_id=cid,
+                                   transcript_len=len(transcript),
+                                   reply_len=len(reply),
+                                   error="disconnect_after_commit")
+                    return
+                try:
+                    chunk = await pump.next_chunk(idle_timeout_s())
+                except StopAsyncIteration:
+                    break
+                except Exception as e:  # noqa: BLE001 - TTS/pump failure
+                    if isinstance(e, TtsNotConfigured):
+                        if vs.stub_tts_enabled():
+                            stub_frames, stub_bytes = await vs.collect_stub_pcm()
+                            for fr in stub_frames:
+                                yield fr
+                                pcm_chunks += 1
+                            pcm_bytes += stub_bytes
+                            if not first_pcm:
+                                first_pcm = True
+                                clock.mark("first_chunk_yielded")
+                                vs.voice_event(
+                                    "first_pcm", session_id=session_id,
+                                    client_turn_id=cid,
+                                    transcript_len=len(transcript),
+                                    reply_len=len(reply),
+                                    total_ms=(time.monotonic() - tts_t0) * 1000.0)
+                            vs.voice_event("tts_stub", session_id=session_id,
+                                           client_turn_id=cid,
+                                           transcript_len=len(transcript),
+                                           reply_len=len(reply),
+                                           counts={"pcm_bytes": stub_bytes,
+                                                   "pcm_chunks": len(stub_frames)})
+                            break
+                        outcome = "failed_tts_unavailable"
+                        vs.voice_event("error", session_id=session_id,
+                                       client_turn_id=cid,
+                                       transcript_len=len(transcript),
+                                       reply_len=len(reply),
+                                       error="tts_not_configured")
+                        yield vf.encode_error("tts_unavailable",
+                                              "patient audio unavailable — "
+                                              "reply text above is complete")
+                        return
+                    if pcm_chunks == 0 and attempts < 1 and isinstance(
+                            e, TtsFailed):
+                        # Early failure, nothing released: one fresh retry on
+                        # the same remaining budget (no new 2s window).
+                        attempts += 1
+                        pump.restart()
+                        continue
+                    outcome = "failed_tts"
+                    vs.voice_event("error", session_id=session_id,
+                                   client_turn_id=cid,
+                                   transcript_len=len(transcript),
+                                   reply_len=len(reply),
+                                   error=type(e).__name__[:80])
+                    yield vf.encode_error("tts_failed",
+                                          "patient audio unavailable — "
+                                          "reply text above is complete")
+                    return
+                for fr in vf.encode_pcm_frames(chunk):
+                    yield fr
+                    pcm_chunks += 1
+                pcm_bytes += len(chunk)
+                clock.count("pcm_bytes", len(chunk))
+                clock.count("pcm_chunks", 1)
+                if not first_pcm:
+                    first_pcm = True
+                    clock.mark("first_chunk_yielded")
+                    vs.voice_event("first_pcm", session_id=session_id,
+                                   client_turn_id=cid,
+                                   transcript_len=len(transcript),
+                                   reply_len=len(reply),
+                                   total_ms=(time.monotonic() - tts_t0) * 1000.0)
+            vs.voice_event("tts_eof", session_id=session_id,
+                           client_turn_id=cid, transcript_len=len(transcript),
+                           reply_len=len(reply),
+                           counts={"pcm_bytes": pcm_bytes,
+                                   "pcm_chunks": pcm_chunks})
+            yield vf.encode_done(pcm_bytes, pcm_chunks)
+            vs.voice_event("done", session_id=session_id, client_turn_id=cid,
+                           transcript_len=len(transcript),
+                           reply_len=len(reply),
+                           outcome=commit_status or "persisted",
+                           counts={"pcm_bytes": pcm_bytes,
+                                   "pcm_chunks": pcm_chunks})
+        except GeneratorExit:
+            outcome = "cancelled"
+            vs.voice_event("cancelled", session_id=session_id,
+                           client_turn_id=cid,
+                           transcript_len=len(transcript), error="generator_exit")
+            raise
+        except Exception as e:  # noqa: BLE001 - post-accept → error frame
+            outcome = "failed_llm" if reply is None else "failed_commit"
+            vs.voice_event("error", session_id=session_id, client_turn_id=cid,
+                           transcript_len=len(transcript),
+                           error=type(e).__name__[:80])
+            try:
+                yield vf.encode_error(
+                    "patient_failed",
+                    "patient turn failed — retry audio (same turn) or "
+                    "continue in text")
+            except GeneratorExit:
+                raise
+            except Exception:  # noqa: BLE001
+                pass
+        finally:
+            clock.mark("request_complete")
+            clock.finish(outcome)
+            clock.log_summary()
+            if slot_held:
+                slot_held = False
+                limiter.release()
+
+    async def _gen_wrapped():
+        it = gen()
+        try:
+            async for chunk in it:
+                yield chunk
+        finally:
+            try:
+                await it.aclose()
+            except Exception:  # noqa: BLE001 - cleanup must not fail
+                pass
+            if slot_held:
+                limiter.release()
+
+    return StreamingResponse(
+        _gen_wrapped(), media_type="application/octet-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no",
+                 "X-Voice-Protocol": str(vf.VERSION)},
     )
 
 

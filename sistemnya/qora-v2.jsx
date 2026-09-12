@@ -984,6 +984,17 @@ function QV2Session({ caseSummary, mode, language, interaction, onScored, onExit
     return c;
   });
 
+  // Phase-2 voice: the voice room consumes POST .../turns/voice-stream
+  // directly (server-orchestrated turn, typed frames). This commits the
+  // already-persisted winner bubbles with NO inference — send()/score()
+  // below are untouched.
+  function commitVoiceTurn(userText, replyText) {
+    const u = (typeof userText === 'string' ? userText : '').trim();
+    const r = (typeof replyText === 'string' ? replyText : '').trim();
+    if (!u || !r) return;
+    setMessages(m => m.concat([{ role: 'user', text: u }, { role: 'patient', text: r }]));
+  }
+
   async function send(textArg, source) {
       const text = (typeof textArg === 'string' ? textArg : input).trim();
       // FASE 6: harden duplicate-send (double-Enter / double-tap / mic auto-send
@@ -1155,6 +1166,7 @@ function QV2Session({ caseSummary, mode, language, interaction, onScored, onExit
           sessionId: sessionId, language: language, messages: messages, busy: busy, err: err,
           voiceCap: voiceCap, caseTitle: _qv2Title(caseSummary),
           onSendText: function (t) { return send(t, 'voice'); },
+          onVoiceCommit: function (u, r) { commitVoiceTurn(u, r); },
           onSwitchToText: function () { setInteractionMode('text'); },
           onAssess: function () { setStage('assess'); },
           onExit: onExit,

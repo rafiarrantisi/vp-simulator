@@ -1,7 +1,10 @@
 // ── Qora Voice Mode (voice-first room, same session/engine as Text) ──────
-// Presentation layer only: recognition → existing send() pipeline → Gemini
-// TTS streaming → AudioContext playback. Transcript stays server-side and in
-// `messages` (drawer); bubbles are NOT the main UI here.
+// Phase-2: recognition → ONE POST voice-stream (server runs the patient
+// engine + TTS and returns typed frames) → progressive PCM playback.
+// Transcript stays server-side and in `messages` (drawer); bubbles are NOT
+// the main UI here. Voice NEVER auto-falls-back to the text turns endpoint
+// (that would run a second inference); errors show winner text + manual
+// retry on the SAME client_turn_id (server replays, no new inference).
 //
 // State machine: idle | listening | processing | speaking | error.
 // No barge-in v1: mic is inert while processing/speaking. After speaking
@@ -20,6 +23,17 @@ function _qvLang(lang) {
 function _qvSR() {
   if (typeof window === 'undefined') return null;
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
+}
+
+// Shared PCM converter (int16le mono 24k → AudioBuffer). Used by the legacy
+// TTS player below AND the Phase-2 voice-turn player — one math, two callers.
+function qvPcmToBuffer(ctx, bytes) {
+  var n = Math.floor(bytes.length / 2);
+  var buf = ctx.createBuffer(1, n, QV2_TTS_SR);
+  var ch = buf.getChannelData(0);
+  var dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  for (var i = 0; i < n; i++) ch[i] = dv.getInt16(i * 2, true) / 32768;
+  return buf;
 }
 
 // ---- Streaming PCM player (framed: u32be length + int16le mono 24k) ----
@@ -42,12 +56,7 @@ function qvPlayTtsStream(opts) {
     stopSources();
   }
   function pcmToBuffer(ctx, bytes) {
-    var n = Math.floor(bytes.length / 2);
-    var buf = ctx.createBuffer(1, n, QV2_TTS_SR);
-    var ch = buf.getChannelData(0);
-    var dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-    for (var i = 0; i < n; i++) ch[i] = dv.getInt16(i * 2, true) / 32768;
-    return buf;
+    return qvPcmToBuffer(ctx, bytes); // shared converter (see above)
   }
   var done = (async function () {
     var tok = (typeof _qv2Token === 'function') ? _qv2Token() : '';
@@ -139,6 +148,209 @@ function qvPlayTtsStream(opts) {
   };
 }
 
+// ── Phase-2 server-orchestrated voice turn (ADR §4.2/§4.3) ───────────────
+// One POST /api/v2/sessions/{id}/turns/voice-stream per utterance replaces
+// the old text-turn + TTS round trips. Wire format (typed framed binary):
+//   type:u8 + length:u32be + payload — types 1 metadata / 2 final-text /
+//   3 PCM / 4 error / 5 done, protocol version 1. Incremental parsing is
+//   MANDATORY: one reader.read() is NOT one frame (see qvFeedVoiceFrames).
+// Error handling rule: NEVER auto-fallback to the text turns endpoint (that
+// would run a second inference). Show the winner text when the server
+// persisted one; manual retry reuses the SAME client_turn_id (server
+// replays the durable winner with no new inference).
+var QV2_VOICE_PROTO = 1;
+var QV2_VF_META = 1, QV2_VF_TEXT = 2, QV2_VF_PCM = 3, QV2_VF_ERR = 4, QV2_VF_DONE = 5;
+var QV2_VOICE_MAX_FRAME = 1048576; // 1 MiB (backend parity)
+var QV2_VOICE_MAX_JSON = 65536; // 64 KiB control-frame cap (backend parity)
+
+// ── Adaptive endpointing flag (ADR §3.2) ─────────────────────────────────
+// DEFAULT OFF: baseline timers (interim 3000ms / final 1200ms) run
+// byte-identical to the shipped behavior. Opt-in via
+//   localStorage['qora.voice.adaptive'] = '1'
+// or window.__QORA_VOICE_ADAPTIVE = true.
+// ROLLBACK = flag off (delete the localStorage key / set the override false).
+function qvVoiceAdaptive() {
+  try {
+    if (typeof window !== 'undefined' && window.__QORA_VOICE_ADAPTIVE === true) return true;
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('qora.voice.adaptive') === '1') return true;
+  } catch (e) {}
+  return false;
+}
+
+// Conservative endpoint thresholds (ADR §3.2, Table T). The python mirror in
+// backend/tests/test_voice_phase2_server_orch.py asserts IDENTICAL values —
+// change both sides together.
+var QV2_EP_FINAL_QUIET = 500, QV2_EP_FINAL_STABLE = 100;
+var QV2_EP_INTERIM_QUIET = 800, QV2_EP_INTERIM_STABLE = 400;
+var QV2_EP_STOP_GRACE = 250, QV2_EP_HESITATION_HOLD = 1200, QV2_EP_MANUAL_FLUSH = 250;
+
+// Hesitation-tail heuristic (hold, not a clinical parser): utterance ending
+// in a conjunction/filler likely continues after a thinking pause.
+function qvIsHesitation(text) {
+  try {
+    var t = (' ' + String(text || '').toLowerCase().replace(/[.,!?;:]+$/, '') + ' ');
+    var tails = [' dan ', ' tapi ', ' atau ', ' anu ', ' eh ', ' ehm ', ' maksudnya ',
+      ' jadi ', ' kalau ', ' karena ', ' terus ', ' lalu '];
+    for (var i = 0; i < tails.length; i++) {
+      if (t.slice(-tails[i].length) === tails[i]) return true;
+    }
+  } catch (e) {}
+  return false;
+}
+
+// Pure endpoint decision (no timers, no mic, no DOM — unit-tested via the
+// python mirror). Input: recognition-event-derived state. Returns
+// {action: 'wait'|'submit'|'stop_then_submit', inMs, reason}. Timers are
+// armed by the caller; speechstart (resume) cancels any pending submit.
+function qvEndpointNext(o) {
+  o = o || {};
+  if (o.resumed) return { action: 'wait', inMs: -1, reason: 'resume_cancels_submit' };
+  if (o.manual) return { action: 'submit', inMs: Math.min(QV2_EP_MANUAL_FLUSH, o.quietMs || 0), reason: 'manual_flush' };
+  var fin = String(o.finalText || '').trim(), inter = String(o.interimText || '').trim();
+  if (fin && !inter) {
+    if (o.hesitation) return { action: 'wait', inMs: QV2_EP_HESITATION_HOLD, reason: 'hesitation_hold' };
+    if ((o.quietMs || 0) >= QV2_EP_FINAL_QUIET && (o.finalStableMs || 0) >= QV2_EP_FINAL_STABLE)
+      return { action: 'submit', inMs: 0, reason: 'final_quiet' };
+    return { action: 'wait', inMs: Math.max(QV2_EP_FINAL_QUIET - (o.quietMs || 0), QV2_EP_FINAL_STABLE - (o.finalStableMs || 0), 0), reason: 'final_armed' };
+  }
+  if (inter) {
+    if (o.hesitation) return { action: 'wait', inMs: QV2_EP_HESITATION_HOLD, reason: 'hesitation_hold' };
+    if ((o.quietMs || 0) >= QV2_EP_INTERIM_QUIET && (o.interimStableMs || 0) >= QV2_EP_INTERIM_STABLE)
+      return { action: 'stop_then_submit', inMs: QV2_EP_STOP_GRACE, reason: 'interim_stable' };
+    return { action: 'wait', inMs: Math.max(QV2_EP_INTERIM_QUIET - (o.quietMs || 0), QV2_EP_INTERIM_STABLE - (o.interimStableMs || 0), 0), reason: 'interim_armed' };
+  }
+  return { action: 'wait', inMs: -1, reason: 'no_transcript' };
+}
+
+// Future audio-activity guard plugin slot (ADR §3.2 local guard). v1: null —
+// recognition events only, NO second mic stream (getUserMedia worklet guard
+// is future work gated on a capture-compat cohort test). When a guard lands,
+// it only supplies {lastActivityTs} consumed below; the state machine above
+// is unchanged.
+var qvAudioGuard = null;
+
+// ---- Incremental framed parser (backend app/voice/frames.py parity) -----
+function qvFeedVoiceFrames(st, more) {
+  // st: {pending: Uint8Array} (mutated). Returns [{type, payload}].
+  // Throws {voiceFrameError} on oversize/unknown (caller → text fallback).
+  var cat = new Uint8Array(st.pending.length + more.length);
+  cat.set(st.pending, 0); cat.set(more, st.pending.length);
+  st.pending = cat;
+  var out = [];
+  for (;;) {
+    if (st.pending.length < 5) return out;
+    var dv = new DataView(st.pending.buffer, st.pending.byteOffset, st.pending.byteLength);
+    var type = dv.getUint8(0), len = dv.getUint32(1, false);
+    if (type !== QV2_VF_META && type !== QV2_VF_TEXT && type !== QV2_VF_PCM &&
+        type !== QV2_VF_ERR && type !== QV2_VF_DONE)
+      throw { voiceFrameError: 'unknown_frame_' + type };
+    var cap = (type === QV2_VF_PCM) ? QV2_VOICE_MAX_FRAME : QV2_VOICE_MAX_JSON;
+    if (len > cap) throw { voiceFrameError: 'frame_too_large' };
+    if (st.pending.length < 5 + len) return out;
+    out.push({ type: type, payload: st.pending.slice(5, 5 + len) });
+    st.pending = st.pending.slice(5 + len);
+  }
+}
+function qvVoiceJson(payload) {
+  try {
+    return JSON.parse(new TextDecoder().decode(payload));
+  } catch (e) { return {}; }
+}
+function qvNewClientTurnId() {
+  try {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) return 'ct-' + crypto.randomUUID().replace(/-/g, '').slice(0, 16);
+  } catch (e) {}
+  return 'ct-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+}
+
+// ---- Single-flight voice sender (one fetch per client_turn_id) ----------
+var qvVoiceFlight = {}; // client_turn_id -> Promise (no double-inference)
+function qvSendVoiceTurn(opts) {
+  // opts: {sessionId, clientTurnId, transcript, telemetry, ctx, analyser,
+  //        signal, onPhase('speaking'), onFirstAudio}
+  var key = String(opts.clientTurnId || '');
+  if (key && qvVoiceFlight[key]) return qvVoiceFlight[key];
+  var p = _qvSendVoiceTurnOnce(opts).then(function (r) { delete qvVoiceFlight[key]; return r; },
+    function (e) { delete qvVoiceFlight[key]; throw e; });
+  if (key) qvVoiceFlight[key] = p;
+  return p;
+}
+function _qvSendVoiceTurnOnce(opts) {
+  // Resolves {ok:true, text, meta} after clean done (audio fully scheduled);
+  // resolves {ok:false, text, truncated:true} when the winner text arrived
+  // but audio did not (text fallback, NO re-inference); rejects {http} or
+  // {voiceError} otherwise.
+  return (async function () {
+    var tok = (typeof _qv2Token === 'function') ? _qv2Token() : '';
+    var headers = { 'Content-Type': 'application/json' };
+    if (tok) headers['Authorization'] = 'Bearer ' + tok;
+    var base = (typeof _qv2Base === 'function') ? _qv2Base() : '';
+    var res = await fetch(base + '/api/v2/sessions/' + encodeURIComponent(opts.sessionId) + '/turns/voice-stream', {
+      method: 'POST', headers: headers,
+      body: JSON.stringify({ client_turn_id: opts.clientTurnId, transcript: opts.transcript,
+        client_telemetry: opts.telemetry || undefined }),
+      signal: opts.signal,
+    });
+    if (!res.ok || !res.body) {
+      var errText = '';
+      try { errText = await res.text(); } catch (e) {}
+      throw { http: res.status, body: (errText || '').slice(0, 200) };
+    }
+    var reader = res.body.getReader();
+    var st = { pending: new Uint8Array(0) };
+    var meta = null, text = '', pcmBytes = 0, pcmChunks = 0;
+    var ctx = opts.ctx, analyser = opts.analyser;
+    var sources = [];
+    var playAt = ctx.currentTime + 0.05;
+    var firstFired = false;
+    function schedulePcm(bytes) {
+      var buf = qvPcmToBuffer(ctx, bytes);
+      var src = ctx.createBufferSource();
+      src.buffer = buf;
+      if (analyser) src.connect(analyser);
+      else src.connect(ctx.destination);
+      var dur = buf.duration;
+      src.start(Math.max(playAt, ctx.currentTime + 0.01));
+      playAt = Math.max(playAt, ctx.currentTime + 0.01) + dur;
+      sources.push(src);
+      if (!firstFired) {
+        firstFired = true;
+        try { if (opts.onPhase) opts.onPhase('speaking'); } catch (e) {}
+        try { if (opts.onFirstAudio) opts.onFirstAudio(); } catch (e2) {}
+      }
+    }
+    try {
+      for (;;) {
+        var rd = await reader.read();
+        if (rd.done) break;
+        var frames;
+        try { frames = qvFeedVoiceFrames(st, rd.value); }
+        catch (fe) { throw { voiceError: (fe && fe.voiceFrameError) || 'frame_error', text: text }; }
+        for (var i = 0; i < frames.length; i++) {
+          var f = frames[i];
+          if (f.type === QV2_VF_META) { meta = qvVoiceJson(f.payload); }
+          else if (f.type === QV2_VF_TEXT) { text = String(qvVoiceJson(f.payload).text || ''); }
+          else if (f.type === QV2_VF_PCM) { schedulePcm(f.payload); pcmBytes += f.payload.length; pcmChunks++; }
+          else if (f.type === QV2_VF_ERR) {
+            var ej = qvVoiceJson(f.payload);
+            throw { voiceError: String(ej.code || 'server_error'), text: text };
+          } else if (f.type === QV2_VF_DONE) {
+            var waitMs = Math.max(0, (playAt - ctx.currentTime) * 1000) + 150;
+            await new Promise(function (r2) { setTimeout(r2, waitMs); });
+            return { ok: true, text: text, meta: meta, pcmBytes: pcmBytes, pcmChunks: pcmChunks };
+          }
+        }
+      }
+    } catch (e) {
+      if (e && (e.http || e.voiceError)) throw e;
+      throw { voiceError: String((e && e.message) || e || 'stream_failed'), text: text };
+    }
+    // Stream ended without done: truncated. Winner text (if any) still usable.
+    if (text) return { ok: false, text: text, truncated: true, pcmBytes: pcmBytes };
+    throw { voiceError: 'truncated', text: '' };
+  })();
+}
+
 // ---- Voice orb: the SINGLE interaction object (no mic-icon literal) -----
 // idle: breathe + "tap to speak" · listening: stop square + ping ring (tap
 // submits) · processing: soft dots · speaking: analyser scale + eq bars ·
@@ -212,8 +424,11 @@ function QV2VoiceOrb(props) {
 // ---- Voice room -----------------------------------------------------------
 function QV2VoiceRoom(props) {
   // props: {sessionId, language, messages, busy, err, voiceCap,
-  //         onSendText(text)->Promise<string|null>, onSwitchToText,
-  //         onExam, onAssess, onExit, caseTitle}
+  //         onSendText(text)->Promise<string|null> (legacy; voice path no
+  //           longer calls it — kept for prop compat),
+  //         onVoiceCommit(userText, replyText) (voice winner bubbles, no
+  //           inference — the server already persisted both turns),
+  //         onSwitchToText, onExam, onAssess, onExit, caseTitle}
   var sessionId = props.sessionId;
   var lang = _qvLang(props.language);
   var st = React.useState('idle'); // idle|listening|processing|speaking|error
@@ -237,6 +452,10 @@ function QV2VoiceRoom(props) {
   var analyserRef = React.useRef(null);
   var autoRef = React.useRef(false); // auto-listen next turn
   var unmountedRef = React.useRef(false);
+  var lastVoiceRef = React.useRef(null); // {id, text} last voice turn — manual retry reuses id
+  var epRef = React.useRef(null); // adaptive endpoint tracker (null when flag off)
+  var epReasonRef = React.useRef(''); // endpoint reason → server telemetry
+  var voiceCtlRef = React.useRef(null); // AbortController for in-flight voice turn
   phaseRef.current = phase;
 
   function clearTimer() {
@@ -258,6 +477,7 @@ function QV2VoiceRoom(props) {
   function stopRec() {
     wantRef.current = false;
     clearTimer();
+    try { if (epRef.current && epRef.current.timer) clearTimeout(epRef.current.timer); } catch (e) {}
     var r = recRef.current;
     recRef.current = null;
     try { if (r) r.stop(); } catch (e) {}
@@ -275,6 +495,62 @@ function QV2VoiceRoom(props) {
       if (ctxRef.current.state === 'suspended') ctxRef.current.resume().catch(function () {});
       return ctxRef.current;
     } catch (e) { return null; }
+  }
+  // ── Adaptive endpointing (flag-gated; baseline below untouched) ──────
+  // Recognition-events-only state machine (ADR §3.2). qvAudioGuard (future
+  // local audio-activity guard) is null in v1 — NO second mic stream.
+  function epDecide(manual) {
+    var ep = epRef.current;
+    if (!ep || submittedRef.current) return;
+    if (ep.timer) { try { clearTimeout(ep.timer); } catch (e) {} ep.timer = null; }
+    if (ep.flushArmed && !manual) return; // manual flush owns the timer
+    var now = Date.now();
+    var text = ((ep.finalText || '') + ' ' + (ep.interimText || '')).trim();
+    var d = qvEndpointNext({ finalText: ep.finalText, interimText: ep.interimText,
+      finalStableMs: now - ep.finalAt, interimStableMs: now - ep.interimAt,
+      quietMs: now - ep.lastAudioTs, resumed: false, manual: !!manual,
+      hesitation: qvIsHesitation(text) });
+    if (d.action === 'submit') {
+      epReasonRef.current = d.reason;
+      if (d.inMs > 0) ep.timer = setTimeout(function () { finishSubmit(true); }, d.inMs);
+      else finishSubmit(true);
+    } else if (d.action === 'stop_then_submit') {
+      epReasonRef.current = d.reason;
+      try { var r = recRef.current; if (r) r.stop(); } catch (e2) {}
+      ep.stopped = true;
+      ep.timer = setTimeout(function () { finishSubmit(true); }, Math.max(0, d.inMs));
+    } else if (d.inMs >= 0) {
+      epReasonRef.current = d.reason;
+      ep.timer = setTimeout(function () { epDecide(false); }, Math.min(d.inMs, 1200) + 50);
+    }
+  }
+  function epObserveResult(fin, inter) {
+    var ep = epRef.current;
+    if (!ep || submittedRef.current) return;
+    var now = Date.now();
+    ep.lastAudioTs = now; // utterance content resets the activity clock
+    if (fin !== ep.finalText) { ep.finalText = fin; ep.finalAt = now; }
+    if (inter !== ep.interimText) { ep.interimText = inter; ep.interimAt = now; }
+    setInterim(((fin + ' ' + inter).trim()));
+    if (ep.flushArmed && fin.trim()) {
+      // Manual flush grace: a fresh final arrived — send now, don't wait.
+      try { clearTimeout(ep.timer); } catch (e) {}
+      ep.timer = null;
+      finishSubmit(false);
+      return;
+    }
+    epDecide(false);
+  }
+  function epManualFlush() {
+    // Manual orb send: drop silence wait, stop() the recognizer, allow a
+    // final ≤250ms grace for a late final — never cut one that arrives.
+    if (submittedRef.current) return;
+    var ep = epRef.current;
+    epReasonRef.current = 'manual_flush';
+    try { var r = recRef.current; if (r) r.stop(); } catch (e) {}
+    if (ep.timer) { try { clearTimeout(ep.timer); } catch (e2) {} ep.timer = null; }
+    ep.flushArmed = true;
+    ep.timer = setTimeout(function () { finishSubmit(false); }, QV2_EP_MANUAL_FLUSH);
   }
   function startListening(auto) {
     if (unmountedRef.current) return;
@@ -294,6 +570,14 @@ function QV2VoiceRoom(props) {
     }
     setVErr(''); setHint(''); setInterim('');
     finalRef.current = ''; submittedRef.current = false;
+    epReasonRef.current = '';
+    // Adaptive tracker lives only when the flag is on; null otherwise so the
+    // baseline path below runs byte-identical to the shipped behavior.
+    epRef.current = qvVoiceAdaptive()
+      ? { lastAudioTs: Date.now(), finalText: '', finalAt: Date.now(),
+          interimText: '', interimAt: Date.now(), timer: null,
+          stopped: false, flushArmed: false }
+      : null;
     var rec;
     try { rec = new SR(); } catch (e) {
       setPhase('error'); setVErr('Could not start microphone.');
@@ -318,7 +602,9 @@ function QV2VoiceRoom(props) {
           else inter += t;
         }
       } catch (err2) {}
-      finalRef.current = fin.trim();
+      fin = fin.trim(); inter = inter;
+      finalRef.current = fin;
+      if (epRef.current) { epObserveResult(fin, inter); return; }
       setInterim(((finalRef.current + ' ' + inter).trim()));
       // Any utterance content resets the clock: interim (user still shaping
       // the sentence, may pause to think) gets full patience; a fresh final
@@ -326,6 +612,23 @@ function QV2VoiceRoom(props) {
       if (fin.trim()) armSilence(QV2_SILENCE_FINAL_MS);
       else if (inter.trim()) armSilence(QV2_SILENCE_INTERIM_MS);
     };
+    if (epRef.current) {
+      // Adaptive-only recognition events (baseline has none of these).
+      rec.onspeechstart = function () {
+        var ep = epRef.current;
+        if (!ep || submittedRef.current) return;
+        ep.lastAudioTs = Date.now();
+        ep.stopped = false;
+        // Resume-cancels-submit: speaking again drops any pending submit.
+        if (!ep.flushArmed && ep.timer) { try { clearTimeout(ep.timer); } catch (e) {} ep.timer = null; }
+      };
+      rec.onspeechend = function () {
+        var ep = epRef.current;
+        if (!ep || submittedRef.current) return;
+        ep.lastAudioTs = Date.now(); // detection edge; quiet accrues from here
+        epDecide(false);
+      };
+    }
     rec.onerror = function (e) {
       var code = (e && e.error) || '';
       if (code === 'not-allowed' || code === 'service-not-allowed') {
@@ -354,7 +657,10 @@ function QV2VoiceRoom(props) {
       try {
         if (recRef.current === rec) {
           rec.start();
-          armSilence();
+          if (epRef.current) {
+            epRef.current.lastAudioTs = Date.now();
+            epDecide(false);
+          } else armSilence();
           return;
         }
       } catch (e) {}
@@ -364,7 +670,16 @@ function QV2VoiceRoom(props) {
       rec.start();
       ensureAudio(); // unlock audio inside the tap gesture
       setPhase('listening');
-      armSilence();
+      if (epRef.current) {
+        // No-speech guard mirrors the baseline 3s auto-submit path: an empty
+        // room still resolves instead of listening forever. First result
+        // observation replaces this with the adaptive machine.
+        (function (ep) {
+          ep.timer = setTimeout(function () {
+            if (!submittedRef.current && !((ep.finalText + ' ' + ep.interimText).trim())) finishSubmit(true);
+          }, QV2_SILENCE_INTERIM_MS);
+        })(epRef.current);
+      } else armSilence();
     } catch (e) {
       setPhase('error'); setVErr('Could not start microphone.');
     }
@@ -385,62 +700,127 @@ function QV2VoiceRoom(props) {
   async function submitUtterance(text) {
     if (unmountedRef.current) return;
     setPhase('processing'); setVErr('');
-    var reply = null;
-    try {
-      reply = await props.onSendText(text);
-    } catch (e) {
-      reply = null;
-    }
-    if (unmountedRef.current) return;
-    if (!reply || /^\s*\(error:/.test(reply)) {
-      setPhase('error');
-      setVErr('Could not reach the patient. Your words are saved in the transcript — retry audio or continue in text.');
-      return;
-    }
-    // Patient text ready → stream voice with the card's server-side voice.
+    var cid = qvNewClientTurnId();
+    lastVoiceRef.current = { id: cid, text: text };
+    // Patient audio needs the output context; unlock resumes it.
     var ctx = ensureAudio();
     if (!ctx) {
-      // No audio output possible: fall back to showing the text.
       setPhase('error');
-      setVErr('Audio output unavailable here — the reply is in the transcript drawer.');
-      setDrawer(true);
+      setVErr('Audio output unavailable here — your words are saved; continue in text mode.');
       return;
     }
-    setPhase('speaking');
-    var player = qvPlayTtsStream({
-      text: reply, sessionId: sessionId, ctx: ctx, analyser: analyserRef.current,
-      onFirstAudio: function () {},
-      onDone: function () {},
-      onError: function () {},
-    });
-    playerRef.current = player;
-    var how = 'truncated';
-    try { how = await player.done; } catch (e) { how = 'error'; }
-    playerRef.current = null;
+    var ctl = null;
+    try { ctl = new AbortController(); } catch (e) {}
+    voiceCtlRef.current = ctl;
+    var res = null, failed = null;
+    try {
+      res = await qvSendVoiceTurn({
+        sessionId: sessionId, clientTurnId: cid, transcript: text,
+        telemetry: { endpoint_reason: epReasonRef.current || 'unknown',
+          adaptive: qvVoiceAdaptive() ? 1 : 0,
+          manual: /manual/.test(epReasonRef.current || '') ? 1 : 0 },
+        ctx: ctx, analyser: analyserRef.current,
+        signal: ctl ? ctl.signal : undefined,
+        onPhase: function (p) { if (!unmountedRef.current && p === 'speaking') setPhase('speaking'); },
+        onFirstAudio: function () {},
+      });
+    } catch (e) {
+      failed = e || {};
+    }
+    voiceCtlRef.current = null;
     if (unmountedRef.current) return;
-    if (how === 'clean') {
+    if (res && res.ok) {
+      // Winner text is already audible; commit bubbles + hands-free next turn.
+      // Each voice id commits bubbles at most once (retries replay audio).
+      try { if (props.onVoiceCommit) props.onVoiceCommit(text, res.text); } catch (e2) {}
+      try { lastVoiceRef.current.committed = true; } catch (e4) {}
       setPhase('idle');
-      // Hands-free: mic auto-starts for the next turn. Deferred a tick so
-      // the idle render commits first (startListening reads phaseRef).
       setTimeout(function () {
         if (!unmountedRef.current) startListening(true);
       }, 80);
-    } else if (how === 'cancelled') {
-      setPhase('idle');
-    } else {
-      setPhase('error');
-      setVErr('Patient audio cut off — the full reply is in the transcript drawer.');
-      setDrawer(true);
+      return;
     }
+    // Failure WITHOUT auto re-inference: the frontend must never POST the
+    // text turns endpoint here (that would run a second inference for the
+    // same utterance). When the server persisted a winner, its text still
+    // arrives — show it; otherwise keep the user's words for manual retry
+    // on the SAME client_turn_id (server replays, no new inference).
+    var winnerText = (res && res.text) || (failed && failed.text) || '';
+    if (winnerText) {
+      try { if (props.onVoiceCommit) props.onVoiceCommit(text, winnerText); } catch (e3) {}
+      try { lastVoiceRef.current.committed = true; } catch (e5) {}
+    }
+    var code = (failed && (failed.http || failed.voiceError)) || 'stream_failed';
+    setPhase('error');
+    setVErr('Patient audio cut off (' + code + ') — ' +
+      (winnerText ? 'the full reply is in the transcript drawer. '
+                  : 'your words are kept — ') +
+      'tap Retry audio or continue in text.');
+  }
+  function retryLastVoice() {
+    // Manual retry reuses the SAME client_turn_id (idempotent server replay).
+    var last = lastVoiceRef.current;
+    if (!last || !last.text || phaseRef.current === 'processing' || phaseRef.current === 'speaking') return;
+    if (unmountedRef.current) return;
+    setPhase('processing'); setVErr('');
+    var ctx = ensureAudio();
+    if (!ctx) {
+      setPhase('error');
+      setVErr('Audio output unavailable here — the reply is in the transcript drawer.');
+      return;
+    }
+    var ctl = null;
+    try { ctl = new AbortController(); } catch (e) {}
+    voiceCtlRef.current = ctl;
+    qvSendVoiceTurn({
+      sessionId: sessionId, clientTurnId: last.id, transcript: last.text,
+      telemetry: { endpoint_reason: 'manual_retry', adaptive: qvVoiceAdaptive() ? 1 : 0, manual: 1 },
+      ctx: ctx, analyser: analyserRef.current,
+      signal: ctl ? ctl.signal : undefined,
+      onPhase: function (p) { if (!unmountedRef.current && p === 'speaking') setPhase('speaking'); },
+      onFirstAudio: function () {},
+    }).then(function (res) {
+      voiceCtlRef.current = null;
+      if (unmountedRef.current) return;
+      // Same-winner replay: commit bubbles only if this voice id never did
+      // (first attempt may already have shown the winner text).
+      if (res && res.text && !(last.committed)) {
+        try { if (props.onVoiceCommit) props.onVoiceCommit(last.text, res.text); } catch (e2) {}
+        try { last.committed = true; } catch (e4) {}
+      }
+      setPhase('idle');
+      setTimeout(function () {
+        if (!unmountedRef.current) startListening(true);
+      }, 80);
+    }, function (e) {
+      voiceCtlRef.current = null;
+      if (unmountedRef.current) return;
+      var w = (e && e.text) || '';
+      if (w && !(last.committed)) {
+        try { if (props.onVoiceCommit) props.onVoiceCommit(last.text, w); } catch (e2) {}
+        try { last.committed = true; } catch (e3) {}
+      }
+      setPhase('error');
+      setVErr('Retry failed (' + ((e && (e.http || e.voiceError)) || 'stream_failed') + ') — ' +
+        (w ? 'the reply text is in the transcript drawer.' : 'tap Retry audio again or continue in text.'));
+    });
   }
   function onMicTap() {
-    if (phase === 'listening') { finishSubmit(false); return; } // manual submit
+    if (phase === 'listening') {
+      // Manual submit: adaptive mode flushes recognition (≤250ms grace for
+      // a late final); baseline submits immediately (shipped behavior).
+      if (epRef.current) { epManualFlush(); return; }
+      finishSubmit(false);
+      return;
+    }
     if (phase === 'idle' || phase === 'error') { setVErr(''); startListening(false); return; }
     // processing/speaking: inert (no barge-in v1)
   }
   function stopAll() {
     stopRec();
-    try { if (playerRef.current) playerRef.current.cancel(); } catch (e) {}
+    try { if (voiceCtlRef.current) voiceCtlRef.current.abort(); } catch (e) {}
+    voiceCtlRef.current = null;
+    try { if (playerRef.current) playerRef.current.cancel(); } catch (e2) {}
     playerRef.current = null;
   }
   // Full lifecycle cleanup: mic, timers, streams, audio.
@@ -451,9 +831,11 @@ function QV2VoiceRoom(props) {
       unmountedRef.current = true;
       autoRef.current = false;
       stopRec();
-      try { if (playerRef.current) playerRef.current.cancel(); } catch (e) {}
+      try { if (voiceCtlRef.current) voiceCtlRef.current.abort(); } catch (e) {}
+      voiceCtlRef.current = null;
+      try { if (playerRef.current) playerRef.current.cancel(); } catch (e2) {}
       playerRef.current = null;
-      try { if (ctxRef.current) ctxRef.current.close().catch(function () {}); } catch (e) {}
+      try { if (ctxRef.current) ctxRef.current.close().catch(function () {}); } catch (e3) {}
       ctxRef.current = null; analyserRef.current = null;
     };
   }, [sessionId]);
@@ -488,7 +870,13 @@ function QV2VoiceRoom(props) {
     React.createElement('div', { style: { marginTop: 14, fontSize: 14, fontWeight: 700, color: 'var(--text-1)', minHeight: 20, textAlign: 'center' } }, phaseLabel),
     React.createElement('div', { style: { marginTop: 6, fontSize: 13, color: 'var(--text-2)', fontStyle: 'italic', minHeight: 20, maxWidth: 560, textAlign: 'center', lineHeight: 1.5 } },
       phase === 'listening' ? ('“' + (interim || '…') + '”') : ''),
-    ver && React.createElement('div', { style: { marginTop: 10, maxWidth: 560, padding: '10px 14px', borderRadius: 12, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5, textAlign: 'center' } }, '⚠️ ' + ver),
+    ver && React.createElement('div', { style: { marginTop: 10, maxWidth: 560, padding: '10px 14px', borderRadius: 12, background: 'var(--red-l)', color: 'var(--red-d)', fontSize: 12.5, lineHeight: 1.5, textAlign: 'center' } },
+      React.createElement('div', null, '⚠️ ' + ver),
+      // Manual retry reuses the SAME client_turn_id (idempotent server
+      // replay, no new inference) — never an automatic text-turn POST.
+      React.createElement('div', { style: { marginTop: 8, display: 'flex', gap: 8, justifyContent: 'center' } },
+        React.createElement('button', { onClick: function () { retryLastVoice(); }, style: { padding: '6px 14px', borderRadius: 999, border: 'none', background: 'var(--primary)', color: '#fff', fontSize: 12, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '↻ Retry audio'),
+        React.createElement('button', { onClick: function () { setDrawer(true); }, style: { padding: '6px 14px', borderRadius: 999, border: '1px solid var(--border)', background: 'var(--surface)', color: 'var(--text-2)', fontSize: 12, fontWeight: 700, fontFamily: 'Plus Jakarta Sans', cursor: 'pointer' } }, '📝 Transcript'))),
     hintMsg && !ver && React.createElement('div', { style: { marginTop: 10, fontSize: 12.5, color: 'var(--text-3)' } }, hintMsg),
     React.createElement('div', { style: { marginTop: 8, fontSize: 11.5, color: 'var(--text-3)' } },
       !roomReady ? '' : (phase === 'listening' ? 'Pauses auto-send — tap orb to send now' : '')),

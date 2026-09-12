@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
@@ -58,3 +58,37 @@ class SessionTurn(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
     # input medium for user turns — 'text' | 'voice' (Fase 5 §35.7 voice-vs-text)
     input_type: Mapped[str] = mapped_column(String, default="text")
+
+
+class VoiceTurnLedger(Base):
+    """Phase-2 voice idempotency ledger (ADR §4.3).
+
+    Idempotency key = (session_id, client_turn_id) + body hash of the
+    transcript. UNIQUE(session_id, client_turn_id) is the cross-worker
+    fence: two workers racing the same key serialize on the insert — the
+    loser reads the winner's row instead of persisting a second user turn.
+
+    Lifecycle: `accepted` (user turn persisted, no winner yet) →
+    `committed` (exactly one patient reply persisted) — or stays `accepted`
+    when the attempt dies before commit (disconnect/LLM failure), in which
+    case a retry with the same key+hash ADOPTS the existing turn_no (no new
+    user turn) and re-runs inference; the commit fence still yields exactly
+    one winner. Same key + different body hash → 409 (rejected, never
+    merged). `reply` holds the durable winner text for commit-free recovery.
+    """
+
+    __tablename__ = "voice_turn_ledger"
+    __table_args__ = (
+        UniqueConstraint("session_id", "client_turn_id",
+                         name="uq_voice_turn_session_client"),
+    )
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    session_id: Mapped[str] = mapped_column(String, ForeignKey("sessions.id"), index=True)
+    client_turn_id: Mapped[str] = mapped_column(String, index=True)
+    body_hash: Mapped[str] = mapped_column(String)
+    transcript_len: Mapped[int] = mapped_column(Integer, default=0)
+    turn_no: Mapped[int] = mapped_column(Integer)  # the user turn_number
+    status: Mapped[str] = mapped_column(String, default="accepted")  # accepted|committed
+    reply: Mapped[str | None] = mapped_column(Text, default=None)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
