@@ -70,6 +70,13 @@ class Settings(BaseSettings):
     patient_llm_api_key: str = ""   # empty → llm_api_key (server-side only)
     patient_llm_base_url: str = ""  # empty → llm_base_url
     patient_llm_model: str = ""     # empty → llm_model
+    # Optional JSON object for future patient knobs (e.g. '{"reasoning":{"max_tokens":0}}').
+    # Empty (= default) means no overrides. Merged into the OpenRouter
+    # extra_body ONLY; the evaluated contract (reasoning.enabled=False, no
+    # thinking param, no lane header) is forced and cannot be overridden.
+    # Invalid JSON (or non-object) fails closed at provider build with a
+    # clear 501. Rollback = unset PATIENT_LLM_* (this var included).
+    patient_llm_extra: str = ""     # empty → no extra knobs
     # Judge JSON is large (per_item × all dimensions + feedback). Reasoning is
     # DISABLED for OpenRouter (llm.py) so this budget is pure content — 8000
     # covers the biggest OSCE cases without truncation.
@@ -199,6 +206,28 @@ class Settings(BaseSettings):
     def patient_model(self) -> str:
         return self.patient_llm_model or self.llm_model
 
+    def patient_extra(self) -> dict:
+        """Parsed PATIENT_LLM_EXTRA ({} when unset). Raises RuntimeError with
+        a clear 501 hint when the JSON is invalid or not an object — fail
+        closed, never silent wrong-params. The OpenRouter adapter forces
+        reasoning.enabled=False AFTER merging, so extra knobs can only add
+        future keys, never re-enable reasoning."""
+        raw = (self.patient_llm_extra or "").strip()
+        if not raw:
+            return {}
+        try:
+            import json as _json
+            val = _json.loads(raw)
+        except Exception as e:
+            raise RuntimeError(
+                "[patient provider 501] invalid PATIENT_LLM_EXTRA JSON "
+                f"({e}). Rollback: unset PATIENT_LLM_* env vars.")
+        if not isinstance(val, dict):
+            raise RuntimeError(
+                "[patient provider 501] PATIENT_LLM_EXTRA must be a JSON "
+                "object. Rollback: unset PATIENT_LLM_* env vars.")
+        return val
+
     def patient_overrides(self) -> dict:
         """Which PATIENT_LLM_* knobs are explicitly set (non-secret names
         only — never values). Empty dict = full LLM_* inheritance, i.e. the
@@ -212,6 +241,8 @@ class Settings(BaseSettings):
             out["base_url"] = True
         if self.patient_llm_model:
             out["model"] = True
+        if self.patient_llm_extra:
+            out["extra"] = True
         return out
 
     def is_prod(self) -> bool:
