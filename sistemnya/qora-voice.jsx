@@ -246,19 +246,16 @@ function qvVoiceRestartAllowed(failures, maxFailures) {
 }
 
 // ── Adaptive endpointing flag (ADR §3.2) ─────────────────────────────────
-// DEFAULT ON (owner decision 12 Sep 2026): adaptive timers run for everyone.
-// Opt-out via
-//   localStorage['qora.voice.adaptive'] = '0'
-// or window.__QORA_VOICE_ADAPTIVE = false.
-// ROLLBACK = set the opt-out above.
+// DEFAULT OFF (owner decision 12 Sep 2026): plain 1.2s auto-submit for
+// everyone. Opt-in to adaptive endpointing via
+//   localStorage['qora.voice.adaptive'] = '1'
+// or window.__QORA_VOICE_ADAPTIVE = true.
 function qvVoiceAdaptive() {
   try {
-    if (typeof window !== 'undefined' && window.__QORA_VOICE_ADAPTIVE === false) return false;
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('qora.voice.adaptive') === '0') return false;
     if (typeof window !== 'undefined' && window.__QORA_VOICE_ADAPTIVE === true) return true;
     if (typeof localStorage !== 'undefined' && localStorage.getItem('qora.voice.adaptive') === '1') return true;
   } catch (e) {}
-  return true;
+  return false;
 }
 
 // Conservative endpoint thresholds (ADR §3.2, Table T). The python mirror in
@@ -697,10 +694,9 @@ function QV2VoiceRoom(props) {
     try { if (timerRef.current) clearTimeout(timerRef.current); } catch (e) {}
     timerRef.current = null;
   }
-  // Two-tier silence: interim (still forming words, thinking pauses OK) gets
-  // the full 3s patience; once the browser finalizes a sentence, the user
-  // almost always pauses for real — 1.2s is enough. Manual tap anytime.
-  var QV2_SILENCE_INTERIM_MS = 3000;
+  // Plain baseline: any pause ≥1.2s auto-submits (interim and final alike).
+  // Manual tap anytime.
+  var QV2_SILENCE_INTERIM_MS = 1200;
   var QV2_SILENCE_FINAL_MS = 1200;
   function armSilence(ms) {
     clearTimer();
